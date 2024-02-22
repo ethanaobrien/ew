@@ -1,2 +1,3 @@
-a/
+asset_server/node_modules/
+asset_server/resources/
 target/
