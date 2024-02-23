@@ -1,13 +1,57 @@
 mod encryption;
+mod router;
 use actix_web::{
-   // post,
-   // get,
+    post,
     HttpResponse,
     HttpRequest,
-    http::header::HeaderMap,
     web,
     dev::Service
 };
+
+#[post("/api/start/assetHash")]
+async fn start_assethash(req: HttpRequest, body: String) -> HttpResponse { router::start::asset_hash(req, body) }
+
+async fn log_unknown_request(req: HttpRequest) -> HttpResponse {
+    println!("Unhandled request: {}", req.path());
+    HttpResponse::Ok().body("ok")
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    use actix_web::{App, HttpServer};
+
+    let rv = HttpServer::new(|| App::new()
+        .wrap_fn(|req, srv| {
+            println!("Request: {}", req.path());
+            srv.call(req)
+        })
+        .service(start_assethash)
+        .default_service(web::route().to(log_unknown_request)))
+        .bind(("0.0.0.0", 8080))?
+        .run();
+    println!("Server started: http://127.0.0.1:{}", 8080);
+    rv.await
+}
+
+
+
+/*
+fn main() {
+    let base64_input = "MX2tzmKTxY7EsV46rYFZuAfxeY0tPHuZ0etG15WsK1MAzs/U0WUXE4bJZINrEvCxqqUbvCYxhDtXp3HoeH/zDXtnW183aF/aYycmUW3aAF6zyio4/PJoqFl7EGET37ruotoQ9Teof2PXpXraF94diw==";
+    match decrypt_packet(base64_input) {
+        Ok(decrypted_json) => {
+            // Process the decrypted JSON
+            println!("Decrypted JSON: {}", decrypted_json);
+        }
+        Err(err) => {
+            eprintln!("Error decrypting packet: {}", err);
+        }
+    }
+}
+
+*/
+
+/*
 
 async fn make_post_request(url: &str, body: &str, headers: &HeaderMap) -> Result<String, reqwest::Error> {
     let client = reqwest::Client::new();
@@ -21,6 +65,7 @@ async fn make_post_request(url: &str, body: &str, headers: &HeaderMap) -> Result
             response = response.header("host", "api-sif2.lovelive-sif2.com");
             continue;
         };
+        println!("{}: {}", name, value.to_str().unwrap());
         response = response.header(name, value.to_str().unwrap());
     }
     
@@ -60,35 +105,4 @@ async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
         HttpResponse::Ok().body(resp)
         
     }
-}
-
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    use actix_web::{App, HttpServer};
-
-    let rv = HttpServer::new(|| App::new()
-        .wrap_fn(|req, srv| {
-            println!("Request: {}", req.path());
-            srv.call(req)
-        })
-        .default_service(web::route().to(log_unknown_request)))
-        .bind(("0.0.0.0", 8080))?
-        .run();
-    println!("Server started: http://127.0.0.1:{}", 8080);
-    rv.await
-}
-/*
-fn main() {
-    let base64_input = "MX2tzmKTxY7EsV46rYFZuAfxeY0tPHuZ0etG15WsK1MAzs/U0WUXE4bJZINrEvCxqqUbvCYxhDtXp3HoeH/zDXtnW183aF/aYycmUW3aAF6zyio4/PJoqFl7EGET37ruotoQ9Teof2PXpXraF94diw==";
-    match decrypt_packet(base64_input) {
-        Ok(decrypted_json) => {
-            // Process the decrypted JSON
-            println!("Decrypted JSON: {}", decrypted_json);
-        }
-        Err(err) => {
-            eprintln!("Error decrypting packet: {}", err);
-        }
-    }
-}
-
-*/
+}*/

@@ -8,3 +8,5 @@ actix-web = { version = "4.5.1", features = [ "openssl" ] }
 openssl = { version = "0.10" }
 base64 = "0.21.5"
 reqwest = { version = "0.11", features = ["blocking"] }
+json = "0.12.4"
+rand = "0.8.5"
