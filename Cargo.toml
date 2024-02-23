@@ -5,8 +5,12 @@ edition = "2021"
 
 [dependencies]
 actix-web = { version = "4.5.1", features = [ "openssl" ] }
+rusqlite = { version = "0.30.0", features = ["bundled"] }
 openssl = { version = "0.10" }
 base64 = "0.21.5"
 reqwest = { version = "0.11", features = ["blocking"] }
 json = "0.12.4"
 rand = "0.8.5"
+lazy_static = "1.4.0"
+chrono = "0.4.31"
+hex = "0.4.3"

@@ -2,14 +2,27 @@ mod encryption;
 mod router;
 use actix_web::{
     post,
+    get,
     HttpResponse,
     HttpRequest,
     web,
     dev::Service
 };
 
+#[post("/api/start")]
+async fn start_start(req: HttpRequest, body: String) -> HttpResponse { router::start::start(req, body) }
+
 #[post("/api/start/assetHash")]
 async fn start_assethash(req: HttpRequest, body: String) -> HttpResponse { router::start::asset_hash(req, body) }
+
+#[post("/api/dummy/login")]
+async fn dummy_login(req: HttpRequest, body: String) -> HttpResponse { router::login::dummy(req, body) }
+
+#[get("/api/user")]
+async fn user(req: HttpRequest) -> HttpResponse { router::user::user(req) }
+
+#[get("/api/purchase")]
+async fn purchase(req: HttpRequest) -> HttpResponse { router::purchase::purchase(req) }
 
 async fn log_unknown_request(req: HttpRequest) -> HttpResponse {
     println!("Unhandled request: {}", req.path());
@@ -25,7 +38,11 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(purchase)
+        .service(start_start)
         .service(start_assethash)
+        .service(user)
+        .service(dummy_login)
         .default_service(web::route().to(log_unknown_request)))
         .bind(("0.0.0.0", 8080))?
         .run();

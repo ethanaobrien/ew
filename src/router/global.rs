@@ -17,6 +17,7 @@ pub fn timestamp() -> u64 {
 }
 
 pub fn send(data: JsonValue) -> HttpResponse {
+    //println!("{}", json::stringify(data.clone()));
     let encrypted = encryption::encrypt_packet(&json::stringify(data)).unwrap();
     let resp = encrypted.into_bytes();
 
