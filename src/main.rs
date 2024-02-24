@@ -24,6 +24,12 @@ async fn user(req: HttpRequest) -> HttpResponse { router::user::user(req) }
 #[get("/api/purchase")]
 async fn purchase(req: HttpRequest) -> HttpResponse { router::purchase::purchase(req) }
 
+#[post("/api/tutorial")]
+async fn tutorial(req: HttpRequest, body: String) -> HttpResponse { router::tutorial::tutorial(req, body) }
+
+#[get("/api/mission")]
+async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(req) }
+
 async fn log_unknown_request(req: HttpRequest) -> HttpResponse {
     println!("Unhandled request: {}", req.path());
     HttpResponse::Ok().body("ok")
@@ -40,6 +46,8 @@ async fn main() -> std::io::Result<()> {
         })
         .service(purchase)
         .service(start_start)
+        .service(tutorial)
+        .service(mission)
         .service(start_assethash)
         .service(user)
         .service(dummy_login)

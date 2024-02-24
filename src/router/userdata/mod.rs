@@ -1,7 +1,7 @@
 use rusqlite::{Connection, params};
 use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
-use json::{JsonValue, array};
+use json::{JsonValue, array, object};
 //use base64::{Engine as _, engine::general_purpose};
 
 lazy_static! {
@@ -75,8 +75,10 @@ fn create_acc(conn: &Connection, uid: i64) {
         )", key),
         (),
     ).unwrap();
-    let mut data = json::parse(include_str!("new_user.json")).unwrap();
-    data["user"]["id"] = uid.into();
+    let mut data = object!{
+        userdata: json::parse(include_str!("new_user.json")).unwrap()
+    };
+    data["userdata"]["user"]["id"] = uid.into();
     
     init_data(conn, &format!("_{}_", key), data);
 }
@@ -117,7 +119,7 @@ pub fn get_acc(_a6573cbe: &str, uid: &str) -> JsonValue {
                 
                 let rv = json::parse(&result.unwrap()).unwrap();
                 
-                return rv;
+                return rv["userdata"].clone();
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
@@ -156,7 +158,13 @@ pub fn save_acc(_a6573cbe: &str, uid: &str, data: JsonValue) {
                 if !acc_exists(conn, key) {
                     create_acc(conn, key);
                 }
-                store_data(conn, &format!("_{}_", key), data);
+                let mut stmt = conn.prepare(&format!("SELECT jsondata FROM _{}_", key)).unwrap();
+                let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
+                
+                let mut rv = json::parse(&result.unwrap()).unwrap();
+                
+                rv["userdata"] = data;
+                store_data(conn, &format!("_{}_", key), rv);
                 break;
             }
             Err(_) => {
