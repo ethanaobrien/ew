@@ -76,7 +76,8 @@ fn create_acc(conn: &Connection, uid: i64) {
         (),
     ).unwrap();
     let mut data = object!{
-        userdata: json::parse(include_str!("new_user.json")).unwrap()
+        userdata: json::parse(include_str!("new_user.json")).unwrap(),
+        home: json::parse(include_str!("new_user_home.json")).unwrap()
     };
     data["userdata"]["user"]["id"] = uid.into();
     
@@ -84,7 +85,7 @@ fn create_acc(conn: &Connection, uid: i64) {
 }
 
 //a6573cbe is the name of the header - todo - more secure than just uid
-pub fn get_acc(_a6573cbe: &str, uid: &str) -> JsonValue {
+fn get_data(_a6573cbe: &str, uid: &str) -> JsonValue {
     //let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
     //let header = String::from_utf8_lossy(&decoded);
     
@@ -119,13 +120,21 @@ pub fn get_acc(_a6573cbe: &str, uid: &str) -> JsonValue {
                 
                 let rv = json::parse(&result.unwrap()).unwrap();
                 
-                return rv["userdata"].clone();
+                return rv
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
             }
         }
     }
+}
+
+pub fn get_acc(_a6573cbe: &str, uid: &str) -> JsonValue {
+    return get_data(_a6573cbe, uid)["userdata"].clone();
+}
+
+pub fn get_acc_home(_a6573cbe: &str, uid: &str) -> JsonValue {
+    return get_data(_a6573cbe, uid)["home"].clone();
 }
 
 pub fn save_acc(_a6573cbe: &str, uid: &str, data: JsonValue) {

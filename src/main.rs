@@ -21,16 +21,46 @@ async fn dummy_login(req: HttpRequest, body: String) -> HttpResponse { router::l
 #[get("/api/user")]
 async fn user(req: HttpRequest) -> HttpResponse { router::user::user(req) }
 
+#[post("/api/user/initialize")]
+async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { router::user::initialize(req, body) }
+
 #[get("/api/purchase")]
 async fn purchase(req: HttpRequest) -> HttpResponse { router::purchase::purchase(req) }
 
 #[post("/api/tutorial")]
 async fn tutorial(req: HttpRequest, body: String) -> HttpResponse { router::tutorial::tutorial(req, body) }
 
+#[post("/api/friend")]
+async fn friend(req: HttpRequest, body: String) -> HttpResponse { router::friend::friend(req, body) }
+
+#[post("/api/live/guest")]
+async fn live_guest(req: HttpRequest, body: String) -> HttpResponse { router::live::guest(req, body) }
+
+#[post("/api/event")]
+async fn event(req: HttpRequest, body: String) -> HttpResponse { router::event::event(req, body) }
+
+#[post("/api/live/start")]
+async fn live_start(req: HttpRequest, body: String) -> HttpResponse { router::live::start(req, body) }
+
+#[get("/api/live/clearRate")]
+async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::live::clearrate(req) }
+
 #[get("/api/mission")]
 async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(req) }
 
-async fn log_unknown_request(req: HttpRequest) -> HttpResponse {
+#[get("/api/home")]
+async fn home(req: HttpRequest) -> HttpResponse { router::home::home(req) }
+
+#[post("/api/lottery/get_tutorial")]
+async fn lottery_tutorial(req: HttpRequest, body: String) -> HttpResponse { router::lottery::tutorial(req, body) }
+
+#[post("/api/lottery")]
+async fn lottery(req: HttpRequest, body: String) -> HttpResponse { router::lottery::lottery(req, body) }
+
+async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
+    if body != String::new() {
+        println!("{}", encryption::decrypt_packet(&body).unwrap());
+    }
     println!("Unhandled request: {}", req.path());
     HttpResponse::Ok().body("ok")
 }
@@ -44,10 +74,19 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(live_guest)
+        .service(live_clearrate)
+        .service(live_start)
+        .service(event)
         .service(purchase)
+        .service(user_initialize)
         .service(start_start)
         .service(tutorial)
+        .service(lottery_tutorial)
+        .service(lottery)
+        .service(friend)
         .service(mission)
+        .service(home)
         .service(start_assethash)
         .service(user)
         .service(dummy_login)

@@ -1,0 +1,55 @@
+{
+    "home": {
+        "gift_list": [],
+        "pending_friend_count": 0,
+        "clear_mission_count": 0,
+        "clear_beginner_mission_count": 0,
+        "beginner_mission_complete": 0,
+        "not_cleared_daily_mission_count": 6,
+        "new_announcement_flag": 1,
+        "information_list": [],
+        "unread_story_count": 4,
+        "unread_chat_count": 0,
+        "preset_setting": [
+            {
+                "slot": 1,
+                "master_preset_background_id": 0,
+                "master_preset_foreground_id": 0,
+                "master_card_id": 0,
+                "illust_master_card_id": 0,
+                "poem": 0,
+                "evolve": 0
+            },
+            {
+                "slot": 2,
+                "master_preset_background_id": 0,
+                "master_preset_foreground_id": 0,
+                "master_card_id": 0,
+                "illust_master_card_id": 0,
+                "poem": 0,
+                "evolve": 0
+            },
+            {
+                "slot": 3,
+                "master_preset_background_id": 0,
+                "master_preset_foreground_id": 0,
+                "master_card_id": 0,
+                "illust_master_card_id": 0,
+                "poem": 0,
+                "evolve": 0
+            },
+            {
+                "slot": 4,
+                "master_preset_background_id": 0,
+                "master_preset_foreground_id": 0,
+                "master_card_id": 0,
+                "illust_master_card_id": 0,
+                "poem": 0,
+                "evolve": 0
+            }
+        ],
+        "active_friend": 0,
+        "serial_code_id_list": []
+    },
+    "clear_mission_ids": []
+}
