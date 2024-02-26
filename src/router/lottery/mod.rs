@@ -7,12 +7,19 @@ use crate::router::userdata;
 
 pub fn tutorial(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let mut lotteryid = 0; //todo, what should this be?
-    if body["master_character_id"].to_string().starts_with("3") {
-        lotteryid = 9110027;
-    } else {
-        println!("Unknown lottery id for character {}", body["master_character_id"]);
+    
+    let id = body["master_character_id"].to_string();
+    let user = &id[id.len() - 2..].parse::<i32>().unwrap();
+    let mut lotteryid = 9110000;
+    if id.starts_with("2") {
+        lotteryid += 9; //muse
+    } else if id.starts_with("3") {
+        lotteryid += 9 + 9; //aquors
+    } else if id.starts_with("4") {
+        lotteryid += 9 + 9 + 12; //nijigasaki
     }
+    lotteryid += user;
+    
     
     let resp = object!{
         "code": 0,
@@ -44,16 +51,16 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
     
     //todo - how to randomize?
     let cardstogive = array![
-        {"id": 13930, "master_card_id": 10010011, "master_lottery_item_id":100001, "master_lottery_item_number":138},
-        {"id": 13928, "master_card_id": 10030008, "master_lottery_item_id":200001,"master_lottery_item_number":30},
-        {"id": 13926, "master_card_id": 20010010, "master_lottery_item_id":100001,"master_lottery_item_number":178},
-        {"id": 13929, "master_card_id": 20050004, "master_lottery_item_id":100001,"master_lottery_item_number":26},
-        {"id": 13925, "master_card_id": 20090001, "master_lottery_item_id":100001,"master_lottery_item_number":113},
-        {"id": 13933, "master_card_id": 30040001, "master_lottery_item_id":200001,"master_lottery_item_number":2},
-        {"id": 13934, "master_card_id": 30090007, "master_lottery_item_id":200001,"master_lottery_item_number":83},
-        {"id": 13931, "master_card_id": 30100005, "master_lottery_item_id":100001,"master_lottery_item_number":188},
-        {"id": 13927, "master_card_id": 30120001, "master_lottery_item_id":100001,"master_lottery_item_number":154},
-        {"id": 13932, "master_card_id": 40030002, "master_lottery_item_id":911002701,"master_lottery_item_number":1}
+        {"id": 1, "master_card_id": 10010011, "master_lottery_item_id":100001, "master_lottery_item_number":138},
+        {"id": 2, "master_card_id": 10030008, "master_lottery_item_id":200001,"master_lottery_item_number":30},
+        {"id": 3, "master_card_id": 20010010, "master_lottery_item_id":100001,"master_lottery_item_number":178},
+        {"id": 4, "master_card_id": 20050004, "master_lottery_item_id":100001,"master_lottery_item_number":26},
+        {"id": 5, "master_card_id": 20090001, "master_lottery_item_id":100001,"master_lottery_item_number":113},
+        {"id": 6, "master_card_id": 30040001, "master_lottery_item_id":200001,"master_lottery_item_number":2},
+        {"id": 7, "master_card_id": 30090007, "master_lottery_item_id":200001,"master_lottery_item_number":83},
+        {"id": 8, "master_card_id": 30100005, "master_lottery_item_id":100001,"master_lottery_item_number":188},
+        {"id": 9, "master_card_id": 30120001, "master_lottery_item_id":100001,"master_lottery_item_number":154},
+        {"id": 10, "master_card_id": 40030002, "master_lottery_item_id":911002701,"master_lottery_item_number":1}
     ];
     
     let mut new_cards = array![];
