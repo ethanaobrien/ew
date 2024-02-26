@@ -7,7 +7,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 
 //likely different between ios and android?
 pub const ASSET_VERSION: &str = "4a802a747076a91e5e62707f6358bc2d";
-pub const ASSET_HASH:    &str = "183931205c9dbc39788ef7b361988cf4";
+pub const ASSET_HASH:    &str = "0de9f85900e910b0b4873dcdd0933aa5";
 
 pub fn timestamp() -> u64 {
     let now = SystemTime::now();
