@@ -73,7 +73,7 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
         let new_card = object!{
             "id": 10,
             "master_card_id": 40030002,//todo - what should this be??
-            "master_lottery_item_id": (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1,
+            "master_lottery_item_id": 9110027,//(body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1,
             "master_lottery_item_number": 1
         };
         cardstogive.push(new_card).unwrap();
