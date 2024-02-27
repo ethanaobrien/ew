@@ -2,7 +2,7 @@ use rusqlite::{Connection, params};
 use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
-//use base64::{Engine as _, engine::general_purpose};
+use base64::{Engine as _, engine::general_purpose};
 
 lazy_static! {
     pub static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
@@ -13,6 +13,21 @@ fn init(engine: &mut MutexGuard<'_, Option<Connection>>) {
     conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
 
     engine.replace(conn);
+}
+fn create_token_store(conn: &Connection) {
+    match conn.prepare("SELECT jsondata FROM tokens") {
+        Ok(_) => {}
+        Err(_) => {
+            conn.execute(
+                "CREATE TABLE tokens (
+                    jsondata  TEXT NOT NULL
+                )",
+                (), // empty list of parameters.
+            ).unwrap();
+            init_data(conn, "tokens", array![{}]);
+        }
+    }
+    //store_data(conn, "tokens", array![{}]);
 }
 fn create_uid_store(conn: &Connection) {
     match conn.prepare("SELECT jsondata FROM uids") {
@@ -27,7 +42,7 @@ fn create_uid_store(conn: &Connection) {
             init_data(conn, "uids", array![]);
         }
     }
-    store_data(conn, "uids", array![]);
+    //store_data(conn, "uids", array![]);
 }
 fn acc_exists(conn: &Connection, key: i64) -> bool {
     conn.prepare(&format!("SELECT jsondata FROM _{}_", key)).is_ok()
@@ -51,6 +66,11 @@ fn get_uids(conn: &Connection) -> JsonValue {
     let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
     json::parse(&result.unwrap()).unwrap()
 }
+fn get_tokens(conn: &Connection) -> JsonValue {
+    let mut stmt = conn.prepare("SELECT jsondata FROM tokens").unwrap();
+    let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
+    json::parse(&result.unwrap()).unwrap()
+}
 
 fn generate_uid(conn: &Connection) -> i64 {
     create_uid_store(conn);
@@ -67,7 +87,7 @@ fn generate_uid(conn: &Connection) -> i64 {
     random_number
 }
 
-fn create_acc(conn: &Connection, uid: i64) {
+fn create_acc(conn: &Connection, uid: i64, login: &str) {
     let key = &uid.to_string();
     conn.execute(
         &format!("CREATE TABLE _{}_ (
@@ -82,12 +102,29 @@ fn create_acc(conn: &Connection, uid: i64) {
     data["userdata"]["user"]["id"] = uid.into();
     
     init_data(conn, &format!("_{}_", key), data);
+    
+    create_token_store(conn);
+    let mut tokens = get_tokens(conn);
+    let parts: Vec<&str> = login.split('-').collect();
+    let token = parts[1..parts.len() - 1].join("-");
+    tokens[0][token] = uid.into();
+    store_data(conn, "tokens", tokens);
 }
 
-//a6573cbe is the name of the header - todo - more secure than just uid
-fn get_data(_a6573cbe: &str, uid: &str) -> JsonValue {
-    //let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
-    //let header = String::from_utf8_lossy(&decoded);
+fn get_uid(conn: &Connection, uid: &str) -> i64 {
+    create_token_store(conn);
+    let parts: Vec<&str> = uid.split('-').collect();
+    let token = parts[1..parts.len() - 1].join("-");
+    let tokens = get_tokens(conn);
+    if tokens[0][token.clone()].is_null() {
+        return 0;
+    }
+    return tokens[0][token].as_i64().unwrap();
+}
+
+fn get_data(a6573cbe: &str) -> JsonValue {
+    let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
+    let a6573cbe = String::from_utf8_lossy(&decoded);
     
     loop {
         match ENGINE.lock() {
@@ -96,24 +133,18 @@ fn get_data(_a6573cbe: &str, uid: &str) -> JsonValue {
                     init(&mut result);
                 }
                 let conn = result.as_ref().unwrap();
+                let uid = get_uid(conn, &a6573cbe);
                 
                 let key: i64;
-                /*
-                if header.starts_with("0") {
+                if uid == 0 {
                     key = generate_uid(conn);
-                    create_acc(conn, key);
+                    create_acc(conn, key, &a6573cbe);
                 } else {
-                    key = header[..15].parse::<i64>().unwrap();//.unwrap_or(generate_uid(conn));
-                }*/
-                if uid == "" {
-                    key = generate_uid(conn);
-                    create_acc(conn, key);
-                } else {
-                    key = uid.parse::<i64>().unwrap();
+                    key = uid;
                 }
                 
                 if !acc_exists(conn, key) {
-                    create_acc(conn, key);
+                    create_acc(conn, key, &a6573cbe);
                 }
                 let mut stmt = conn.prepare(&format!("SELECT jsondata FROM _{}_", key)).unwrap();
                 let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
@@ -129,17 +160,17 @@ fn get_data(_a6573cbe: &str, uid: &str) -> JsonValue {
     }
 }
 
-pub fn get_acc(_a6573cbe: &str, uid: &str) -> JsonValue {
-    return get_data(_a6573cbe, uid)["userdata"].clone();
+pub fn get_acc(a6573cbe: &str, _uid: &str) -> JsonValue {
+    return get_data(a6573cbe)["userdata"].clone();
 }
 
-pub fn get_acc_home(_a6573cbe: &str, uid: &str) -> JsonValue {
-    return get_data(_a6573cbe, uid)["home"].clone();
+pub fn get_acc_home(a6573cbe: &str, _uid: &str) -> JsonValue {
+    return get_data(a6573cbe)["home"].clone();
 }
 
-pub fn save_acc(_a6573cbe: &str, uid: &str, data: JsonValue) {
-    //let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
-    //let header = String::from_utf8_lossy(&decoded);
+pub fn save_acc(a6573cbe: &str, _uid: &str, data: JsonValue) {
+    let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
+    let a6573cbe = String::from_utf8_lossy(&decoded);
     
     loop {
         match ENGINE.lock() {
@@ -148,24 +179,18 @@ pub fn save_acc(_a6573cbe: &str, uid: &str, data: JsonValue) {
                     init(&mut result);
                 }
                 let conn = result.as_ref().unwrap();
+                let uid = get_uid(conn, &a6573cbe);
                 
                 let key: i64;
-                /*
-                if header.starts_with("0") {
+                if uid == 0 {
                     key = generate_uid(conn);
-                    create_acc(conn, key);
+                    create_acc(conn, key, &a6573cbe);
                 } else {
-                    key = header[..15].parse::<i64>().unwrap();//.unwrap_or(generate_uid(conn));
-                }*/
-                if uid == "" {
-                    key = generate_uid(conn);
-                    create_acc(conn, key);
-                } else {
-                    key = uid.parse::<i64>().unwrap();
+                    key = uid;
                 }
                 
                 if !acc_exists(conn, key) {
-                    create_acc(conn, key);
+                    create_acc(conn, key, &a6573cbe);
                 }
                 let mut stmt = conn.prepare(&format!("SELECT jsondata FROM _{}_", key)).unwrap();
                 let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
