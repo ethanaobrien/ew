@@ -33,6 +33,9 @@ async fn chat_start(req: HttpRequest, body: String) -> HttpResponse { router::ch
 #[post("/api/chat/talk/end")]
 async fn chat_end(req: HttpRequest, body: String) -> HttpResponse { router::chat::end(req, body) }
 
+#[post("/api/story/read")]
+async fn story_read(req: HttpRequest, body: String) -> HttpResponse { router::story::read(req, body) }
+
 #[post("/api/user/initialize")]
 async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { router::user::initialize(req, body) }
 
@@ -92,6 +95,7 @@ async fn main() -> std::io::Result<()> {
         .service(chat_home)
         .service(chat_end)
         .service(chat_start)
+        .service(story_read)
         .service(event)
         .service(purchase)
         .service(user_initialize)
