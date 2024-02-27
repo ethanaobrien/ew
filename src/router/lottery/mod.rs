@@ -4,6 +4,21 @@ use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
 use crate::router::userdata;
+use lazy_static::lazy_static;
+
+lazy_static! {
+    static ref CARDS: JsonValue = {
+        let mut cardz = object!{};
+        let items = json::parse(include_str!("lottery_item.json")).unwrap();
+        for (_i, data) in items.members().enumerate() {
+            if cardz[data["id"].to_string()].is_null() {
+                cardz[data["id"].to_string()] = object!{};
+            }
+            cardz[data["id"].to_string()][data["number"].to_string()] = data.clone();
+        }
+        cardz
+    };
+}
 
 pub fn tutorial(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -39,19 +54,35 @@ pub fn tutorial(_req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
+fn get_card_master_id(lottery_id: String, lottery_number: String) -> i32 {
+    return CARDS[lottery_id][lottery_number]["value"].as_i32().unwrap();
+}
+
 //todo - how to randomize?
 fn get_random_cards(_count: i32) -> JsonValue {
-    return array![
-        {"id": 1, "master_card_id": 10010011, "master_lottery_item_id":100001, "master_lottery_item_number":138},
-        {"id": 2, "master_card_id": 10030008, "master_lottery_item_id":200001,"master_lottery_item_number":30},
-        {"id": 3, "master_card_id": 20010010, "master_lottery_item_id":100001,"master_lottery_item_number":178},
-        {"id": 4, "master_card_id": 20050004, "master_lottery_item_id":100001,"master_lottery_item_number":26},
-        {"id": 5, "master_card_id": 20090001, "master_lottery_item_id":100001,"master_lottery_item_number":113},
-        {"id": 6, "master_card_id": 30040001, "master_lottery_item_id":200001,"master_lottery_item_number":2},
-        {"id": 7, "master_card_id": 30090007, "master_lottery_item_id":200001,"master_lottery_item_number":83},
-        {"id": 8, "master_card_id": 30100005, "master_lottery_item_id":100001,"master_lottery_item_number":188},
-        {"id": 9, "master_card_id": 30120001, "master_lottery_item_id":100001,"master_lottery_item_number":154}
-    ]
+    let random_master_ids = array![
+        // [master_lottery_item_id, master_lottery_item_number]
+        [100001, 138],
+        [200001, 30],
+        [100001, 178],
+        [100001, 26],
+        [100001, 113],
+        [200001, 2],
+        [200001, 83],
+        [100001, 188],
+        [100001, 154]
+    ];
+    let mut rv = array![];
+    for (_i, data) in random_master_ids.members().enumerate() {
+        let to_push = object!{
+            "id": format!("{}{}", data[0].to_string(), data[1].to_string()),
+            "master_card_id": get_card_master_id(data[0].to_string(), data[1].to_string()),
+            "master_lottery_item_id": data[0].clone(),
+            "master_lottery_item_number": data[1].clone()
+        };
+        rv.push(to_push).unwrap();
+    }
+    rv
 }
 
 pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
@@ -68,11 +99,12 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
         {"id": 10, "master_card_id": 40030002, "master_lottery_item_id":911002701,"master_lottery_item_number":1}
     ];*/
     if body["master_lottery_id"].to_string().starts_with("9") {
+        let item_id = (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1;
         //tutorial
         let new_card = object!{
             "id": 10,
-            "master_card_id": 40030002,//todo - what should this be??
-            "master_lottery_item_id": (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1,
+            "master_card_id": get_card_master_id(item_id.to_string(), String::from("1")),
+            "master_lottery_item_id": item_id,
             "master_lottery_item_number": 1
         };
         cardstogive.push(new_card).unwrap();
