@@ -21,6 +21,9 @@ async fn dummy_login(req: HttpRequest, body: String) -> HttpResponse { router::l
 #[get("/api/user")]
 async fn user(req: HttpRequest) -> HttpResponse { router::user::user(req) }
 
+#[post("/api/user")]
+async fn user_post(req: HttpRequest, body: String) -> HttpResponse { router::user::user_post(req, body) }
+
 #[post("/api/user/initialize")]
 async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { router::user::initialize(req, body) }
 
@@ -89,6 +92,7 @@ async fn main() -> std::io::Result<()> {
         .service(home)
         .service(start_assethash)
         .service(user)
+        .service(user_post)
         .service(dummy_login)
         .default_service(web::route().to(log_unknown_request)))
         .bind(("0.0.0.0", 8080))?
