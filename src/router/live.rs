@@ -2,8 +2,8 @@ use json;
 use json::object;
 use crate::router::global;
 //use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest};
-//use crate::router::userdata;
+use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
+use crate::router::userdata;
 
 pub fn guest(_req: HttpRequest, _body: String) -> HttpResponse {
     //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -20,15 +20,42 @@ pub fn guest(_req: HttpRequest, _body: String) -> HttpResponse {
 }
 
 pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
-    //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    //let blank_header = HeaderValue::from_static("");
-    //let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    //let user = userdata::get_acc(key, "");
     
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": []
+    };
+    global::send(resp)
+}
+
+pub fn end(req: HttpRequest, _body: String) -> HttpResponse {
+    //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let blank_header = HeaderValue::from_static("");
+    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let user = userdata::get_acc(key, uid);
+    let user2 = userdata::get_acc_home(key, uid);
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "item_list": user["item_list"].clone(),
+            "point_list": user["point_list"].clone(),
+            "live": null, //likely a server bug?
+            "clear_master_live_mission_ids": [],
+            "user": user["user"].clone(),
+            "stamina": user["stamina"].clone(),
+            "character_list": user["character_list"].clone(),
+            "reward_list": [],
+            "gift_list": user2["home"]["gift_list"].clone(),
+            "clear_mission_ids": user2["clear_mission_ids"].clone(),
+            "event_point_reward_list": [],
+            "ranking_change": [],
+            "event_member": [],
+            "event_ranking_data": []
+        }
     };
     global::send(resp)
 }

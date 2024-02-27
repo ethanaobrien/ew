@@ -57,6 +57,9 @@ async fn event(req: HttpRequest, body: String) -> HttpResponse { router::event::
 #[post("/api/live/start")]
 async fn live_start(req: HttpRequest, body: String) -> HttpResponse { router::live::start(req, body) }
 
+#[post("/api/live/end")]
+async fn live_end(req: HttpRequest, body: String) -> HttpResponse { router::live::end(req, body) }
+
 #[get("/api/live/clearRate")]
 async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::live::clearrate(req) }
 
@@ -92,6 +95,7 @@ async fn main() -> std::io::Result<()> {
         .service(live_guest)
         .service(live_clearrate)
         .service(live_start)
+        .service(live_end)
         .service(chat_home)
         .service(chat_end)
         .service(chat_start)
