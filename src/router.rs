@@ -13,3 +13,4 @@ pub mod live;
 pub mod event;
 pub mod chat;
 pub mod story;
+pub mod notice;
