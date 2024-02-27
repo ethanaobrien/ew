@@ -24,6 +24,15 @@ async fn user(req: HttpRequest) -> HttpResponse { router::user::user(req) }
 #[post("/api/user")]
 async fn user_post(req: HttpRequest, body: String) -> HttpResponse { router::user::user_post(req, body) }
 
+#[post("/api/chat/home")]
+async fn chat_home(req: HttpRequest, body: String) -> HttpResponse { router::chat::home(req, body) }
+
+#[post("/api/chat/talk/start")]
+async fn chat_start(req: HttpRequest, body: String) -> HttpResponse { router::chat::start(req, body) }
+
+#[post("/api/chat/talk/end")]
+async fn chat_end(req: HttpRequest, body: String) -> HttpResponse { router::chat::end(req, body) }
+
 #[post("/api/user/initialize")]
 async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { router::user::initialize(req, body) }
 
@@ -80,6 +89,9 @@ async fn main() -> std::io::Result<()> {
         .service(live_guest)
         .service(live_clearrate)
         .service(live_start)
+        .service(chat_home)
+        .service(chat_end)
+        .service(chat_start)
         .service(event)
         .service(purchase)
         .service(user_initialize)

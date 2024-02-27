@@ -11,3 +11,4 @@ pub mod lottery;
 pub mod friend;
 pub mod live;
 pub mod event;
+pub mod chat;
