@@ -1,5 +1,5 @@
 use json;
-use json::object;
+use json::{array, object};
 use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
@@ -69,6 +69,29 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     masterid += userr;
     
     user["user"]["master_title_ids"][0] = masterid.into();
+    
+    // User is rewarded with all base cards in the team they chose. This makes up their new deck_list
+    
+    //nijigasaki for now
+    let cardstoreward = array![30010001, 30020001, 30030001, 30050001, 30060001, 30070001, 30080001, 30090001, 30100001, 30110001];
+    
+    let ur = user["card_list"][user["card_list"].len() - 1]["id"].clone();
+    //todo - does the user have the char already?
+    for (i, data) in cardstoreward.members().enumerate() {
+        let to_push = object!{
+            "id": data.clone(),
+            "master_card_id": data.clone(),
+            "exp": 0,
+            "skill_exp": 0,
+            "evolve": [],
+            "created_date_time": global::timestamp()
+        };
+        user["card_list"].push(to_push.clone()).unwrap();
+        if i < 10 {
+            user["deck_list"][0]["main_card_ids"][i] = data.clone();
+        }
+    }
+    user["deck_list"][0]["main_card_ids"][4] = ur;
     
     userdata::save_acc(key, user.clone());
     
