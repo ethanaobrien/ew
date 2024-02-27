@@ -102,7 +102,7 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
         let item_id = (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1;
         //tutorial
         let new_card = object!{
-            "id": 10,
+            "id": 15500,
             "master_card_id": get_card_master_id(item_id.to_string(), String::from("1")),
             "master_lottery_item_id": item_id,
             "master_lottery_item_number": 1
@@ -110,21 +110,23 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
         cardstogive.push(new_card).unwrap();
     }
     
-    
     let mut new_cards = array![];
     for (i, data) in cardstogive.members().enumerate() {
         let to_push = object!{
             "id": data["id"].clone(),
             "master_card_id": data["master_card_id"].clone(),
-            "exp":0,
+            "exp": 0,
             "skill_exp":0,
             "evolve":[],
             "created_date_time": global::timestamp()
         };
         user["card_list"].push(to_push.clone()).unwrap();
         new_cards.push(to_push).unwrap();
-        user["deck_list"][0]["main_card_ids"][i] = data["id"].clone();
+        if i < 9 {
+            user["deck_list"][0]["main_card_ids"][i] = data["id"].to_string().parse::<i32>().unwrap().into();
+        }
     }
+    user["deck_list"][0]["main_card_ids"][8] = cardstogive[9]["id"].to_string().parse::<i32>().unwrap().into();
     
     userdata::save_acc(key, user);
     
