@@ -75,6 +75,9 @@ async fn lottery_tutorial(req: HttpRequest, body: String) -> HttpResponse { rout
 #[post("/api/lottery")]
 async fn lottery(req: HttpRequest, body: String) -> HttpResponse { router::lottery::lottery(req, body) }
 
+#[post("/api/login_bonus")]
+async fn login_bonus(req: HttpRequest, body: String) -> HttpResponse { router::login::bonus(req, body) }
+
 #[get("/api/notice/reward")]
 async fn reward(req: HttpRequest) -> HttpResponse { router::notice::reward(req) }
 
@@ -95,6 +98,7 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(login_bonus)
         .service(reward)
         .service(live_guest)
         .service(live_clearrate)
