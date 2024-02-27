@@ -59,9 +59,8 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
     println!("lottery: {}", body);
     let blank_header = HeaderValue::from_static("");
     let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let mut user = userdata::get_acc(key, uid);
-    let user2 = userdata::get_acc(key, uid);
+    let mut user = userdata::get_acc(key);
+    let user2 = userdata::get_acc(key);
     
     let mut cardstogive = get_random_cards(9);
     /*let cardstogive = array![
@@ -95,7 +94,7 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
         user["deck_list"][0]["main_card_ids"][i] = data["id"].clone();
     }
     
-    userdata::save_acc(key, uid, user);
+    userdata::save_acc(key, user);
     
     let mut lottery_list = array![];
     for (_i, data) in cardstogive.members().enumerate() {

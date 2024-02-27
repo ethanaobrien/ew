@@ -160,15 +160,15 @@ fn get_data(a6573cbe: &str) -> JsonValue {
     }
 }
 
-pub fn get_acc(a6573cbe: &str, _uid: &str) -> JsonValue {
+pub fn get_acc(a6573cbe: &str) -> JsonValue {
     return get_data(a6573cbe)["userdata"].clone();
 }
 
-pub fn get_acc_home(a6573cbe: &str, _uid: &str) -> JsonValue {
+pub fn get_acc_home(a6573cbe: &str) -> JsonValue {
     return get_data(a6573cbe)["home"].clone();
 }
 
-pub fn save_acc(a6573cbe: &str, _uid: &str, data: JsonValue) {
+pub fn save_acc(a6573cbe: &str, data: JsonValue) {
     let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
     let a6573cbe = String::from_utf8_lossy(&decoded);
     
