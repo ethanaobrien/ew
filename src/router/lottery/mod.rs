@@ -94,15 +94,11 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
     let user2 = userdata::get_acc(key);
     
     let mut cardstogive = get_random_cards(9);
-    /*let cardstogive = array![
-    //30110007
-        {"id": 10, "master_card_id": 40030002, "master_lottery_item_id":911002701,"master_lottery_item_number":1}
-    ];*/
+    
     if body["master_lottery_id"].to_string().starts_with("9") {
         let item_id = (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1;
         //tutorial
         let new_card = object!{
-            "id": get_card_master_id(item_id.to_string(), String::from("1")),
             "master_card_id": get_card_master_id(item_id.to_string(), String::from("1")),
             "master_lottery_item_id": item_id,
             "master_lottery_item_number": 1
@@ -112,19 +108,27 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut new_cards = array![];
     for (_i, data) in cardstogive.members().enumerate() {
+        if !global::give_character(data["master_card_id"].to_string(), &mut user) {
+            let to_push = object!{
+                "id": 6600,
+                "master_item_id": 19100001,
+                "amount": 20,
+                "expire_date_time": null
+            };
+            user["item_list"].push(to_push).unwrap();
+        }
         let to_push = object!{
-            "id": data["id"].clone(),
+            "id": data["master_card_id"].clone(),
             "master_card_id": data["master_card_id"].clone(),
             "exp": 0,
             "skill_exp": 0,
             "evolve": [],
             "created_date_time": global::timestamp()
         };
-        user["card_list"].push(to_push.clone()).unwrap();
         new_cards.push(to_push).unwrap();
     }
     
-    userdata::save_acc(key, user);
+    userdata::save_acc(key, user.clone());
     
     let mut lottery_list = array![];
     for (_i, data) in cardstogive.members().enumerate() {
@@ -143,7 +147,8 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
         "data": {
             "lottery_item_list": lottery_list,
             "updated_value_list": {
-                "card_list": new_cards
+                "card_list": new_cards,
+                "item_list": user["item_list"].clone()
             },
             "gift_list": user2["home"]["gift_list"].clone(),
             "clear_mission_ids": user2["clear_mission_ids"].clone(),

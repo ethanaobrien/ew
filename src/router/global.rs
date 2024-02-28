@@ -1,4 +1,4 @@
-use json::JsonValue;
+use json::{object, JsonValue};
 use crate::encryption;
 use actix_web::{
     HttpResponse
@@ -22,4 +22,30 @@ pub fn send(data: JsonValue) -> HttpResponse {
     let resp = encrypted.into_bytes();
 
     HttpResponse::Ok().body(resp)
+}
+
+pub fn error_resp() -> HttpResponse {
+    send(object!{})
+}
+
+// true - added
+// false - already has
+pub fn give_character(id: String, user: &mut JsonValue) -> bool {
+    
+    for (_i, data) in user["card_list"].members().enumerate() {
+        if data["master_card_id"].to_string() == id {
+            return false;
+        }
+    }
+    
+    let to_push = object!{
+        "id": id.clone(),
+        "master_card_id": id,
+        "exp": 0,
+        "skill_exp": 0,
+        "evolve": [],
+        "created_date_time": timestamp()
+    };
+    user["card_list"].push(to_push.clone()).unwrap();
+    true
 }
