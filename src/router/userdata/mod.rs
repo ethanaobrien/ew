@@ -3,6 +3,7 @@ use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
 use base64::{Engine as _, engine::general_purpose};
+use crate::router::global;
 
 lazy_static! {
     pub static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
@@ -100,6 +101,7 @@ fn create_acc(conn: &Connection, uid: i64, login: &str) {
         home: json::parse(include_str!("new_user_home.json")).unwrap()
     };
     data["userdata"]["user"]["id"] = uid.into();
+    data["userdata"]["stamina"]["last_updated_time"] = global::timestamp().into();
     
     init_data(conn, &format!("_{}_", key), data);
     

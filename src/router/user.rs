@@ -49,8 +49,9 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     
     let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
     let mut user = userdata::get_acc(key);
+    let ur = user["card_list"][user["card_list"].len() - 1]["id"].clone();
     
-    let id = (body["master_character_id"].as_i32().unwrap() * 10000) + 7; //todo - is this alwasy the case?
+    let id = ur.as_i32().unwrap(); //todo
     user["user"]["favorite_master_card_id"] = id.into();
     user["user"]["guest_smile_master_card_id"] = id.into();
     user["user"]["guest_cool_master_card_id"] = id.into();
@@ -81,7 +82,6 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     
     // User is rewarded with all base cards in the team they chose. This makes up their new deck_list
     
-    let ur = user["card_list"][user["card_list"].len() - 1]["id"].clone();
     for (i, data) in cardstoreward.members().enumerate() {
         global::give_character(data.to_string(), &mut user);
         if i < 10 {

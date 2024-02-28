@@ -10,7 +10,10 @@ pub fn dummy(req: HttpRequest, _body: String) -> HttpResponse {
     //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let blank_header = HeaderValue::from_static("");
     let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let user = userdata::get_acc(key);
+    let mut user = userdata::get_acc(key);
+    
+    user["user"]["last_login_time"] = global::timestamp().into();
+    userdata::save_acc(key, user.clone());
     
     println!("Signin from uid: {}", user["user"]["id"].clone());
     let resp = object!{
