@@ -5,6 +5,36 @@ use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
 use crate::router::userdata;
 
+pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let blank_header = HeaderValue::from_static("");
+    
+    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let mut user = userdata::get_acc(key);
+    
+    for (i, data) in user["deck_list"].members().enumerate() {
+        if data["slot"].to_string() == body["slot"].to_string() {
+            user["deck_list"][i] = body["main_card_ids"].clone();
+            break;
+        }
+    }
+    userdata::save_acc(key, user.clone());
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "deck": {
+                "slot": body["slot"].clone(),
+                "leader_role": 0,
+                "main_card_ids": body["main_card_ids"].clone()
+            },
+            "clear_mission_ids": []
+        }
+    };
+    global::send(resp)
+}
+
 pub fn user(req: HttpRequest) -> HttpResponse {
     let blank_header = HeaderValue::from_static("");
     

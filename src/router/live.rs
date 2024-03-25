@@ -5,6 +5,19 @@ use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
 use crate::router::userdata;
 
+pub fn retire(_req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "stamina": {},
+            "item_list": [],
+            "event_point_list": []
+        }
+    };
+    global::send(resp)
+}
+
 pub fn guest(_req: HttpRequest, _body: String) -> HttpResponse {
     
     let resp = object!{

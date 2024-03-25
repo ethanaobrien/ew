@@ -39,6 +39,9 @@ async fn story_read(req: HttpRequest, body: String) -> HttpResponse { router::st
 #[post("/api/user/initialize")]
 async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { router::user::initialize(req, body) }
 
+#[post("/api/deck")]
+async fn user_deck(req: HttpRequest, body: String) -> HttpResponse { router::user::deck(req, body) }
+
 #[get("/api/purchase")]
 async fn purchase(req: HttpRequest) -> HttpResponse { router::purchase::purchase(req) }
 
@@ -59,6 +62,9 @@ async fn live_start(req: HttpRequest, body: String) -> HttpResponse { router::li
 
 #[post("/api/live/end")]
 async fn live_end(req: HttpRequest, body: String) -> HttpResponse { router::live::end(req, body) }
+
+#[post("/api/live/retire")]
+async fn live_retire(req: HttpRequest, body: String) -> HttpResponse { router::live::retire(req, body) }
 
 #[get("/api/live/clearRate")]
 async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::live::clearrate(req) }
@@ -104,6 +110,7 @@ async fn main() -> std::io::Result<()> {
         .service(live_clearrate)
         .service(live_start)
         .service(live_end)
+        .service(live_retire)
         .service(chat_home)
         .service(chat_end)
         .service(chat_start)
@@ -121,6 +128,7 @@ async fn main() -> std::io::Result<()> {
         .service(start_assethash)
         .service(user)
         .service(user_post)
+        .service(user_deck)
         .service(dummy_login)
         .default_service(web::route().to(log_unknown_request)))
         .bind(("0.0.0.0", 8080))?

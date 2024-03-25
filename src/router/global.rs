@@ -5,9 +5,9 @@ use actix_web::{
 };
 use std::time::{SystemTime, UNIX_EPOCH};
 
-//likely different between ios and android?
-pub const ASSET_VERSION: &str = "4a802a747076a91e5e62707f6358bc2d";
-pub const ASSET_HASH:    &str = "0de9f85900e910b0b4873dcdd0933aa5";
+//different between ios and android?
+pub const ASSET_VERSION: &str = "13177023d4b7ad41ff52af4cefba5c55";
+pub const ASSET_HASH:    &str = "9fbfeda43a5cbf744ef23c06c22170aa";
 
 pub fn timestamp() -> u64 {
     let now = SystemTime::now();
@@ -39,8 +39,8 @@ pub fn give_character(id: String, user: &mut JsonValue) -> bool {
     }
     
     let to_push = object!{
-        "id": id.clone(),
-        "master_card_id": id,
+        "id": id.parse::<i32>().unwrap(),
+        "master_card_id": id.parse::<i32>().unwrap(),
         "exp": 0,
         "skill_exp": 0,
         "evolve": [],
