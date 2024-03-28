@@ -9,6 +9,9 @@ use actix_web::{
     dev::Service
 };
 
+#[post("/api/debug/error")]
+async fn debug_error(req: HttpRequest, body: String) -> HttpResponse { router::debug::error(req, body) }
+
 #[post("/api/start")]
 async fn start_start(req: HttpRequest, body: String) -> HttpResponse { router::start::start(req, body) }
 
@@ -104,6 +107,7 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(debug_error)
         .service(login_bonus)
         .service(reward)
         .service(live_guest)

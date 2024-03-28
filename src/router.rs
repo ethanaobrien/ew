@@ -14,3 +14,4 @@ pub mod event;
 pub mod chat;
 pub mod story;
 pub mod notice;
+pub mod debug;
