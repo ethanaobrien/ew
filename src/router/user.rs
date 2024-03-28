@@ -2,15 +2,14 @@ use json;
 use json::{array, object, JsonValue};
 use crate::router::global;
 use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
+use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let blank_header = HeaderValue::from_static("");
     
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let mut user = userdata::get_acc(key);
+    let key = global::get_login(req.headers());
+    let mut user = userdata::get_acc(&key);
     
     for (i, data) in user["deck_list"].members().enumerate() {
         if data["slot"].to_string() == body["slot"].to_string() {
@@ -18,7 +17,7 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
             break;
         }
     }
-    userdata::save_acc(key, user.clone());
+    userdata::save_acc(&key, user.clone());
     
     let resp = object!{
         "code": 0,
@@ -36,10 +35,9 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn user(req: HttpRequest) -> HttpResponse {
-    let blank_header = HeaderValue::from_static("");
     
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let user = userdata::get_acc(key);
+    let key = global::get_login(req.headers());
+    let user = userdata::get_acc(&key);
     
     let resp = object!{
         "code": 0,
@@ -51,16 +49,15 @@ pub fn user(req: HttpRequest) -> HttpResponse {
 
 pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let blank_header = HeaderValue::from_static("");
     
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let mut user = userdata::get_acc(key);
-    let user_2 = userdata::get_acc_home(key);
+    let key = global::get_login(req.headers());
+    let mut user = userdata::get_acc(&key);
+    let user_2 = userdata::get_acc_home(&key);
     
     user["user"]["name"] = body["name"].clone();
     user["user"]["friend_request_disabled"] = body["friend_request_disabled"].clone();
     
-    userdata::save_acc(key, user.clone());
+    userdata::save_acc(&key, user.clone());
     
     let resp = object!{
         "code": 0,
@@ -75,10 +72,9 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
 
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let blank_header = HeaderValue::from_static("");
     
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let mut user = userdata::get_acc(key);
+    let key = global::get_login(req.headers());
+    let mut user = userdata::get_acc(&key);
     let ur = user["card_list"][user["card_list"].len() - 1]["id"].clone();
     
     let id = ur.as_i32().unwrap(); //todo
@@ -121,7 +117,7 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     //todo - should the chosen character be in the team twice?
     user["deck_list"][0]["main_card_ids"][4] = ur;
     
-    userdata::save_acc(key, user.clone());
+    userdata::save_acc(&key, user.clone());
     
     let resp = object!{
         "code": 0,

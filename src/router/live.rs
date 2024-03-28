@@ -2,7 +2,7 @@ use json;
 use json::object;
 use crate::router::global;
 use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
+use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 pub fn retire(_req: HttpRequest, _body: String) -> HttpResponse {
@@ -40,10 +40,9 @@ pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
 
 pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let blank_header = HeaderValue::from_static("");
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let user2 = userdata::get_acc_home(key);
-    let mut user = userdata::get_acc(key);
+    let key = global::get_login(req.headers());
+    let user2 = userdata::get_acc_home(&key);
+    let mut user = userdata::get_acc(&key);
     
     user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i32().unwrap() - body["use_lp"].as_i32().unwrap()).into();
     if user["stamina"]["stamina"].as_i32().unwrap() < 0 {
@@ -51,7 +50,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     }
     user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    userdata::save_acc(key, user.clone());
+    userdata::save_acc(&key, user.clone());
     
     let resp = object!{
         "code": 0,

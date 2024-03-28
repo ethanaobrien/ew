@@ -9,6 +9,12 @@ use std::time::{SystemTime, UNIX_EPOCH};
 pub const ASSET_VERSION: &str = "13177023d4b7ad41ff52af4cefba5c55";
 pub const ASSET_HASH:    &str = "9fbfeda43a5cbf744ef23c06c22170aa";
 
+pub fn get_login(headers: &HeaderMap) -> String {
+    let blank_header = HeaderValue::from_static("");
+    let key = headers.get("f19c72ba").unwrap_or(&blank_header).to_str().unwrap_or("");
+    key.to_string()
+}
+
 pub fn timestamp() -> u64 {
     let now = SystemTime::now();
 

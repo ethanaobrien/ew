@@ -2,18 +2,17 @@ use json;
 use json::object;
 use crate::router::global;
 //use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
+use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 //First time login handler
 pub fn dummy(req: HttpRequest, _body: String) -> HttpResponse {
     //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let blank_header = HeaderValue::from_static("");
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let mut user = userdata::get_acc(key);
+    let key = global::get_login(req.headers());
+    let mut user = userdata::get_acc(&key);
     
     user["user"]["last_login_time"] = global::timestamp().into();
-    userdata::save_acc(key, user.clone());
+    userdata::save_acc(&key, user.clone());
     
     println!("Signin from uid: {}", user["user"]["id"].clone());
     let resp = object!{
@@ -28,9 +27,8 @@ pub fn dummy(req: HttpRequest, _body: String) -> HttpResponse {
 
 pub fn bonus(req: HttpRequest, _body: String) -> HttpResponse {
     //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let blank_header = HeaderValue::from_static("");
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let user = userdata::get_acc_home(key);
+    let key = global::get_login(req.headers());
+    let user = userdata::get_acc_home(&key);
     
     let resp = object!{
         "code": 0,

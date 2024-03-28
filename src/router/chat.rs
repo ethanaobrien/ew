@@ -2,13 +2,12 @@ use json;
 use json::object;
 use crate::router::global;
 //use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
+use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 pub fn home(req: HttpRequest, _body: String) -> HttpResponse {
-    let blank_header = HeaderValue::from_static("");
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let user = userdata::get_acc(key);
+    let key = global::get_login(req.headers());
+    let user = userdata::get_acc(&key);
     
     let id = user["user"]["favorite_master_card_id"].as_i64().unwrap() / 10000;
     

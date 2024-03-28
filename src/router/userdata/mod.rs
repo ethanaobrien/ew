@@ -107,21 +107,17 @@ fn create_acc(conn: &Connection, uid: i64, login: &str) {
     
     create_token_store(conn);
     let mut tokens = get_tokens(conn);
-    let parts: Vec<&str> = login.split('-').collect();
-    let token = parts[1..parts.len() - 1].join("-");
-    tokens[0][token] = uid.into();
+    tokens[0][login] = uid.into();
     store_data(conn, "tokens", tokens);
 }
 
 fn get_uid(conn: &Connection, uid: &str) -> i64 {
     create_token_store(conn);
-    let parts: Vec<&str> = uid.split('-').collect();
-    let token = parts[1..parts.len() - 1].join("-");
     let tokens = get_tokens(conn);
-    if tokens[0][token.clone()].is_null() {
+    if tokens[0][uid].is_null() {
         return 0;
     }
-    return tokens[0][token].as_i64().unwrap();
+    return tokens[0][uid].as_i64().unwrap();
 }
 
 fn get_data(a6573cbe: &str) -> JsonValue {

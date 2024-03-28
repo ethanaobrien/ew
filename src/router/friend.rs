@@ -7,9 +7,8 @@ use actix_web::{HttpResponse, HttpRequest};
 pub fn friend(_req: HttpRequest, _body: String) -> HttpResponse {
     /*let blank_header = HeaderValue::from_static("");
     
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let user = userdata::get_acc(key, uid);*/
+    let key = global::get_login(req.headers());
+    let user = userdata::get_acc(&key, uid);*/
     
     let resp = object!{
         "code": 0,

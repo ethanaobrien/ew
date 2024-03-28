@@ -2,7 +2,7 @@ use json;
 use json::{array, object, JsonValue};
 use crate::router::global;
 use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
+use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 use lazy_static::lazy_static;
 
@@ -88,10 +88,9 @@ fn get_random_cards(_count: i32) -> JsonValue {
 pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     println!("lottery: {}", body);
-    let blank_header = HeaderValue::from_static("");
-    let key = req.headers().get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let mut user = userdata::get_acc(key);
-    let user2 = userdata::get_acc(key);
+    let key = global::get_login(req.headers());
+    let mut user = userdata::get_acc(&key);
+    let user2 = userdata::get_acc(&key);
     
     let mut cardstogive = get_random_cards(9);
     
@@ -128,7 +127,7 @@ pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
         new_cards.push(to_push).unwrap();
     }
     
-    userdata::save_acc(key, user.clone());
+    userdata::save_acc(&key, user.clone());
     
     let mut lottery_list = array![];
     for (_i, data) in cardstogive.members().enumerate() {
