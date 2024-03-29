@@ -1,5 +1,6 @@
 use json;
 use json::object;
+use json::JsonValue;
 use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
@@ -23,19 +24,62 @@ pub fn guest(_req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
-        "data": {"guest_list":[{"user":{"name":"A Nice Guest","comment":"Enjoy the first live show!","exp":900,"main_deck_slot":1,"favorite_master_card_id":10010013,"favorite_card_evolve":0,"guest_smile_master_card_id":10010013,"guest_cool_master_card_id":10010013,"guest_pure_master_card_id":10010013,"friend_request_disabled":1,"master_title_ids":[3000001,0],"profile_settings":[1,2,3,4,5,6,7],"last_login_time":1708699449},"favorite_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_smile_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_cool_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_pure_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"status":0}]}
+        "data": {"guest_list":[{"user":{"name":"A Nice Guest","comment":"Enjoy your live show!","exp":900,"main_deck_slot":1,"favorite_master_card_id":10010013,"favorite_card_evolve":0,"guest_smile_master_card_id":10010013,"guest_cool_master_card_id":10010013,"guest_pure_master_card_id":10010013,"friend_request_disabled":1,"master_title_ids":[3000001,0],"profile_settings":[1,2,3,4,5,6,7],"last_login_time":1708699449},"favorite_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_smile_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_cool_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_pure_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"status":0}]}
     };
     global::send(resp)
 }
 
 pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
-    
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": []
     };
     global::send(resp)
+}
+
+pub fn update_live_data(user: &mut JsonValue, data: &JsonValue) -> JsonValue {
+    
+    if user["tutorial_step"].as_i32().unwrap() < 130 {
+        return JsonValue::Null;
+    }
+    
+    let mut rv = object!{
+        "master_live_id": data["master_live_id"].as_i32().unwrap(),
+        "level": data["level"].as_i32().unwrap(),
+        "clear_count": 1,
+        "high_score": data["live_score"]["score"].as_i32().unwrap(),
+        "max_combo": data["live_score"]["max_combo"].as_i32().unwrap(),
+        "auto_enable": 1, //whats this?
+        "updated_time": global::timestamp()
+    };
+    
+    let mut has = false;
+    for (_i, current) in user["live_list"].members_mut().enumerate() {
+        if current["master_live_id"].to_string() == rv["master_live_id"].to_string() {
+            has = true;
+            rv["clear_count"] = (current["clear_count"].as_i32().unwrap() + 1).into();
+            current["clear_count"] = rv["clear_count"].clone();
+            
+            if rv["high_score"].as_i32().unwrap() > current["high_score"].as_i32().unwrap() {
+                current["high_score"] = rv["high_score"].clone();
+            } else {
+                rv["high_score"] = current["high_score"].clone();
+            }
+            
+            if rv["max_combo"].as_i32().unwrap() > current["max_combo"].as_i32().unwrap() {
+                current["max_combo"] = rv["max_combo"].clone();
+            } else {
+                rv["max_combo"] = current["max_combo"].clone();
+            }
+            current["updated_time"] = rv["updated_time"].clone();
+            break;
+        }
+    }
+    if !has {
+        user["live_list"].push(rv.clone()).unwrap()
+    }
+    rv
 }
 
 pub fn end(req: HttpRequest, body: String) -> HttpResponse {
@@ -50,6 +94,8 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     }
     user["stamina"]["last_updated_time"] = global::timestamp().into();
     
+    let live = update_live_data(&mut user, &body);
+    
     userdata::save_acc(&key, user.clone());
     
     let resp = object!{
@@ -58,7 +104,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
         "data": {
             "item_list": user["item_list"].clone(),
             "point_list": user["point_list"].clone(),
-            "live": null, //likely a server bug?
+            "live": live,
             "clear_master_live_mission_ids": [],
             "user": user["user"].clone(),
             "stamina": user["stamina"].clone(),
