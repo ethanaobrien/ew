@@ -10,8 +10,9 @@ use std::time::{SystemTime, UNIX_EPOCH};
 pub const ASSET_VERSION: &str = "13177023d4b7ad41ff52af4cefba5c55";
 pub const ASSET_HASH:    &str = "9fbfeda43a5cbf744ef23c06c22170aa";
 
-pub const ASSET_VERSION_JP: &str = "4c921d2443335e574a82e04ec9ea243c";
-pub const ASSET_HASH_JP:    &str = "67f8f261c16b3cca63e520a25aad6c1c";
+pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
+pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";
+pub const ASSET_HASH_IOS_JP:      &str = "b8975be8300013a168d061d3fdcd4a16";
 
 pub fn get_login(headers: &HeaderMap) -> String {
     let blank_header = HeaderValue::from_static("");
