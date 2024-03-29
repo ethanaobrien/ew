@@ -121,9 +121,6 @@ fn get_uid(conn: &Connection, uid: &str) -> i64 {
 }
 
 fn get_data(a6573cbe: &str) -> JsonValue {
-    let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
-    let a6573cbe = String::from_utf8_lossy(&decoded);
-    
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
@@ -167,9 +164,6 @@ pub fn get_acc_home(a6573cbe: &str) -> JsonValue {
 }
 
 pub fn save_acc(a6573cbe: &str, data: JsonValue) {
-    let decoded = general_purpose::STANDARD.decode(a6573cbe).unwrap();
-    let a6573cbe = String::from_utf8_lossy(&decoded);
-    
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
