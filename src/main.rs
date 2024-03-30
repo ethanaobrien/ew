@@ -90,6 +90,21 @@ async fn login_bonus(req: HttpRequest, body: String) -> HttpResponse { router::l
 #[get("/api/notice/reward")]
 async fn reward(req: HttpRequest) -> HttpResponse { router::notice::reward(req) }
 
+#[post("/api/user/getmigrationcode")]
+async fn getmigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::get_migration_code(req, body) }
+
+#[post("/api/user/registerpassword")]
+async fn registerpassword(req: HttpRequest, body: String) -> HttpResponse { router::user::register_password(req, body) }
+
+#[post("/api/user/migration")]
+async fn migration(req: HttpRequest, body: String) -> HttpResponse { router::user::migration(req, body) }
+
+#[post("/api/user/gglrequestmigrationcode")]
+async fn gglrequestmigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::request_migration_code(req, body) }
+
+#[post("/api/user/gglverifymigrationcode")]
+async fn gglverifymigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::verify_migration_code(req, body) }
+
 async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap());
@@ -134,6 +149,11 @@ async fn main() -> std::io::Result<()> {
         .service(user_post)
         .service(user_deck)
         .service(dummy_login)
+        .service(getmigrationcode)
+        .service(registerpassword)
+        .service(migration)
+        .service(gglrequestmigrationcode)
+        .service(gglverifymigrationcode)
         .default_service(web::route().to(log_unknown_request)))
         .bind(("0.0.0.0", 8080))?
         .run();

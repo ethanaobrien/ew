@@ -22,12 +22,11 @@ fn create_token_store(conn: &Connection) {
                 "CREATE TABLE tokens (
                     jsondata  TEXT NOT NULL
                 )",
-                (), // empty list of parameters.
+                (),
             ).unwrap();
-            init_data(conn, "tokens", array![{}]);
+            init_data(conn, "tokens", object!{});
         }
     }
-    //store_data(conn, "tokens", array![{}]);
 }
 fn create_uid_store(conn: &Connection) {
     match conn.prepare("SELECT jsondata FROM uids") {
@@ -37,12 +36,26 @@ fn create_uid_store(conn: &Connection) {
                 "CREATE TABLE uids (
                     jsondata  TEXT NOT NULL
                 )",
-                (), // empty list of parameters.
+                (),
             ).unwrap();
             init_data(conn, "uids", array![]);
         }
     }
-    //store_data(conn, "uids", array![]);
+}
+
+fn create_migration_store(conn: &Connection) {
+    match conn.prepare("SELECT jsondata FROM migrationdata") {
+        Ok(_) => {}
+        Err(_) => {
+            conn.execute(
+                "CREATE TABLE migrationdata (
+                    jsondata  TEXT NOT NULL
+                )",
+                (),
+            ).unwrap();
+            init_data(conn, "migrationdata", object!{});
+        }
+    }
 }
 fn acc_exists(conn: &Connection, key: i64) -> bool {
     conn.prepare(&format!("SELECT jsondata FROM _{}_", key)).is_ok()
@@ -106,17 +119,28 @@ fn create_acc(conn: &Connection, uid: i64, login: &str) {
     
     create_token_store(conn);
     let mut tokens = get_tokens(conn);
-    tokens[0][login] = uid.into();
+    tokens[login] = uid.into();
     store_data(conn, "tokens", tokens);
 }
 
 fn get_uid(conn: &Connection, uid: &str) -> i64 {
     create_token_store(conn);
     let tokens = get_tokens(conn);
-    if tokens[0][uid].is_null() {
+    if tokens[uid].is_null() {
         return 0;
     }
-    return tokens[0][uid].as_i64().unwrap();
+    return tokens[uid].as_i64().unwrap();
+}
+
+fn get_login_token(conn: &Connection, uid: i64) -> String {
+    create_token_store(conn);
+    let tokens = get_tokens(conn);
+    for (_i, data) in tokens.entries().enumerate() {
+        if uid == data.1.as_i64().unwrap() {
+            return data.0.to_string();
+        }
+    }
+    String::new()
 }
 
 fn get_data(a6573cbe: &str) -> JsonValue {
@@ -162,7 +186,7 @@ pub fn get_acc_home(a6573cbe: &str) -> JsonValue {
     return get_data(a6573cbe)["home"].clone();
 }
 
-pub fn save_acc(a6573cbe: &str, data: JsonValue) {
+pub fn save_data(a6573cbe: &str, data: JsonValue, id: &str) {
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
@@ -188,9 +212,115 @@ pub fn save_acc(a6573cbe: &str, data: JsonValue) {
                 
                 let mut rv = json::parse(&result.unwrap()).unwrap();
                 
-                rv["userdata"] = data;
+                rv[id] = data;
                 store_data(conn, &format!("_{}_", key), rv);
                 break;
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
+
+pub fn save_acc(a6573cbe: &str, data: JsonValue) {
+    save_data(a6573cbe, data, "userdata");
+}
+
+pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                create_migration_store(conn);
+                
+                let mut stmt = conn.prepare("SELECT jsondata FROM migrationdata").unwrap();
+                let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
+                
+                let data = json::parse(&result.unwrap()).unwrap();
+                
+                if data[token].is_empty() {
+                    return object!{success: false};
+                }
+                if data[token].to_string() == password.to_string() {
+                    let login_token = get_login_token(conn, uid);
+                    if login_token == String::new() {
+                        return object!{success: false};
+                    }
+                    return object!{success: true, login_token: login_token};
+                }
+                
+                return object!{success: false};
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
+
+pub fn save_acc_transfer(token: &str, password: &str) {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                create_migration_store(conn);
+                
+                let mut stmt = conn.prepare("SELECT jsondata FROM migrationdata").unwrap();
+                let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
+                
+                let mut data = json::parse(&result.unwrap()).unwrap();
+                
+                data[token] = password.into();
+                
+                store_data(conn, "migrationdata", data);
+                break;
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
+
+pub fn get_name_and_rank(uid: i64) -> JsonValue {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                create_migration_store(conn);
+                let login_token = get_login_token(conn, uid);
+                if login_token == String::new() {
+                    return object!{
+                        user_name: "",
+                        user_rank: 1
+                    }
+                }
+                let uid = get_uid(conn, &login_token);
+                if uid == 0 || !acc_exists(conn, uid) {
+                    return object!{
+                        user_name: "",
+                        user_rank: 1
+                    }
+                }
+                let mut stmt = conn.prepare(&format!("SELECT jsondata FROM _{}_", uid)).unwrap();
+                let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
+                
+                let data = json::parse(&result.unwrap()).unwrap();
+                
+                return object!{
+                    user_name: data["userdata"]["user"]["name"].clone(),
+                    user_rank: 1 //todo
+                }
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
