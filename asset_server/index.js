@@ -21,7 +21,12 @@ app.get('/*', function (req, res) {
     if (fs.existsSync(expectedPath)) {
         res.sendFile(expectedPath)
     } else {
-        let url = (req.url.toLowerCase().startsWith("/android") || req.url.toLowerCase().startsWith("/ios") ? "https://lovelive-schoolidolfestival2-assets.akamaized.net" : "https://lovelive-schoolidolfestival2-album.akamaized.net") + req.url;
+        let url;
+        if (req.url.split("/")[2].length !== 2) {
+            url = (req.url.toLowerCase().startsWith("/android") || req.url.toLowerCase().startsWith("/ios") ? "https://lovelive-schoolidolfestival2-assets.akamaized.net" : "https://lovelive-schoolidolfestival2-album.akamaized.net") + req.url;
+        } else {
+            url = (req.url.toLowerCase().startsWith("/android") || req.url.toLowerCase().startsWith("/ios") ? "https://img-sif2.lovelive-sif2.com" : "https://album-sif2.lovelive-sif2.com") + req.url;
+        }
         const request = require('https').get(url, function(response) {
            response.pipe(res);
         });
