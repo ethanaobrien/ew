@@ -5,6 +5,7 @@ use actix_web::{
     http::header::{HeaderValue, HeaderMap}
 };
 use std::time::{SystemTime, UNIX_EPOCH};
+use base64::{Engine as _, engine::general_purpose};
 
 //different between ios and android?
 pub const ASSET_VERSION: &str = "13177023d4b7ad41ff52af4cefba5c55";
@@ -16,6 +17,15 @@ pub const ASSET_HASH_IOS_JP:      &str = "b8975be8300013a168d061d3fdcd4a16";
 
 pub fn get_login(headers: &HeaderMap) -> String {
     let blank_header = HeaderValue::from_static("");
+    
+    let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
+    let a6573cbe = String::from_utf8_lossy(&decoded);
+    if a6573cbe.contains("-") {
+        let parts: Vec<&str> = a6573cbe.split('-').collect();
+        let token = parts[1..parts.len() - 1].join("-");
+        return token.to_string();
+    }
     let key = headers.get("f19c72ba").unwrap_or(&blank_header).to_str().unwrap_or("");
     key.to_string()
 }
