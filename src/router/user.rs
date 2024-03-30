@@ -54,8 +54,16 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut user = userdata::get_acc(&key);
     let user_2 = userdata::get_acc_home(&key);
     
-    user["user"]["name"] = body["name"].clone();
-    user["user"]["friend_request_disabled"] = body["friend_request_disabled"].clone();
+    if !body["name"].is_null() {
+        user["user"]["name"] = body["name"].clone();
+    }
+    if !body["friend_request_disabled"].is_null() {
+        user["user"]["friend_request_disabled"] = body["friend_request_disabled"].clone();
+    }
+    if !body["profile_settings"].is_null() {
+        user["user"]["profile_settings"] = body["profile_settings"].clone();
+    }
+    
     
     userdata::save_acc(&key, user.clone());
     

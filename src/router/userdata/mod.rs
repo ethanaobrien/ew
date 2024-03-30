@@ -2,7 +2,6 @@ use rusqlite::{Connection, params};
 use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
-use base64::{Engine as _, engine::general_purpose};
 use crate::router::global;
 
 lazy_static! {
