@@ -10,7 +10,7 @@ pub fn error(_req: HttpRequest, body: String) -> HttpResponse {
     println!("client error: {}", body["code"]);
     
     let resp = object!{
-        "code": 4,
+        "code": 2,
         "server_time": global::timestamp(),
         "message": ""
     };
