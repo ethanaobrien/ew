@@ -225,6 +225,8 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     user["user"]["guest_cool_master_card_id"] = id.into();
     user["user"]["guest_pure_master_card_id"] = id.into();
     user2["home"]["preset_setting"][0]["illust_master_card_id"] = id.into();
+    user["gem"]["free"] = (3000).into();
+    user["gem"]["total"] = (3000).into();
     
     let id = body["master_character_id"].to_string();
     let userr = &id[id.len() - 2..].parse::<i32>().unwrap();

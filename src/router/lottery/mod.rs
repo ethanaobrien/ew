@@ -85,7 +85,21 @@ fn get_random_cards(_count: i32) -> JsonValue {
     rv
 }
 
-pub fn lottery(req: HttpRequest, body: String) -> HttpResponse {
+pub fn lottery(_req: HttpRequest) -> HttpResponse {
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "lottery_list": [
+                {"master_lottery_id":1110024,"master_lottery_price_number":1,"count":10,"daily_count":0,"last_count_date":"2024-04-30 06:07:48"}
+            ]
+        }
+    };
+    global::send(resp)
+}
+
+pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     println!("lottery: {}", body);
     let key = global::get_login(req.headers());

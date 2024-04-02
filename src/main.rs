@@ -90,8 +90,11 @@ async fn preset(req: HttpRequest, body: String) -> HttpResponse { router::home::
 #[post("/api/lottery/get_tutorial")]
 async fn lottery_tutorial(req: HttpRequest, body: String) -> HttpResponse { router::lottery::tutorial(req, body) }
 
+#[get("/api/lottery")]
+async fn lottery(req: HttpRequest) -> HttpResponse { router::lottery::lottery(req) }
+
 #[post("/api/lottery")]
-async fn lottery(req: HttpRequest, body: String) -> HttpResponse { router::lottery::lottery(req, body) }
+async fn lottery_post(req: HttpRequest, body: String) -> HttpResponse { router::lottery::lottery_post(req, body) }
 
 #[post("/api/login_bonus")]
 async fn login_bonus(req: HttpRequest, body: String) -> HttpResponse { router::login::bonus(req, body) }
@@ -152,6 +155,7 @@ async fn main() -> std::io::Result<()> {
         .service(start_start)
         .service(tutorial)
         .service(lottery_tutorial)
+        .service(lottery_post)
         .service(lottery)
         .service(friend)
         .service(mission)
