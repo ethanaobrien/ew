@@ -81,6 +81,12 @@ async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(re
 #[get("/api/home")]
 async fn home(req: HttpRequest) -> HttpResponse { router::home::home(req) }
 
+#[get("/api/home/preset")]
+async fn preset_get(req: HttpRequest) -> HttpResponse { router::home::preset_get(req) }
+
+#[post("/api/home/preset")]
+async fn preset(req: HttpRequest, body: String) -> HttpResponse { router::home::preset(req, body) }
+
 #[post("/api/lottery/get_tutorial")]
 async fn lottery_tutorial(req: HttpRequest, body: String) -> HttpResponse { router::lottery::tutorial(req, body) }
 
@@ -125,6 +131,8 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(preset)
+        .service(preset_get)
         .service(gree_init)
         .service(debug_error)
         .service(login_bonus)
