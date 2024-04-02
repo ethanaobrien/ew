@@ -7,8 +7,9 @@ use actix_web::{
 use std::time::{SystemTime, UNIX_EPOCH};
 use base64::{Engine as _, engine::general_purpose};
 
-pub const ASSET_VERSION: &str = "13177023d4b7ad41ff52af4cefba5c55";
-pub const ASSET_HASH:    &str = "6a6f3be1da2c3734386a1832e251451a";
+pub const ASSET_VERSION:          &str = "13177023d4b7ad41ff52af4cefba5c55";
+pub const ASSET_HASH_ANDROID:     &str = "017ec1bcafbeea6a7714f0034b15bd0f";
+pub const ASSET_HASH_IOS:         &str = "466d4616d14a8d8a842de06426e084c2";
 
 pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
 pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";

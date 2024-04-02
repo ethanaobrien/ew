@@ -22,8 +22,11 @@ pub fn asset_hash(req: HttpRequest, body: String) -> HttpResponse {
             global::ASSET_HASH_IOS_JP
         }
     } else {
-        //todo - ios
-        global::ASSET_HASH
+        if android {
+            global::ASSET_HASH_ANDROID
+        } else {
+            global::ASSET_HASH_IOS
+        }
     };
     
     let resp = object!{
@@ -58,7 +61,11 @@ pub fn start(req: HttpRequest, body: String) -> HttpResponse {
             global::ASSET_HASH_IOS_JP
         }
     } else {
-        global::ASSET_HASH
+        if android {
+            global::ASSET_HASH_ANDROID
+        } else {
+            global::ASSET_HASH_IOS
+        }
     };
     
     userdata::save_acc(&key, user);
