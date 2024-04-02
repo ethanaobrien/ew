@@ -226,6 +226,9 @@ pub fn save_data(a6573cbe: &str, data: JsonValue, id: &str) {
 pub fn save_acc(a6573cbe: &str, data: JsonValue) {
     save_data(a6573cbe, data, "userdata");
 }
+pub fn save_acc_home(a6573cbe: &str, data: JsonValue) {
+    save_data(a6573cbe, data, "home");
+}
 
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
     loop {

@@ -216,13 +216,15 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     
     let key = global::get_login(req.headers());
     let mut user = userdata::get_acc(&key);
-    let ur = user["card_list"][user["card_list"].len() - 1]["id"].clone();
+    let mut user2 = userdata::get_acc_home(&key);
+    let ur = user["card_list"][user["card_list"].len() - 1]["master_card_id"].clone();
     
     let id = ur.as_i32().unwrap(); //todo
     user["user"]["favorite_master_card_id"] = id.into();
     user["user"]["guest_smile_master_card_id"] = id.into();
     user["user"]["guest_cool_master_card_id"] = id.into();
     user["user"]["guest_pure_master_card_id"] = id.into();
+    user2["home"]["preset_setting"][0]["illust_master_card_id"] = id.into();
     
     let id = body["master_character_id"].to_string();
     let userr = &id[id.len() - 2..].parse::<i32>().unwrap();
@@ -259,6 +261,7 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     user["deck_list"][0]["main_card_ids"][4] = ur;
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_home(&key, user2);
     
     let resp = object!{
         "code": 0,
