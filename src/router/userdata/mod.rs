@@ -3,6 +3,7 @@ use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
 use crate::router::global;
+use math::round;
 
 lazy_static! {
     pub static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
@@ -179,7 +180,21 @@ fn get_data(a6573cbe: &str) -> JsonValue {
 }
 
 pub fn get_acc(a6573cbe: &str) -> JsonValue {
-    return get_data(a6573cbe)["userdata"].clone();
+    let mut user = get_data(a6573cbe)["userdata"].clone();
+    let max = 100; //todo
+    let speed = 300; //5 mins
+    let since_last = global::timestamp() - user["stamina"]["last_updated_time"].as_u64().unwrap();
+    
+    let restored = round::floor((since_last / speed) as f64, 0) as u64;
+    let time_diff = since_last - (restored * speed);
+    user["stamina"]["last_updated_time"] = (global::timestamp() - time_diff).into();
+    let mut stamina = user["stamina"]["stamina"].as_u64().unwrap() + restored;
+    if stamina > max {
+        stamina = max;
+    }
+    
+    user["stamina"]["stamina"] = stamina.into();
+    return user;
 }
 
 pub fn get_acc_home(a6573cbe: &str) -> JsonValue {
