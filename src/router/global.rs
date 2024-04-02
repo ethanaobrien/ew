@@ -7,7 +7,6 @@ use actix_web::{
 use std::time::{SystemTime, UNIX_EPOCH};
 use base64::{Engine as _, engine::general_purpose};
 
-//different between ios and android?
 pub const ASSET_VERSION: &str = "13177023d4b7ad41ff52af4cefba5c55";
 pub const ASSET_HASH:    &str = "6a6f3be1da2c3734386a1832e251451a";
 
