@@ -12,6 +12,12 @@ use actix_web::{
 #[post("/v1.0/auth/initialize")]
 async fn gree_init(req: HttpRequest, body: String) -> HttpResponse { router::gree::initialize(req, body) }
 
+#[get("/v1.0/auth/x_uid")]
+async fn gree_uid(req: HttpRequest) -> HttpResponse { router::gree::uid(req) }
+
+#[post("/v1.0/auth/authorize")]
+async fn gree_authorize(req: HttpRequest, body: String) -> HttpResponse { router::gree::authorize(req, body) }
+
 #[post("/api/debug/error")]
 async fn debug_error(req: HttpRequest, body: String) -> HttpResponse { router::debug::error(req, body) }
 
@@ -137,6 +143,8 @@ async fn main() -> std::io::Result<()> {
         .service(preset)
         .service(preset_get)
         .service(gree_init)
+        .service(gree_uid)
+        .service(gree_authorize)
         .service(debug_error)
         .service(login_bonus)
         .service(reward)

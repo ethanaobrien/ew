@@ -4,8 +4,19 @@ use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
 use sha1::Sha1;
 use substring::Substring;
+use json::object;
+use hmac::{Hmac, Mac};
+use crate::router::userdata;
 
 pub fn initialize(req: HttpRequest, _body: String) -> HttpResponse {
+    let app_id = "232610769078541";
+    let resp = object!{
+        result: "OK",
+        app_id: app_id,
+        uuid: format!("{}{:x}", app_id, md5::compute((global::timestamp() * 1000).to_string()))
+    };
+    println!("{}", resp["uuid"].to_string());
+    
     HttpResponse::Ok()
         .insert_header(ContentType::json())
         .insert_header(("Expires", "-1"))
@@ -13,11 +24,55 @@ pub fn initialize(req: HttpRequest, _body: String) -> HttpResponse {
         .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
         .insert_header(("Vary", "Authorization,Accept-Encoding"))
         .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body("{\"result\": \"OK\"}")
-    
+        .body(json::stringify(resp))
 }
 
-use hmac::{Hmac, Mac};
+pub fn authorize(req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        result: "OK"
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .insert_header(("Expires", "-1"))
+        .insert_header(("Pragma", "no-cache"))
+        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
+        .insert_header(("Vary", "Authorization,Accept-Encoding"))
+        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
+        .body(json::stringify(resp))
+}
+
+pub fn uid(req: HttpRequest) -> HttpResponse {
+    let app_id = "232610769078541";
+    
+    let mut uid = String::new();
+    let blank_header = HeaderValue::from_static("");
+    let auth_header = req.headers().get("Authorization").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
+    if let Some(uid_data2) = uid_data.get(1) {
+        let uid_data2: Vec<&str> = uid_data2.split('"').collect();
+        if let Some(uid_str) = uid_data2.get(0) {
+            uid = uid_str.to_string();
+        }
+    }
+    
+    let key = uid.substring(app_id.len(), uid.len());
+    let user = userdata::get_acc(&key);
+    
+    let resp = object!{
+        result: "OK",
+        x_app_id: "100900301",
+        x_uid: user["user"]["id"].to_string()
+    };
+    
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .insert_header(("Expires", "-1"))
+        .insert_header(("Pragma", "no-cache"))
+        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
+        .insert_header(("Vary", "Authorization,Accept-Encoding"))
+        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
+        .body(json::stringify(resp))
+}
 
 
 fn gree_authorize(req: &HttpRequest) -> String {
