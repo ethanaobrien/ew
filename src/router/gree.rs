@@ -8,7 +8,8 @@ use json::object;
 use hmac::{Hmac, Mac};
 use crate::router::userdata;
 
-pub fn initialize(req: HttpRequest, _body: String) -> HttpResponse {
+pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
+    //println!("{}", body);
     let app_id = "232610769078541";
     let resp = object!{
         result: "OK",
@@ -28,8 +29,28 @@ pub fn initialize(req: HttpRequest, _body: String) -> HttpResponse {
 }
 
 pub fn authorize(req: HttpRequest, _body: String) -> HttpResponse {
+    
     let resp = object!{
         result: "OK"
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .insert_header(("Expires", "-1"))
+        .insert_header(("Pragma", "no-cache"))
+        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
+        .insert_header(("Vary", "Authorization,Accept-Encoding"))
+        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
+        .body(json::stringify(resp))
+}
+
+pub fn moderate_keyword(req: HttpRequest) -> HttpResponse {
+    
+    let resp = object!{
+        result: "OK",
+        entry: {
+            timestamp: global::timestamp(),
+            keywords: [{"id":"1","type":"0","keyword":"oink","rank":"0"}]
+        }
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
@@ -54,14 +75,15 @@ pub fn uid(req: HttpRequest) -> HttpResponse {
             uid = uid_str.to_string();
         }
     }
+    //println!("{}", auth_header);
     
     let key = uid.substring(app_id.len(), uid.len());
     let user = userdata::get_acc(&key);
     
     let resp = object!{
         result: "OK",
-        x_app_id: "100900301",
-        x_uid: user["user"]["id"].to_string()
+        x_uid: user["user"]["id"].to_string(),
+        x_app_id: "100900301"
     };
     
     HttpResponse::Ok()
@@ -69,7 +91,41 @@ pub fn uid(req: HttpRequest) -> HttpResponse {
         .insert_header(("Expires", "-1"))
         .insert_header(("Pragma", "no-cache"))
         .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization,Accept-Encoding"))
+        .insert_header(("Vary", "Authorization"))
+        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
+        .body(json::stringify(resp))
+}
+
+pub fn payment(req: HttpRequest) -> HttpResponse {
+    let resp = object!{
+        result: "OK",
+        entry: {
+            products :[],
+            welcome: "0"
+        }
+    };
+    
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .insert_header(("Expires", "-1"))
+        .insert_header(("Pragma", "no-cache"))
+        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
+        .insert_header(("Vary", "Authorization"))
+        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
+        .body(json::stringify(resp))
+}
+pub fn payment_ticket(req: HttpRequest) -> HttpResponse {
+    let resp = object!{
+        result: "OK",
+        entry: []
+    };
+    
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .insert_header(("Expires", "-1"))
+        .insert_header(("Pragma", "no-cache"))
+        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
+        .insert_header(("Vary", "Authorization"))
         .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
         .body(json::stringify(resp))
 }
@@ -95,13 +151,13 @@ fn gree_authorize(req: &HttpRequest) -> String {
         }
     }
     
-    
-    let current_url = format!("http://127.0.0.1:8080{}", req.path());
+    let hostname = req.headers().get("host").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let current_url = format!("http://{}{}", hostname, req.path());
     let nonce = format!("{:x}", md5::compute((global::timestamp() * 1000).to_string()));
     let timestamp = global::timestamp().to_string();
     let method = "HMAC-SHA1";
     let validate_data = format!("{}&{}&{}", 
-        "POST",
+        req.method(),
         urlencoding::encode(&current_url),
         urlencoding::encode(&format!("oauth_body_hash={}&oauth_consumer_key={}&oauth_nonce={}&oauth_signature_method={}&oauth_timestamp={}&oauth_version=1.0", 
                                     header_data.get("oauth_body_hash").unwrap_or(&String::new()),

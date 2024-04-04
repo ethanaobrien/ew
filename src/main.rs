@@ -15,6 +15,18 @@ async fn gree_init(req: HttpRequest, body: String) -> HttpResponse { router::gre
 #[get("/v1.0/auth/x_uid")]
 async fn gree_uid(req: HttpRequest) -> HttpResponse { router::gree::uid(req) }
 
+#[get("/v1.0/payment/productlist")]
+async fn gree_payment(req: HttpRequest) -> HttpResponse { router::gree::payment(req) }
+
+#[get("/v1.0/payment/subscription/productlist")]
+async fn gree_payment_sub(req: HttpRequest) -> HttpResponse { router::gree::payment(req) }
+
+#[get("/v1.0/payment/ticket/status")]
+async fn gree_payment_ticket(req: HttpRequest) -> HttpResponse { router::gree::payment_ticket(req) }
+
+#[get("/v1.0/moderate/keywordlist")]
+async fn gree_moderate_keyword(req: HttpRequest) -> HttpResponse { router::gree::moderate_keyword(req) }
+
 #[post("/v1.0/auth/authorize")]
 async fn gree_authorize(req: HttpRequest, body: String) -> HttpResponse { router::gree::authorize(req, body) }
 
@@ -145,6 +157,10 @@ async fn main() -> std::io::Result<()> {
         .service(gree_init)
         .service(gree_uid)
         .service(gree_authorize)
+        .service(gree_payment)
+        .service(gree_payment_ticket)
+        .service(gree_payment_sub)
+        .service(gree_moderate_keyword)
         .service(debug_error)
         .service(login_bonus)
         .service(reward)

@@ -26,7 +26,8 @@ pub fn get_login(headers: &HeaderMap) -> String {
         let token = parts[1..parts.len() - 1].join("-");
         return token.to_string();
     }
-    let key = headers.get("f19c72ba").unwrap_or(&blank_header).to_str().unwrap_or("");
+    //only jp should error?
+    let key = headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
     key.to_string()
 }
 
