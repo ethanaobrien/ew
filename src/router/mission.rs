@@ -4,9 +4,9 @@ use crate::router::global;
 use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
-pub fn mission(req: HttpRequest) -> HttpResponse {
-    let key = global::get_login(req.headers());
-    let user = userdata::get_acc(&key);
+pub fn mission(_req: HttpRequest) -> HttpResponse {
+    //let key = global::get_login(req.headers());
+    //let user = userdata::get_acc(&key);
     
     let resp = object!{
         "code": 0,

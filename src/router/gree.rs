@@ -8,7 +8,7 @@ use json::object;
 use hmac::{Hmac, Mac};
 use crate::router::userdata;
 
-pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
+pub fn initialize(req: HttpRequest, _body: String) -> HttpResponse {
     //println!("{}", body);
     let app_id = "232610769078541";
     let resp = object!{
