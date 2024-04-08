@@ -153,6 +153,9 @@ async fn gglrequestmigrationcode(req: HttpRequest, body: String) -> HttpResponse
 #[post("/api/user/gglverifymigrationcode")]
 async fn gglverifymigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::verify_migration_code(req, body) }
 
+#[get("/api/serial_code/events")]
+async fn serial_code_events(req: HttpRequest) -> HttpResponse { router::serial_code::events(req) }
+
 async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap());
@@ -218,6 +221,7 @@ async fn main() -> std::io::Result<()> {
         .service(migration)
         .service(gglrequestmigrationcode)
         .service(gglverifymigrationcode)
+        .service(serial_code_events)
         .default_service(web::route().to(log_unknown_request)))
         .bind(("0.0.0.0", 8080))?
         .run();

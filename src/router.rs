@@ -16,3 +16,4 @@ pub mod story;
 pub mod notice;
 pub mod debug;
 pub mod gree;
+pub mod serial_code;
