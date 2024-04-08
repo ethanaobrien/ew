@@ -232,7 +232,6 @@ pub fn detail(_req: HttpRequest, body: String) -> HttpResponse {
         to_push["user"].remove("ss_user_id");
         to_push["user"].remove("birthday");
         user_detail_list.push(to_push).unwrap();
-        
     }
     let resp = object!{
         "code": 0,

@@ -117,6 +117,9 @@ async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::live::clearr
 #[get("/api/mission")]
 async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(req) }
 
+#[get("/api/mission/clear")]
+async fn mission_clear(req: HttpRequest, body: String) -> HttpResponse { router::mission::clear(req, body) }
+
 #[get("/api/home")]
 async fn home(req: HttpRequest) -> HttpResponse { router::home::home(req) }
 
@@ -213,6 +216,7 @@ async fn main() -> std::io::Result<()> {
         .service(lottery)
         .service(friend)
         .service(mission)
+        .service(mission_clear)
         .service(home)
         .service(start_assethash)
         .service(user)
