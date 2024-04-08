@@ -7,6 +7,9 @@ const IV_LENGTH: usize = 16;
 const KEY: &str = "3559b435f24b297a79c68b9709ef2125";
 
 pub fn decrypt_packet(base64_input: &str) -> Result<String, ErrorStack> {
+    if base64_input.len() < IV_LENGTH + 1 {
+        return Ok(String::new());
+    }
     let base64_buffer = general_purpose::STANDARD.decode(base64_input).unwrap();
 
     let decryption_iv = &base64_buffer[..IV_LENGTH];
