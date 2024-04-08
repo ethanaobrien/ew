@@ -81,6 +81,9 @@ async fn story_read(req: HttpRequest, body: String) -> HttpResponse { router::st
 #[post("/api/user/initialize")]
 async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { router::user::initialize(req, body) }
 
+#[post("/api/user/detail")]
+async fn user_detail(req: HttpRequest, body: String) -> HttpResponse { router::user::detail(req, body) }
+
 #[post("/api/deck")]
 async fn user_deck(req: HttpRequest, body: String) -> HttpResponse { router::user::deck(req, body) }
 
@@ -215,6 +218,7 @@ async fn main() -> std::io::Result<()> {
         .service(user)
         .service(user_post)
         .service(user_deck)
+        .service(user_detail)
         .service(dummy_login)
         .service(getmigrationcode)
         .service(registerpassword)

@@ -325,7 +325,7 @@ pub fn payment_ticket(req: HttpRequest) -> HttpResponse {
         .insert_header(("Expires", "-1"))
         .insert_header(("Pragma", "no-cache"))
         .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))//AUAWGAPYYUGYYGA7
+        .insert_header(("Vary", "Authorization"))
         .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
         .body(json::stringify(resp))
 }

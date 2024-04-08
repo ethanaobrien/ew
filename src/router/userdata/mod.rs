@@ -346,3 +346,37 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
         }
     }
 }
+
+pub fn get_acc_from_uid(uid: i64) -> JsonValue {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                create_migration_store(conn);
+                let login_token = get_login_token(conn, uid);
+                if login_token == String::new() {
+                    return object!{
+                        user_name: "",
+                        user_rank: 1
+                    }
+                }
+                let uid = get_uid(conn, &login_token);
+                if uid == 0 || !acc_exists(conn, uid) {
+                    return object!{"error": true}
+                }
+                let mut stmt = conn.prepare(&format!("SELECT jsondata FROM _{}_", uid)).unwrap();
+                let result: Result<String, rusqlite::Error> = stmt.query_row([], |row| row.get(0));
+                
+                let data = json::parse(&result.unwrap()).unwrap();
+                
+                return data["userdata"].clone();
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
