@@ -100,9 +100,9 @@ pub fn lottery(_req: HttpRequest) -> HttpResponse {
 }
 
 pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     println!("lottery: {}", body);
-    let key = global::get_login(req.headers());
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);
     

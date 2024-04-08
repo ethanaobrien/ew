@@ -6,8 +6,8 @@ use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let key = global::get_login(req.headers());
     let mut user = userdata::get_acc_home(&key);
     
     for (_i, data) in user["home"]["preset_setting"].members_mut().enumerate() {
@@ -26,7 +26,7 @@ pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn preset_get(req: HttpRequest) -> HttpResponse {
-    let key = global::get_login(req.headers());
+    let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc(&key);
     
     let resp = object!{
@@ -42,7 +42,10 @@ pub fn preset_get(req: HttpRequest) -> HttpResponse {
 }
 
 pub fn home(req: HttpRequest) -> HttpResponse {
-    let key = global::get_login(req.headers());
+    for (name, value) in req.headers().iter() {
+        println!("{}: {}", name, value.to_str().unwrap());
+    }
+    let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc_home(&key);
     
     let resp = object!{

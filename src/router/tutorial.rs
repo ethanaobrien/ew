@@ -6,8 +6,8 @@ use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let key = global::get_login(req.headers());
     let mut user = userdata::get_acc(&key);
     
     user["tutorial_step"] = body["step"].clone();

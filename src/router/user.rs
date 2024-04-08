@@ -6,9 +6,8 @@ use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    
-    let key = global::get_login(req.headers());
     let mut user = userdata::get_acc(&key);
     
     for (i, data) in user["deck_list"].members().enumerate() {
@@ -35,8 +34,7 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn user(req: HttpRequest) -> HttpResponse {
-    
-    let key = global::get_login(req.headers());
+    let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc(&key);
     
     let resp = object!{
@@ -48,9 +46,9 @@ pub fn user(req: HttpRequest) -> HttpResponse {
 }
 
 pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
-    let key = global::get_login(req.headers());
     let mut user = userdata::get_acc(&key);
     let user_2 = userdata::get_acc_home(&key);
     
@@ -125,8 +123,8 @@ pub fn get_migration_code(_req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn register_password(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let key = global::get_login(req.headers());
     
     let user = userdata::get_acc(&key);
     let code = uid_to_code(user["user"]["id"].to_string());
@@ -212,9 +210,9 @@ pub fn migration(_req: HttpRequest, body: String) -> HttpResponse {
 
 
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
-    let key = global::get_login(req.headers());
     let mut user = userdata::get_acc(&key);
     let mut user2 = userdata::get_acc_home(&key);
     let ur = user["card_list"][user["card_list"].len() - 1]["master_card_id"].clone();

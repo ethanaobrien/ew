@@ -1,5 +1,5 @@
 use crate::router::global;
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue, http::header::ContentType};
+use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue, http::header::ContentType, http::header::HeaderMap};
 use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
 use sha1::Sha1;
@@ -7,16 +7,180 @@ use substring::Substring;
 use json::object;
 use hmac::{Hmac, Mac};
 use crate::router::userdata;
+use crate::encryption;
 
-pub fn initialize(req: HttpRequest, _body: String) -> HttpResponse {
-    //println!("{}", body);
+use rusqlite::{Connection, params, ToSql};
+use std::sync::{Mutex, MutexGuard};
+use lazy_static::lazy_static;
+use uuid::Uuid;
+
+use openssl::pkey::PKey;
+use openssl::rsa::Rsa;
+use openssl::hash::MessageDigest;
+use openssl::sign::Verifier;
+
+lazy_static! {
+    pub static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
+}
+fn init(engine: &mut MutexGuard<'_, Option<Connection>>) {
+    let conn = Connection::open("gree.db").unwrap();
+    conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
+
+    engine.replace(conn);
+}
+fn lock_and_exec(command: &str, args: &[&dyn ToSql]) {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                conn.execute(command, args).unwrap();
+                return;
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
+fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                let mut stmt = conn.prepare(command).unwrap();
+                return stmt.query_row([], |row| row.get(0));
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
+fn create_store(test_cmd: &str, table: &str, init_cmd: &str, init_args: &[&dyn ToSql]) {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                match conn.prepare(test_cmd) {
+                    Ok(_) => {}
+                    Err(_) => {
+                        conn.execute(
+                            table,
+                            (),
+                        ).unwrap();
+                        conn.execute(
+                            init_cmd,
+                            init_args
+                        ).unwrap();
+                    }
+                }
+                return;
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
+fn get_new_uuid() -> String {
+    create_store("SELECT jsondata FROM uuids", "CREATE TABLE uuids (
+        jsondata  TEXT NOT NULL
+    )", "INSERT INTO uuids (jsondata) VALUES (?1)", params!("[]"));
+    let id = format!("{}", Uuid::new_v4());
+    let mut existing_ids = json::parse(&lock_and_select("SELECT jsondata FROM uuids").unwrap()).unwrap();
+    if existing_ids.contains(id.clone()) {
+        return get_new_uuid();
+    }
+    existing_ids.push(id.clone()).unwrap();
+    lock_and_exec(
+        "UPDATE uuids SET jsondata=?1",
+        params!(json::stringify(existing_ids))
+    );
+    
+    id
+}
+fn create_acc(cert: &str) -> String {
+    let uuid = get_new_uuid();
+    let user = userdata::get_acc(&uuid);
+    let user_id = user["user"]["id"].to_string();
+    lock_and_exec(
+        &format!("CREATE TABLE _{}_ (
+            cert  TEXT NOT NULL,
+            uuid  TEXT NOT NULL
+        )", user_id),
+        params!(),
+    );
+    
+    lock_and_exec(
+        &format!("INSERT INTO _{}_ (cert, uuid) VALUES (?1, ?2)", user_id),
+        params!(cert, uuid)
+    );
+    
+    uuid
+}
+
+fn verify_signature(signature: &[u8], message: &[u8], public_key: &[u8]) -> bool {
+    let rsa_public_key = match Rsa::public_key_from_pem(public_key) {
+        Ok(key) => key,
+        Err(_) => return false,
+    };
+    let pkey = match PKey::from_rsa(rsa_public_key) {
+        Ok(pkey) => pkey,
+        Err(_) => return false,
+    };
+    let mut verifier = Verifier::new(MessageDigest::sha1(), &pkey).unwrap();
+    verifier.update(message).unwrap();
+
+    match verifier.verify(signature) {
+        Ok(_) => true,
+        Err(_) => false,
+    }
+}
+pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
+    let body = encryption::decrypt_packet(&body).unwrap();
+    let blank_header = HeaderValue::from_static("");
+    let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let uid = headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let version = headers.get("aoharu-client-version").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let timestamp = headers.get("aoharu-timestamp").unwrap_or(&blank_header).to_str().unwrap_or("");
+    if uid == "" || login == "" || version == "" || timestamp == "" {
+        return String::new();
+    }
+    
+    let cert = lock_and_select(&format!("SELECT cert FROM _{}_", uid)).unwrap();
+    
+    let data = format!("{}{}{}{}{}", uid, "sk1bdzb310n0s9tl", version, timestamp, body);
+    let encoded = general_purpose::STANDARD.encode(data.as_bytes());
+    
+    let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
+    
+    if verify_signature(&decoded, &encoded.as_bytes(), &cert.as_bytes()) {
+        return lock_and_select(&format!("SELECT uuid FROM _{}_", uid)).unwrap();
+    } else {
+        return String::new();
+    }
+}
+
+
+pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
+    let body = json::parse(&body).unwrap();
+    let token = create_acc(&body["token"].to_string());
+    
     let app_id = "232610769078541";
     let resp = object!{
         result: "OK",
         app_id: app_id,
-        uuid: format!("{}{:x}", app_id, md5::compute((global::timestamp() * 1000).to_string()))
+        uuid: token
     };
-    println!("{}", resp["uuid"].to_string());
     
     HttpResponse::Ok()
         .insert_header(ContentType::json())
@@ -29,7 +193,6 @@ pub fn initialize(req: HttpRequest, _body: String) -> HttpResponse {
 }
 
 pub fn authorize(req: HttpRequest, _body: String) -> HttpResponse {
-    
     let resp = object!{
         result: "OK"
     };
@@ -44,7 +207,6 @@ pub fn authorize(req: HttpRequest, _body: String) -> HttpResponse {
 }
 
 pub fn moderate_keyword(req: HttpRequest) -> HttpResponse {
-    
     let resp = object!{
         result: "OK",
         entry: {
@@ -63,7 +225,6 @@ pub fn moderate_keyword(req: HttpRequest) -> HttpResponse {
 }
 
 pub fn uid(req: HttpRequest) -> HttpResponse {
-    let app_id = "232610769078541";
     
     let mut uid = String::new();
     let blank_header = HeaderValue::from_static("");
@@ -75,10 +236,10 @@ pub fn uid(req: HttpRequest) -> HttpResponse {
             uid = uid_str.to_string();
         }
     }
-    //println!("{}", auth_header);
+    //println!("{}", uid);
     
-    let key = uid.substring(app_id.len(), uid.len());
-    let user = userdata::get_acc(&key);
+    let user = userdata::get_acc(&uid);
+    //println!("{}", user["user"]["id"].to_string());
     
     let resp = object!{
         result: "OK",

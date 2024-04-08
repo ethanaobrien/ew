@@ -83,8 +83,8 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue) -> JsonValue {
 }
 
 pub fn end(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let key = global::get_login(req.headers());
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     

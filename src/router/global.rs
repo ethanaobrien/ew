@@ -4,6 +4,7 @@ use actix_web::{
     HttpResponse,
     http::header::{HeaderValue, HeaderMap}
 };
+use crate::router::gree;
 use std::time::{SystemTime, UNIX_EPOCH};
 use base64::{Engine as _, engine::general_purpose};
 
@@ -15,20 +16,23 @@ pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
 pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";
 pub const ASSET_HASH_IOS_JP:      &str = "b8975be8300013a168d061d3fdcd4a16";
 
-pub fn get_login(headers: &HeaderMap) -> String {
+pub fn get_login(headers: &HeaderMap, body: &str) -> String {
     let blank_header = HeaderValue::from_static("");
     
     let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
     let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
-    let a6573cbe = String::from_utf8_lossy(&decoded);
-    if a6573cbe.contains("-") {
-        let parts: Vec<&str> = a6573cbe.split('-').collect();
-        let token = parts[1..parts.len() - 1].join("-");
-        return token.to_string();
-    }
-    //only jp should error?
-    let key = headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
-    key.to_string()
+    match String::from_utf8(decoded) {
+        Ok(a6573cbe) => {
+            let parts: Vec<&str> = a6573cbe.split('-').collect();
+            let token = parts[1..parts.len() - 1].join("-");
+            return token.to_string();
+        },
+        Err(_) => {
+            let rv = gree::get_uuid(headers, body);
+            assert!(rv != String::new());
+            return rv;
+        },
+    };
 }
 
 pub fn timestamp() -> u64 {

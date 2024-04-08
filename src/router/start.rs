@@ -40,12 +40,13 @@ pub fn asset_hash(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn start(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     if body["asset_version"].to_string() != global::ASSET_VERSION && body["asset_version"].to_string() != global::ASSET_VERSION_JP {
         println!("Warning! Asset version is not what was expected. (Did the app update?)");
     }
-    let key = global::get_login(req.headers());
     let mut user = userdata::get_acc(&key);
+    //println!("{} - {}", key, user["user"]["id"].to_string());
     
     user["user"]["last_login_time"] = global::timestamp().into();
     user["stamina"]["last_updated_time"] = global::timestamp().into();

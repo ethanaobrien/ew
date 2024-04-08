@@ -6,9 +6,9 @@ use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
 //First time login handler
-pub fn dummy(req: HttpRequest, _body: String) -> HttpResponse {
+pub fn dummy(req: HttpRequest, body: String) -> HttpResponse {
     //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let key = global::get_login(req.headers());
+    let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
     
     user["user"]["last_login_time"] = global::timestamp().into();
@@ -25,9 +25,9 @@ pub fn dummy(req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
-pub fn bonus(req: HttpRequest, _body: String) -> HttpResponse {
+pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
     //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let key = global::get_login(req.headers());
+    let key = global::get_login(req.headers(), &body);
     let user = userdata::get_acc_home(&key);
     
     let resp = object!{

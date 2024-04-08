@@ -5,8 +5,8 @@ use crate::router::global;
 use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 
-pub fn home(req: HttpRequest, _body: String) -> HttpResponse {
-    let key = global::get_login(req.headers());
+pub fn home(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let user = userdata::get_acc(&key);
     
     let id = user["user"]["favorite_master_card_id"].as_i64().unwrap() / 10000;
