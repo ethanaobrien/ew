@@ -99,6 +99,9 @@ async fn friend(req: HttpRequest, body: String) -> HttpResponse { router::friend
 #[post("/api/live/guest")]
 async fn live_guest(req: HttpRequest, body: String) -> HttpResponse { router::live::guest(req, body) }
 
+#[post("/api/live/mission")]
+async fn live_mission(req: HttpRequest, body: String) -> HttpResponse { router::live::mission(req, body) }
+
 #[post("/api/event")]
 async fn event(req: HttpRequest, body: String) -> HttpResponse { router::event::event(req, body) }
 
@@ -201,6 +204,7 @@ async fn main() -> std::io::Result<()> {
         .service(login_bonus)
         .service(reward)
         .service(live_guest)
+        .service(live_mission)
         .service(live_clearrate)
         .service(live_start)
         .service(live_end)

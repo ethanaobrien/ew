@@ -20,7 +20,6 @@ pub fn retire(_req: HttpRequest, _body: String) -> HttpResponse {
 }
 
 pub fn guest(_req: HttpRequest, _body: String) -> HttpResponse {
-    
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -28,6 +27,21 @@ pub fn guest(_req: HttpRequest, _body: String) -> HttpResponse {
     };
     global::send(resp)
 }
+
+pub fn mission(_req: HttpRequest, _body: String) -> HttpResponse {
+    //todo
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "score_ranking": "",
+            "combo_ranking": "",
+            "clear_count_ranking": ""
+        }
+    };
+    global::send(resp)
+}
+
 
 pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
