@@ -42,9 +42,6 @@ pub fn preset_get(req: HttpRequest) -> HttpResponse {
 }
 
 pub fn home(req: HttpRequest) -> HttpResponse {
-    for (name, value) in req.headers().iter() {
-        println!("{}: {}", name, value.to_str().unwrap());
-    }
     let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc_home(&key);
     

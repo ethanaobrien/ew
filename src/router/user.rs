@@ -76,7 +76,7 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
-fn uid_to_code(uid: String) -> String {
+pub fn uid_to_code(uid: String) -> String {
     //just replace uid with numbers because im too lazy to have a real database and this is close enough anyways
     return uid
         .replace("1", "A")
@@ -91,7 +91,7 @@ fn uid_to_code(uid: String) -> String {
         .replace("0", "M")
         + "7";
 }
-fn code_to_uid(code: String) -> String {
+pub fn code_to_uid(code: String) -> String {
     //just replace uid with numbers because im too lazy to have a real database and this is close enough anyways
     return code
         .replace("7", "")
@@ -176,7 +176,7 @@ pub fn request_migration_code(_req: HttpRequest, body: String) -> HttpResponse {
     
     let user = userdata::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
     
-    if user["success"].as_bool().unwrap() == false || uid == 0 {
+    if user["success"].as_bool().unwrap() != true || uid == 0 {
         let resp = object!{
             "code": 2,
             "server_time": global::timestamp(),

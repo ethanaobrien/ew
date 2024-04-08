@@ -27,8 +27,26 @@ async fn gree_payment_ticket(req: HttpRequest) -> HttpResponse { router::gree::p
 #[get("/v1.0/moderate/keywordlist")]
 async fn gree_moderate_keyword(req: HttpRequest) -> HttpResponse { router::gree::moderate_keyword(req) }
 
+#[post("/v1.0/moderate/filtering/commit")]
+async fn gree_moderate_commit(req: HttpRequest, body: String) -> HttpResponse { router::gree::moderate_commit(req, body) }
+
 #[post("/v1.0/auth/authorize")]
 async fn gree_authorize(req: HttpRequest, body: String) -> HttpResponse { router::gree::authorize(req, body) }
+
+#[get("/v1.0/migration/code")]
+async fn gree_migration_code(req: HttpRequest) -> HttpResponse { router::gree::migration_code(req) }
+
+#[post("/v1.0/migration/code/verify")]
+async fn gree_migration_verify(req: HttpRequest, body: String) -> HttpResponse { router::gree::migration_verify(req, body) }
+
+#[post("/v1.0/migration/password/register")]
+async fn gree_migration_password_register(req: HttpRequest, body: String) -> HttpResponse { router::gree::migration_password_register(req, body) }
+
+#[get("/v1.0/payment/balance")]
+async fn gree_balance(req: HttpRequest) -> HttpResponse { router::gree::balance(req) }
+
+#[post("/v1.0/migration")]
+async fn gree_migration(req: HttpRequest, body: String) -> HttpResponse { router::gree::migration(req, body) }
 
 #[post("/api/debug/error")]
 async fn debug_error(req: HttpRequest, body: String) -> HttpResponse { router::debug::error(req, body) }
@@ -161,6 +179,12 @@ async fn main() -> std::io::Result<()> {
         .service(gree_payment_ticket)
         .service(gree_payment_sub)
         .service(gree_moderate_keyword)
+        .service(gree_moderate_commit)
+        .service(gree_migration_code)
+        .service(gree_migration_verify)
+        .service(gree_migration_password_register)
+        .service(gree_balance)
+        .service(gree_migration)
         .service(debug_error)
         .service(login_bonus)
         .service(reward)
