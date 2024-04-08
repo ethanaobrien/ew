@@ -42,6 +42,18 @@ pub fn mission(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
+// /api/live/ranking
+pub fn ranking(_req: HttpRequest, _body: String) -> HttpResponse {
+    //todo
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "ranking_list": []
+        }
+    };
+    global::send(resp)
+}
 
 pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{

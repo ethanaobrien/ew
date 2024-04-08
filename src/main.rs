@@ -102,6 +102,9 @@ async fn live_guest(req: HttpRequest, body: String) -> HttpResponse { router::li
 #[post("/api/live/mission")]
 async fn live_mission(req: HttpRequest, body: String) -> HttpResponse { router::live::mission(req, body) }
 
+#[post("/api/live/ranking")]
+async fn live_ranking(req: HttpRequest, body: String) -> HttpResponse { router::live::ranking(req, body) }
+
 #[post("/api/event")]
 async fn event(req: HttpRequest, body: String) -> HttpResponse { router::event::event(req, body) }
 
@@ -205,6 +208,7 @@ async fn main() -> std::io::Result<()> {
         .service(reward)
         .service(live_guest)
         .service(live_mission)
+        .service(live_ranking)
         .service(live_clearrate)
         .service(live_start)
         .service(live_end)
