@@ -5,6 +5,7 @@ use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 use lazy_static::lazy_static;
+use rand::Rng;
 
 lazy_static! {
     static ref CARDS: JsonValue = {
@@ -57,21 +58,28 @@ pub fn tutorial(_req: HttpRequest, body: String) -> HttpResponse {
 fn get_card_master_id(lottery_id: String, lottery_number: String) -> i32 {
     return CARDS[lottery_id][lottery_number]["value"].as_i32().unwrap();
 }
+fn random_number(lowest: usize, highest: usize) -> usize {
+    if lowest == highest {
+        return lowest;
+    }
+    assert!(lowest < highest);
+    
+    rand::thread_rng().gen_range(lowest..highest + 1)
+}
 
 //todo - how to randomize?
-fn get_random_cards(_count: i32) -> JsonValue {
-    let random_master_ids = array![
+fn get_random_cards(count: usize) -> JsonValue {
+    let pools = array![[100001, 207], [200001, 117], [300001, 39]];
+    let mut random_master_ids = array![
         // [master_lottery_item_id, master_lottery_item_number]
-        [100001, 138],
-        [200001, 30],
-        [100001, 178],
-        [100001, 26],
-        [100001, 113],
-        [200001, 2],
-        [200001, 83],
-        [100001, 188],
-        [100001, 154]
     ];
+    let mut i=0;
+    while i < count {
+        let pool = pools[random_number(0, pools.len()-1)].clone();
+        let card = random_number(0, pool[1].as_usize().unwrap());
+        random_master_ids.push(array![pool[0].clone(), card]).unwrap();
+        i += 1;
+    }
     let mut rv = array![];
     for (_i, data) in random_master_ids.members().enumerate() {
         let to_push = object!{
@@ -86,13 +94,13 @@ fn get_random_cards(_count: i32) -> JsonValue {
 }
 
 pub fn lottery(_req: HttpRequest) -> HttpResponse {
-    
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": {
             "lottery_list": [
-                {"master_lottery_id":1110024,"master_lottery_price_number":1,"count":10,"daily_count":0,"last_count_date":"2024-04-30 06:07:48"}
+                {"master_lottery_id":1110001,"master_lottery_price_number":1,"count":3,"daily_count":0,"last_count_date":"2023-04-16 23:58:31"}
+
             ]
         }
     };
@@ -106,9 +114,10 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);
     
-    let mut cardstogive = get_random_cards(9);
+    let mut cardstogive;
     
-    if body["master_lottery_id"].to_string().starts_with("9") {
+    if user["tutorial_step"].to_string() != "130" && body["master_lottery_id"].to_string().starts_with("9") {
+        cardstogive = get_random_cards(9);
         let item_id = (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1;
         //tutorial
         let new_card = object!{
@@ -117,9 +126,12 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
             "master_lottery_item_number": 1
         };
         cardstogive.push(new_card).unwrap();
+    } else {
+        cardstogive = get_random_cards(10);
     }
     
     let mut new_cards = array![];
+    let mut new_ids = array![];
     for (_i, data) in cardstogive.members().enumerate() {
         if !global::give_character(data["master_card_id"].to_string(), &mut user) {
             let to_push = object!{
@@ -129,7 +141,9 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
                 "expire_date_time": null
             };
             user["item_list"].push(to_push).unwrap();
+            continue;
         }
+        new_ids.push(data["master_lottery_item_id"].to_string()).unwrap();
         let to_push = object!{
             "id": data["master_card_id"].clone(),
             "master_card_id": data["master_card_id"].clone(),
@@ -148,7 +162,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
         let to_push = object!{
             "master_lottery_item_id": data["master_lottery_item_id"].clone(),
             "master_lottery_item_number": data["master_lottery_item_number"].clone(),
-            "is_new": 1
+            "is_new": new_ids.contains(data["master_lottery_item_id"].to_string())
         };
         lottery_list.push(to_push).unwrap();
     }
