@@ -46,6 +46,18 @@ pub fn clear(req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn receive(_req: HttpRequest, _body: String) -> HttpResponse {
+    //let key = global::get_login(req.headers(), &body);
+    //let missions = userdata::get_acc_missions(&key);
+    //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    
+    //todo - give user rewards based off of cleared missions
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "reward_list": []
         }
     };
     global::send(resp)

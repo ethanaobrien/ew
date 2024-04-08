@@ -120,6 +120,9 @@ async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(re
 #[get("/api/mission/clear")]
 async fn mission_clear(req: HttpRequest, body: String) -> HttpResponse { router::mission::clear(req, body) }
 
+#[get("/api/mission/receive")]
+async fn mission_receive(req: HttpRequest, body: String) -> HttpResponse { router::mission::receive(req, body) }
+
 #[get("/api/home")]
 async fn home(req: HttpRequest) -> HttpResponse { router::home::home(req) }
 
@@ -217,6 +220,7 @@ async fn main() -> std::io::Result<()> {
         .service(friend)
         .service(mission)
         .service(mission_clear)
+        .service(mission_receive)
         .service(home)
         .service(start_assethash)
         .service(user)
