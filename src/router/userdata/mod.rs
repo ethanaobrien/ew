@@ -111,7 +111,8 @@ fn create_acc(conn: &Connection, uid: i64, login: &str) {
     ).unwrap();
     let mut data = object!{
         userdata: json::parse(include_str!("new_user.json")).unwrap(),
-        home: json::parse(include_str!("new_user_home.json")).unwrap()
+        home: json::parse(include_str!("new_user_home.json")).unwrap(),
+        missions: json::parse(include_str!("chat_missions.json")).unwrap()
     };
     data["userdata"]["user"]["id"] = uid.into();
     data["userdata"]["stamina"]["last_updated_time"] = global::timestamp().into();
@@ -200,6 +201,9 @@ pub fn get_acc(a6573cbe: &str) -> JsonValue {
 pub fn get_acc_home(a6573cbe: &str) -> JsonValue {
     return get_data(a6573cbe)["home"].clone();
 }
+pub fn get_acc_missions(a6573cbe: &str) -> JsonValue {
+    return get_data(a6573cbe)["missions"].clone();
+}
 
 pub fn save_data(a6573cbe: &str, data: JsonValue, id: &str) {
     loop {
@@ -243,6 +247,9 @@ pub fn save_acc(a6573cbe: &str, data: JsonValue) {
 }
 pub fn save_acc_home(a6573cbe: &str, data: JsonValue) {
     save_data(a6573cbe, data, "home");
+}
+pub fn save_acc_missions(a6573cbe: &str, data: JsonValue) {
+    save_data(a6573cbe, data, "missions");
 }
 
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
