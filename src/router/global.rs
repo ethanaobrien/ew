@@ -16,18 +16,33 @@ pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
 pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";
 pub const ASSET_HASH_IOS_JP:      &str = "b8975be8300013a168d061d3fdcd4a16";
 
+
+fn get_uuid(input: &str) -> Option<String> {
+    let key = "sk1bdzb310n0s9tl";
+    let key_index = match input.find(key) {
+        Some(index) => index + key.len(),
+        None => return None,
+    };
+    let after = &input[key_index..];
+
+    let uuid_length = 36;
+    if after.len() >= uuid_length {
+        let uuid = &after[..uuid_length];
+        return Some(uuid.to_string());
+    }
+
+    None
+}
 pub fn get_login(headers: &HeaderMap, body: &str) -> String {
     let blank_header = HeaderValue::from_static("");
     
     let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
     let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
-    match String::from_utf8(decoded) {
-        Ok(a6573cbe) => {
-            let parts: Vec<&str> = a6573cbe.split('-').collect();
-            let token = parts[1..parts.len() - 1].join("-");
-            return token.to_string();
+    match get_uuid(&String::from_utf8_lossy(&decoded).to_string()) {
+        Some(token) => {
+            return token;
         },
-        Err(_) => {
+        None => {
             let rv = gree::get_uuid(headers, body);
             assert!(rv != String::new());
             return rv;

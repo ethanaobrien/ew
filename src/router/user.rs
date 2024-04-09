@@ -162,7 +162,7 @@ pub fn verify_migration_code(_req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": {
             "user_id": uid,
-            "uuid": format!("ecd0d830-{}-25ec5f34f7f8", user["login_token"].to_string()),
+            "uuid": user["login_token"].to_string(),
             "charge": data_user["gem"]["charge"].clone(),
             "free": data_user["gem"]["free"].clone()
         }
@@ -189,7 +189,7 @@ pub fn request_migration_code(_req: HttpRequest, body: String) -> HttpResponse {
         "code": 0,
         "server_time": global::timestamp(),
         "data": {
-            "twxuid": format!("ecd0d830-{}-25ec5f34f7f8", user["login_token"].to_string())
+            "twxuid": user["login_token"].to_string()
         }
     };
     global::send(resp)

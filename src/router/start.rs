@@ -46,7 +46,8 @@ pub fn start(req: HttpRequest, body: String) -> HttpResponse {
         println!("Warning! Asset version is not what was expected. (Did the app update?)");
     }
     let mut user = userdata::get_acc(&key);
-    //println!("{} - {}", key, user["user"]["id"].to_string());
+    
+    println!("Signin from uid: {}", user["user"]["id"].clone());
     
     user["user"]["last_login_time"] = global::timestamp().into();
     user["stamina"]["last_updated_time"] = global::timestamp().into();
