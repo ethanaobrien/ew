@@ -65,7 +65,6 @@ pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
 }
 
 pub fn update_live_data(user: &mut JsonValue, data: &JsonValue) -> JsonValue {
-    
     if user["tutorial_step"].as_i32().unwrap() < 130 {
         return JsonValue::Null;
     }

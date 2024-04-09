@@ -220,6 +220,29 @@ pub fn migration(_req: HttpRequest, body: String) -> HttpResponse {
     };
     global::send(resp)
 }
+fn get_card(id: i64, user: &JsonValue) -> JsonValue {
+    if id == 0 {
+        return object!{};
+    }
+    
+    for (_i, data) in user["card_list"].members().enumerate() {
+        if data["master_card_id"].as_i64().unwrap_or(0) == id {
+            return data.clone();
+        }
+    }
+    return object!{};
+}
+fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
+    let mut rv = array![];
+    for (_i, data) in arr.members().enumerate() {
+        let to_push = get_card(data.as_i64().unwrap_or(0), user);
+        if to_push.is_empty() {
+            continue;
+        }
+        rv.push(to_push).unwrap();
+    }
+    return rv;
+}
 
 pub fn detail(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -228,18 +251,26 @@ pub fn detail(_req: HttpRequest, body: String) -> HttpResponse {
         let uid = data.as_i64().unwrap();
         let user = userdata::get_acc_from_uid(uid);
         
-        //to finish
         let mut to_push = object!{
             user: user["user"].clone(),
             live_data_summary: {
-                clear_count_list:[0, 0, 0, 0],
+                clear_count_list: [0, 0, 0, 0],
                 full_combo_list: [0, 0, 0, 0],
-                all_perfect_list:[0, 0, 0, 0],
+                all_perfect_list: [0, 0, 0, 0],
                 high_score_rate: {
                     rate: 0,
-                    detail:[]
+                    detail: []
                 }
             },
+            main_deck_detail: {
+                total_power: 0, //how to calculate?
+                deck: user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1].clone(),
+                card_list: get_cards(user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1]["main_card_ids"].clone(), &user)
+            },
+            favorite_card: get_card(user["user"]["favorite_master_card_id"].as_i64().unwrap_or(0), &user),
+            guest_smile_card: get_card(user["user"]["guest_smile_master_card_id"].as_i64().unwrap_or(0), &user),
+            guest_cool_card: get_card(user["user"]["guest_cool_master_card_id"].as_i64().unwrap_or(0), &user),
+            guest_pure_card: get_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user),
             master_title_ids: user["master_title_ids"].clone()
         };
         to_push["user"].remove("sif_user_id");
@@ -255,9 +286,6 @@ pub fn detail(_req: HttpRequest, body: String) -> HttpResponse {
         }
     };
     global::send(resp)
-    //toadd
-    //[{"favorite_card":{"id":3034894,"master_card_id":40020012,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1702635055},"guest_smile_card":{"id":3804922,"master_card_id":40030012,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1709288297},"guest_cool_card":{"id":2803327,"master_card_id":20080014,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1697711812},"guest_pure_card":{"id":3034894,"master_card_id":40020012,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1702635055},"main_deck_detail":{"total_power":124202,"deck":{"slot":5,"leader_role":0,"main_card_ids":[2994288,3814592,3660086,3802270,3802268,3802269,3804922,2994287,2864405]},"card_list":[{"id":2864405,"master_card_id":10030016,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1697846611},{"id":2994287,"master_card_id":30060010,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1699711194},{"id":2994288,"master_card_id":30090011,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1699711244},{"id":3660086,"master_card_id":20010019,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1704448015},{"id":3802268,"master_card_id":10020018,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1708752744},{"id":3802269,"master_card_id":30010019,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1708752757},{"id":3802270,"master_card_id":20060017,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1708752771},{"id":3814592,"master_card_id":30030010,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1710039197},{"id":3804922,"master_card_id":40030012,"exp":1440761,"skill_exp":167600,"evolve":[{"type":2,"count":1}],"created_date_time":1709288297}]}}]
-    
 }
 
 
