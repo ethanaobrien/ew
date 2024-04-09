@@ -12,8 +12,8 @@ pub fn asset_hash(req: HttpRequest, body: String) -> HttpResponse {
     }
     
     let blank_header = HeaderValue::from_static("");
-    let key = req.headers().get("aoharu-platform").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let android = !key.to_lowercase().contains("iphone");
+    let platform = req.headers().get("aoharu-platform").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let android = !platform.to_lowercase().contains("iphone");
     
     let hash = if body["asset_version"].to_string() == global::ASSET_VERSION_JP {
         if android {
@@ -53,8 +53,8 @@ pub fn start(req: HttpRequest, body: String) -> HttpResponse {
     user["stamina"]["last_updated_time"] = global::timestamp().into();
     
     let blank_header = HeaderValue::from_static("");
-    let key = req.headers().get("aoharu-platform").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let android = !key.to_lowercase().contains("iphone");
+    let platform = req.headers().get("aoharu-platform").unwrap_or(&blank_header).to_str().unwrap_or("");
+    let android = !platform.to_lowercase().contains("iphone");
     
     let hash = if body["asset_version"].to_string() == global::ASSET_VERSION_JP {
         if android {

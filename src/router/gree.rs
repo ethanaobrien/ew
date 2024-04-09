@@ -54,7 +54,7 @@ fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
                     init(&mut result);
                 }
                 let conn = result.as_ref().unwrap();
-                let mut stmt = conn.prepare(command).unwrap();
+                let mut stmt = conn.prepare(command)?;
                 return stmt.query_row([], |row| row.get(0));
             }
             Err(_) => {

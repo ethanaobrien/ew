@@ -159,10 +159,11 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut lottery_list = array![];
     for (_i, data) in cardstogive.members().enumerate() {
+        let new = if new_ids.contains(data["master_lottery_item_id"].to_string()) { 1 } else { 0 };
         let to_push = object!{
             "master_lottery_item_id": data["master_lottery_item_id"].clone(),
             "master_lottery_item_number": data["master_lottery_item_number"].clone(),
-            "is_new": new_ids.contains(data["master_lottery_item_id"].to_string())
+            "is_new": new
         };
         lottery_list.push(to_push).unwrap();
     }
