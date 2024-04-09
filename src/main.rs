@@ -84,6 +84,9 @@ async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { route
 #[post("/api/user/detail")]
 async fn user_detail(req: HttpRequest, body: String) -> HttpResponse { router::user::detail(req, body) }
 
+#[post("/api/gift")]
+async fn gift(req: HttpRequest, body: String) -> HttpResponse { router::user::gift(req, body) }
+
 #[post("/api/deck")]
 async fn user_deck(req: HttpRequest, body: String) -> HttpResponse { router::user::deck(req, body) }
 
@@ -242,6 +245,7 @@ async fn main() -> std::io::Result<()> {
         .service(gglrequestmigrationcode)
         .service(gglverifymigrationcode)
         .service(serial_code_events)
+        .service(gift)
         .default_service(web::route().to(log_unknown_request)))
         .bind(("0.0.0.0", 8080))?
         .run();

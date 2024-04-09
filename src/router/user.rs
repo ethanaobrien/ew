@@ -45,6 +45,89 @@ pub fn user(req: HttpRequest) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    
+    let mut user = userdata::get_acc_home(&key);
+    let mut userr = userdata::get_acc(&key);
+    
+    let mut rewards = array![];
+    let mut failed = array![];
+    
+    let mut to_remove = array![];
+    for (_i, gift_id) in body["gift_ids"].members().enumerate() {
+        for (j, data) in user["home"]["gift_list"].members_mut().enumerate() {
+            if data["id"].to_string() != gift_id.to_string() {
+                continue;
+            }
+            if data["reward_type"].to_string() == "1" {
+                //gems
+                userr["gem"]["free"] = (userr["gem"]["free"].as_i64().unwrap() + data["amount"].as_i64().unwrap()).into();
+            //} else if data["reward_type"].to_string() == "3" {
+                //not working
+                /*
+                //goes into user item_list
+                let mut contains = false;
+                for (_k, dataa) in userr["item_list"].members_mut().enumerate() {
+                    if dataa["id"].to_string() != data["id"].to_string() {
+                        continue;
+                    }
+                    contains = true;
+                    dataa["amount"] = (dataa["amount"].as_i64().unwrap() + data["amount"].as_i64().unwrap()).into();
+                    break;
+                }
+                if !contains {
+                    let to_push = object!{
+                        "id": data["id"].clone(),
+                        "master_item_id": data["id"].clone(),//idk if this is correct
+                        "amount": data["amount"].clone(),
+                        "expire_date_time": null
+                    };
+                    userr["item_list"].push(to_push).unwrap();
+                }*/
+            } else {//idk
+                println!("Redeeming reward not implimented for reward id {}", data["id"].to_string());
+                failed.push(gift_id.clone()).unwrap();
+                continue;
+            }
+            let to_push = object!{
+                give_type: data["give_type"].clone(),
+                type: data["reward_type"].clone(),
+                value: data["value"].clone(),
+                level: data["level"].clone(),
+                amount: data["amount"].clone()
+            };
+            rewards.push(to_push).unwrap();
+            to_remove.push(j).unwrap();
+            
+            break;
+        }
+    }
+    for (_i, index) in to_remove.members().enumerate() {
+        user["home"]["gift_list"].array_remove(index.as_usize().unwrap());
+    }
+    
+    userdata::save_acc_home(&key, user.clone());
+    userdata::save_acc(&key, userr.clone());
+    let userr = userdata::get_acc(&key);
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "failed_gift_ids": failed,
+            "updated_value_list": {
+                "gem": userr["gem"].clone(),
+                "item_list": userr["item_list"].clone()
+            },
+            "clear_mission_ids": user["clear_mission_ids"].clone(),
+            "reward_list": rewards
+        }
+    };
+    global::send(resp)
+}
+
 pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();

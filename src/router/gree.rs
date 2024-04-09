@@ -353,7 +353,7 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
             migration_token: user["login_token"].clone(),
             balance_charge_gem: data_user["gem"]["charge"].to_string(),
             balance_free_gem: data_user["gem"]["free"].to_string(),
-            balance_total_gem: (data_user["gem"]["charge"].as_i32().unwrap() + data_user["gem"]["free"].as_i32().unwrap()).to_string()
+            balance_total_gem: data_user["gem"]["total"].to_string()
         };
     }
     
@@ -371,12 +371,12 @@ pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&body).unwrap();
     
     let user = userdata::get_acc(&body["src_uuid"].to_string());
-    update_cert(&user["user"]["id"].to_string(), &body["token"].to_string());
     //clear old token
     if !body["dst_uuid"].is_null() {
         let user2 = userdata::get_acc(&body["dst_uuid"].to_string());
         update_cert(&user2["user"]["id"].to_string(), "none");
     }
+    update_cert(&user["user"]["id"].to_string(), &body["token"].to_string());
     
     let resp = object!{
         result: "OK"
@@ -411,7 +411,7 @@ pub fn balance(req: HttpRequest) -> HttpResponse {
         entry: {
             balance_charge_gem: user["gem"]["charge"].to_string(),
             balance_free_gem: user["gem"]["free"].to_string(),
-            balance_total_gem: (user["gem"]["charge"].as_i32().unwrap() + user["gem"]["free"].as_i32().unwrap()).to_string()
+            balance_total_gem: user["gem"]["total"].to_string()
         }
     };
     

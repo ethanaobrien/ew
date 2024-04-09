@@ -150,13 +150,15 @@ fn create_acc(uid: i64, login: &str) {
     create_store(&format!("SELECT userhome FROM _{}_", key), &format!("CREATE TABLE _{}_ (
             userdata  TEXT NOT NULL,
             userhome  TEXT NOT NULL,
-            missions  TEXT NOT NULL
+            missions  TEXT NOT NULL,
+            loginbonus  TEXT NOT NULL
         )", key),
-        &format!("INSERT INTO _{}_ (userdata, userhome, missions) VALUES (?1, ?2, ?3)", key),
+        &format!("INSERT INTO _{}_ (userdata, userhome, missions, loginbonus) VALUES (?1, ?2, ?3, ?4)", key),
         params!(
             json::stringify(new_user),
             include_str!("new_user_home.json"),
-            include_str!("chat_missions.json")
+            include_str!("chat_missions.json"),
+            format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp())
         )
     );
     
@@ -206,6 +208,8 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
 
 pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
+    user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
+    
     let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
     let speed = 300; //5 mins
     let since_last = global::timestamp() - user["stamina"]["last_updated_time"].as_u64().unwrap();
@@ -228,6 +232,9 @@ pub fn get_acc_home(auth_key: &str) -> JsonValue {
 pub fn get_acc_missions(auth_key: &str) -> JsonValue {
     get_data(auth_key, "missions")
 }
+pub fn get_acc_loginbonus(auth_key: &str) -> JsonValue {
+    get_data(auth_key, "loginbonus")
+}
 
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
     let key = get_key(&auth_key);
@@ -243,6 +250,9 @@ pub fn save_acc_home(auth_key: &str, data: JsonValue) {
 }
 pub fn save_acc_missions(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "missions", data);
+}
+pub fn save_acc_loginbonus(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "loginbonus", data);
 }
 
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {

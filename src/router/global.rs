@@ -56,6 +56,15 @@ pub fn timestamp() -> u64 {
     let unix_timestamp = now.duration_since(UNIX_EPOCH).unwrap();
     return unix_timestamp.as_secs();
 }
+pub fn timestamp_since_midnight() -> u64 {
+    let now = SystemTime::now();
+    let unix_timestamp = now.duration_since(UNIX_EPOCH).unwrap();
+
+    let midnight = unix_timestamp.as_secs() % (24 * 60 * 60);
+
+    let rv = unix_timestamp.as_secs() - midnight;
+    rv
+}
 
 pub fn send(data: JsonValue) -> HttpResponse {
     //println!("{}", json::stringify(data.clone()));
@@ -72,7 +81,6 @@ pub fn error_resp() -> HttpResponse {
 // true - added
 // false - already has
 pub fn give_character(id: String, user: &mut JsonValue) -> bool {
-    
     for (_i, data) in user["card_list"].members().enumerate() {
         if data["master_card_id"].to_string() == id {
             return false;
@@ -89,4 +97,21 @@ pub fn give_character(id: String, user: &mut JsonValue) -> bool {
     };
     user["card_list"].push(to_push.clone()).unwrap();
     true
+}
+
+pub fn gift_item(item: &JsonValue, user: &mut JsonValue) {
+    let to_push = object!{
+        id: item["id"].clone(),
+        reward_type: item["type"].clone(),
+        give_type: item["giveType"].clone(),
+        is_receive: 0,
+        reason_text: "Because you logged in!!!!!!!!!!!!",
+        value: item["value"].clone(),
+        level: item["level"].clone(),
+        amount: item["amount"].clone(),
+        created_date_time: timestamp(),
+        expire_date_time: timestamp() + (5 * (24 * 60 * 60)),
+        received_date_time: 0
+    };
+    user["home"]["gift_list"].push(to_push).unwrap();
 }
