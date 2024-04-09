@@ -1,0 +1,2402 @@
+[
+  {
+    "rank": 1,
+    "exp": 0,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 100,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 2,
+    "exp": 40,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 101,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 3,
+    "exp": 130,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 102,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 4,
+    "exp": 225,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 103,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 5,
+    "exp": 325,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 104,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 6,
+    "exp": 430,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 105,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 7,
+    "exp": 540,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 106,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 8,
+    "exp": 655,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 107,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 9,
+    "exp": 775,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 108,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 10,
+    "exp": 900,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 109,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 11,
+    "exp": 1075,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 110,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 12,
+    "exp": 1300,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 111,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 13,
+    "exp": 1575,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 112,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 14,
+    "exp": 1850,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 113,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 15,
+    "exp": 2125,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 114,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 16,
+    "exp": 2400,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 115,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 17,
+    "exp": 2675,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 116,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 18,
+    "exp": 2950,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 117,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 19,
+    "exp": 3225,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 118,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 20,
+    "exp": 3500,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 119,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 21,
+    "exp": 3775,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 120,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 22,
+    "exp": 4050,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 121,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 23,
+    "exp": 4325,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 122,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 24,
+    "exp": 4600,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 123,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 25,
+    "exp": 4875,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 124,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 26,
+    "exp": 5150,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 125,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 27,
+    "exp": 5425,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 126,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 28,
+    "exp": 5700,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 127,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 29,
+    "exp": 5975,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 128,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 30,
+    "exp": 6250,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 129,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 31,
+    "exp": 6525,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 130,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 32,
+    "exp": 6800,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 131,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 33,
+    "exp": 7075,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 132,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 34,
+    "exp": 7350,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 133,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 35,
+    "exp": 7625,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 134,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 36,
+    "exp": 7900,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 135,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 37,
+    "exp": 8175,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 136,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 38,
+    "exp": 8450,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 137,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 39,
+    "exp": 8725,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 138,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 40,
+    "exp": 9000,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 139,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 41,
+    "exp": 9275,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 140,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 42,
+    "exp": 9550,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 141,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 43,
+    "exp": 9825,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 142,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 44,
+    "exp": 10100,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 143,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 45,
+    "exp": 10375,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 144,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 46,
+    "exp": 10650,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 145,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 47,
+    "exp": 10925,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 146,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 48,
+    "exp": 11200,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 147,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 49,
+    "exp": 11475,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 148,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 50,
+    "exp": 11750,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 149,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 51,
+    "exp": 12025,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 150,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 52,
+    "exp": 12300,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 151,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 53,
+    "exp": 12575,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 152,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 54,
+    "exp": 12850,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 153,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 55,
+    "exp": 13125,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 154,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 56,
+    "exp": 13400,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 155,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 57,
+    "exp": 13675,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 156,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 58,
+    "exp": 13950,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 157,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 59,
+    "exp": 14225,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 158,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 60,
+    "exp": 14500,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 159,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 61,
+    "exp": 14775,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 160,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 62,
+    "exp": 15050,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 161,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 63,
+    "exp": 15325,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 162,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 64,
+    "exp": 15600,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 163,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 65,
+    "exp": 15875,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 164,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 66,
+    "exp": 16150,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 165,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 67,
+    "exp": 16425,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 166,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 68,
+    "exp": 16700,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 167,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 69,
+    "exp": 16975,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 168,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 70,
+    "exp": 17250,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 169,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 71,
+    "exp": 17525,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 170,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 72,
+    "exp": 17800,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 171,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 73,
+    "exp": 18075,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 172,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 74,
+    "exp": 18350,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 173,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 75,
+    "exp": 18625,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 174,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 76,
+    "exp": 18900,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 175,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 77,
+    "exp": 19175,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 176,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 78,
+    "exp": 19450,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 177,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 79,
+    "exp": 19725,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 178,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 80,
+    "exp": 20000,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 179,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 81,
+    "exp": 20275,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 180,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 82,
+    "exp": 20550,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 181,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 83,
+    "exp": 20825,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 182,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 84,
+    "exp": 21100,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 183,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 85,
+    "exp": 21375,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 184,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 86,
+    "exp": 21650,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 185,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 87,
+    "exp": 21925,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 186,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 88,
+    "exp": 22200,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 187,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 89,
+    "exp": 22475,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 188,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 90,
+    "exp": 22750,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 189,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 91,
+    "exp": 23025,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 190,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 92,
+    "exp": 23300,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 191,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 93,
+    "exp": 23575,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 192,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 94,
+    "exp": 23850,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 193,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 95,
+    "exp": 24125,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 194,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 96,
+    "exp": 24400,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 195,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 97,
+    "exp": 24675,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 196,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 98,
+    "exp": 24950,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 197,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 99,
+    "exp": 25225,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 198,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 100,
+    "exp": 25500,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 199,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 101,
+    "exp": 25781,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 200,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 102,
+    "exp": 26068,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 201,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 103,
+    "exp": 26361,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 202,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 104,
+    "exp": 26660,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 203,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 105,
+    "exp": 26965,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 204,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 106,
+    "exp": 27276,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 205,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 107,
+    "exp": 27593,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 206,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 108,
+    "exp": 27916,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 207,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 109,
+    "exp": 28245,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 208,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 110,
+    "exp": 28580,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 209,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 111,
+    "exp": 28922,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 210,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 112,
+    "exp": 29271,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 211,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 113,
+    "exp": 29627,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 212,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 114,
+    "exp": 29990,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 213,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 115,
+    "exp": 30360,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 214,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 116,
+    "exp": 30737,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 215,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 117,
+    "exp": 31121,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 216,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 118,
+    "exp": 31512,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 217,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 119,
+    "exp": 31910,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 218,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 120,
+    "exp": 32315,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 219,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 121,
+    "exp": 32728,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 220,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 122,
+    "exp": 33149,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 221,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 123,
+    "exp": 33578,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 222,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 124,
+    "exp": 34015,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 223,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 125,
+    "exp": 34460,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 224,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 126,
+    "exp": 34913,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 225,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 127,
+    "exp": 35374,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 226,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 128,
+    "exp": 35843,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 227,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 129,
+    "exp": 36320,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 228,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 130,
+    "exp": 36805,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 229,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 131,
+    "exp": 37299,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 230,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 132,
+    "exp": 37802,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 231,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 133,
+    "exp": 38314,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 232,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 134,
+    "exp": 38835,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 233,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 135,
+    "exp": 39365,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 234,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 136,
+    "exp": 39904,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 235,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 137,
+    "exp": 40452,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 236,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 138,
+    "exp": 41009,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 237,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 139,
+    "exp": 41575,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 238,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 140,
+    "exp": 42150,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 239,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 141,
+    "exp": 42735,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 240,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 142,
+    "exp": 43330,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 241,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 143,
+    "exp": 43935,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 242,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 144,
+    "exp": 44550,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 243,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 145,
+    "exp": 45175,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 244,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 146,
+    "exp": 45810,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 245,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 147,
+    "exp": 46455,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 246,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 148,
+    "exp": 47110,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 247,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 149,
+    "exp": 47775,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 248,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 150,
+    "exp": 48452,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 249,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 151,
+    "exp": 49141,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 250,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 152,
+    "exp": 49842,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 251,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 153,
+    "exp": 50555,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 252,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 154,
+    "exp": 51280,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 253,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 155,
+    "exp": 52017,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 254,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 156,
+    "exp": 52766,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 255,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 157,
+    "exp": 53527,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 256,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 158,
+    "exp": 54300,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 257,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 159,
+    "exp": 55085,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 258,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 160,
+    "exp": 55882,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 259,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 161,
+    "exp": 56693,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 260,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 162,
+    "exp": 57518,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 261,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 163,
+    "exp": 58357,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 262,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 164,
+    "exp": 59210,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 263,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 165,
+    "exp": 60077,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 264,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 166,
+    "exp": 60958,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 265,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 167,
+    "exp": 61853,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 266,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 168,
+    "exp": 62762,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 267,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 169,
+    "exp": 63685,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 268,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 170,
+    "exp": 64624,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 269,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 171,
+    "exp": 65579,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 270,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 172,
+    "exp": 66550,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 271,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 173,
+    "exp": 67537,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 272,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 174,
+    "exp": 68540,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 273,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 175,
+    "exp": 69559,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 274,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 176,
+    "exp": 70594,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 275,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 177,
+    "exp": 71645,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 276,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 178,
+    "exp": 72712,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 277,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 179,
+    "exp": 73795,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 278,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 180,
+    "exp": 74894,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 279,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 181,
+    "exp": 76011,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 280,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 182,
+    "exp": 77146,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 281,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 183,
+    "exp": 78299,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 282,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 184,
+    "exp": 79470,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 283,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 185,
+    "exp": 80659,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 284,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 186,
+    "exp": 81866,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 285,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 187,
+    "exp": 83091,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 286,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 188,
+    "exp": 84334,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 287,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 189,
+    "exp": 85595,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 288,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 190,
+    "exp": 86874,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 289,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 191,
+    "exp": 88173,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 290,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 192,
+    "exp": 89492,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 291,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 193,
+    "exp": 90831,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 292,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 194,
+    "exp": 92190,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 293,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 195,
+    "exp": 93569,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 294,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 196,
+    "exp": 94968,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 295,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 197,
+    "exp": 96387,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 296,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 198,
+    "exp": 97826,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 297,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 199,
+    "exp": 99285,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 298,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 200,
+    "exp": 100764,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 299,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 201,
+    "exp": 102263,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 202,
+    "exp": 111023,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 203,
+    "exp": 119783,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 204,
+    "exp": 128543,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 205,
+    "exp": 137303,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 206,
+    "exp": 146063,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 207,
+    "exp": 154823,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 208,
+    "exp": 163583,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 209,
+    "exp": 172343,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 210,
+    "exp": 181103,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 211,
+    "exp": 189863,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 212,
+    "exp": 198623,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 213,
+    "exp": 207383,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 214,
+    "exp": 216143,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 215,
+    "exp": 224903,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 216,
+    "exp": 233663,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 217,
+    "exp": 242423,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 218,
+    "exp": 251183,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 219,
+    "exp": 259943,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 220,
+    "exp": 268703,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 221,
+    "exp": 277463,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 222,
+    "exp": 286223,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 223,
+    "exp": 294983,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 224,
+    "exp": 303743,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 225,
+    "exp": 312503,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 226,
+    "exp": 321263,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 227,
+    "exp": 330023,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 228,
+    "exp": 338783,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 229,
+    "exp": 347543,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 230,
+    "exp": 356303,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 231,
+    "exp": 365063,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 232,
+    "exp": 373823,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 233,
+    "exp": 382583,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 234,
+    "exp": 391343,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 235,
+    "exp": 400103,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 236,
+    "exp": 408863,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 237,
+    "exp": 417623,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 238,
+    "exp": 426383,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 239,
+    "exp": 435143,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 240,
+    "exp": 443903,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 241,
+    "exp": 452663,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 242,
+    "exp": 461423,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 243,
+    "exp": 470183,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 244,
+    "exp": 478943,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 245,
+    "exp": 487703,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 246,
+    "exp": 496463,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 247,
+    "exp": 505223,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 248,
+    "exp": 513983,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 249,
+    "exp": 522743,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 250,
+    "exp": 531503,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 251,
+    "exp": 540263,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 252,
+    "exp": 549023,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 253,
+    "exp": 557783,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 254,
+    "exp": 566543,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 255,
+    "exp": 575303,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 256,
+    "exp": 584063,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 257,
+    "exp": 592823,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 258,
+    "exp": 601583,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 259,
+    "exp": 610343,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 260,
+    "exp": 619103,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 261,
+    "exp": 627863,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 262,
+    "exp": 636623,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 263,
+    "exp": 645383,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 264,
+    "exp": 654143,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 265,
+    "exp": 662903,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 266,
+    "exp": 671663,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 267,
+    "exp": 680423,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 268,
+    "exp": 689183,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 269,
+    "exp": 697943,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 270,
+    "exp": 706703,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 271,
+    "exp": 715463,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 272,
+    "exp": 724223,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 273,
+    "exp": 732983,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 274,
+    "exp": 741743,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 275,
+    "exp": 750503,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 276,
+    "exp": 759263,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 277,
+    "exp": 768023,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 278,
+    "exp": 776783,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 279,
+    "exp": 785543,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 280,
+    "exp": 794303,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 281,
+    "exp": 803063,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 282,
+    "exp": 811823,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 283,
+    "exp": 820583,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 284,
+    "exp": 829343,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 285,
+    "exp": 838103,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 286,
+    "exp": 846863,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 287,
+    "exp": 855623,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 288,
+    "exp": 864383,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 289,
+    "exp": 873143,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 290,
+    "exp": 881903,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 291,
+    "exp": 890663,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 292,
+    "exp": 899423,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 293,
+    "exp": 908183,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 294,
+    "exp": 916943,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 295,
+    "exp": 925703,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 296,
+    "exp": 934463,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 297,
+    "exp": 943223,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 298,
+    "exp": 951983,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 299,
+    "exp": 960743,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rank": 300,
+    "exp": 969503,
+    "masterUserRankRewardId": 0,
+    "maxFriend": 40,
+    "maxLp": 300,
+    "masterReleaseLabelId": 1
+  }
+]

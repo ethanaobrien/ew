@@ -185,6 +185,16 @@ fn get_login_token(uid: i64) -> String {
     }
     String::new()
 }
+pub fn get_user_rank_data(exp: i64) -> JsonValue {
+    let ranks = json::parse(include_str!("user_rank.json")).unwrap();
+    
+    for (i, rank) in ranks.members().enumerate() {
+        if exp < rank["exp"].as_i64().unwrap() {
+            return ranks[i - 1].clone();
+        }
+    }
+    return ranks[ranks.len() - 1].clone();
+}
 
 fn get_data(auth_key: &str, row: &str) -> JsonValue {
     let key = get_key(&auth_key);
@@ -196,7 +206,7 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
 
 pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
-    let max = 100; //todo
+    let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
     let speed = 300; //5 mins
     let since_last = global::timestamp() - user["stamina"]["last_updated_time"].as_u64().unwrap();
     
@@ -287,7 +297,7 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
     
     return object!{
         user_name: data["user"]["name"].clone(),
-        user_rank: 1 //todo
+        user_rank: get_user_rank_data(data["user"]["exp"].as_i64().unwrap())["rank"].clone() //todo
     }
 }
 
