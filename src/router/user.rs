@@ -55,13 +55,27 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     if !body["name"].is_null() {
         user["user"]["name"] = body["name"].clone();
     }
+    if !body["comment"].is_null() {
+        user["user"]["comment"] = body["comment"].clone();
+    }
+    if !body["favorite_master_card_id"].is_null() {
+        user["user"]["favorite_master_card_id"] = body["favorite_master_card_id"].clone();
+    }
+    if !body["guest_smile_master_card_id"].is_null() {
+        user["user"]["guest_smile_master_card_id"] = body["guest_smile_master_card_id"].clone();
+    }
+    if !body["guest_pure_master_card_id"].is_null() {
+        user["user"]["guest_pure_master_card_id"] = body["guest_pure_master_card_id"].clone();
+    }
+    if !body["guest_cool_master_card_id"].is_null() {
+        user["user"]["guest_cool_master_card_id"] = body["guest_cool_master_card_id"].clone();
+    }
     if !body["friend_request_disabled"].is_null() {
         user["user"]["friend_request_disabled"] = body["friend_request_disabled"].clone();
     }
     if !body["profile_settings"].is_null() {
         user["user"]["profile_settings"] = body["profile_settings"].clone();
     }
-    
     
     userdata::save_acc(&key, user.clone());
     
