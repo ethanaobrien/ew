@@ -55,8 +55,8 @@ pub fn tutorial(_req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
-fn get_card_master_id(lottery_id: String, lottery_number: String) -> i32 {
-    return CARDS[lottery_id][lottery_number]["value"].as_i32().unwrap();
+fn get_card_master_id(lottery_id: String, lottery_number: String) -> Option<i64> {
+    CARDS[lottery_id][lottery_number]["value"].as_i64()
 }
 fn random_number(lowest: usize, highest: usize) -> usize {
     if lowest == highest {
@@ -77,14 +77,16 @@ fn get_random_cards(count: usize) -> JsonValue {
     while i < count {
         let pool = pools[random_number(0, pools.len()-1)].clone();
         let card = random_number(0, pool[1].as_usize().unwrap());
-        random_master_ids.push(array![pool[0].clone(), card]).unwrap();
-        i += 1;
+        if !get_card_master_id(pool[0].to_string(), card.to_string()).is_none() {
+            random_master_ids.push(array![pool[0].clone(), card]).unwrap();
+            i += 1;
+        }
     }
     let mut rv = array![];
     for (_i, data) in random_master_ids.members().enumerate() {
         let to_push = object!{
-            "id": get_card_master_id(data[0].to_string(), data[1].to_string()),
-            "master_card_id": get_card_master_id(data[0].to_string(), data[1].to_string()),
+            "id": get_card_master_id(data[0].to_string(), data[1].to_string()).unwrap(),
+            "master_card_id": get_card_master_id(data[0].to_string(), data[1].to_string()).unwrap(),
             "master_lottery_item_id": data[0].clone(),
             "master_lottery_item_number": data[1].clone()
         };
@@ -121,7 +123,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
         let item_id = (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1;
         //tutorial
         let new_card = object!{
-            "master_card_id": get_card_master_id(item_id.to_string(), String::from("1")),
+            "master_card_id": get_card_master_id(item_id.to_string(), String::from("1")).unwrap(),
             "master_lottery_item_id": item_id,
             "master_lottery_item_number": 1
         };
