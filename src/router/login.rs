@@ -39,6 +39,9 @@ lazy_static! {
             if info[data["masterReleaseLabelId"].to_string()].is_null() {
                 continue;
             }
+            if info[data["masterReleaseLabelId"].to_string()]["days"].len() != 0 && data["id"].as_i64().unwrap() != info[data["masterReleaseLabelId"].to_string()]["days"][info[data["masterReleaseLabelId"].to_string()]["days"].len() - 1]["id"].as_i64().unwrap() + 1 {
+                continue;
+            }
             info[data["masterReleaseLabelId"].to_string()]["days"].push(data.clone()).unwrap();
         }
         let mut real_info = object!{};
@@ -84,19 +87,20 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
         let mut to_rm = array![];
         for (i, data) in bonuses["bonus_list"].members_mut().enumerate() {
             let info = get_login_bonus_info(data["master_login_bonus_id"].as_i64().unwrap());
-            let current = data["day_counts"].len();
+            let mut current = data["day_counts"].len();
             if current >= info["days"].len() && info["info"]["loop"].as_i32().unwrap_or(0) == 1 {
                 data["day_counts"] = array![];
+                current = 0;
             } else if current >= info["days"].len() {
                 to_rm.push(i).unwrap();
                 continue;
             }
             
-            global::gift_item(&info["days"][current + 1], &mut user_home);
+            global::gift_item(&info["days"][current], &mut user_home);
             data["day_counts"].push(current + 1).unwrap();
         }
-        for (_i, data) in to_rm.members().enumerate() {
-            bonuses["bonus_list"].array_remove(data.as_usize().unwrap());//IPMGQAYWYAW6AYA7
+        for (i, data) in to_rm.members().enumerate() {
+            bonuses["bonus_list"].array_remove(data.as_usize().unwrap() - i);
         }
         bonuses["last_rewarded"] = last_reset.into();
         userdata::save_acc_loginbonus(&key, bonuses.clone());
@@ -104,7 +108,7 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
     } else {
         to_send = array![];
     }
-    println!("{}", json::stringify(to_send.clone()));
+   // println!("{}", json::stringify(to_send.clone()));
     
     userdata::save_acc_home(&key, user_home);
     

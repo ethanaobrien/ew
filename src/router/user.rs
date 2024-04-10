@@ -4,6 +4,7 @@ use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
+use lazy_static::lazy_static;
 
 pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
@@ -45,6 +46,21 @@ pub fn user(req: HttpRequest) -> HttpResponse {
     global::send(resp)
 }
 
+lazy_static! {
+    static ref LOTTERY_INFO: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(include_str!("json/login_bonus_reward.json")).unwrap();
+        for (_i, data) in items.members().enumerate() {
+            info[data["id"].to_string()] = data.clone();
+        }
+        info
+    };
+}
+
+fn get_info_from_id(id: i64) -> JsonValue {
+    LOTTERY_INFO[id.to_string()].clone()
+}
+
 pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -55,57 +71,79 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
     let mut rewards = array![];
     let mut failed = array![];
     
-    let mut to_remove = array![];
     for (_i, gift_id) in body["gift_ids"].members().enumerate() {
+        let mut to_remove = 0;
         for (j, data) in user["home"]["gift_list"].members_mut().enumerate() {
             if data["id"].to_string() != gift_id.to_string() {
                 continue;
             }
-            if data["reward_type"].to_string() == "1" {
-                //gems
-                userr["gem"]["free"] = (userr["gem"]["free"].as_i64().unwrap() + data["amount"].as_i64().unwrap()).into();
-            //} else if data["reward_type"].to_string() == "3" {
-                //not working
-                /*
-                //goes into user item_list
-                let mut contains = false;
-                for (_k, dataa) in userr["item_list"].members_mut().enumerate() {
-                    if dataa["id"].to_string() != data["id"].to_string() {
-                        continue;
+            let info = get_info_from_id(data["id"].as_i64().unwrap());
+            //println!("{}", json::stringify(info.clone()));
+            
+            if info["giveType"].to_string() == "1" {
+                if info["type"].to_string() == "1" {
+                    // basically primogems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    userr["gem"]["free"] = (userr["gem"]["free"].as_i64().unwrap() + info["amount"].as_i64().unwrap()).into();
+                } else if info["type"].to_string() == "2" {
+                    //character
+                    global::give_character(info["value"].to_string(), &mut userr);
+                } else if info["type"].to_string() == "3" {
+                    let mut has = false;
+                    for (_k, data2) in userr["item_list"].members_mut().enumerate() {
+                        if data2["master_item_id"].to_string() == info["value"].to_string() {
+                            has = true;
+                            data2["amount"] = (data2["amount"].as_i64().unwrap() + info["amount"].as_i64().unwrap()).into();
+                            break;
+                        }
                     }
-                    contains = true;
-                    dataa["amount"] = (dataa["amount"].as_i64().unwrap() + data["amount"].as_i64().unwrap()).into();
+                    if !has {
+                        userr["item_list"].push(object!{
+                            id: info["value"].clone(),
+                            master_item_id: info["value"].clone(),
+                            amount: info["amount"].clone(),
+                            expire_date_time: null
+                        }).unwrap();
+                    }
+                } else if info["type"].to_string() == "4" {
+                    // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    let mut has = false;
+                    for (_k, data2) in userr["point_list"].members_mut().enumerate() {
+                        if data2["type"].to_string() == info["type"].to_string() {
+                            has = true;
+                            data2["amount"] = (data2["amount"].as_i64().unwrap() + info["amount"].as_i64().unwrap()).into();
+                            break;
+                        }
+                    }
+                    if !has {
+                        userr["point_list"].push(object!{
+                            type: info["type"].clone(),
+                            amount: info["amount"].clone()
+                        }).unwrap();
+                    }
+                } else {
+                    println!("Redeeming reward not implimented for reward id {}", info["id"].to_string());
+                    failed.push(gift_id.clone()).unwrap();
                     break;
                 }
-                if !contains {
-                    let to_push = object!{
-                        "id": data["id"].clone(),
-                        "master_item_id": data["id"].clone(),//idk if this is correct
-                        "amount": data["amount"].clone(),
-                        "expire_date_time": null
-                    };
-                    userr["item_list"].push(to_push).unwrap();
-                }*/
-            } else {//idk
-                println!("Redeeming reward not implimented for reward id {}", data["id"].to_string());
+            } else {
+                println!("Redeeming reward not implimented for give type {}", info["giveType"].to_string());
                 failed.push(gift_id.clone()).unwrap();
-                continue;
+                break;
             }
             let to_push = object!{
-                give_type: data["give_type"].clone(),
+                give_type: info["giveType"].clone(),
                 type: data["reward_type"].clone(),
-                value: data["value"].clone(),
-                level: data["level"].clone(),
-                amount: data["amount"].clone()
+                value: info["value"].clone(),
+                level: info["level"].clone(),
+                amount: info["amount"].clone()
             };
             rewards.push(to_push).unwrap();
-            to_remove.push(j).unwrap();
-            
+            to_remove = j + 1;
             break;
         }
-    }
-    for (_i, index) in to_remove.members().enumerate() {
-        user["home"]["gift_list"].array_remove(index.as_usize().unwrap());
+        if to_remove != 0 {
+            user["home"]["gift_list"].array_remove(to_remove - 1);
+        }
     }
     
     userdata::save_acc_home(&key, user.clone());
@@ -119,7 +157,8 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
             "failed_gift_ids": failed,
             "updated_value_list": {
                 "gem": userr["gem"].clone(),
-                "item_list": userr["item_list"].clone()
+                "item_list": userr["item_list"].clone(),
+                "point_list": userr["point_list"].clone()
             },
             "clear_mission_ids": user["clear_mission_ids"].clone(),
             "reward_list": rewards

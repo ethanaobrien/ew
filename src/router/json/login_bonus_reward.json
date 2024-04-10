@@ -2,8 +2,8 @@
   {
     "id": 150000101,
     "number": 1,
-    "type": 2,
-    "giveType": 2,
+    "type": 3,
+    "giveType": 1,
     "value": 16005003,
     "level": 0,
     "amount": 15,
