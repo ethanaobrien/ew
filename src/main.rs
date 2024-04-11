@@ -174,6 +174,9 @@ async fn gglverifymigrationcode(req: HttpRequest, body: String) -> HttpResponse 
 #[get("/api/serial_code/events")]
 async fn serial_code_events(req: HttpRequest) -> HttpResponse { router::serial_code::events(req) }
 
+#[get("/api/album/sif")]
+async fn sif_album(req: HttpRequest) -> HttpResponse { router::user::sif(req) }
+
 async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap());
@@ -191,6 +194,7 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(sif_album)
         .service(preset)
         .service(preset_get)
         .service(gree_init)

@@ -410,6 +410,19 @@ pub fn detail(_req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn sif(req: HttpRequest) -> HttpResponse {
+    let key = global::get_login(req.headers(), "");
+    let cards = userdata::get_acc_sif(&key);
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            cards: cards
+        }
+    };
+    global::send(resp)
+}
 
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);

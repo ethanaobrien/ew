@@ -148,17 +148,19 @@ fn create_acc(uid: i64, login: &str) {
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
     create_store(&format!("SELECT userhome FROM _{}_", key), &format!("CREATE TABLE _{}_ (
-            userdata  TEXT NOT NULL,
-            userhome  TEXT NOT NULL,
-            missions  TEXT NOT NULL,
-            loginbonus  TEXT NOT NULL
+            userdata    TEXT NOT NULL,
+            userhome    TEXT NOT NULL,
+            missions    TEXT NOT NULL,
+            loginbonus  TEXT NOT NULL,
+            sifcards    TEXT NOT NULL
         )", key),
-        &format!("INSERT INTO _{}_ (userdata, userhome, missions, loginbonus) VALUES (?1, ?2, ?3, ?4)", key),
+        &format!("INSERT INTO _{}_ (userdata, userhome, missions, loginbonus, sifcards) VALUES (?1, ?2, ?3, ?4, ?5)", key),
         params!(
             json::stringify(new_user),
             include_str!("new_user_home.json"),
             include_str!("chat_missions.json"),
-            format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp())
+            format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
+            "[]"
         )
     );
     
@@ -234,6 +236,9 @@ pub fn get_acc_missions(auth_key: &str) -> JsonValue {
 }
 pub fn get_acc_loginbonus(auth_key: &str) -> JsonValue {
     get_data(auth_key, "loginbonus")
+}
+pub fn get_acc_sif(auth_key: &str) -> JsonValue {
+    get_data(auth_key, "sifcards")
 }
 
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
