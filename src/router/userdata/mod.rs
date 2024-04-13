@@ -33,7 +33,8 @@ fn lock_and_exec(command: &str, args: &[&dyn ToSql]) {
         }
     }
 }
-fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
+
+fn lock_and_select(command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlite::Error> {
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
@@ -42,7 +43,12 @@ fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
                 }
                 let conn = result.as_ref().unwrap();
                 let mut stmt = conn.prepare(command)?;
-                return stmt.query_row([], |row| row.get(0));
+                return stmt.query_row(args, |row| {
+                    match row.get::<usize, i64>(0) {
+                        Ok(val) => Ok(val.to_string()),
+                        Err(_) => row.get(0)
+                    }
+                });
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
@@ -50,7 +56,7 @@ fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
         }
     }
 }
-fn create_store(test_cmd: &str, table: &str, init_cmd: &str, init_args: &[&dyn ToSql]) {
+fn create_store_v2(table: &str) {
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
@@ -58,19 +64,10 @@ fn create_store(test_cmd: &str, table: &str, init_cmd: &str, init_args: &[&dyn T
                     init(&mut result);
                 }
                 let conn = result.as_ref().unwrap();
-                match conn.prepare(test_cmd) {
-                    Ok(_) => {}
-                    Err(_) => {
-                        conn.execute(
-                            table,
-                            (),
-                        ).unwrap();
-                        conn.execute(
-                            init_cmd,
-                            init_args
-                        ).unwrap();
-                    }
-                }
+                conn.execute(
+                    table,
+                    (),
+                ).unwrap();
                 return;
             }
             Err(_) => {
@@ -81,26 +78,36 @@ fn create_store(test_cmd: &str, table: &str, init_cmd: &str, init_args: &[&dyn T
 }
 
 fn create_token_store() {
-    create_store("SELECT jsondata FROM tokens", "CREATE TABLE tokens (
-        jsondata  TEXT NOT NULL
-    )", "INSERT INTO tokens (jsondata) VALUES (?1)", params!("{}"));
+    create_store_v2("CREATE TABLE IF NOT EXISTS tokens (
+        user_id  BIGINT NOT NULL PRIMARY KEY,
+        token    TEXT NOT NULL
+    )");
 }
 fn create_uid_store() {
-    create_store("SELECT jsondata FROM uids", "CREATE TABLE uids (
-        jsondata  TEXT NOT NULL
-    )", "INSERT INTO uids (jsondata) VALUES (?1)", params!("[]"));
+    create_store_v2("CREATE TABLE IF NOT EXISTS uids (
+        user_id  BIGINT NOT NULL PRIMARY KEY
+    )");
 }
 fn create_migration_store() {
-    create_store("SELECT jsondata FROM migrationdata", "CREATE TABLE migrationdata (
-        jsondata  TEXT NOT NULL
-    )", "INSERT INTO migrationdata (jsondata) VALUES (?1)", params!("{}"));
+    create_store_v2("CREATE TABLE IF NOT EXISTS migration (
+        token     TEXT NOT NULL PRIMARY KEY,
+        password  TEXT NOT NULL
+    )");
+}
+fn create_users_store() {
+    create_store_v2("CREATE TABLE IF NOT EXISTS users (
+        user_id     BIGINT NOT NULL PRIMARY KEY,
+        userdata    TEXT NOT NULL,
+        userhome    TEXT NOT NULL,
+        missions    TEXT NOT NULL,
+        loginbonus  TEXT NOT NULL,
+        sifcards    TEXT NOT NULL
+    )");
 }
 
-fn acc_exists(key: i64) -> bool {
-    lock_and_select(&format!("SELECT userdata FROM _{}_", key)).is_ok()
-}
-fn store_data(key: &str, value: JsonValue) {
-    lock_and_exec(&format!("UPDATE {} SET jsondata=?1", key), params!(json::stringify(value)));
+fn acc_exists(uid: i64) -> bool {
+    create_users_store();
+    lock_and_select("SELECT user_id FROM users WHERE user_id=?1", params!(uid)).is_ok()
 }
 fn get_key(auth_key: &str) -> i64 {
     let uid = get_uid(&auth_key);
@@ -116,78 +123,65 @@ fn get_key(auth_key: &str) -> i64 {
     
     key
 }
-fn get_uids() -> JsonValue {
-    let data = lock_and_select("SELECT jsondata FROM uids");
-    json::parse(&data.unwrap()).unwrap()
-}
-fn get_tokens() -> JsonValue {
-    let data = lock_and_select("SELECT jsondata FROM tokens");
-    json::parse(&data.unwrap()).unwrap()
+fn uid_exists(uid: i64) -> bool {
+    let data = lock_and_select("SELECT user_id FROM uids WHERE user_id=?1", params!(uid));
+    data.is_ok()
 }
 
 fn generate_uid() -> i64 {
     create_uid_store();
     let mut rng = rand::thread_rng();
     let random_number = rng.gen_range(100_000_000_000_000..=999_999_999_999_999);
-    let mut existing_ids = get_uids();
     //the chances of this...?
-    if existing_ids.contains(random_number) {
+    if uid_exists(random_number) {
         return generate_uid();
     }
-    existing_ids.push(random_number).unwrap();
-    store_data("uids", existing_ids);
+    lock_and_exec("INSERT INTO uids (user_id) VALUES (?1)", params!(random_number));
     
     random_number
 }
 
 fn create_acc(uid: i64, login: &str) {
-    let key = &uid.to_string();
+    create_users_store();
     
     let mut new_user = json::parse(include_str!("new_user.json")).unwrap();
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    create_store(&format!("SELECT userhome FROM _{}_", key), &format!("CREATE TABLE _{}_ (
-            userdata    TEXT NOT NULL,
-            userhome    TEXT NOT NULL,
-            missions    TEXT NOT NULL,
-            loginbonus  TEXT NOT NULL,
-            sifcards    TEXT NOT NULL
-        )", key),
-        &format!("INSERT INTO _{}_ (userdata, userhome, missions, loginbonus, sifcards) VALUES (?1, ?2, ?3, ?4, ?5)", key),
-        params!(
-            json::stringify(new_user),
-            include_str!("new_user_home.json"),
-            include_str!("chat_missions.json"),
-            format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-            "[]"
-        )
-    );
+    
+    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", params!(
+        uid,
+        json::stringify(new_user),
+        include_str!("new_user_home.json"),
+        include_str!("chat_missions.json"),
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
+        "[]"
+    ));
+    
     
     create_token_store();
-    let mut tokens = get_tokens();
-    tokens[login] = uid.into();
-    store_data("tokens", tokens);
+    lock_and_exec("DELETE FROM tokens WHERE token=?1", params!(login));
+    lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, login));
+    lock_and_select("SELECT user_id FROM tokens WHERE token = ?1;", params!(login)).unwrap();
 }
 
-fn get_uid(uid: &str) -> i64 {
+fn get_uid(token: &str) -> i64 {
     create_token_store();
-    let tokens = get_tokens();
-    if tokens[uid].is_null() {
+    let data = lock_and_select("SELECT user_id FROM tokens WHERE token = ?1;", params!(token));
+    if !data.is_ok() {
         return 0;
     }
-    return tokens[uid].as_i64().unwrap();
+    let data = data.unwrap();
+    data.parse::<i64>().unwrap_or(0)
 }
 
 fn get_login_token(uid: i64) -> String {
     create_token_store();
-    let tokens = get_tokens();
-    for (_i, data) in tokens.entries().enumerate() {
-        if uid == data.1.as_i64().unwrap() {
-            return data.0.to_string();
-        }
+    let data = lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid));
+    if !data.is_ok() {
+        return String::new();
     }
-    String::new()
+    data.unwrap()
 }
 pub fn get_user_rank_data(exp: i64) -> JsonValue {
     let ranks = json::parse(include_str!("user_rank.json")).unwrap();
@@ -203,7 +197,7 @@ pub fn get_user_rank_data(exp: i64) -> JsonValue {
 fn get_data(auth_key: &str, row: &str) -> JsonValue {
     let key = get_key(&auth_key);
     
-    let result = lock_and_select(&format!("SELECT {} FROM _{}_", row, key));
+    let result = lock_and_select(&format!("SELECT {} FROM users WHERE user_id=?1", row), params!(key));
     
     json::parse(&result.unwrap()).unwrap()
 }
@@ -244,7 +238,7 @@ pub fn get_acc_sif(auth_key: &str) -> JsonValue {
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
     let key = get_key(&auth_key);
     
-    lock_and_exec(&format!("UPDATE _{}_ SET {}=?1", key, row), params!(json::stringify(data)));
+    lock_and_exec(&format!("UPDATE users SET {}=?1 WHERE user_id=?2", row), params!(json::stringify(data), key));
 }
 
 pub fn save_acc(auth_key: &str, data: JsonValue) {
@@ -262,33 +256,24 @@ pub fn save_acc_loginbonus(auth_key: &str, data: JsonValue) {
 
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
     create_migration_store();
-    
-    let result = lock_and_select("SELECT jsondata FROM migrationdata");
-    let data = json::parse(&result.unwrap()).unwrap();
-    
-    if data[token].is_empty() {
+    let data = lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token));
+    if !data.is_ok() {
         return object!{success: false};
     }
-    if data[token].to_string() == password.to_string() {
+    if data.unwrap().to_string() == password.to_string() {
         let login_token = get_login_token(uid);
         if login_token == String::new() {
             return object!{success: false};
         }
         return object!{success: true, login_token: login_token};
     }
-    
-    return object!{success: false};
+    object!{success: false}
 }
 
 pub fn save_acc_transfer(token: &str, password: &str) {
     create_migration_store();
-    
-    let result = lock_and_select("SELECT jsondata FROM migrationdata");
-    let mut data = json::parse(&result.unwrap()).unwrap();
-    
-    data[token] = password.into();
-    
-    store_data("migrationdata", data);
+    lock_and_exec("DELETE FROM migration WHERE token=?1", params!(token));
+    lock_and_exec("INSERT INTO migration (token, password) VALUES (?1, ?2)", params!(token, password));
 }
 
 pub fn get_name_and_rank(uid: i64) -> JsonValue {
@@ -307,7 +292,7 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
             user_rank: 1
         }
     }
-    let result = lock_and_select(&format!("SELECT userdata FROM _{}_", uid));
+    let result = lock_and_select("SELECT userdata FROM users WHERE user_id=?1", params!(uid));
     let data = json::parse(&result.unwrap()).unwrap();
     
     return object!{
@@ -329,6 +314,6 @@ pub fn get_acc_from_uid(uid: i64) -> JsonValue {
     if uid == 0 || !acc_exists(uid) {
         return object!{"error": true}
     }
-    let result = lock_and_select(&format!("SELECT userdata FROM _{}_", uid));
+    let result = lock_and_select("SELECT userdata FROM users WHERE user_id=?1", params!(uid));
     json::parse(&result.unwrap()).unwrap()
 }
