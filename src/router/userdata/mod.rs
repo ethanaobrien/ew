@@ -204,15 +204,19 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
     user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
     
     let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
-    let speed = 300; //5 mins
+    let speed = 285; //4 mins, 45 sec
     let since_last = global::timestamp() - user["stamina"]["last_updated_time"].as_u64().unwrap();
     
-    let restored = round::floor((since_last / speed) as f64, 0) as u64;
-    let time_diff = since_last - (restored * speed);
-    user["stamina"]["last_updated_time"] = (global::timestamp() - time_diff).into();
-    let mut stamina = user["stamina"]["stamina"].as_u64().unwrap() + restored;
-    if stamina > max {
-        stamina = max;
+    let diff = since_last % speed;
+    let restored = (since_last - diff) / speed;
+    user["stamina"]["last_updated_time"] = (global::timestamp() - diff).into();
+    
+    let mut stamina = user["stamina"]["stamina"].as_i64().unwrap();
+    if stamina < max {
+        stamina += restored;
+        if stamina > max {
+            stamina = max;
+        }
     }
     
     user["stamina"]["stamina"] = stamina.into();
