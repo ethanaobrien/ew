@@ -46,7 +46,7 @@ fn lock_and_exec(command: &str, args: &[&dyn ToSql]) {
         }
     }
 }
-fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
+fn lock_and_select(command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlite::Error> {
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
@@ -55,7 +55,12 @@ fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
                 }
                 let conn = result.as_ref().unwrap();
                 let mut stmt = conn.prepare(command)?;
-                return stmt.query_row([], |row| row.get(0));
+                return stmt.query_row(args, |row| {
+                    match row.get::<usize, i64>(0) {
+                        Ok(val) => Ok(val.to_string()),
+                        Err(_) => row.get(0)
+                    }
+                });
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
@@ -63,7 +68,7 @@ fn lock_and_select(command: &str) -> Result<String, rusqlite::Error> {
         }
     }
 }
-fn create_store(test_cmd: &str, table: &str, init_cmd: &str, init_args: &[&dyn ToSql]) {
+fn create_store_v2(table: &str) {
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
@@ -71,19 +76,10 @@ fn create_store(test_cmd: &str, table: &str, init_cmd: &str, init_args: &[&dyn T
                     init(&mut result);
                 }
                 let conn = result.as_ref().unwrap();
-                match conn.prepare(test_cmd) {
-                    Ok(_) => {}
-                    Err(_) => {
-                        conn.execute(
-                            table,
-                            (),
-                        ).unwrap();
-                        conn.execute(
-                            init_cmd,
-                            init_args
-                        ).unwrap();
-                    }
-                }
+                conn.execute(
+                    table,
+                    (),
+                ).unwrap();
                 return;
             }
             Err(_) => {
@@ -92,44 +88,37 @@ fn create_store(test_cmd: &str, table: &str, init_cmd: &str, init_args: &[&dyn T
         }
     }
 }
+fn uuid_exists(uuid: &str) -> bool {
+    let data = lock_and_select("SELECT uuid FROM uuids WHERE uuid=?1", params!(uuid));
+    data.is_ok()
+}
 fn get_new_uuid() -> String {
-    create_store("SELECT jsondata FROM uuids", "CREATE TABLE uuids (
-        jsondata  TEXT NOT NULL
-    )", "INSERT INTO uuids (jsondata) VALUES (?1)", params!("[]"));
+    create_store_v2("CREATE TABLE IF NOT EXISTS uuids (
+        uuid  TEXT NOT NULL PRIMARY KEY
+    )");
     let id = format!("{}", Uuid::new_v4());
-    let mut existing_ids = json::parse(&lock_and_select("SELECT jsondata FROM uuids").unwrap()).unwrap();
-    if existing_ids.contains(id.clone()) {
+    if uuid_exists(&id) {
         return get_new_uuid();
     }
-    existing_ids.push(id.clone()).unwrap();
-    lock_and_exec(
-        "UPDATE uuids SET jsondata=?1",
-        params!(json::stringify(existing_ids))
-    );
+    lock_and_exec("INSERT INTO uuids (uuid) VALUES (?1)", params!(&id));
     
     id
 }
-fn update_cert(uid: &str, cert: &str) {
-    lock_and_exec(
-        &format!("UPDATE _{}_ SET cert=?1", uid),
-        params!(cert),
-    );
+fn update_cert(uid: i64, cert: &str) {
+    lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
 }
 fn create_acc(cert: &str) -> String {
+    create_store_v2("CREATE TABLE IF NOT EXISTS users (
+        cert     TEXT NOT NULL,
+        uuid     TEXT NOT NULL,
+        user_id  BIGINT NOT NULL PRIMARY KEY
+    )");
     let uuid = get_new_uuid();
     let user = userdata::get_acc(&uuid);
-    let user_id = user["user"]["id"].to_string();
+    let user_id = user["user"]["id"].as_i64().unwrap();
     lock_and_exec(
-        &format!("CREATE TABLE _{}_ (
-            cert  TEXT NOT NULL,
-            uuid  TEXT NOT NULL
-        )", user_id),
-        params!(),
-    );
-    
-    lock_and_exec(
-        &format!("INSERT INTO _{}_ (cert, uuid) VALUES (?1, ?2)", user_id),
-        params!(cert, uuid)
+        "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
+        params!(cert, uuid, user_id)
     );
     
     uuid
@@ -163,7 +152,7 @@ pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
         return String::new();
     }
     
-    let cert = lock_and_select(&format!("SELECT cert FROM _{}_", uid)).unwrap();
+    let cert = lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).unwrap();
     
     let data = format!("{}{}{}{}{}", uid, "sk1bdzb310n0s9tl", version, timestamp, body);
     let encoded = general_purpose::STANDARD.encode(data.as_bytes());
@@ -171,11 +160,12 @@ pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
     let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
     
     if verify_signature(&decoded, &encoded.as_bytes(), &cert.as_bytes()) {
-        return lock_and_select(&format!("SELECT uuid FROM _{}_", uid)).unwrap();
+        return lock_and_select("SELECT uuid FROM users WHERE user_id=?1;", params!(uid)).unwrap();
     } else {
         return String::new();
     }
 }
+
 fn rot13(input: &str) -> String {
     let mut result = String::new();
     for c in input.chars() {
@@ -374,9 +364,9 @@ pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
     //clear old token
     if !body["dst_uuid"].is_null() {
         let user2 = userdata::get_acc(&body["dst_uuid"].to_string());
-        update_cert(&user2["user"]["id"].to_string(), "none");
+        update_cert(user2["user"]["id"].as_i64().unwrap(), "none");
     }
-    update_cert(&user["user"]["id"].to_string(), &body["token"].to_string());
+    update_cert(user["user"]["id"].as_i64().unwrap(), &body["token"].to_string());
     
     let resp = object!{
         result: "OK"

@@ -148,7 +148,6 @@ fn create_acc(uid: i64, login: &str) {
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    
     lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", params!(
         uid,
         json::stringify(new_user),
@@ -158,11 +157,9 @@ fn create_acc(uid: i64, login: &str) {
         "[]"
     ));
     
-    
     create_token_store();
     lock_and_exec("DELETE FROM tokens WHERE token=?1", params!(login));
     lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, login));
-    lock_and_select("SELECT user_id FROM tokens WHERE token = ?1;", params!(login)).unwrap();
 }
 
 fn get_uid(token: &str) -> i64 {
