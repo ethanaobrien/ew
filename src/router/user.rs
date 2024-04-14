@@ -13,7 +13,7 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     
     for (i, data) in user["deck_list"].members().enumerate() {
         if data["slot"].to_string() == body["slot"].to_string() {
-            user["deck_list"][i] = body["main_card_ids"].clone();
+            user["deck_list"][i]["main_card_ids"] = body["main_card_ids"].clone();
             break;
         }
     }
@@ -197,6 +197,9 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     }
     if !body["profile_settings"].is_null() {
         user["user"]["profile_settings"] = body["profile_settings"].clone();
+    }
+    if !body["main_deck_slot"].is_null() {
+        user["user"]["main_deck_slot"] = body["main_deck_slot"].clone();
     }
     
     userdata::save_acc(&key, user.clone());
