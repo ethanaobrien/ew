@@ -115,3 +115,23 @@ pub fn gift_item(item: &JsonValue, user: &mut JsonValue) {
     };
     user["home"]["gift_list"].push(to_push).unwrap();
 }
+pub fn get_user_rank_data(exp: i64) -> JsonValue {
+    let ranks = json::parse(include_str!("userdata/user_rank.json")).unwrap();
+    
+    for (i, rank) in ranks.members().enumerate() {
+        if exp < rank["exp"].as_i64().unwrap() {
+            return ranks[i - 1].clone();
+        }
+    }
+    return ranks[ranks.len() - 1].clone();
+}
+
+pub fn give_exp(amount: i32, user: &mut JsonValue) {
+    let current_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
+    user["user"]["exp"] = (user["user"]["exp"].as_i32().unwrap() + amount).into();
+    let new_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
+    if current_rank["rank"].to_string() != new_rank["rank"].to_string() {
+        user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i64().unwrap() + new_rank["maxLp"].as_i64().unwrap()).into();
+        user["stamina"]["last_updated_time"] = timestamp().into();
+    }
+}

@@ -119,7 +119,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     }
     user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    user["user"]["exp"] = (user["user"]["exp"].as_i32().unwrap() + body["use_lp"].as_i32().unwrap()).into();
+    global::give_exp(body["use_lp"].as_i32().unwrap(), &mut user);
     
     let live = update_live_data(&mut user, &body);
     

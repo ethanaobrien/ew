@@ -3,7 +3,6 @@ use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
 use json::{JsonValue, object};
 use crate::router::global;
-use math::round;
 use rand::Rng;
 
 lazy_static! {
@@ -180,16 +179,6 @@ fn get_login_token(uid: i64) -> String {
     }
     data.unwrap()
 }
-pub fn get_user_rank_data(exp: i64) -> JsonValue {
-    let ranks = json::parse(include_str!("user_rank.json")).unwrap();
-    
-    for (i, rank) in ranks.members().enumerate() {
-        if exp < rank["exp"].as_i64().unwrap() {
-            return ranks[i - 1].clone();
-        }
-    }
-    return ranks[ranks.len() - 1].clone();
-}
 
 fn get_data(auth_key: &str, row: &str) -> JsonValue {
     let key = get_key(&auth_key);
@@ -203,7 +192,7 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
     
-    let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
+    let max = global::get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
     let speed = 285; //4 mins, 45 sec
     let since_last = global::timestamp() - user["stamina"]["last_updated_time"].as_u64().unwrap();
     
@@ -211,7 +200,7 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
     let restored = (since_last - diff) / speed;
     user["stamina"]["last_updated_time"] = (global::timestamp() - diff).into();
     
-    let mut stamina = user["stamina"]["stamina"].as_i64().unwrap();
+    let mut stamina = user["stamina"]["stamina"].as_u64().unwrap();
     if stamina < max {
         stamina += restored;
         if stamina > max {
@@ -298,7 +287,7 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
     
     return object!{
         user_name: data["user"]["name"].clone(),
-        user_rank: get_user_rank_data(data["user"]["exp"].as_i64().unwrap())["rank"].clone() //todo
+        user_rank: global::get_user_rank_data(data["user"]["exp"].as_i64().unwrap())["rank"].clone() //todo
     }
 }
 
