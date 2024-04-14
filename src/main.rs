@@ -126,7 +126,7 @@ async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::live::clearr
 #[get("/api/mission")]
 async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(req) }
 
-#[get("/api/mission/clear")]
+#[post("/api/mission/clear")]
 async fn mission_clear(req: HttpRequest, body: String) -> HttpResponse { router::mission::clear(req, body) }
 
 #[get("/api/mission/receive")]
