@@ -215,7 +215,10 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
 }
 
 pub fn get_acc_home(auth_key: &str) -> JsonValue {
-    get_data(auth_key, "userhome")
+    let mut user = get_data(auth_key, "userhome");
+    user["home"]["pending_friend_count"] = get_acc_friends(auth_key)["pending_user_id_list"].len().into();
+    
+    return user;
 }
 pub fn get_acc_missions(auth_key: &str) -> JsonValue {
     get_data(auth_key, "missions")
@@ -327,7 +330,7 @@ pub fn friend_request(uid: i64, requestor: i64) {
     }
 }
 
-pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool) {
+pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool, key: &str) {
     let login_token = get_login_token(uid);
     if login_token == String::new() {
         return;
@@ -335,9 +338,13 @@ pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool) {
     let uid = get_uid(&login_token);
     let friends = lock_and_select("SELECT friends FROM users WHERE user_id=?1", params!(uid));
     let mut friends = json::parse(&friends.unwrap()).unwrap();
-    let index = friends["pending_user_id_list"].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
+    let index = friends[key].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
     if !index.is_none() {
-        friends["pending_user_id_list"].array_remove(index.unwrap());
+        friends[key].array_remove(index.unwrap());
+    }
+    let index = friends["request_user_id_list"].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
+    if !index.is_none() {
+        friends["request_user_id_list"].array_remove(index.unwrap());
     }
     if accepted && !friends["friend_user_id_list"].contains(requestor) {
         friends["friend_user_id_list"].push(requestor).unwrap();

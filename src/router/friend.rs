@@ -105,15 +105,15 @@ pub fn approve(req: HttpRequest, body: String) -> HttpResponse {
     let mut friends = userdata::get_acc_friends(&key);
     
     let uid = body["user_id"].as_i64().unwrap();
-    let index = friends["request_user_id_list"].members().into_iter().position(|r| *r.to_string() == uid.to_string());
+    let index = friends["pending_user_id_list"].members().into_iter().position(|r| *r.to_string() == uid.to_string());
     if !index.is_none() {
-        friends["request_user_id_list"].array_remove(index.unwrap());
+        friends["pending_user_id_list"].array_remove(index.unwrap());
     }
     if body["approve"].to_string() == "1" && ! friends["friend_user_id_list"].contains(uid) {
         friends["friend_user_id_list"].push(uid).unwrap();
     }
     
-    userdata::friend_request_approve(uid, user_id, body["approve"].to_string() == "1");
+    userdata::friend_request_approve(uid, user_id, body["approve"].to_string() == "1", "request_user_id_list");
     userdata::save_acc_friends(&key, friends);
     
     let resp = object!{
@@ -135,7 +135,7 @@ pub fn cancel(req: HttpRequest, body: String) -> HttpResponse {
     if !index.is_none() {
         friends["request_user_id_list"].array_remove(index.unwrap());
     }
-    userdata::friend_request_approve(uid, user_id, false);
+    userdata::friend_request_approve(uid, user_id, false, "pending_user_id_list");
     userdata::save_acc_friends(&key, friends);
     
     let resp = object!{
