@@ -1,6 +1,5 @@
 use json;
-use json::object;
-use json::JsonValue;
+use json::{object, array, JsonValue};
 use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
@@ -19,11 +18,72 @@ pub fn retire(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
-pub fn guest(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let friends = userdata::get_acc_friends(&key);
+    
+    let mut guest_list = array![];
+    if friends["friend_user_id_list"].len() == 0 {
+        guest_list.push(object!{
+            "user": {
+                "name": "A Nice Guest","comment":"Enjoy your live show!",
+                "exp": 900,
+                "main_deck_slot": 1,
+                "favorite_master_card_id": 10010013,
+                "favorite_card_evolve": 0,
+                "guest_smile_master_card_id": 10010013,
+                "guest_cool_master_card_id": 10010013,
+                "guest_pure_master_card_id": 10010013,
+                "friend_request_disabled": 1,
+                "master_title_ids": [3000001,0],
+                "profile_settings": [1,2,3,4,5,6,7],
+                "last_login_time": 1708699449
+            },
+            "favorite_card": {
+                "id": 0,
+                "master_card_id": 10010013,
+                "exp": 1025,
+                "skill_exp": 0,
+                "evolve": []
+            },
+            "guest_smile_card": {
+                "id": 0,
+                "master_card_id": 10010013,
+                "exp": 1025,
+                "skill_exp": 0,
+                "evolve": []
+            },
+            "guest_cool_card": {
+                "id": 0,
+                "master_card_id": 10010013,
+                "exp": 1025,
+                "skill_exp": 0,
+                "evolve": []
+            },
+            "guest_pure_card": {
+                "id": 0,
+                "master_card_id": 10010013,
+                "exp": 1025,
+                "skill_exp": 0,
+                "evolve": []
+            },
+            "status":0
+        }).unwrap();
+    } else {
+        for (i, uid) in friends["friend_user_id_list"].members().enumerate() {
+            if i > 10 {
+                break;
+            }
+            guest_list.push(global::get_user(uid.as_i64().unwrap(), &friends)).unwrap();
+        }
+    }
+    
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
-        "data": {"guest_list":[{"user":{"name":"A Nice Guest","comment":"Enjoy your live show!","exp":900,"main_deck_slot":1,"favorite_master_card_id":10010013,"favorite_card_evolve":0,"guest_smile_master_card_id":10010013,"guest_cool_master_card_id":10010013,"guest_pure_master_card_id":10010013,"friend_request_disabled":1,"master_title_ids":[3000001,0],"profile_settings":[1,2,3,4,5,6,7],"last_login_time":1708699449},"favorite_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_smile_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_cool_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"guest_pure_card":{"id":0,"master_card_id":10010013,"exp":1025,"skill_exp":0,"evolve":[]},"status":0}]}
+        "data": {
+            "guest_list": guest_list
+        }
     };
     global::send(resp)
 }

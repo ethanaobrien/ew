@@ -22,9 +22,7 @@ pub fn friend(req: HttpRequest, body: String) -> HttpResponse {
     };
     
     for (_i, uid) in rv_data.members().enumerate() {
-        let mut to_push = global::get_user(uid.as_i64().unwrap());
-        to_push["status"] = body["status"].clone();
-        rv.push(to_push).unwrap();
+        rv.push(global::get_user(uid.as_i64().unwrap(), &friends)).unwrap();
     }
     
     let resp = object!{
@@ -61,11 +59,13 @@ pub fn recommend(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
-pub fn search(_req: HttpRequest, body: String) -> HttpResponse {
+pub fn search(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let friends = userdata::get_acc_friends(&key);
     
     let uid = body["user_id"].as_i64().unwrap();
-    let user = global::get_user(uid);
+    let user = global::get_user(uid, &friends);
     
     let resp = object!{
         "code": 0,

@@ -365,12 +365,15 @@ pub fn migration(_req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
-pub fn detail(_req: HttpRequest, body: String) -> HttpResponse {
+pub fn detail(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let friends = userdata::get_acc_friends(&key);
+    
     let mut user_detail_list = array![];
     for (_i, data) in body["user_ids"].members().enumerate() {
         let uid = data.as_i64().unwrap();
-        let user = global::get_user(uid);
+        let user = global::get_user(uid, &friends);
         user_detail_list.push(user).unwrap();
     }
     let resp = object!{
