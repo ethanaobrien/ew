@@ -100,7 +100,8 @@ fn create_users_store() {
         userhome    TEXT NOT NULL,
         missions    TEXT NOT NULL,
         loginbonus  TEXT NOT NULL,
-        sifcards    TEXT NOT NULL
+        sifcards    TEXT NOT NULL,
+        friends     TEXT NOT NULL
     )");
 }
 
@@ -147,13 +148,14 @@ fn create_acc(uid: i64, login: &str) {
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards) VALUES (?1, ?2, ?3, ?4, ?5, ?6)", params!(
+    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", params!(
         uid,
         json::stringify(new_user),
         include_str!("new_user_home.json"),
         include_str!("chat_missions.json"),
         format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        "[]"
+        "[]",
+        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#
     ));
     
     create_token_store();
@@ -224,6 +226,9 @@ pub fn get_acc_loginbonus(auth_key: &str) -> JsonValue {
 pub fn get_acc_sif(auth_key: &str) -> JsonValue {
     get_data(auth_key, "sifcards")
 }
+pub fn get_acc_friends(auth_key: &str) -> JsonValue {
+    get_data(auth_key, "friends")
+}
 
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
     let key = get_key(&auth_key);
@@ -242,6 +247,9 @@ pub fn save_acc_missions(auth_key: &str, data: JsonValue) {
 }
 pub fn save_acc_loginbonus(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "loginbonus", data);
+}
+pub fn save_acc_friends(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "friends", data);
 }
 
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
@@ -267,7 +275,6 @@ pub fn save_acc_transfer(token: &str, password: &str) {
 }
 
 pub fn get_name_and_rank(uid: i64) -> JsonValue {
-    create_migration_store();
     let login_token = get_login_token(uid);
     if login_token == String::new() {
         return object!{
@@ -292,12 +299,10 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
 }
 
 pub fn get_acc_from_uid(uid: i64) -> JsonValue {
-    create_migration_store();
     let login_token = get_login_token(uid);
     if login_token == String::new() {
         return object!{
-            user_name: "",
-            user_rank: 1
+            error: true
         }
     }
     let uid = get_uid(&login_token);
@@ -306,4 +311,47 @@ pub fn get_acc_from_uid(uid: i64) -> JsonValue {
     }
     let result = lock_and_select("SELECT userdata FROM users WHERE user_id=?1", params!(uid));
     json::parse(&result.unwrap()).unwrap()
+}
+
+pub fn friend_request(uid: i64, requestor: i64) {
+    let login_token = get_login_token(uid);
+    if login_token == String::new() {
+        return;
+    }
+    let uid = get_uid(&login_token);
+    let friends = lock_and_select("SELECT friends FROM users WHERE user_id=?1", params!(uid));
+    let mut friends = json::parse(&friends.unwrap()).unwrap();
+    if !friends["pending_user_id_list"].contains(requestor) {
+        friends["pending_user_id_list"].push(requestor).unwrap();
+        lock_and_exec("UPDATE users SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+    }
+}
+
+pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool) {
+    let login_token = get_login_token(uid);
+    if login_token == String::new() {
+        return;
+    }
+    let uid = get_uid(&login_token);
+    let friends = lock_and_select("SELECT friends FROM users WHERE user_id=?1", params!(uid));
+    let mut friends = json::parse(&friends.unwrap()).unwrap();
+    let index = friends["pending_user_id_list"].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
+    if !index.is_none() {
+        friends["pending_user_id_list"].array_remove(index.unwrap());
+    }
+    if accepted && !friends["friend_user_id_list"].contains(requestor) {
+        friends["friend_user_id_list"].push(requestor).unwrap();
+    }
+    lock_and_exec("UPDATE users SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+}
+
+pub fn friend_request_disabled(uid: i64) -> bool {
+    let login_token = get_login_token(uid);
+    if login_token == String::new() {
+        return true;
+    }
+    let uid = get_uid(&login_token);
+    let user = lock_and_select("SELECT userdata FROM users WHERE user_id=?1", params!(uid));
+    let user = json::parse(&user.unwrap()).unwrap();
+    user["user"]["friend_request_disabled"].to_string() == "1"
 }

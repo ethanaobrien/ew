@@ -99,6 +99,24 @@ async fn tutorial(req: HttpRequest, body: String) -> HttpResponse { router::tuto
 #[post("/api/friend")]
 async fn friend(req: HttpRequest, body: String) -> HttpResponse { router::friend::friend(req, body) }
 
+#[get("/api/friend/ids")]
+async fn friend_ids(req: HttpRequest) -> HttpResponse { router::friend::ids(req) }
+
+#[post("/api/friend/search")]
+async fn friend_search(req: HttpRequest, body: String) -> HttpResponse { router::friend::search(req, body) }
+
+#[post("/api/friend/search/recommend")]
+async fn friend_recommend(req: HttpRequest, body: String) -> HttpResponse { router::friend::recommend(req, body) }
+
+#[post("/api/friend/request")]
+async fn friend_request(req: HttpRequest, body: String) -> HttpResponse { router::friend::request(req, body) }
+
+#[post("/api/friend/request/approve")]
+async fn friend_approve(req: HttpRequest, body: String) -> HttpResponse { router::friend::approve(req, body) }
+
+#[post("/api/friend/request/cancel")]
+async fn friend_cancel(req: HttpRequest, body: String) -> HttpResponse { router::friend::cancel(req, body) }
+
 #[post("/api/live/guest")]
 async fn live_guest(req: HttpRequest, body: String) -> HttpResponse { router::live::guest(req, body) }
 
@@ -241,6 +259,12 @@ async fn main() -> std::io::Result<()> {
         .service(lottery_post)
         .service(lottery)
         .service(friend)
+        .service(friend_search)
+        .service(friend_recommend)
+        .service(friend_ids)
+        .service(friend_request)
+        .service(friend_approve)
+        .service(friend_cancel)
         .service(mission)
         .service(mission_clear)
         .service(mission_receive)

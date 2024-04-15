@@ -364,63 +364,14 @@ pub fn migration(_req: HttpRequest, body: String) -> HttpResponse {
     };
     global::send(resp)
 }
-fn get_card(id: i64, user: &JsonValue) -> JsonValue {
-    if id == 0 {
-        return object!{};
-    }
-    
-    for (_i, data) in user["card_list"].members().enumerate() {
-        if data["master_card_id"].as_i64().unwrap_or(0) == id {
-            return data.clone();
-        }
-    }
-    return object!{};
-}
-fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
-    let mut rv = array![];
-    for (_i, data) in arr.members().enumerate() {
-        let to_push = get_card(data.as_i64().unwrap_or(0), user);
-        if to_push.is_empty() {
-            continue;
-        }
-        rv.push(to_push).unwrap();
-    }
-    return rv;
-}
 
 pub fn detail(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user_detail_list = array![];
     for (_i, data) in body["user_ids"].members().enumerate() {
         let uid = data.as_i64().unwrap();
-        let user = userdata::get_acc_from_uid(uid);
-        
-        let mut to_push = object!{
-            user: user["user"].clone(),
-            live_data_summary: {
-                clear_count_list: [0, 0, 0, 0],
-                full_combo_list: [0, 0, 0, 0],
-                all_perfect_list: [0, 0, 0, 0],
-                high_score_rate: {
-                    rate: 0,
-                    detail: []
-                }
-            },
-            main_deck_detail: {
-                total_power: 0, //how to calculate?
-                deck: user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1].clone(),
-                card_list: get_cards(user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1]["main_card_ids"].clone(), &user)
-            },
-            favorite_card: get_card(user["user"]["favorite_master_card_id"].as_i64().unwrap_or(0), &user),
-            guest_smile_card: get_card(user["user"]["guest_smile_master_card_id"].as_i64().unwrap_or(0), &user),
-            guest_cool_card: get_card(user["user"]["guest_cool_master_card_id"].as_i64().unwrap_or(0), &user),
-            guest_pure_card: get_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user),
-            master_title_ids: user["master_title_ids"].clone()
-        };
-        to_push["user"].remove("sif_user_id");
-        to_push["user"].remove("ss_user_id");
-        to_push["user"].remove("birthday");
-        user_detail_list.push(to_push).unwrap();
+        let user = global::get_user(uid);
+        user_detail_list.push(user).unwrap();
     }
     let resp = object!{
         "code": 0,

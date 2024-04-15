@@ -1,4 +1,4 @@
-use json::{object, JsonValue};
+use json::{object, JsonValue, array};
 use crate::encryption;
 use actix_web::{
     HttpResponse,
@@ -7,6 +7,7 @@ use actix_web::{
 use crate::router::gree;
 use std::time::{SystemTime, UNIX_EPOCH};
 use base64::{Engine as _, engine::general_purpose};
+use crate::router::userdata;
 
 pub const ASSET_VERSION:          &str = "13177023d4b7ad41ff52af4cefba5c55";
 pub const ASSET_HASH_ANDROID:     &str = "017ec1bcafbeea6a7714f0034b15bd0f";
@@ -134,4 +135,61 @@ pub fn give_exp(amount: i32, user: &mut JsonValue) {
         user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i64().unwrap() + new_rank["maxLp"].as_i64().unwrap()).into();
         user["stamina"]["last_updated_time"] = timestamp().into();
     }
+}
+
+fn get_card(id: i64, user: &JsonValue) -> JsonValue {
+    if id == 0 {
+        return object!{};
+    }
+    
+    for (_i, data) in user["card_list"].members().enumerate() {
+        if data["master_card_id"].as_i64().unwrap_or(0) == id {
+            return data.clone();
+        }
+    }
+    return object!{};
+}
+fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
+    let mut rv = array![];
+    for (_i, data) in arr.members().enumerate() {
+        let to_push = get_card(data.as_i64().unwrap_or(0), user);
+        if to_push.is_empty() {
+            continue;
+        }
+        rv.push(to_push).unwrap();
+    }
+    return rv;
+}
+pub fn get_user(id: i64) -> JsonValue {
+    let user = userdata::get_acc_from_uid(id);
+    if !user["error"].is_empty() {
+        return object!{};
+    }
+    let mut rv = object!{
+        user: user["user"].clone(),
+        live_data_summary: {
+            clear_count_list: [0, 0, 0, 0],
+            full_combo_list: [0, 0, 0, 0],
+            all_perfect_list: [0, 0, 0, 0],
+            high_score_rate: {
+                rate: 0,
+                detail: []
+            }
+        },
+        main_deck_detail: {
+            total_power: 0, //how to calculate?
+            deck: user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1].clone(),
+            card_list: get_cards(user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1]["main_card_ids"].clone(), &user)
+        },
+        favorite_card: get_card(user["user"]["favorite_master_card_id"].as_i64().unwrap_or(0), &user),
+        guest_smile_card: get_card(user["user"]["guest_smile_master_card_id"].as_i64().unwrap_or(0), &user),
+        guest_cool_card: get_card(user["user"]["guest_cool_master_card_id"].as_i64().unwrap_or(0), &user),
+        guest_pure_card: get_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user),
+        master_title_ids: user["master_title_ids"].clone()
+    };
+    rv["user"].remove("sif_user_id");
+    rv["user"].remove("ss_user_id");
+    rv["user"].remove("birthday");
+    
+    rv
 }
