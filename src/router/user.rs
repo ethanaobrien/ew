@@ -215,6 +215,25 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn announcement(req: HttpRequest) -> HttpResponse {
+    let key = global::get_login(req.headers(), "");
+    
+    let mut user = userdata::get_acc_home(&key);
+    
+    user["home"]["new_announcement_flag"] = (0).into();
+    
+    userdata::save_acc_home(&key, user);
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            new_announcement_flag: 0
+        }
+    };
+    global::send(resp)
+}
+
 pub fn uid_to_code(uid: String) -> String {
     //just replace uid with numbers because im too lazy to have a real database and this is close enough anyways
     return uid

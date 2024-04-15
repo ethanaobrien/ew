@@ -177,6 +177,12 @@ async fn serial_code_events(req: HttpRequest) -> HttpResponse { router::serial_c
 #[get("/api/album/sif")]
 async fn sif_album(req: HttpRequest) -> HttpResponse { router::user::sif(req) }
 
+#[get("/web/announcement")]
+async fn announcement(req: HttpRequest) -> HttpResponse { router::web::announcement(req) }
+
+#[get("/api/home/announcement")]
+async fn announcement_api(req: HttpRequest) -> HttpResponse { router::user::announcement(req) }
+
 async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap());
@@ -194,6 +200,8 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(announcement_api)
+        .service(announcement)
         .service(sif_album)
         .service(preset)
         .service(preset_get)
