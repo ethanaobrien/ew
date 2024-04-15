@@ -362,3 +362,18 @@ pub fn friend_request_disabled(uid: i64) -> bool {
     let user = json::parse(&user.unwrap()).unwrap();
     user["user"]["friend_request_disabled"].to_string() == "1"
 }
+
+pub fn friend_remove(uid: i64, requestor: i64) {
+    let login_token = get_login_token(uid);
+    if login_token == String::new() {
+        return;
+    }
+    let uid = get_uid(&login_token);
+    let friends = lock_and_select("SELECT friends FROM users WHERE user_id=?1", params!(uid));
+    let mut friends = json::parse(&friends.unwrap()).unwrap();
+    let index = friends["friend_user_id_list"].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
+    if !index.is_none() {
+        friends["friend_user_id_list"].array_remove(index.unwrap());
+    }
+    lock_and_exec("UPDATE users SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+}

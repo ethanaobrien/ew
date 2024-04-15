@@ -108,13 +108,13 @@ pub fn approve(req: HttpRequest, body: String) -> HttpResponse {
     let index = friends["pending_user_id_list"].members().into_iter().position(|r| *r.to_string() == uid.to_string());
     if !index.is_none() {
         friends["pending_user_id_list"].array_remove(index.unwrap());
+        if body["approve"].to_string() == "1" && ! friends["friend_user_id_list"].contains(uid) {
+            friends["friend_user_id_list"].push(uid).unwrap();
+        }
+        
+        userdata::friend_request_approve(uid, user_id, body["approve"].to_string() == "1", "request_user_id_list");
+        userdata::save_acc_friends(&key, friends);
     }
-    if body["approve"].to_string() == "1" && ! friends["friend_user_id_list"].contains(uid) {
-        friends["friend_user_id_list"].push(uid).unwrap();
-    }
-    
-    userdata::friend_request_approve(uid, user_id, body["approve"].to_string() == "1", "request_user_id_list");
-    userdata::save_acc_friends(&key, friends);
     
     let resp = object!{
         "code": 0,
@@ -136,6 +136,28 @@ pub fn cancel(req: HttpRequest, body: String) -> HttpResponse {
         friends["request_user_id_list"].array_remove(index.unwrap());
     }
     userdata::friend_request_approve(uid, user_id, false, "pending_user_id_list");
+    userdata::save_acc_friends(&key, friends);
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": []
+    };
+    global::send(resp)
+}
+
+pub fn delete(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
+    let mut friends = userdata::get_acc_friends(&key);
+    
+    let uid = body["user_id"].as_i64().unwrap();
+    let index = friends["friend_user_id_list"].members().into_iter().position(|r| *r.to_string() == uid.to_string());
+    if !index.is_none() {
+        friends["friend_user_id_list"].array_remove(index.unwrap());
+    }
+    userdata::friend_remove(uid, user_id);
     userdata::save_acc_friends(&key, friends);
     
     let resp = object!{

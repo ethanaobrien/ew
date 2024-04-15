@@ -117,6 +117,9 @@ async fn friend_approve(req: HttpRequest, body: String) -> HttpResponse { router
 #[post("/api/friend/request/cancel")]
 async fn friend_cancel(req: HttpRequest, body: String) -> HttpResponse { router::friend::cancel(req, body) }
 
+#[post("/api/friend/delete")]
+async fn friend_delete(req: HttpRequest, body: String) -> HttpResponse { router::friend::delete(req, body) }
+
 #[post("/api/live/guest")]
 async fn live_guest(req: HttpRequest, body: String) -> HttpResponse { router::live::guest(req, body) }
 
@@ -265,6 +268,7 @@ async fn main() -> std::io::Result<()> {
         .service(friend_request)
         .service(friend_approve)
         .service(friend_cancel)
+        .service(friend_delete)
         .service(mission)
         .service(mission_clear)
         .service(mission_receive)
