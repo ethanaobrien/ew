@@ -144,6 +144,9 @@ async fn live_retire(req: HttpRequest, body: String) -> HttpResponse { router::l
 #[get("/api/live/clearRate")]
 async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::live::clearrate(req) }
 
+#[post("/api/live/continue")]
+async fn live_continue(req: HttpRequest, body: String) -> HttpResponse { router::live::continuee(req, body) }
+
 #[get("/api/mission")]
 async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(req) }
 
@@ -254,6 +257,7 @@ async fn main() -> std::io::Result<()> {
         .service(debug_error)
         .service(login_bonus)
         .service(reward)
+        .service(live_continue)
         .service(live_guest)
         .service(live_mission)
         .service(live_ranking)

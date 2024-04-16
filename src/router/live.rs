@@ -124,6 +124,22 @@ pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn continuee(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let mut user = userdata::get_acc(&key);
+    
+    global::remove_gems(&mut user, 100);
+    
+    userdata::save_acc(&key, user.clone());
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "gem": user["gem"].clone()
+    };
+    global::send(resp)
+}
+
 pub fn update_live_data(user: &mut JsonValue, data: &JsonValue) -> JsonValue {
     if user["tutorial_step"].as_i32().unwrap() < 130 {
         return JsonValue::Null;

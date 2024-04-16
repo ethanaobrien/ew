@@ -33,6 +33,25 @@ pub fn get_item_info(id: i64) -> JsonValue {
     ITEM_INFO[id.to_string()].clone()
 }
 
+pub fn remove_gems(user: &mut JsonValue, amount: i64) {
+    let mut amount = amount;
+    let mut free = user["gem"]["free"].as_i64().unwrap();
+    let mut paid = user["gem"]["charge"].as_i64().unwrap();
+    
+    free -= amount;
+    if free < 0 {
+        amount = -free;
+        free = 0;
+    }
+    paid -= amount;
+    if paid < 0 {
+        paid = 0;
+    }
+    user["gem"]["free"] = free.into();
+    user["gem"]["charge"] = paid.into();
+    user["gem"]["total"] = (free + paid).into();
+}
+
 fn get_uuid(input: &str) -> Option<String> {
     let key = "sk1bdzb310n0s9tl";
     let key_index = match input.find(key) {
