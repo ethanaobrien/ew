@@ -113,27 +113,31 @@ pub fn error_resp() -> HttpResponse {
     send(object!{})
 }
 
+pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
+    let mut has = false;
+    for (_j, dataa) in user["item_list"].members_mut().enumerate() {
+        has = true;
+        if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
+            dataa["amount"] = (dataa["amount"].as_i64().unwrap() + amount).into();
+        }
+        break;
+    }
+    if !has {
+        user["item_list"].push(object!{
+            id: master_item_id,
+            master_item_id: master_item_id,
+            amount: amount,
+            expire_date_time: null
+        }).unwrap();
+    }
+}
+
 // true - added
 // false - already has
 pub fn give_character(id: String, user: &mut JsonValue) -> bool {
     for (_i, data) in user["card_list"].members().enumerate() {
         if data["master_card_id"].to_string() == id {
-            let mut has = false;
-            for (_j, dataa) in user["item_list"].members_mut().enumerate() {
-                has = true;
-                if dataa["master_item_id"].as_i64().unwrap() == 19100001 {
-                    dataa["amount"] = (dataa["amount"].as_i64().unwrap() + 10).into();
-                }
-                break;
-            }
-            if !has {
-                user["item_list"].push(object!{
-                    id: 19100001,
-                    master_item_id: 19100001,
-                    amount: 10,
-                    expire_date_time: null
-                }).unwrap();
-            }
+            give_item(19100001, 100, user);
             return false;
         }
     }

@@ -263,6 +263,23 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     
+    let mut has = false;
+    for (_j, data) in user["point_list"].members_mut().enumerate() {
+        has = true;
+        if data["type"].as_i64().unwrap() == 1 {
+            data["amount"] = (data["amount"].as_i64().unwrap() + 5000).into();
+        }
+        break;
+    }
+    if !has {
+        user["point_list"].push(object!{
+            type: 1,
+            amount: 5000
+        }).unwrap();
+    }
+    global::give_item(16005003, 10, &mut user);
+    global::give_item(17001003, 2, &mut user);
+    
     user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i32().unwrap() - body["use_lp"].as_i32().unwrap()).into();
     if user["stamina"]["stamina"].as_i32().unwrap() < 0 {
         user["stamina"]["stamina"] = (0).into();
