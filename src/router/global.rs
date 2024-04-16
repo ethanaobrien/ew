@@ -116,8 +116,8 @@ pub fn error_resp() -> HttpResponse {
 pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
     let mut has = false;
     for (_j, dataa) in user["item_list"].members_mut().enumerate() {
-        has = true;
         if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
+            has = true;
             dataa["amount"] = (dataa["amount"].as_i64().unwrap() + amount).into();
         }
         break;

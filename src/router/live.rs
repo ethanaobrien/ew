@@ -265,8 +265,8 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut has = false;
     for (_j, data) in user["point_list"].members_mut().enumerate() {
-        has = true;
         if data["type"].as_i64().unwrap() == 1 {
+            has = true;
             data["amount"] = (data["amount"].as_i64().unwrap() + 5000).into();
         }
         break;
