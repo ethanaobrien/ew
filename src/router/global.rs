@@ -119,6 +119,9 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
         if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
             has = true;
             dataa["amount"] = (dataa["amount"].as_i64().unwrap() + amount).into();
+            if dataa["amount"].as_i64().unwrap() > 200000000 {
+                dataa["amount"] = (200000000).into();
+            }
         }
         break;
     }

@@ -267,7 +267,10 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     for (_j, data) in user["point_list"].members_mut().enumerate() {
         if data["type"].as_i64().unwrap() == 1 {
             has = true;
-            data["amount"] = (data["amount"].as_i64().unwrap() + 5000).into();
+            data["amount"] = (data["amount"].as_i64().unwrap() + 50000).into();
+            if data["amount"].as_i64().unwrap() > 2000000000 {
+                data["amount"] = (2000000000).into();
+            }
         }
         break;
     }
