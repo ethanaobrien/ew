@@ -18,3 +18,4 @@ pub mod debug;
 pub mod gree;
 pub mod serial_code;
 pub mod web;
+pub mod card;

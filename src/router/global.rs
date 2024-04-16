@@ -8,6 +8,7 @@ use crate::router::gree;
 use std::time::{SystemTime, UNIX_EPOCH};
 use base64::{Engine as _, engine::general_purpose};
 use crate::router::userdata;
+use lazy_static::lazy_static;
 
 pub const ASSET_VERSION:          &str = "13177023d4b7ad41ff52af4cefba5c55";
 pub const ASSET_HASH_ANDROID:     &str = "017ec1bcafbeea6a7714f0034b15bd0f";
@@ -17,6 +18,20 @@ pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
 pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";
 pub const ASSET_HASH_IOS_JP:      &str = "b8975be8300013a168d061d3fdcd4a16";
 
+lazy_static! {
+    static ref ITEM_INFO: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(include_str!("json/item.json")).unwrap();
+        for (_i, data) in items.members().enumerate() {
+            info[data["id"].to_string()] = data.clone();
+        }
+        info
+    };
+}
+
+pub fn get_item_info(id: i64) -> JsonValue {
+    ITEM_INFO[id.to_string()].clone()
+}
 
 fn get_uuid(input: &str) -> Option<String> {
     let key = "sk1bdzb310n0s9tl";

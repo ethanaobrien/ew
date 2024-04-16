@@ -204,6 +204,15 @@ async fn announcement(req: HttpRequest) -> HttpResponse { router::web::announcem
 #[get("/api/home/announcement")]
 async fn announcement_api(req: HttpRequest) -> HttpResponse { router::user::announcement(req) }
 
+#[post("/api/card/reinforce")]
+async fn card_reinforce(req: HttpRequest, body: String) -> HttpResponse { router::card::reinforce(req, body) }
+
+#[post("/api/card/skill/reinforce")]
+async fn card_skill_reinforce(req: HttpRequest, body: String) -> HttpResponse { router::card::skill_reinforce(req, body) }
+
+#[post("/api/card/evolve")]
+async fn card_evolve(req: HttpRequest, body: String) -> HttpResponse { router::card::evolve(req, body) }
+
 async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap());
@@ -221,6 +230,9 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(card_evolve)
+        .service(card_skill_reinforce)
+        .service(card_reinforce)
         .service(announcement_api)
         .service(announcement)
         .service(sif_album)
