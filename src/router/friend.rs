@@ -47,13 +47,31 @@ pub fn ids(req: HttpRequest) -> HttpResponse {
     global::send(resp)
 }
 
-pub fn recommend(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn recommend(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
+    let friends = userdata::get_acc_friends(&key);
+    
+    let mut random = userdata::get_random_uids(20);
+    let index = random.members().into_iter().position(|r| *r.to_string() == user_id.to_string());
+    if !index.is_none() {
+        random.array_remove(index.unwrap());
+    }
+    
+    let mut rv = array![];
+    for (_i, uid) in random.members().enumerate() {
+        let user = global::get_user(uid.as_i64().unwrap(), &friends);
+        if user["user"]["friend_request_disabled"].to_string() == "1" || user.is_empty() {
+            continue;
+        }
+        rv.push(user).unwrap();
+    }
     
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": {
-            friend_list: []
+            friend_list: rv
         }
     };
     global::send(resp)

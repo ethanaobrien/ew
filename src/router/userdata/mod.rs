@@ -1,7 +1,7 @@
 use rusqlite::{Connection, params, ToSql};
 use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
-use json::{JsonValue, object};
+use json::{JsonValue, array, object};
 use crate::router::global;
 use rand::Rng;
 
@@ -55,7 +55,7 @@ fn lock_and_select(command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlit
         }
     }
 }
-fn create_store_v2(table: &str) {
+fn lock_and_select_all(command: &str, args: &[&dyn ToSql]) -> Result<JsonValue, rusqlite::Error> {
     loop {
         match ENGINE.lock() {
             Ok(mut result) => {
@@ -63,17 +63,31 @@ fn create_store_v2(table: &str) {
                     init(&mut result);
                 }
                 let conn = result.as_ref().unwrap();
-                conn.execute(
-                    table,
-                    (),
-                ).unwrap();
-                return;
+                let mut stmt = conn.prepare(command)?;
+                let map = stmt.query_map(args, |row| {
+                    match row.get::<usize, i64>(0) {
+                        Ok(val) => Ok(val.to_string()),
+                        Err(_) => row.get(0)
+                    }
+                })?;
+                let mut rv = array![];
+                for val in map {
+                    let res = val?;
+                    match res.clone().parse::<i64>() {
+                        Ok(v) => rv.push(v).unwrap(),
+                        Err(_) => rv.push(res).unwrap()
+                    };
+                }
+                return Ok(rv);
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
             }
         }
     }
+}
+fn create_store_v2(table: &str) {
+    lock_and_exec(table, params!());
 }
 
 fn create_token_store() {
@@ -376,4 +390,11 @@ pub fn friend_remove(uid: i64, requestor: i64) {
         friends["friend_user_id_list"].array_remove(index.unwrap());
     }
     lock_and_exec("UPDATE users SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+}
+
+pub fn get_random_uids(count: i32) -> JsonValue {
+    if count <= 0 {
+        return array![];
+    }
+    lock_and_select_all(&format!("SELECT user_id FROM uids ORDER BY RANDOM() LIMIT {}", count), params!()).unwrap()
 }

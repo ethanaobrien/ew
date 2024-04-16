@@ -235,7 +235,7 @@ pub fn get_user(id: i64, friends: &JsonValue) -> JsonValue {
         guest_smile_card: get_card(user["user"]["guest_smile_master_card_id"].as_i64().unwrap_or(0), &user),
         guest_cool_card: get_card(user["user"]["guest_cool_master_card_id"].as_i64().unwrap_or(0), &user),
         guest_pure_card: get_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user),
-        master_title_ids: user["master_title_ids"].clone()
+        master_title_ids: user["user"]["master_title_ids"].clone()
     };
     rv["user"].remove("sif_user_id");
     rv["user"].remove("ss_user_id");

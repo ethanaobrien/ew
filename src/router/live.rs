@@ -4,6 +4,7 @@ use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
+use rand::Rng;
 
 pub fn retire(_req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
@@ -18,15 +19,27 @@ pub fn retire(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
+fn random_number(lowest: usize, highest: usize) -> usize {
+    if lowest == highest {
+        return lowest;
+    }
+    assert!(lowest < highest);
+    
+    rand::thread_rng().gen_range(lowest..highest + 1)
+}
+
 pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
+    let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
+    let user = userdata::get_acc(&key);
     
     let mut guest_list = array![];
-    if friends["friend_user_id_list"].len() == 0 {
+    if user["tutorial_step"].as_i32().unwrap() != 130 {
         guest_list.push(object!{
             "user": {
-                "name": "A Nice Guest","comment":"Enjoy your live show!",
+                "name": "A VERY Nice Guest",
+                "comment": "Enjoy your first live show!",
                 "exp": 900,
                 "main_deck_slot": 1,
                 "favorite_master_card_id": 10010013,
@@ -70,11 +83,72 @@ pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
             "status":0
         }).unwrap();
     } else {
-        for (i, uid) in friends["friend_user_id_list"].members().enumerate() {
-            if i > 10 {
-                break;
+        if friends["friend_user_id_list"].len() != 0 {
+            guest_list.push(global::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends)).unwrap();
+        }
+        let expected: usize = 5;
+        if guest_list.len() < expected {
+            let mut random = userdata::get_random_uids((expected-guest_list.len()) as i32);
+            let index = random.members().into_iter().position(|r| *r.to_string() == user_id.to_string());
+            if !index.is_none() {
+                random.array_remove(index.unwrap());
             }
-            guest_list.push(global::get_user(uid.as_i64().unwrap(), &friends)).unwrap();
+            
+            for (_i, uid) in random.members().enumerate() {
+                let guest = global::get_user(uid.as_i64().unwrap(), &friends);
+                if guest["user"]["friend_request_disabled"].to_string() == "1" || guest.is_empty() {
+                    continue;
+                }
+                guest_list.push(guest).unwrap();
+            }
+        }
+        if guest_list.len() == 0 {
+            guest_list.push(object!{
+                "user": {
+                    "name": "A sad Guest",
+                    "comment": "Cant believe you're the only person on this server!",
+                    "exp": 900,
+                    "main_deck_slot": 1,
+                    "favorite_master_card_id": 10010013,
+                    "favorite_card_evolve": 0,
+                    "guest_smile_master_card_id": 10010013,
+                    "guest_cool_master_card_id": 10010013,
+                    "guest_pure_master_card_id": 10010013,
+                    "friend_request_disabled": 1,
+                    "master_title_ids": [3000001,0],
+                    "profile_settings": [1,2,3,4,5,6,7],
+                    "last_login_time": 1708699449
+                },
+                "favorite_card": {
+                    "id": 0,
+                    "master_card_id": 10010013,
+                    "exp": 1025,
+                    "skill_exp": 0,
+                    "evolve": []
+                },
+                "guest_smile_card": {
+                    "id": 0,
+                    "master_card_id": 10010013,
+                    "exp": 1025,
+                    "skill_exp": 0,
+                    "evolve": []
+                },
+                "guest_cool_card": {
+                    "id": 0,
+                    "master_card_id": 10010013,
+                    "exp": 1025,
+                    "skill_exp": 0,
+                    "evolve": []
+                },
+                "guest_pure_card": {
+                    "id": 0,
+                    "master_card_id": 10010013,
+                    "exp": 1025,
+                    "skill_exp": 0,
+                    "evolve": []
+                },
+                "status":0
+            }).unwrap();
         }
     }
     
