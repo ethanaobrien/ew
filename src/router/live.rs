@@ -205,6 +205,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
         "code": 0,
         "server_time": global::timestamp(),
         "data": {
+            "gem": user["gem"].clone(),
             "item_list": user["item_list"].clone(),
             "point_list": user["point_list"].clone(),
             "live": live,
