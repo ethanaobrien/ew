@@ -227,6 +227,9 @@ async fn webui_user(req: HttpRequest) -> HttpResponse { router::webui::user(req)
 #[get("/webui/logout")]
 async fn webui_logout(req: HttpRequest) -> HttpResponse { router::webui::logout(req) }
 
+#[post("/api/webui/import")]
+async fn webui_import(req: HttpRequest, body: String) -> HttpResponse { router::webui::import(req, body) }
+
 fn unhandled(req: HttpRequest) -> HttpResponse {
     router::webui::main(req)
 }
@@ -266,6 +269,7 @@ async fn main() -> std::io::Result<()> {
         })
         .service(css)
         .service(js)
+        .service(webui_import)
         .service(webui_logout)
         .service(webui_user)
         .service(webui_login)

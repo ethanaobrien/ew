@@ -41,6 +41,26 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
         .body(json::stringify(resp))
 }
 
+pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
+    let body = json::parse(&body).unwrap();
+    
+    let result = userdata::webui_import_user(body);
+    
+    if result.is_err() {
+        return error(&result.unwrap_err());
+    }
+    let result = result.unwrap();
+    
+    let resp = object!{
+        result: "OK",
+        uid: result["uid"].clone(),
+        migration_token: result["migration_token"].clone()
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(json::stringify(resp))
+}
+
 pub fn user(req: HttpRequest) -> HttpResponse {
     let token = get_login_token(&req);
     if token.is_none() {
@@ -90,7 +110,7 @@ pub fn main(req: HttpRequest) -> HttpResponse {
             }
         }
     }
-    if req.path() != "/" && req.path() != "/home/" {
+    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" {
         return HttpResponse::Found()
             .insert_header(("Location", "/"))
             .body("");

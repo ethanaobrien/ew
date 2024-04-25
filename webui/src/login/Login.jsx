@@ -24,6 +24,11 @@ function Login() {
             error[1](resp.message);
         }
     };
+    
+    const import_user = (e) => {
+        e.preventDefault();
+        window.location.href = "/import/";
+    }
   
     return (
         <div id="login-form">
@@ -34,7 +39,10 @@ function Login() {
                 <label htmlFor="password">Transfer passcode:</label>
                 <input type="password" id="password" name="password" onChange={(event) => {password = event.target.value}} />
                 <input type="submit" value="Submit" onClick={handleSubmit}/>
-                { error[0] && <p id="error">Error: { error[0] } </p> }
+                <div id="sub_div">
+                    <button onClick={import_user}>Import User</button>
+                    { error[0] ? <p>Error: { error[0] } </p> : <p></p> }
+                </div>
             </form>
         </div>
     );

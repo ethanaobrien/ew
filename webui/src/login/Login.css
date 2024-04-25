@@ -66,6 +66,30 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-#error {
-    color: red;
+#sub_div p {
+  color: red;
+  grid-template-columns: auto auto auto;
+}
+
+#sub_div {
+  padding-top: 10px;
+}
+
+#sub_div button {
+  width: 40%;
+  padding: 12px;
+  background-color: blue;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+#sub_div button:hover {
+  background-color: green;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }

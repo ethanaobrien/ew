@@ -104,6 +104,14 @@ fn get_new_uuid() -> String {
     
     id
 }
+pub fn import_user(uid: i64) -> String {
+    let token = get_new_uuid();
+    lock_and_exec(
+        "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
+        params!("", token, uid)
+    );
+    token
+}
 fn update_cert(uid: i64, cert: &str) {
     lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
 }
@@ -185,7 +193,6 @@ fn decrypt_transfer_password(password: &str) -> String {
     
     String::from_utf8_lossy(&decoded).to_string()
 }
-
 
 
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {

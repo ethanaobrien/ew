@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Login from './login/Login.jsx'
 import Home from './home/Home.jsx'
-//import './index.css'
+import Import from './import/Import.jsx'
 
 let Elem;
 switch (window.location.pathname) {
@@ -11,6 +11,9 @@ switch (window.location.pathname) {
         break;
     case "/home/":
         Elem = Home;
+        break;
+    case "/import/":
+        Elem = Import;
         break;
     default:
         window.location.pathname = "/";

@@ -434,6 +434,50 @@ pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
     Ok(new_token)
 }
 
+pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
+    let mut user = user;
+    create_webui_store();
+    create_migration_store();
+    create_token_store();
+    let uid = user["userdata"]["user"]["id"].as_i64().unwrap();
+    if acc_exists(uid) {
+        return Err(String::from("User already exists"));
+    }
+    if user["missions"].is_empty() {
+        user["missions"] = json::parse(include_str!("chat_missions.json")).unwrap();
+    }
+    if user["sif_cards"].is_empty() {
+        user["sif_cards"] = array![];
+    }
+    
+    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", params!(
+        uid,
+        json::stringify(user["userdata"].clone()),
+        json::stringify(user["home"].clone()),
+        json::stringify(user["missions"].clone()),
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
+        json::stringify(user["sif_cards"].clone()),
+        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#
+    ));
+    
+    let token;
+    if !user["jp"].is_empty() {
+        token = crate::router::gree::import_user(uid);
+    } else {
+        token = format!("{}", Uuid::new_v4());
+    }
+    
+    lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, token));
+    let mig = crate::router::user::uid_to_code(uid.to_string());
+    
+    save_acc_transfer(&mig, &user["password"].to_string());
+    
+    Ok(object!{
+        uid: uid,
+        migration_token: mig
+    })
+}
+
 pub fn webui_get_user(token: &str) -> Option<JsonValue> {
     let uid = lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).unwrap_or(String::new());
     if uid == String::new() || token == "" {
