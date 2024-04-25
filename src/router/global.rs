@@ -135,6 +135,26 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
     }
 }
 
+pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) {
+    let mut has = false;
+    for (_j, dataa) in user["point_list"].members_mut().enumerate() {
+        if dataa["type"].as_i64().unwrap() == master_item_id {
+            has = true;
+            dataa["amount"] = (dataa["amount"].as_i64().unwrap() + amount).into();
+            if dataa["amount"].as_i64().unwrap() > 2000000000 {
+                dataa["amount"] = (2000000000).into();
+            }
+        }
+        break;
+    }
+    if !has {
+        user["point_list"].push(object!{
+            type: master_item_id,
+            amount: amount
+        }).unwrap();
+    }
+}
+
 // true - added
 // false - already has
 pub fn give_character(id: String, user: &mut JsonValue) -> bool {

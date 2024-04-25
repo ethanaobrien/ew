@@ -263,23 +263,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     
-    let mut has = false;
-    for (_j, data) in user["point_list"].members_mut().enumerate() {
-        if data["type"].as_i64().unwrap() == 1 {
-            has = true;
-            data["amount"] = (data["amount"].as_i64().unwrap() + 50000).into();
-            if data["amount"].as_i64().unwrap() > 2000000000 {
-                data["amount"] = (2000000000).into();
-            }
-        }
-        break;
-    }
-    if !has {
-        user["point_list"].push(object!{
-            type: 1,
-            amount: 5000
-        }).unwrap();
-    }
+    global::give_points(1, 10000, &mut user);
     global::give_item(16005003, 10, &mut user);
     global::give_item(17001003, 2, &mut user);
     
