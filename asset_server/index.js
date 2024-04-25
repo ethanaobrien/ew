@@ -15,8 +15,9 @@ function createDirFromFile(path) {
 }
 
 app.get('/*', function (req, res) {
-    const expectedPath = __dirname + "/resources"+req.url;
+    const expectedPath = __dirname + "/resources"+req.url.split("?")[0];
     createDirFromFile(expectedPath);
+    
     let downloading = [];
     if (fs.existsSync(expectedPath)) {
         res.sendFile(expectedPath)
