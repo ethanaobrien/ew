@@ -3,3 +3,5 @@ asset_server/resources/
 target/
 python/
 *.db
+webui/node_modules/
+webui/dist/

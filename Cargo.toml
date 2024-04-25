@@ -20,3 +20,4 @@ sha1 = "0.10.6"
 substring = "1.4.5"
 uuid = { version = "1.8.0", features = ["v4"] }
 rsa = "0.9.6"
+mime = "0.3.17"

@@ -535,6 +535,7 @@ dependencies = [
  "json",
  "lazy_static",
  "md5",
+ "mime",
  "openssl",
  "rand",
  "rsa",

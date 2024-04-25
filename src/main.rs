@@ -6,7 +6,8 @@ use actix_web::{
     HttpResponse,
     HttpRequest,
     web,
-    dev::Service
+    dev::Service,
+    http::header::ContentType
 };
 
 #[post("/v1.0/auth/initialize")]
@@ -216,7 +217,37 @@ async fn card_skill_reinforce(req: HttpRequest, body: String) -> HttpResponse { 
 #[post("/api/card/evolve")]
 async fn card_evolve(req: HttpRequest, body: String) -> HttpResponse { router::card::evolve(req, body) }
 
+
+#[post("/api/webui/login")]
+async fn webui_login(req: HttpRequest, body: String) -> HttpResponse { router::webui::login(req, body) }
+
+#[get("/api/webui/userInfo")]
+async fn webui_user(req: HttpRequest) -> HttpResponse { router::webui::user(req) }
+
+#[get("/webui/logout")]
+async fn webui_logout(req: HttpRequest) -> HttpResponse { router::webui::logout(req) }
+
+fn unhandled(req: HttpRequest) -> HttpResponse {
+    router::webui::main(req)
+}
+#[get("/index.css")]
+async fn css(_req: HttpRequest) -> HttpResponse {
+    HttpResponse::Ok()
+        .insert_header(ContentType(mime::TEXT_CSS))
+        .body(include_str!("../webui/dist/index.css"))
+}
+#[get("/index.js")]
+async fn js(_req: HttpRequest) -> HttpResponse {
+    HttpResponse::Ok()
+        .insert_header(ContentType(mime::APPLICATION_JAVASCRIPT_UTF_8))
+        .body(include_str!("../webui/dist/index.js"))
+}
+
+
 async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
+    if !req.path().starts_with("/api") {
+        return unhandled(req);
+    }
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap());
     }
@@ -233,6 +264,11 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(css)
+        .service(js)
+        .service(webui_logout)
+        .service(webui_user)
+        .service(webui_login)
         .service(card_evolve)
         .service(card_skill_reinforce)
         .service(card_reinforce)

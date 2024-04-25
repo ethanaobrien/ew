@@ -3,6 +3,7 @@ use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
 use crate::router::global;
+use uuid::Uuid;
 use rand::Rng;
 
 lazy_static! {
@@ -397,4 +398,69 @@ pub fn get_random_uids(count: i32) -> JsonValue {
         return array![];
     }
     lock_and_select_all(&format!("SELECT user_id FROM uids ORDER BY RANDOM() LIMIT {}", count), params!()).unwrap()
+}
+
+fn create_webui_store() {
+    create_store_v2("CREATE TABLE IF NOT EXISTS webui (
+        user_id      BIGINT NOT NULL PRIMARY KEY,
+        token        TEXT NOT NULL,
+        last_login   BIGINT NOT NULL
+    )");
+}
+
+fn create_webui_token() -> String {
+    let token = format!("{}", Uuid::new_v4());
+    if lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).is_ok() {
+        return create_webui_token();
+    }
+    token
+}
+
+pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
+    create_webui_store();
+    create_migration_store();
+    let pass = lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or(String::new());
+    if pass != password.to_string() || password == "" {
+        if acc_exists(uid) {
+            return Err(String::from("Migration token not set. Set token in game settings."));
+        }
+        return Err(String::from("User/password don't match"));
+    }
+    
+    let new_token = create_webui_token();
+    
+    lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(uid));
+    lock_and_exec("INSERT INTO webui (user_id, token, last_login) VALUES (?1, ?2, ?3)", params!(uid, new_token, global::timestamp()));
+    Ok(new_token)
+}
+
+pub fn webui_get_user(token: &str) -> Option<JsonValue> {
+    let uid = lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).unwrap_or(String::new());
+    if uid == String::new() || token == "" {
+        return None;
+    }
+    let uid = uid.parse::<i64>().unwrap_or(0);
+    if uid == 0 {
+        return None;
+    }
+    let last_login = lock_and_select("SELECT last_login FROM webui WHERE user_id=?1", params!(uid)).unwrap_or(String::new()).parse::<i64>().unwrap_or(0);
+    let limit = 24 * 60 * 60; //1 day
+    //Expired token
+    if (global::timestamp() as i64) > last_login + limit {
+        lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(uid));
+        return None;
+    }
+    
+    let login_token = lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid)).unwrap_or(String::new());
+    if login_token == String::new() {
+        return None;
+    }
+    return Some(object!{
+        userdata: get_acc(&login_token),
+        loginbonus: get_acc_loginbonus(&login_token)
+    });
+}
+
+pub fn webui_logout(token: &str) {
+    lock_and_exec("DELETE FROM webui WHERE token=?1", params!(token));
 }
