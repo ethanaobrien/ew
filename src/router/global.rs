@@ -113,15 +113,24 @@ pub fn error_resp() -> HttpResponse {
     send(object!{})
 }
 
-pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
+
+// true - limit reached
+// false - all good
+const GIFT_LIMIT: usize = 100000;
+const LIMIT_ITEMS: i64 = 200000000;
+const LIMIT_COINS: i64 = 2000000000;
+const LIMIT_PRIMOGEMS: i64 = 2000000000;
+
+pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
     let mut has = false;
     for (_j, dataa) in user["item_list"].members_mut().enumerate() {
         if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
             has = true;
-            dataa["amount"] = (dataa["amount"].as_i64().unwrap() + amount).into();
-            if dataa["amount"].as_i64().unwrap() > 200000000 {
-                dataa["amount"] = (200000000).into();
+            let new_amount = dataa["amount"].as_i64().unwrap() + amount;
+            if new_amount > LIMIT_ITEMS {
+                return true;
             }
+            dataa["amount"] = new_amount.into();
         }
         break;
     }
@@ -133,17 +142,19 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
             expire_date_time: null
         }).unwrap();
     }
+    false
 }
 
-pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) {
+pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
     let mut has = false;
     for (_j, dataa) in user["point_list"].members_mut().enumerate() {
         if dataa["type"].as_i64().unwrap() == master_item_id {
             has = true;
-            dataa["amount"] = (dataa["amount"].as_i64().unwrap() + amount).into();
-            if dataa["amount"].as_i64().unwrap() > 2000000000 {
-                dataa["amount"] = (2000000000).into();
+            let new_amount = dataa["amount"].as_i64().unwrap() + amount;
+            if new_amount > LIMIT_COINS {
+                return true;
             }
+            dataa["amount"] = new_amount.into();
         }
         break;
     }
@@ -153,7 +164,38 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) {
             amount: amount
         }).unwrap();
     }
+    false
 }
+
+pub fn give_primogems(amount: i64, user: &mut JsonValue) -> bool {
+    let new_amount = user["gem"]["free"].as_i64().unwrap() + amount;
+    if new_amount > LIMIT_PRIMOGEMS {
+        return true;
+    }
+    
+    user["gem"]["free"] = new_amount.into();
+    false
+}
+
+pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) {
+    let to_push = object!{
+        id: item["id"].clone(),
+        reward_type: item["type"].clone(),
+        is_receive: 0,
+        reason_text: reason,
+        value: item["value"].clone(),
+        level: item["level"].clone(),
+        amount: item["amount"].clone(),
+        created_date_time: timestamp(),
+        expire_date_time: timestamp() + (5 * (24 * 60 * 60)),
+        received_date_time: 0
+    };
+    if user["home"]["gift_list"].len() >= GIFT_LIMIT {
+        return;
+    }
+    user["home"]["gift_list"].push(to_push).unwrap();
+}
+
 
 // true - added
 // false - already has
@@ -177,22 +219,6 @@ pub fn give_character(id: String, user: &mut JsonValue) -> bool {
     true
 }
 
-pub fn gift_item(item: &JsonValue, user: &mut JsonValue) {
-    let to_push = object!{
-        id: item["id"].clone(),
-        reward_type: item["type"].clone(),
-        give_type: item["giveType"].clone(),
-        is_receive: 0,
-        reason_text: "Because you logged in!!!!!!!!!!!!",
-        value: item["value"].clone(),
-        level: item["level"].clone(),
-        amount: item["amount"].clone(),
-        created_date_time: timestamp(),
-        expire_date_time: timestamp() + (5 * (24 * 60 * 60)),
-        received_date_time: 0
-    };
-    user["home"]["gift_list"].push(to_push).unwrap();
-}
 pub fn get_user_rank_data(exp: i64) -> JsonValue {
     let ranks = json::parse(include_str!("userdata/user_rank.json")).unwrap();
     
