@@ -34,12 +34,9 @@ lazy_static! {
                 };
             }
         }
-        let days = json::parse(include_str!("json/login_bonus_reward.json")).unwrap();
+        let days = json::parse(include_str!("json/login_bonus_reward_setting.json")).unwrap();
         for (_i, data) in days.members().enumerate() {
             if info[data["masterReleaseLabelId"].to_string()].is_null() {
-                continue;
-            }
-            if info[data["masterReleaseLabelId"].to_string()]["days"].len() != 0 && data["id"].as_i64().unwrap() != info[data["masterReleaseLabelId"].to_string()]["days"][info[data["masterReleaseLabelId"].to_string()]["days"].len() - 1]["id"].as_i64().unwrap() + 1 {
                 continue;
             }
             info[data["masterReleaseLabelId"].to_string()]["days"].push(data.clone()).unwrap();
@@ -95,8 +92,9 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
                 to_rm.push(i).unwrap();
                 continue;
             }
+            let item_id = crate::router::user::get_info_from_id(info["days"][current]["masterLoginBonusRewardId"].as_i64().unwrap());
             
-            global::gift_item(&info["days"][current], &mut user_home);
+            global::gift_item(&item_id, &format!("Login bonus day {}!", current+1), &mut user_home);
             data["day_counts"].push(current + 1).unwrap();
         }
         for (i, data) in to_rm.members().enumerate() {
