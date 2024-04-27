@@ -136,13 +136,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut new_ids = array![];
     for (_i, data) in cardstogive.members().enumerate() {
         if !global::give_character(data["master_card_id"].to_string(), &mut user) {
-            let to_push = object!{
-                "id": 6600,
-                "master_item_id": 19100001,
-                "amount": 20,
-                "expire_date_time": null
-            };
-            user["item_list"].push(to_push).unwrap();
+            global::give_item(19100001, 20, &mut user);
             continue;
         }
         new_ids.push(data["master_lottery_item_id"].to_string()).unwrap();

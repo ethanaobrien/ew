@@ -47,7 +47,7 @@ pub fn user(req: HttpRequest) -> HttpResponse {
 }
 
 lazy_static! {
-    static ref LOTTERY_INFO: JsonValue = {
+    static ref LOGIN_REWARDS: JsonValue = {
         let mut info = object!{};
         let items = json::parse(include_str!("json/login_bonus_reward.json")).unwrap();
         for (_i, data) in items.members().enumerate() {
@@ -57,8 +57,8 @@ lazy_static! {
     };
 }
 
-fn get_info_from_id(id: i64) -> JsonValue {
-    LOTTERY_INFO[id.to_string()].clone()
+pub fn get_info_from_id(id: i64) -> JsonValue {
+    LOGIN_REWARDS[id.to_string()].clone()
 }
 
 pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
@@ -77,65 +77,34 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
             if data["id"].to_string() != gift_id.to_string() {
                 continue;
             }
-            let info = get_info_from_id(data["id"].as_i64().unwrap());
-            //println!("{}", json::stringify(info.clone()));
-            
-            if info["giveType"].to_string() == "1" {
-                if info["type"].to_string() == "1" {
-                    // basically primogems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    userr["gem"]["free"] = (userr["gem"]["free"].as_i64().unwrap() + info["amount"].as_i64().unwrap()).into();
-                } else if info["type"].to_string() == "2" {
-                    //character
-                    global::give_character(info["value"].to_string(), &mut userr);
-                } else if info["type"].to_string() == "3" {
-                    let mut has = false;
-                    for (_k, data2) in userr["item_list"].members_mut().enumerate() {
-                        if data2["master_item_id"].to_string() == info["value"].to_string() {
-                            has = true;
-                            data2["amount"] = (data2["amount"].as_i64().unwrap() + info["amount"].as_i64().unwrap()).into();
-                            break;
-                        }
-                    }
-                    if !has {
-                        userr["item_list"].push(object!{
-                            id: info["value"].clone(),
-                            master_item_id: info["value"].clone(),
-                            amount: info["amount"].clone(),
-                            expire_date_time: null
-                        }).unwrap();
-                    }
-                } else if info["type"].to_string() == "4" {
-                    // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    let mut has = false;
-                    for (_k, data2) in userr["point_list"].members_mut().enumerate() {
-                        if data2["type"].to_string() == info["type"].to_string() {
-                            has = true;
-                            data2["amount"] = (data2["amount"].as_i64().unwrap() + info["amount"].as_i64().unwrap()).into();
-                            break;
-                        }
-                    }
-                    if !has {
-                        userr["point_list"].push(object!{
-                            type: info["type"].clone(),
-                            amount: info["amount"].clone()
-                        }).unwrap();
-                    }
-                } else {
-                    println!("Redeeming reward not implimented for reward id {}", info["id"].to_string());
-                    failed.push(gift_id.clone()).unwrap();
-                    break;
-                }
+            let limit_reached;
+            //println!("{}", json::stringify(data.clone()));
+            if data["reward_type"].to_string() == "1" {
+                // basically primogems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                limit_reached = global::give_primogems(data["amount"].as_i64().unwrap(), &mut userr);
+            } else if data["reward_type"].to_string() == "2" {
+                //character
+                global::give_character(data["value"].to_string(), &mut userr);
+                limit_reached = false;
+            } else if data["reward_type"].to_string() == "3" {
+                limit_reached = global::give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), &mut userr);
+            } else if data["reward_type"].to_string() == "4" {
+                // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                limit_reached = global::give_points(data["reward_type"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), &mut userr);
             } else {
-                println!("Redeeming reward not implimented for give type {}", info["giveType"].to_string());
+                println!("Redeeming reward not implimented for reward type {}", data["reward_type"].to_string());
+                limit_reached = true;
+            }
+            if limit_reached {
                 failed.push(gift_id.clone()).unwrap();
                 break;
             }
             let to_push = object!{
-                give_type: info["giveType"].clone(),
+                give_type: 2,
                 type: data["reward_type"].clone(),
-                value: info["value"].clone(),
-                level: info["level"].clone(),
-                amount: info["amount"].clone()
+                value: data["value"].clone(),
+                level: data["level"].clone(),
+                amount: data["amount"].clone()
             };
             rewards.push(to_push).unwrap();
             to_remove = j + 1;
@@ -200,6 +169,9 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     }
     if !body["main_deck_slot"].is_null() {
         user["user"]["main_deck_slot"] = body["main_deck_slot"].clone();
+    }
+    if !body["master_title_ids"].is_null() {
+        user["user"]["master_title_ids"][0] = body["master_title_ids"][0].clone();
     }
     
     userdata::save_acc(&key, user.clone());
