@@ -131,8 +131,8 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool
                 return true;
             }
             dataa["amount"] = new_amount.into();
+            break;
         }
-        break;
     }
     if !has {
         user["item_list"].push(object!{
@@ -155,8 +155,8 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bo
                 return true;
             }
             dataa["amount"] = new_amount.into();
+            break;
         }
-        break;
     }
     if !has {
         user["point_list"].push(object!{
