@@ -69,24 +69,7 @@ fn lock_and_select(command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlit
     }
 }
 fn create_store_v2(table: &str) {
-    loop {
-        match ENGINE.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    init(&mut result);
-                }
-                let conn = result.as_ref().unwrap();
-                conn.execute(
-                    table,
-                    (),
-                ).unwrap();
-                return;
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
-    }
+    lock_and_exec(table, params!());
 }
 fn uuid_exists(uuid: &str) -> bool {
     let data = lock_and_select("SELECT uuid FROM uuids WHERE uuid=?1", params!(uuid));
@@ -108,7 +91,7 @@ pub fn import_user(uid: i64) -> String {
     let token = get_new_uuid();
     lock_and_exec(
         "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
-        params!("", token, uid)
+        params!("none", token, uid)
     );
     token
 }
