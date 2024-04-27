@@ -167,10 +167,13 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bo
     false
 }
 
-pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) {
+pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) -> bool {
+    if crate::router::login::get_login_bonus_info(id).is_empty() {
+        return false;
+    }
     for (_j, dataa) in bonus["bonus_list"].members().enumerate() {
         if dataa["master_login_bonus_id"].as_i64().unwrap() == id {
-            return;
+            return false;
         }
     }
     bonus["bonus_list"].push(object!{
@@ -178,6 +181,7 @@ pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) {
         day_counts: [],
         event_bonus_list: []
     }).unwrap();
+    true
 }
 
 pub fn give_primogems(amount: i64, user: &mut JsonValue) -> bool {

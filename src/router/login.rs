@@ -49,7 +49,7 @@ lazy_static! {
     };
 }
 
-fn get_login_bonus_info(id: i64) -> JsonValue {
+pub fn get_login_bonus_info(id: i64) -> JsonValue {
     LOTTERY_INFO[id.to_string()].clone()
 }
 

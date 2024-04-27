@@ -221,6 +221,9 @@ async fn card_evolve(req: HttpRequest, body: String) -> HttpResponse { router::c
 #[post("/api/webui/login")]
 async fn webui_login(req: HttpRequest, body: String) -> HttpResponse { router::webui::login(req, body) }
 
+#[post("/api/webui/startLoginbonus")]
+async fn webui_start_loginbonus(req: HttpRequest, body: String) -> HttpResponse { router::webui::start_loginbonus(req, body) }
+
 #[get("/api/webui/userInfo")]
 async fn webui_user(req: HttpRequest) -> HttpResponse { router::webui::user(req) }
 
@@ -269,6 +272,7 @@ async fn main() -> std::io::Result<()> {
         })
         .service(css)
         .service(js)
+        .service(webui_start_loginbonus)
         .service(webui_import)
         .service(webui_logout)
         .service(webui_user)

@@ -478,7 +478,7 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
     })
 }
 
-pub fn webui_get_user(token: &str) -> Option<JsonValue> {
+fn webui_login_token(token: &str) -> Option<String> {
     let uid = lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).unwrap_or(String::new());
     if uid == String::new() || token == "" {
         return None;
@@ -494,15 +494,44 @@ pub fn webui_get_user(token: &str) -> Option<JsonValue> {
         lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(uid));
         return None;
     }
-    
     let login_token = lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid)).unwrap_or(String::new());
     if login_token == String::new() {
         return None;
     }
+    Some(login_token)
+}
+
+pub fn webui_get_user(token: &str) -> Option<JsonValue> {
+    let login_token = webui_login_token(token)?;
+    
     return Some(object!{
         userdata: get_acc(&login_token),
         loginbonus: get_acc_loginbonus(&login_token)
     });
+}
+
+pub fn webui_start_loginbonus(bonus_id: i64, token: &str) -> JsonValue {
+    let login_token = webui_login_token(token);
+    if login_token.is_none() {
+        return object!{
+            result: "ERR",
+            message: "Failed to validate token"
+        };
+    }
+    let login_token = login_token.unwrap();
+    let mut bonuses = get_acc_loginbonus(&login_token);
+    if !global::start_login_bonus(bonus_id, &mut bonuses) {
+        return object!{
+            result: "ERR",
+            message: "Login bonus ID is either already going or does not exist"
+        };
+    }
+    save_acc_loginbonus(&login_token, bonuses);
+    
+    return object!{
+        result: "OK",
+        id: bonus_id
+    };
 }
 
 pub fn webui_logout(token: &str) {
