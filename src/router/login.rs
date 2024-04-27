@@ -27,8 +27,8 @@ lazy_static! {
         let mut info = object!{};
         let items = json::parse(include_str!("json/login_bonus.json")).unwrap();
         for (_i, data) in items.members().enumerate() {
-            if info[data["masterReleaseLabelId"].to_string()].is_null() {
-                info[data["masterReleaseLabelId"].to_string()] = object!{
+            if info[data["id"].to_string()].is_null() {
+                info[data["id"].to_string()] = object!{
                     info: data.clone(),
                     days: []
                 };
@@ -36,10 +36,10 @@ lazy_static! {
         }
         let days = json::parse(include_str!("json/login_bonus_reward_setting.json")).unwrap();
         for (_i, data) in days.members().enumerate() {
-            if info[data["masterReleaseLabelId"].to_string()].is_null() {
+            if info[data["masterLoginBonusId"].to_string()].is_null() {
                 continue;
             }
-            info[data["masterReleaseLabelId"].to_string()]["days"].push(data.clone()).unwrap();
+            info[data["masterLoginBonusId"].to_string()]["days"].push(data.clone()).unwrap();
         }
         let mut real_info = object!{};
         for (_i, data) in info.entries().enumerate() {
