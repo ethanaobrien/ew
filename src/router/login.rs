@@ -62,21 +62,7 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
     let last_reset = global::timestamp_since_midnight();
     let mut bonuses = userdata::get_acc_loginbonus(&key);
     if bonuses["bonus_list"].is_empty() {
-        bonuses["bonus_list"].push(object!{
-            master_login_bonus_id: 1,
-            day_counts: [],
-            event_bonus_list: []
-        }).unwrap();
-        bonuses["bonus_list"].push(object!{
-            master_login_bonus_id: 2,
-            day_counts: [],
-            event_bonus_list: []
-        }).unwrap();
-        bonuses["bonus_list"].push(object!{
-            master_login_bonus_id: 3,
-            day_counts: [],
-            event_bonus_list: []
-        }).unwrap();
+        global::start_login_bonus(1, &mut bonuses);
     }
     
     let to_send;

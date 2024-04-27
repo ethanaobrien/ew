@@ -167,6 +167,19 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bo
     false
 }
 
+pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) {
+    for (_j, dataa) in bonus["bonus_list"].members().enumerate() {
+        if dataa["master_login_bonus_id"].as_i64().unwrap() == id {
+            return;
+        }
+    }
+    bonus["bonus_list"].push(object!{
+        master_login_bonus_id: id,
+        day_counts: [],
+        event_bonus_list: []
+    }).unwrap();
+}
+
 pub fn give_primogems(amount: i64, user: &mut JsonValue) -> bool {
     let new_amount = user["gem"]["free"].as_i64().unwrap() + amount;
     if new_amount > LIMIT_PRIMOGEMS {
