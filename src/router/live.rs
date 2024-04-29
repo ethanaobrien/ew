@@ -267,11 +267,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     global::give_item(16005003, 10, &mut user);
     global::give_item(17001003, 2, &mut user);
     
-    user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i32().unwrap() - body["use_lp"].as_i32().unwrap()).into();
-    if user["stamina"]["stamina"].as_i32().unwrap() < 0 {
-        user["stamina"]["stamina"] = (0).into();
-    }
-    user["stamina"]["last_updated_time"] = global::timestamp().into();
+    global::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
     
     global::give_exp(body["use_lp"].as_i32().unwrap(), &mut user);
     

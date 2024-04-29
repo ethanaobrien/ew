@@ -217,6 +217,12 @@ async fn card_skill_reinforce(req: HttpRequest, body: String) -> HttpResponse { 
 #[post("/api/card/evolve")]
 async fn card_evolve(req: HttpRequest, body: String) -> HttpResponse { router::card::evolve(req, body) }
 
+#[get("/api/shop")]
+async fn shop(req: HttpRequest) -> HttpResponse { router::shop::shop(req) }
+
+#[post("/api/shop/buy")]
+async fn shop_buy(req: HttpRequest, body: String) -> HttpResponse { router::shop::buy(req, body) }
+
 
 #[post("/api/webui/login")]
 async fn webui_login(req: HttpRequest, body: String) -> HttpResponse { router::webui::login(req, body) }
@@ -270,6 +276,8 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(shop)
+        .service(shop_buy)
         .service(css)
         .service(js)
         .service(webui_start_loginbonus)

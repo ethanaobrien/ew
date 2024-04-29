@@ -121,6 +121,28 @@ const LIMIT_ITEMS: i64 = 200000000;
 const LIMIT_COINS: i64 = 2000000000;
 const LIMIT_PRIMOGEMS: i64 = 2000000000;
 
+pub fn give_shop(master_item_id: i64, count: i64, user: &mut JsonValue) -> bool {
+    let mut has = false;
+    for (_j, dataa) in user["shop_list"].members_mut().enumerate() {
+        if dataa["master_shop_item_id"].as_i64().unwrap() == master_item_id {
+            has = true;
+            let new_amount = dataa["count"].as_i64().unwrap() + count;
+            if new_amount > LIMIT_ITEMS {
+                return true;
+            }
+            dataa["count"] = new_amount.into();
+            break;
+        }
+    }
+    if !has {
+        user["shop_list"].push(object!{
+            master_shop_item_id: master_item_id,
+            count: count
+        }).unwrap();
+    }
+    false
+}
+
 pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
     let mut has = false;
     for (_j, dataa) in user["item_list"].members_mut().enumerate() {
@@ -213,6 +235,32 @@ pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) {
     user["home"]["gift_list"].push(to_push).unwrap();
 }
 
+pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
+    let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
+    
+    let speed = 285; //4 mins, 45 sec
+    let since_last = timestamp() - user["stamina"]["last_updated_time"].as_u64().unwrap();
+    
+    let diff = since_last % speed;
+    let restored = (since_last - diff) / speed;
+    user["stamina"]["last_updated_time"] = (timestamp() - diff).into();
+    
+    let mut stamina = user["stamina"]["stamina"].as_u64().unwrap();
+    if stamina < max {
+        stamina += restored;
+        if stamina > max {
+            stamina = max;
+        }
+    }
+    
+    if remove {
+        stamina -= change_amount;
+    } else {
+        stamina += change_amount;
+    }
+    
+    user["stamina"]["stamina"] = stamina.into();
+}
 
 // true - added
 // false - already has

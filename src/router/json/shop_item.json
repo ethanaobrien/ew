@@ -1,0 +1,32 @@
+[
+  {
+    "id": 40100011,
+    "name": "ラブカ×20個",
+    "masterBillingShopId": 4010001,
+    "consumeType": 2,
+    "price": 20,
+    "masterShopRewardId": 40100011,
+    "buyLimit": 0,
+    "startdashTime": 0,
+    "startdashExpireTime": 0,
+    "priority": 1,
+    "spriteName": "0",
+    "timeResetType": 2,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 40100012,
+    "name": "ラブカ×200個",
+    "masterBillingShopId": 4010001,
+    "consumeType": 1,
+    "price": 200,
+    "masterShopRewardId": 40100012,
+    "buyLimit": 0,
+    "startdashTime": 0,
+    "startdashExpireTime": 0,
+    "priority": 1,
+    "spriteName": "0",
+    "timeResetType": 0,
+    "masterReleaseLabelId": 1
+  }
+]
