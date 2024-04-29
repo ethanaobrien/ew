@@ -146,7 +146,7 @@ async fn live_end(req: HttpRequest, body: String) -> HttpResponse { router::live
 async fn live_retire(req: HttpRequest, body: String) -> HttpResponse { router::live::retire(req, body) }
 
 #[get("/api/live/clearRate")]
-async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::live::clearrate(req) }
+async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::clear_rate::clearrate(req) }
 
 #[post("/api/live/continue")]
 async fn live_continue(req: HttpRequest, body: String) -> HttpResponse { router::live::continuee(req, body) }

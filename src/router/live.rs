@@ -1,12 +1,14 @@
-use json;
 use json::{object, array, JsonValue};
 use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
 use crate::router::userdata;
 use rand::Rng;
+use crate::router::clear_rate::live_completed;
 
-pub fn retire(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn retire(_req: HttpRequest, body: String) -> HttpResponse {
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true);
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -263,6 +265,8 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     
+    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false);
+    
     global::give_points(1, 10000, &mut user);
     global::give_item(16005003, 10, &mut user);
     global::give_item(17001003, 2, &mut user);
@@ -295,16 +299,6 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
             "event_member": [],
             "event_ranking_data": []
         }
-    };
-    global::send(resp)
-}
-
-pub fn clearrate(_req: HttpRequest) -> HttpResponse {
-    
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": json::parse(include_str!("clearrate.json")).unwrap()
     };
     global::send(resp)
 }
