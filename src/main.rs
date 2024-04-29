@@ -85,6 +85,9 @@ async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { route
 #[post("/api/user/detail")]
 async fn user_detail(req: HttpRequest, body: String) -> HttpResponse { router::user::detail(req, body) }
 
+#[get("/api/gift")]
+async fn gift_get(req: HttpRequest) -> HttpResponse { router::home::gift_get(req) }
+
 #[post("/api/gift")]
 async fn gift(req: HttpRequest, body: String) -> HttpResponse { router::user::gift(req, body) }
 
@@ -196,6 +199,9 @@ async fn gglrequestmigrationcode(req: HttpRequest, body: String) -> HttpResponse
 #[post("/api/user/gglverifymigrationcode")]
 async fn gglverifymigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::verify_migration_code(req, body) }
 
+#[post("/api/serial_code")]
+async fn serial_code(req: HttpRequest, body: String) -> HttpResponse { router::serial_code::serial_code(req, body) }
+
 #[get("/api/serial_code/events")]
 async fn serial_code_events(req: HttpRequest) -> HttpResponse { router::serial_code::events(req) }
 
@@ -276,6 +282,7 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(serial_code)
         .service(shop)
         .service(shop_buy)
         .service(css)
@@ -354,6 +361,7 @@ async fn main() -> std::io::Result<()> {
         .service(gglverifymigrationcode)
         .service(serial_code_events)
         .service(gift)
+        .service(gift_get)
         .default_service(web::route().to(log_unknown_request)))
         .bind(("0.0.0.0", 8080))?
         .run();

@@ -216,7 +216,7 @@ pub fn give_primogems(amount: i64, user: &mut JsonValue) -> bool {
     false
 }
 
-pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) {
+pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) -> JsonValue {
     let to_push = object!{
         id: item["id"].clone(),
         reward_type: item["type"].clone(),
@@ -230,9 +230,10 @@ pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) {
         received_date_time: 0
     };
     if user["home"]["gift_list"].len() >= GIFT_LIMIT {
-        return;
+        return to_push;
     }
-    user["home"]["gift_list"].push(to_push).unwrap();
+    user["home"]["gift_list"].push(to_push.clone()).unwrap();
+    return to_push;
 }
 
 pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {

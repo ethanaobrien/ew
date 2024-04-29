@@ -1,4 +1,4 @@
-use json::{object, array};
+use json::{object, array, JsonValue};
 use crate::router::global;
 use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
@@ -24,6 +24,33 @@ pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp)
 }
 
+fn check_gifts(user: &mut JsonValue) {
+    let mut to_remove = array![];
+    for (j, data) in user["home"]["gift_list"].members().enumerate() {
+        if data["is_receive"].to_string() == "1" || data["expire_date_time"].as_u64().unwrap() < global::timestamp() {
+            to_remove.push(j).unwrap();
+        }
+    }
+    for (i, data) in to_remove.members().enumerate() {
+        user["home"]["gift_list"].array_remove(data.as_usize().unwrap() - i);
+    }
+}
+
+pub fn gift_get(req: HttpRequest) -> HttpResponse {
+    let key = global::get_login(req.headers(), "");
+    let mut user = userdata::get_acc_home(&key);
+    check_gifts(&mut user);
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "gift_list": user["home"]["gift_list"].clone()
+        }
+    };
+    global::send(resp)
+}
+
 pub fn preset_get(req: HttpRequest) -> HttpResponse {
     let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc(&key);
@@ -44,15 +71,7 @@ pub fn home(req: HttpRequest) -> HttpResponse {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc_home(&key);
     
-    let mut to_remove = array![];
-    for (j, data) in user["home"]["gift_list"].members().enumerate() {
-        if data["is_receive"].to_string() == "1" || data["expire_date_time"].as_u64().unwrap() < global::timestamp() {
-            to_remove.push(j).unwrap();
-        }
-    }
-    for (i, data) in to_remove.members().enumerate() {
-        user["home"]["gift_list"].array_remove(data.as_usize().unwrap() - i);
-    }
+    check_gifts(&mut user);
     userdata::save_acc_home(&key, user.clone());
     
     let resp = object!{
