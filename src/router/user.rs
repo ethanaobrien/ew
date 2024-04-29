@@ -92,7 +92,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
                 limit_reached = global::give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), &mut userr);
             } else if data["reward_type"].to_string() == "4" {
                 // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                limit_reached = global::give_points(data["reward_type"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), &mut userr);
+                limit_reached = global::give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), &mut userr);
             } else {
                 println!("Redeeming reward not implimented for reward type {}", data["reward_type"].to_string());
                 limit_reached = true;

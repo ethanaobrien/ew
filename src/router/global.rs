@@ -236,6 +236,16 @@ pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) -> JsonVa
     return to_push;
 }
 
+pub fn gift_item_basic(id: i32, value: i64, ty_pe: i32, reason: &str, user: &mut JsonValue) -> JsonValue {
+    gift_item(&object!{
+        id: timestamp(),
+        type: ty_pe,
+        level: 0,
+        amount: value,
+        value: id
+    }, reason, user)
+}
+
 pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
     let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
     
