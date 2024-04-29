@@ -100,11 +100,6 @@ fn create_token_store() {
         token    TEXT NOT NULL
     )");
 }
-fn create_uid_store() {
-    create_store_v2("CREATE TABLE IF NOT EXISTS uids (
-        user_id  BIGINT NOT NULL PRIMARY KEY
-    )");
-}
 fn create_migration_store() {
     create_store_v2("CREATE TABLE IF NOT EXISTS migration (
         token     TEXT NOT NULL PRIMARY KEY,
@@ -113,13 +108,14 @@ fn create_migration_store() {
 }
 fn create_users_store() {
     create_store_v2("CREATE TABLE IF NOT EXISTS users (
-        user_id     BIGINT NOT NULL PRIMARY KEY,
-        userdata    TEXT NOT NULL,
-        userhome    TEXT NOT NULL,
-        missions    TEXT NOT NULL,
-        loginbonus  TEXT NOT NULL,
-        sifcards    TEXT NOT NULL,
-        friends     TEXT NOT NULL
+        user_id         BIGINT NOT NULL PRIMARY KEY,
+        userdata        TEXT NOT NULL,
+        userhome        TEXT NOT NULL,
+        missions        TEXT NOT NULL,
+        loginbonus      TEXT NOT NULL,
+        sifcards        TEXT NOT NULL,
+        friends         TEXT NOT NULL,
+        friend_request_disabled  INT NOT NULL
     )");
 }
 
@@ -142,19 +138,17 @@ fn get_key(auth_key: &str) -> i64 {
     key
 }
 fn uid_exists(uid: i64) -> bool {
-    let data = lock_and_select("SELECT user_id FROM uids WHERE user_id=?1", params!(uid));
+    let data = lock_and_select("SELECT user_id FROM users WHERE user_id=?1", params!(uid));
     data.is_ok()
 }
 
 fn generate_uid() -> i64 {
-    create_uid_store();
     let mut rng = rand::thread_rng();
     let random_number = rng.gen_range(100_000_000_000_000..=999_999_999_999_999);
     //the chances of this...?
     if uid_exists(random_number) {
         return generate_uid();
     }
-    lock_and_exec("INSERT INTO uids (user_id) VALUES (?1)", params!(random_number));
     
     random_number
 }
@@ -166,14 +160,15 @@ fn create_acc(uid: i64, login: &str) {
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", params!(
+    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)", params!(
         uid,
         json::stringify(new_user),
         include_str!("new_user_home.json"),
         include_str!("chat_missions.json"),
         format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
         "[]",
-        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#
+        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
+        0
     ));
     
     create_token_store();
@@ -245,6 +240,7 @@ pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
 }
 
 pub fn save_acc(auth_key: &str, data: JsonValue) {
+    lock_and_exec("UPDATE users SET friend_request_disabled=?1 WHERE user_id=?2", params!(data["user"]["friend_request_disabled"].as_i32().unwrap(), get_key(&auth_key)));
     save_data(auth_key, "userdata", data);
 }
 pub fn save_acc_home(auth_key: &str, data: JsonValue) {
@@ -387,7 +383,7 @@ pub fn get_random_uids(count: i32) -> JsonValue {
     if count <= 0 {
         return array![];
     }
-    lock_and_select_all(&format!("SELECT user_id FROM uids ORDER BY RANDOM() LIMIT {}", count), params!()).unwrap()
+    lock_and_select_all(&format!("SELECT user_id FROM users WHERE friend_request_disabled=?1 ORDER BY RANDOM() LIMIT {}", count), params!(0)).unwrap()
 }
 
 fn create_webui_store() {
@@ -440,14 +436,15 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
         user["sif_cards"] = array![];
     }
     
-    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)", params!(
+    lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)", params!(
         uid,
         json::stringify(user["userdata"].clone()),
         json::stringify(user["home"].clone()),
         json::stringify(user["missions"].clone()),
         format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
         json::stringify(user["sif_cards"].clone()),
-        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#
+        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
+        user["userdata"]["user"]["friend_request_disabled"].as_i32().unwrap()
     ));
     
     let token;
