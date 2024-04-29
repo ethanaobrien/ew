@@ -7,7 +7,10 @@ use uuid::Uuid;
 use rand::Rng;
 
 lazy_static! {
-    pub static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
+    static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
+    static ref NEW_USER: JsonValue = {
+        json::parse(include_str!("new_user.json")).unwrap()
+    };
 }
 
 fn init(engine: &mut MutexGuard<'_, Option<Connection>>) {
@@ -159,7 +162,7 @@ fn generate_uid() -> i64 {
 fn create_acc(uid: i64, login: &str) {
     create_users_store();
     
-    let mut new_user = json::parse(include_str!("new_user.json")).unwrap();
+    let mut new_user = NEW_USER.clone();
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
@@ -208,6 +211,10 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
 pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
+    if user["master_music_ids"].len() != 637 {
+        user["master_music_ids"] = NEW_USER["master_music_ids"].clone();
+    }
+    
     global::lp_modification(&mut user, 0, false);
     return user;
 }

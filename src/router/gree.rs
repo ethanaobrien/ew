@@ -21,7 +21,7 @@ use openssl::hash::MessageDigest;
 use openssl::sign::Verifier;
 
 lazy_static! {
-    pub static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
+    static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
 }
 fn init(engine: &mut MutexGuard<'_, Option<Connection>>) {
     let conn = Connection::open("gree.db").unwrap();
