@@ -1,10 +1,24 @@
 # EW
 (stands for ew why)
 
-Use https://ethanthesleepy.one/public/lovelive/sif2global_patched.7z (patched apk that points to 127.0.0.1 (port 8080 for api, and 8887 for assets))
+A (mostly functioning) server for Love Live! School idol festival 2 MIRACLE LIVE!
 
-Just putting there here:
-```
-adb reverse tcp:8080 tcp:8080
-adb reverse tcp:8887 tcp:8887
-```
+## Building
+
+### Linux
+
+#### Requirements
+- [perl](https://www.perl.org/get.html) (This is normally pre-installed)
+- [rust](https://www.rust-lang.org/tools/install)
+- The [libssl-dev](https://packages.debian.org/buster/libssl-dev) package. This will vary across distros.
+
+### Windows
+
+#### Requirements
+- [Strawberry Perl](https://strawberryperl.com/)
+- [rust](https://www.rust-lang.org/tools/install)
+
+### Packaging/Running
+
+Debug: `cargo run`
+Release: `cargo build --release`
