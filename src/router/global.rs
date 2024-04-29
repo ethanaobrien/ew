@@ -9,6 +9,7 @@ use std::time::{SystemTime, UNIX_EPOCH};
 use base64::{Engine as _, engine::general_purpose};
 use crate::router::userdata;
 use lazy_static::lazy_static;
+use rand::Rng;
 
 pub const ASSET_VERSION:          &str = "13177023d4b7ad41ff52af4cefba5c55";
 pub const ASSET_HASH_ANDROID:     &str = "017ec1bcafbeea6a7714f0034b15bd0f";
@@ -90,6 +91,12 @@ pub fn timestamp() -> u64 {
 
     let unix_timestamp = now.duration_since(UNIX_EPOCH).unwrap();
     return unix_timestamp.as_secs();
+}
+pub fn timestamp_msec() -> u32 {
+    let now = SystemTime::now();
+
+    let unix_timestamp = now.duration_since(UNIX_EPOCH).unwrap();
+    return unix_timestamp.subsec_nanos();
 }
 pub fn timestamp_since_midnight() -> u64 {
     let now = SystemTime::now();
@@ -235,10 +242,17 @@ pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) -> JsonVa
     user["home"]["gift_list"].push(to_push.clone()).unwrap();
     return to_push;
 }
-
+fn random_number(lowest: usize, highest: usize) -> usize {
+    if lowest == highest {
+        return lowest;
+    }
+    assert!(lowest < highest);
+    
+    rand::thread_rng().gen_range(lowest..highest + 1)
+}
 pub fn gift_item_basic(id: i32, value: i64, ty_pe: i32, reason: &str, user: &mut JsonValue) -> JsonValue {
     gift_item(&object!{
-        id: timestamp(),
+        id: random_number(0, timestamp_msec() as usize),
         type: ty_pe,
         level: 0,
         amount: value,
