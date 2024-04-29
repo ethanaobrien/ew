@@ -4,6 +4,7 @@ use actix_web::{HttpResponse, HttpRequest};
 use rusqlite::{Connection, params, ToSql};
 use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
+use std::thread;
 
 lazy_static! {
     static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
@@ -225,12 +226,24 @@ fn get_clearrate_json() -> JsonValue {
                     result.replace(get_json());
                 }
                 let cache = result.as_ref().unwrap();
-                if cache["last_updated"].as_u64().unwrap() + (60 * 60) > global::timestamp() {
-                    return cache["cache"].clone();
+                let rv = cache["cache"].clone();
+                if cache["last_updated"].as_u64().unwrap() + (60 * 60) < global::timestamp() {
+                    thread::spawn(|| {
+                        loop {
+                            match CACHED_DATA.lock() {
+                                Ok(mut result) => {
+                                    let new = get_json();
+                                    result.replace(new.clone());
+                                    break;
+                                }
+                                Err(_) => {
+                                    std::thread::sleep(std::time::Duration::from_millis(15));
+                                }
+                            }
+                        }
+                    });
                 }
-                let new = get_json();
-                result.replace(new.clone());
-                return new["cache"].clone();
+                return rv;
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
