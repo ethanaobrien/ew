@@ -267,9 +267,9 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     
     live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false);
     
-    global::give_points(1, 10000, &mut user);
-    global::give_item(16005003, 10, &mut user);
-    global::give_item(17001003, 2, &mut user);
+    global::gift_item_basic(1, 10000, 4, "You completed a live!", &mut user);
+    global::gift_item_basic(16005003, 10, 3, "You completed a live!", &mut user);
+    global::gift_item_basic(17001003, 2, 3, "You completed a live!", &mut user);
     
     global::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
     
