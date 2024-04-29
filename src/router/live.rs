@@ -262,14 +262,14 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue) -> JsonValue {
 pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let user2 = userdata::get_acc_home(&key);
+    let mut user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     
     live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false);
     
-    global::gift_item_basic(1, 10000, 4, "You completed a live!", &mut user);
-    global::gift_item_basic(16005003, 10, 3, "You completed a live!", &mut user);
-    global::gift_item_basic(17001003, 2, 3, "You completed a live!", &mut user);
+    global::gift_item_basic(1, 10000, 4, "You completed a live!", &mut user2);
+    global::gift_item_basic(16005003, 10, 3, "You completed a live!", &mut user2);
+    global::gift_item_basic(17001003, 2, 3, "You completed a live!", &mut user2);
     
     global::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
     
@@ -278,6 +278,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let live = update_live_data(&mut user, &body);
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_home(&key, user2.clone());
     
     let resp = object!{
         "code": 0,
