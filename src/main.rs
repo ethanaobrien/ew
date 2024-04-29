@@ -184,6 +184,9 @@ async fn login_bonus(req: HttpRequest, body: String) -> HttpResponse { router::l
 #[get("/api/notice/reward")]
 async fn reward(req: HttpRequest) -> HttpResponse { router::notice::reward(req) }
 
+#[post("/api/notice/reward")]
+async fn reward_post(req: HttpRequest, body: String) -> HttpResponse { router::notice::reward_post(req, body) }
+
 #[post("/api/user/getmigrationcode")]
 async fn getmigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::get_migration_code(req, body) }
 
@@ -316,6 +319,7 @@ async fn main() -> std::io::Result<()> {
         .service(debug_error)
         .service(login_bonus)
         .service(reward)
+        .service(reward_post)
         .service(live_continue)
         .service(live_guest)
         .service(live_mission)

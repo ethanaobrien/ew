@@ -100,10 +100,7 @@ pub fn lottery(_req: HttpRequest) -> HttpResponse {
         "code": 0,
         "server_time": global::timestamp(),
         "data": {
-            "lottery_list": [
-                {"master_lottery_id":1110001,"master_lottery_price_number":1,"count":3,"daily_count":0,"last_count_date":"2023-04-16 23:58:31"}
-
-            ]
+            "lottery_list": []
         }
     };
     global::send(resp)

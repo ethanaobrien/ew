@@ -36,7 +36,9 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
 
 pub fn user(req: HttpRequest) -> HttpResponse {
     let key = global::get_login(req.headers(), "");
-    let user = userdata::get_acc(&key);
+    let mut user = userdata::get_acc(&key);
+    
+    user["lottery_list"] = array![];
     
     let resp = object!{
         "code": 0,

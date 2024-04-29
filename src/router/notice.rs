@@ -15,3 +15,12 @@ pub fn reward(_req: HttpRequest) -> HttpResponse {
     };
     global::send(resp)
 }
+
+pub fn reward_post(_req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": []
+    };
+    global::send(resp)
+}
