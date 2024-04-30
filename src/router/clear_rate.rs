@@ -181,7 +181,7 @@ fn get_live_id(id: i64) -> i64 {
 fn get_pass_percent(failed: i64, pass: i64) -> String {
     let total = (failed + pass) as f64;
     if failed + pass == 0 {
-        return String::from("-/-%");
+        return String::from("--/--%");
     }
     let pass = pass as f64;
     format!("{:.2}%", pass / total * 100.0)
