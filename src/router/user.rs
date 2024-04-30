@@ -153,6 +153,7 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     }
     if !body["favorite_master_card_id"].is_null() {
         user["user"]["favorite_master_card_id"] = body["favorite_master_card_id"].clone();
+        user["user"]["favorite_card_evolve"] = if global::get_card(body["favorite_master_card_id"].as_i64().unwrap(), &user)["evolve"].is_empty() { 0 } else { 1 }.into();
     }
     if !body["guest_smile_master_card_id"].is_null() {
         user["user"]["guest_smile_master_card_id"] = body["guest_smile_master_card_id"].clone();

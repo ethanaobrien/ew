@@ -330,7 +330,7 @@ pub fn give_exp(amount: i32, user: &mut JsonValue) {
     }
 }
 
-fn get_card(id: i64, user: &JsonValue) -> JsonValue {
+pub fn get_card(id: i64, user: &JsonValue) -> JsonValue {
     if id == 0 {
         return object!{};
     }
