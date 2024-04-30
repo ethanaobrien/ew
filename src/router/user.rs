@@ -176,6 +176,9 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     if !body["master_title_ids"].is_null() {
         user["user"]["master_title_ids"][0] = body["master_title_ids"][0].clone();
     }
+    if !body["birthday"].is_null() {
+        user["user"]["birthday"][0] = body["birthday"].clone();
+    }
     
     userdata::save_acc(&key, user.clone());
     
