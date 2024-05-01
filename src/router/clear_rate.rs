@@ -156,32 +156,32 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
     let mut result = array![];
     let mut current = 0;
     let mut added = false;
-    for _i in 0..11 {
+    for i in 0..10 {
         if current >= 10 {
             break;
         }
-        if scores[current].is_empty() && !added {
+        if scores[i].is_empty() && !added {
             added = true;
             result.push(object!{user: uid, score: score}).unwrap();
         }
-        if scores[current].is_empty() {
+        if scores[i].is_empty() {
             break;
         }
-        if scores[current]["score"].as_i64().unwrap() < score {
+        if scores[i]["score"].as_i64().unwrap() < score && !added {
             added = true;
             result.push(object!{user: uid, score: score}).unwrap();
             current += 1;
-            if scores[current].is_empty() {
+            if current >= 10 {
                 break;
             }
         }
-        if scores[current]["user"].as_i64().unwrap() == uid && !added {
+        if scores[i]["user"].as_i64().unwrap() == uid && !added {
             return;
         }
-        if scores[current]["user"].as_i64().unwrap() == uid {
+        if scores[i]["user"].as_i64().unwrap() == uid {
             continue;
         }
-        result.push(scores[current].clone()).unwrap();
+        result.push(scores[i].clone()).unwrap();
         current += 1;
     }
     
