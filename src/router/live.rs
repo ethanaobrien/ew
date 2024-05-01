@@ -246,6 +246,55 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue) -> JsonValue {
     rv
 }
 
+pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let mut user2 = userdata::get_acc_home(&key);
+    let mut user = userdata::get_acc(&key);
+    
+    global::gift_item_basic(1, 10000, 4, "You skipped a live!", &mut user2);
+    global::gift_item_basic(16005003, 10, 3, "You skipped a live!", &mut user2);
+    global::gift_item_basic(17001003, 2, 3, "You skipped a live!", &mut user2);
+    
+    global::give_exp(10, &mut user);
+    
+    let live = update_live_data(&mut user, &object!{
+        master_live_id: body["master_live_id"].clone(),
+        level: 1,
+        live_score: {
+            score: 1,
+            max_combo: 1
+        }
+    });
+    
+    userdata::save_acc(&key, user.clone());
+    userdata::save_acc_home(&key, user2.clone());
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "gem": user["gem"].clone(),
+            "high_score": live["high_score"].clone(),
+            "item_list": user["item_list"].clone(),
+            "point_list": user["point_list"].clone(),
+            "live": live,
+            "clear_master_live_mission_ids": [],
+            "user": user["user"].clone(),
+            "stamina": user["stamina"].clone(),
+            "character_list": user["character_list"].clone(),
+            "reward_list": [],
+            "gift_list": user2["home"]["gift_list"].clone(),
+            "clear_mission_ids": user2["clear_mission_ids"].clone(),
+            "event_point_reward_list": [],
+            "ranking_change": [],
+            "event_member": [],
+            "event_ranking_data": []
+        }
+    };
+    global::send(resp)
+}
+
 pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -272,6 +321,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": {
             "gem": user["gem"].clone(),
+            "high_score": live["high_score"].clone(),
             "item_list": user["item_list"].clone(),
             "point_list": user["point_list"].clone(),
             "live": live,

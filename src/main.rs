@@ -142,6 +142,9 @@ async fn live_start(req: HttpRequest, body: String) -> HttpResponse { router::li
 #[post("/api/live/end")]
 async fn live_end(req: HttpRequest, body: String) -> HttpResponse { router::live::end(req, body) }
 
+#[post("/api/live/skip")]
+async fn live_skip(req: HttpRequest, body: String) -> HttpResponse { router::live::skip(req, body) }
+
 #[post("/api/live/retire")]
 async fn live_retire(req: HttpRequest, body: String) -> HttpResponse { router::live::retire(req, body) }
 
@@ -327,6 +330,7 @@ async fn main() -> std::io::Result<()> {
         .service(live_clearrate)
         .service(live_start)
         .service(live_end)
+        .service(live_skip)
         .service(live_retire)
         .service(chat_home)
         .service(chat_end)
