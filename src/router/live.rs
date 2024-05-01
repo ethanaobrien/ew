@@ -8,7 +8,7 @@ use crate::router::clear_rate::live_completed;
 
 pub fn retire(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true);
+    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -86,7 +86,7 @@ pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
         }).unwrap();
     } else {
         if friends["friend_user_id_list"].len() != 0 {
-            guest_list.push(global::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends)).unwrap();
+            guest_list.push(global::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends, false)).unwrap();
         }
         let expected: usize = 5;
         if guest_list.len() < expected {
@@ -97,7 +97,7 @@ pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
             }
             
             for (_i, uid) in random.members().enumerate() {
-                let guest = global::get_user(uid.as_i64().unwrap(), &friends);
+                let guest = global::get_user(uid.as_i64().unwrap(), &friends, false);
                 if guest["user"]["friend_request_disabled"].to_string() == "1" || guest.is_empty() {
                     continue;
                 }
@@ -178,19 +178,6 @@ pub fn mission(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
-// /api/live/ranking
-pub fn ranking(_req: HttpRequest, _body: String) -> HttpResponse {
-    //todo
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "ranking_list": []
-        }
-    };
-    global::send(resp)
-}
-
 pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
         "code": 0,
@@ -265,7 +252,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let mut user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     
-    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false);
+    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
     
     global::gift_item_basic(1, 10000, 4, "You completed a live!", &mut user2);
     global::gift_item_basic(16005003, 10, 3, "You completed a live!", &mut user2);

@@ -353,11 +353,12 @@ fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
     }
     return rv;
 }
-pub fn get_user(id: i64, friends: &JsonValue) -> JsonValue {
+pub fn get_user(id: i64, friends: &JsonValue, live_data: bool) -> JsonValue {
     let user = userdata::get_acc_from_uid(id);
     if !user["error"].is_empty() {
         return object!{};
     }
+    
     let mut rv = object!{
         user: user["user"].clone(),
         live_data_summary: {
@@ -384,15 +385,17 @@ pub fn get_user(id: i64, friends: &JsonValue) -> JsonValue {
     rv["user"].remove("ss_user_id");
     rv["user"].remove("birthday");
     
-    rv["status"] = if friends["friend_user_id_list"].contains(id) {
-        3
-    } else if friends["pending_user_id_list"].contains(id) {
-        2
-    } else if friends["request_user_id_list"].contains(id) {
-        1
-    } else {
-        0
-    }.into();
+    if !friends.is_empty() {
+        rv["status"] = if friends["friend_user_id_list"].contains(id) {
+            3
+        } else if friends["pending_user_id_list"].contains(id) {
+            2
+        } else if friends["request_user_id_list"].contains(id) {
+            1
+        } else {
+            0
+        }.into();
+    }
     
     rv
 }

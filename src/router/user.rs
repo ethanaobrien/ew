@@ -351,7 +351,7 @@ pub fn detail(req: HttpRequest, body: String) -> HttpResponse {
     let mut user_detail_list = array![];
     for (_i, data) in body["user_ids"].members().enumerate() {
         let uid = data.as_i64().unwrap();
-        let user = global::get_user(uid, &friends);
+        let user = global::get_user(uid, &friends, true);
         user_detail_list.push(user).unwrap();
     }
     let resp = object!{

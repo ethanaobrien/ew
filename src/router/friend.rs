@@ -22,7 +22,7 @@ pub fn friend(req: HttpRequest, body: String) -> HttpResponse {
     };
     
     for (_i, uid) in rv_data.members().enumerate() {
-        rv.push(global::get_user(uid.as_i64().unwrap(), &friends)).unwrap();
+        rv.push(global::get_user(uid.as_i64().unwrap(), &friends, false)).unwrap();
     }
     
     let resp = object!{
@@ -60,7 +60,7 @@ pub fn recommend(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut rv = array![];
     for (_i, uid) in random.members().enumerate() {
-        let user = global::get_user(uid.as_i64().unwrap(), &friends);
+        let user = global::get_user(uid.as_i64().unwrap(), &friends, false);
         if user["user"]["friend_request_disabled"].to_string() == "1" || user.is_empty() {
             continue;
         }
@@ -83,7 +83,7 @@ pub fn search(req: HttpRequest, body: String) -> HttpResponse {
     let friends = userdata::get_acc_friends(&key);
     
     let uid = body["user_id"].as_i64().unwrap();
-    let user = global::get_user(uid, &friends);
+    let user = global::get_user(uid, &friends, false);
     
     let resp = object!{
         "code": 0,

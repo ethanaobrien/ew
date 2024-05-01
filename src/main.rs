@@ -131,7 +131,7 @@ async fn live_guest(req: HttpRequest, body: String) -> HttpResponse { router::li
 async fn live_mission(req: HttpRequest, body: String) -> HttpResponse { router::live::mission(req, body) }
 
 #[post("/api/live/ranking")]
-async fn live_ranking(req: HttpRequest, body: String) -> HttpResponse { router::live::ranking(req, body) }
+async fn live_ranking(req: HttpRequest, body: String) -> HttpResponse { router::clear_rate::ranking(req, body) }
 
 #[post("/api/event")]
 async fn event(req: HttpRequest, body: String) -> HttpResponse { router::event::event(req, body) }

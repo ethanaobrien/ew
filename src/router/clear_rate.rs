@@ -5,6 +5,7 @@ use rusqlite::{Connection, params, ToSql};
 use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static;
 use std::thread;
+use crate::encryption;
 
 lazy_static! {
     static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
@@ -25,6 +26,28 @@ fn lock_and_exec(command: &str, args: &[&dyn ToSql]) {
                 let conn = result.as_ref().unwrap();
                 conn.execute(command, args).unwrap();
                 return;
+            }
+            Err(_) => {
+                std::thread::sleep(std::time::Duration::from_millis(15));
+            }
+        }
+    }
+}
+fn lock_and_select(command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlite::Error> {
+    loop {
+        match ENGINE.lock() {
+            Ok(mut result) => {
+                if result.is_none() {
+                    init(&mut result);
+                }
+                let conn = result.as_ref().unwrap();
+                let mut stmt = conn.prepare(command)?;
+                return stmt.query_row(args, |row| {
+                    match row.get::<usize, i64>(0) {
+                        Ok(val) => Ok(val.to_string()),
+                        Err(_) => row.get(0)
+                    }
+                });
             }
             Err(_) => {
                 std::thread::sleep(std::time::Duration::from_millis(15));
@@ -121,8 +144,55 @@ fn get_live_data(id: i64) -> Result<Live, rusqlite::Error> {
     }
 }
 
-pub fn live_completed(id: i64, level: i32, failed: bool) {
-    //let live = get_live_id(id);
+fn update_live_score(id: i64, uid: i64, score: i64) {
+    lock_and_exec("CREATE TABLE IF NOT EXISTS scores (
+        live_id      INT NOT NULL PRIMARY KEY,
+        score_data   TEXT NOT NULL
+    )", params!());
+    
+    let info = lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(id)).unwrap_or(String::from("[]"));
+    let scores = json::parse(&info).unwrap();
+    
+    let mut result = array![];
+    let mut current = 0;
+    let mut added = false;
+    for _i in 0..11 {
+        if current >= 10 {
+            break;
+        }
+        if scores[current].is_empty() && !added {
+            added = true;
+            result.push(object!{user: uid, score: score}).unwrap();
+        }
+        if scores[current].is_empty() {
+            break;
+        }
+        if scores[current]["score"].as_i64().unwrap() < score {
+            added = true;
+            result.push(object!{user: uid, score: score}).unwrap();
+            current += 1;
+        }
+        if scores[current]["user"].as_i64().unwrap() == uid && !added {
+            return;
+        }
+        if scores[current]["user"].as_i64().unwrap() == uid {
+            continue;
+        }
+        result.push(scores[current].clone()).unwrap();
+        current += 1;
+    }
+    
+    if added {
+        if lock_and_select("SELECT live_id FROM scores WHERE live_id=?1", params!(id)).is_ok() {
+            lock_and_exec("UPDATE scores SET score_data=?1 WHERE live_id=?2", params!(json::stringify(result), id));
+        } else {
+            lock_and_exec("INSERT INTO scores (score_data, live_id) VALUES (?1, ?2)", params!(json::stringify(result), id));
+        }
+    }
+}
+
+pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
+    update_live_score(id, uid, score);
     match get_live_data(id) {
         Ok(info) => {
             let value = format!("{}_{}", 
@@ -257,6 +327,38 @@ pub fn clearrate(_req: HttpRequest) -> HttpResponse {
         "code": 0,
         "server_time": global::timestamp(),
         "data": get_clearrate_json()
+    };
+    global::send(resp)
+}
+
+pub fn ranking(_req: HttpRequest, body: String) -> HttpResponse {
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let live = body["master_live_id"].as_i64().unwrap();
+    
+    let info = lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(live)).unwrap_or(String::from("[]"));
+    let scores = json::parse(&info).unwrap();
+    
+    let mut rank = array![];
+    
+    for (i, data) in scores.members().enumerate() {
+        let user = global::get_user(data["user"].as_i64().unwrap(), &object![], false);
+        rank.push(object!{
+            rank: i + 1,
+            user: user["user"].clone(),
+            score: data["score"].as_i64().unwrap(),
+            favorite_card: user["favorite_card"].clone(),
+            guest_smile_card: user["guest_smile_card"].clone(),
+            guest_cool_card: user["guest_cool_card"].clone(),
+            guest_pure_card: user["guest_pure_card"].clone()
+        }).unwrap();
+    }
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "ranking_list": rank
+        }
     };
     global::send(resp)
 }
