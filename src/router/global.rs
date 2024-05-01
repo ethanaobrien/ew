@@ -11,8 +11,8 @@ use crate::router::userdata;
 use lazy_static::lazy_static;
 use rand::Rng;
 
-pub const ASSET_VERSION:          &str = "13177023d4b7ad41ff52af4cefba5c55";
-pub const ASSET_HASH_ANDROID:     &str = "017ec1bcafbeea6a7714f0034b15bd0f";
+pub const ASSET_VERSION:          &str = "cb87bc1468c8631a262ff65b2960470b";
+pub const ASSET_HASH_ANDROID:     &str = "4715e873031ae4abc3c625e2bd8c935b";
 pub const ASSET_HASH_IOS:         &str = "466d4616d14a8d8a842de06426e084c2";
 
 pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";

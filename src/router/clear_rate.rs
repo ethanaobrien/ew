@@ -171,6 +171,9 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
             added = true;
             result.push(object!{user: uid, score: score}).unwrap();
             current += 1;
+            if scores[current].is_empty() {
+                break;
+            }
         }
         if scores[current]["user"].as_i64().unwrap() == uid && !added {
             return;
