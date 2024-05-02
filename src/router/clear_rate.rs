@@ -149,6 +149,9 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
         live_id      INT NOT NULL PRIMARY KEY,
         score_data   TEXT NOT NULL
     )", params!());
+    if uid == 0 || score == 0 {
+        return;
+    }
     
     let info = lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(id)).unwrap_or(String::from("[]"));
     let scores = json::parse(&info).unwrap();
