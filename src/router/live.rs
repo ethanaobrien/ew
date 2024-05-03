@@ -310,7 +310,7 @@ fn get_live_mission_info(id: i64) -> JsonValue {
     MISSION_REWARD_DATA[id.to_string()].clone()
 }
 
-fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, combo: i64, clear_count: i64, level: i64, full_combo: bool) -> Option<JsonValue> {
+fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, combo: i64, clear_count: i64, level: i64) -> Option<JsonValue> {
     let live_info = get_live_info(live_id);
     let mut out = array![];
     let combo_info = get_live_combo_info(live_info["masterMusicId"].as_i64()?);
@@ -328,7 +328,7 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
                 }
             },
             3 => {
-                if full_combo && data["level"].as_i64()? == level {
+                if combo_info["valueList"][3].as_i64()? <= combo && data["level"].as_i64()? == level {
                     out.push(data["id"].as_i32()?).ok()?;
                 }
             },
@@ -383,8 +383,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     
     live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
     
-    let is_full_combo = (body["live_score"]["good"].as_i32().unwrap() + body["live_score"]["bad"].as_i32().unwrap() + body["live_score"]["miss"].as_i32().unwrap()) == 0;
-    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), body["level"].as_i64().unwrap(), is_full_combo).unwrap_or(array![]);
+    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), body["level"].as_i64().unwrap()).unwrap_or(array![]);
     
     update_live_mission_data(&mut user, &object!{
         master_live_id: body["master_live_id"].as_i64().unwrap(),
@@ -438,7 +437,7 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
         }
     }, false);
     
-    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap(), false).unwrap_or(array![]);
+    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap()).unwrap_or(array![]);
     
     update_live_mission_data(&mut user, &object!{
         master_live_id: body["master_live_id"].as_i64().unwrap(),
