@@ -208,8 +208,11 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
 pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
-    if user["master_music_ids"].len() != 637 {
+    if user["master_music_ids"].len() != NEW_USER["master_music_ids"].len() {
         user["master_music_ids"] = NEW_USER["master_music_ids"].clone();
+    }
+    if user["master_title_ids"].is_empty() {
+        user["master_title_ids"] = NEW_USER["master_title_ids"].clone();
     }
     
     global::lp_modification(&mut user, 0, false);
