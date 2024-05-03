@@ -172,11 +172,11 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
         lottery_id = 1110024;
         let price = PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
         
-        if price["consumeType"].as_i32().unwrap() == 1 {
-            global::remove_gems(&mut user, price["price"].as_i64().unwrap());
-        } else if price["consumeType"].as_i32().unwrap() == 4 {
-            global::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
-        }
+        //if price["consumeType"].as_i32().unwrap() == 1 {
+        //    global::remove_gems(&mut user, price["price"].as_i64().unwrap());
+        //} else if price["consumeType"].as_i32().unwrap() == 4 {
+        //    global::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
+        //}
         
         cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
     }
