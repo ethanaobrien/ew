@@ -288,6 +288,9 @@ fn verify_password(password: &str, salted_hash: &str) -> bool {
         return password == salted_hash;
     }
     let bytes = bytes.unwrap();
+    if bytes.len() < 17 {
+        return password == salted_hash;
+    }
     let (salt, hashed_password) = bytes.split_at(16);
     let hashed_password = &hashed_password[0..32];
 
