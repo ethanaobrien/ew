@@ -390,6 +390,25 @@ fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
     }
     return rv;
 }
+fn get_clear_count(user: &JsonValue, level: i32) -> i64 {
+    let mut rv = 0;
+    for (_i, current) in user["live_list"].members().enumerate() {
+        if current["level"].to_string() == level.to_string() {
+            rv += 1;
+        }
+    }
+    rv
+}
+fn get_full_combo_count(user: &JsonValue, level: i32) -> i64 {
+    let mut rv = 0;
+    for (_i, current) in user["live_mission_list"].members().enumerate() {
+        if current["clear_master_live_mission_ids"].contains(20 + level) {
+            rv += 1;
+        }
+    }
+    rv
+}
+
 pub fn get_user(id: i64, friends: &JsonValue, live_data: bool) -> JsonValue {
     let user = userdata::get_acc_from_uid(id);
     if !user["error"].is_empty() {
@@ -398,15 +417,6 @@ pub fn get_user(id: i64, friends: &JsonValue, live_data: bool) -> JsonValue {
     
     let mut rv = object!{
         user: user["user"].clone(),
-        live_data_summary: {
-            clear_count_list: [0, 0, 0, 0],
-            full_combo_list: [0, 0, 0, 0],
-            all_perfect_list: [0, 0, 0, 0],
-            high_score_rate: {
-                rate: 0,
-                detail: []
-            }
-        },
         main_deck_detail: {
             total_power: 0, //how to calculate?
             deck: user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1].clone(),
@@ -418,6 +428,17 @@ pub fn get_user(id: i64, friends: &JsonValue, live_data: bool) -> JsonValue {
         guest_pure_card: get_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user),
         master_title_ids: user["user"]["master_title_ids"].clone()
     };
+    if live_data {
+        rv["live_data_summary"] = object!{
+            clear_count_list: [get_clear_count(&user, 1), get_clear_count(&user, 2), get_clear_count(&user, 3), get_clear_count(&user, 4)],
+            full_combo_list: [get_full_combo_count(&user, 1), get_full_combo_count(&user, 2), get_full_combo_count(&user, 3), get_full_combo_count(&user, 4)],
+            all_perfect_list: [0, 0, 0, 0],
+            high_score_rate: {
+                rate: 0,
+                detail: []
+            }
+        };
+    }
     rv["user"].remove("sif_user_id");
     rv["user"].remove("ss_user_id");
     rv["user"].remove("birthday");
