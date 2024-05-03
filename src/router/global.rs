@@ -194,7 +194,7 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue) -> bool {
     println!("Redeeming reward not implimented for reward type {}", data["reward_type"].to_string());
     return false;
 }
-pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i32, user: &mut JsonValue) -> bool {
+pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue) -> bool {
     give_gift(&object!{
         reward_type: ty_pe,
         amount: amount,

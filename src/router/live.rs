@@ -260,7 +260,11 @@ pub fn update_live_mission_data(user: &mut JsonValue, data: &JsonValue) {
     
     for (_i, current) in user["live_mission_list"].members_mut().enumerate() {
         if current["master_live_id"].to_string() == rv["master_live_id"].to_string() {
-            current["clear_master_live_mission_ids"] = data["clear_master_live_mission_ids"].clone();
+            for (_i, id) in data["clear_master_live_mission_ids"].members().enumerate() {
+                if !current["clear_master_live_mission_ids"].contains(id.as_i32().unwrap()) {
+                    current["clear_master_live_mission_ids"].push(id.as_i32().unwrap()).unwrap();
+                }
+            }
             return;
         }
     }
@@ -306,34 +310,45 @@ fn get_live_mission_info(id: i64) -> JsonValue {
     MISSION_REWARD_DATA[id.to_string()].clone()
 }
 
-fn get_live_mission_completed_ids(live_id: i64, score: i64, combo: i64, clear_count: i64, level: i64, full_combo: bool) -> Option<JsonValue> {
+fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, combo: i64, clear_count: i64, level: i64, full_combo: bool) -> Option<JsonValue> {
     let live_info = get_live_info(live_id);
-    let mut rv = array![];
+    let mut out = array![];
     let combo_info = get_live_combo_info(live_info["masterMusicId"].as_i64()?);
     
     for (_i, data) in MISSION_DATA.members().enumerate() {
         match data["type"].as_i32()? {
             1 => {
                 if live_info[&format!("score{}", data["value"].to_string())].as_i64()? <= score {
-                    rv.push(data["id"].as_i32()?).ok()?;
+                    out.push(data["id"].as_i32()?).ok()?;
                 }
             },
             2 => {
                 if combo_info["valueList"][data["value"].to_string().parse::<usize>().ok()?].as_i64()? <= combo {
-                    rv.push(data["id"].as_i32()?).ok()?;
+                    out.push(data["id"].as_i32()?).ok()?;
                 }
             },
             3 => {
                 if full_combo && data["level"].as_i64()? == level {
-                    rv.push(data["id"].as_i32()?).ok()?;
+                    out.push(data["id"].as_i32()?).ok()?;
                 }
             },
             4 => {
                 if clear_count >= data["value"].to_string().parse::<i64>().ok()? {
-                    rv.push(data["id"].as_i32()?).ok()?;
+                    out.push(data["id"].as_i32()?).ok()?;
                 }
             },
             _ => {}
+        }
+    }
+    let mut rv = array![];
+    for (_i, current) in user["live_mission_list"].members().enumerate() {
+        if current["master_live_id"].to_string() == rv["master_live_id"].to_string() {
+            for (_i, id) in out.members().enumerate() {
+                if !current["clear_master_live_mission_ids"].contains(id.as_i32().unwrap()) {
+                    rv.push(id.as_i32().unwrap()).unwrap();
+                }
+            }
+            break;
         }
     }
     Some(rv)
@@ -350,10 +365,10 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, multiplier: 
         gift["amount"] = (gift["amount"].as_i64().unwrap() * multiplier).into();
         global::give_gift(&gift, user);
     }
-    if global::give_gift_basic(3, 16005001, 10, user) {
+    if global::give_gift_basic(3, 16005001, 10 * multiplier, user) {
         rv.push(object!{"type":3,"value":16005001,"level":0,"amount":10}).unwrap();
     }
-    if global::give_gift_basic(3, 17001001, 2, user) {
+    if global::give_gift_basic(3, 17001001, 2 * multiplier, user) {
         rv.push(object!{"type":3,"value":17001001,"level":0,"amount":2}).unwrap();
     }
     rv
@@ -369,7 +384,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
     
     let is_full_combo = (body["live_score"]["good"].as_i32().unwrap() + body["live_score"]["bad"].as_i32().unwrap() + body["live_score"]["miss"].as_i32().unwrap()) == 0;
-    let missions = get_live_mission_completed_ids(body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), body["level"].as_i64().unwrap(), is_full_combo).unwrap_or(array![]);
+    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), body["level"].as_i64().unwrap(), is_full_combo).unwrap_or(array![]);
     
     update_live_mission_data(&mut user, &object!{
         master_live_id: body["master_live_id"].as_i64().unwrap(),
@@ -423,7 +438,7 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
         }
     }, false);
     
-    let missions = get_live_mission_completed_ids(body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap(), false).unwrap_or(array![]);
+    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap(), false).unwrap_or(array![]);
     
     update_live_mission_data(&mut user, &object!{
         master_live_id: body["master_live_id"].as_i64().unwrap(),
