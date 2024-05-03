@@ -186,31 +186,29 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut lottery_list = array![];
     
     if lottery_type == 1 {
-        let mut new_ids = array![];
         for (_i, data) in cardstogive.members().enumerate() {
+            let mut is_new = true;
             if !global::give_character(data["master_card_id"].to_string(), &mut user) {
-                continue;
+                is_new = false;
             }
-            new_ids.push(data["master_lottery_item_id"].to_string()).unwrap();
-            let to_push = object!{
-                "id": data["master_card_id"].clone(),
-                "master_card_id": data["master_card_id"].clone(),
-                "exp": 0,
-                "skill_exp": 0,
-                "evolve": [],
-                "created_date_time": global::timestamp()
-            };
-            new_cards.push(to_push).unwrap();
-        }
-        
-        for (_i, data) in cardstogive.members().enumerate() {
-            let new = if new_ids.contains(data["master_lottery_item_id"].to_string()) { 1 } else { 0 };
+            if is_new {
+                let to_push = object!{
+                    "id": data["master_card_id"].clone(),
+                    "master_card_id": data["master_card_id"].clone(),
+                    "exp": 0,
+                    "skill_exp": 0,
+                    "evolve": [],
+                    "created_date_time": global::timestamp()
+                };
+                new_cards.push(to_push).unwrap();
+            }
             let mut to_push = object!{
                 "master_lottery_item_id": data["master_lottery_item_id"].clone(),
                 "master_lottery_item_number": data["master_lottery_item_number"].clone(),
-                "is_new": new
+                "is_new": if is_new { 1 } else { 0 }
             };
-            if new == 0 {
+            if !is_new {
+                //given by global::give_character call
                 to_push["exchange_item"] = object!{"master_item_id": 19100001, "amount": 50};
             }
             lottery_list.push(to_push).unwrap();
