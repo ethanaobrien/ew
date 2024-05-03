@@ -342,16 +342,16 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
     }
     let mut rv = array![];
     for (_i, current) in user["live_mission_list"].members().enumerate() {
-        if current["master_live_id"].to_string() == rv["master_live_id"].to_string() {
+        if current["master_live_id"].to_string() == live_id.to_string() {
             for (_i, id) in out.members().enumerate() {
                 if !current["clear_master_live_mission_ids"].contains(id.as_i32().unwrap()) {
                     rv.push(id.as_i32().unwrap()).unwrap();
                 }
             }
-            break;
+            return Some(rv);
         }
     }
-    Some(rv)
+    Some(out)
 }
 
 fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, multiplier: i64) -> JsonValue {
