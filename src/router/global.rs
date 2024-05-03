@@ -123,7 +123,7 @@ pub fn error_resp() -> HttpResponse {
 
 // true - limit reached
 // false - all good
-const GIFT_LIMIT: usize = 100000;
+const GIFT_LIMIT: usize = 1000000;
 const LIMIT_ITEMS: i64 = 200000000;
 const LIMIT_COINS: i64 = 2000000000;
 const LIMIT_PRIMOGEMS: i64 = 2000000000;
