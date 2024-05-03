@@ -331,7 +331,7 @@ pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
 pub fn give_character(id: String, user: &mut JsonValue) -> bool {
     for (_i, data) in user["card_list"].members().enumerate() {
         if data["master_card_id"].to_string() == id || data["id"].to_string() == id {
-            give_item(19100001, 100, user);
+            give_item(19100001, 50, user);
             return false;
         }
     }

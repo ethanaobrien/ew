@@ -203,15 +203,16 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
             new_cards.push(to_push).unwrap();
         }
         
-        userdata::save_acc(&key, user.clone());
-        
         for (_i, data) in cardstogive.members().enumerate() {
             let new = if new_ids.contains(data["master_lottery_item_id"].to_string()) { 1 } else { 0 };
-            let to_push = object!{
+            let mut to_push = object!{
                 "master_lottery_item_id": data["master_lottery_item_id"].clone(),
                 "master_lottery_item_number": data["master_lottery_item_number"].clone(),
                 "is_new": new
             };
+            if new == 0 {
+                to_push["exchange_item"] = object!{"master_item_id": 19100001, "amount": 50};
+            }
             lottery_list.push(to_push).unwrap();
         }
     } else if lottery_type == 2 {
@@ -226,6 +227,8 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
             lottery_list.push(to_push).unwrap();
         }
     }
+    
+    userdata::save_acc(&key, user.clone());
     
     //todo
     let resp = object!{
