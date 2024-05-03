@@ -22,7 +22,9 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
     
     let item;
     if body["input_code"].to_string() == "SIF2REVIVALREAL!" {
-        item = global::gift_item_basic(1, 100000, 4, "You typed in code!!!!!!!!!", &mut user);
+        item = global::gift_item_basic(1, 100000, 4, "Another game died... This makes me sad :(", &mut user);
+    } else if body["input_code"].to_string() == "pweasegivegems11" {
+        item = global::gift_item_basic(1, 6000, 1, "Only because you asked...", &mut user);
     } else {
         let resp = object!{
             "code": 0,
