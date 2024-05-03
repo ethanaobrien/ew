@@ -5,6 +5,8 @@ use json::{JsonValue, array, object};
 use crate::router::global;
 use uuid::Uuid;
 use rand::Rng;
+use sha2::{Digest, Sha256};
+use base64::{Engine as _, engine::general_purpose};
 
 lazy_static! {
     static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
@@ -256,13 +258,51 @@ pub fn save_acc_friends(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "friends", data);
 }
 
+fn generate_salt() -> Vec<u8> {
+    let mut rng = rand::thread_rng();
+    let mut bytes = vec![0u8; 16];
+    rng.fill(&mut bytes[..]);
+    bytes
+}
+
+fn hash_password(password: &str) -> String {
+    let salt = &generate_salt();
+    let mut hasher = Sha256::new();
+    hasher.update(password.as_bytes());
+    hasher.update(salt);
+    let hashed_password = hasher.finalize();
+
+    let salt_hash = [&salt[..], &hashed_password[..]].concat();
+    general_purpose::STANDARD.encode(&salt_hash)
+}
+
+fn verify_password(password: &str, salted_hash: &str) -> bool {
+    if password == "" || salted_hash == "" {
+        return false;
+    }
+    let bytes = general_purpose::STANDARD.decode(salted_hash);
+    if !bytes.is_ok() {
+        return password == salted_hash;
+    }
+    let bytes = bytes.unwrap();
+    let (salt, hashed_password) = bytes.split_at(16);
+    let hashed_password = &hashed_password[0..32];
+
+    let mut hasher = Sha256::new();
+    hasher.update(password.as_bytes());
+    hasher.update(salt);
+    let input_hash = hasher.finalize();
+
+    input_hash.as_slice() == hashed_password
+}
+
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
     create_migration_store();
     let data = lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token));
     if !data.is_ok() {
         return object!{success: false};
     }
-    if data.unwrap().to_string() == password.to_string() {
+    if verify_password(password, &data.unwrap()) {
         let login_token = get_login_token(uid);
         if login_token == String::new() {
             return object!{success: false};
@@ -275,7 +315,7 @@ pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
 pub fn save_acc_transfer(token: &str, password: &str) {
     create_migration_store();
     lock_and_exec("DELETE FROM migration WHERE token=?1", params!(token));
-    lock_and_exec("INSERT INTO migration (token, password) VALUES (?1, ?2)", params!(token, password));
+    lock_and_exec("INSERT INTO migration (token, password) VALUES (?1, ?2)", params!(token, hash_password(password)));
 }
 
 pub fn get_name_and_rank(uid: i64) -> JsonValue {
@@ -406,8 +446,8 @@ pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
     create_webui_store();
     create_migration_store();
     let pass = lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or(String::new());
-    if pass != password.to_string() || password == "" {
-        if acc_exists(uid) {
+    if !verify_password(password, &pass) {
+        if acc_exists(uid) && pass == "" {
             return Err(String::from("Migration token not set. Set token in game settings."));
         }
         return Err(String::from("User/password don't match"));
