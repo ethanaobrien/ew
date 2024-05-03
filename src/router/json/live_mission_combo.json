@@ -1,0 +1,6372 @@
+[
+  {
+    "masterMusicId": 1001,
+    "valueList": [
+      139,
+      279,
+      418,
+      558
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1002,
+    "valueList": [
+      171,
+      341,
+      512,
+      682
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1003,
+    "valueList": [
+      173,
+      346,
+      519,
+      692
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1004,
+    "valueList": [
+      125,
+      249,
+      374,
+      498
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1005,
+    "valueList": [
+      146,
+      293,
+      439,
+      586
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1006,
+    "valueList": [
+      130,
+      259,
+      389,
+      518
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1007,
+    "valueList": [
+      166,
+      332,
+      499,
+      665
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1008,
+    "valueList": [
+      136,
+      272,
+      409,
+      545
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1009,
+    "valueList": [
+      170,
+      340,
+      511,
+      681
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1010,
+    "valueList": [
+      134,
+      268,
+      403,
+      537
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1011,
+    "valueList": [
+      175,
+      351,
+      526,
+      702
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1012,
+    "valueList": [
+      160,
+      320,
+      480,
+      640
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1014,
+    "valueList": [
+      140,
+      280,
+      421,
+      561
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1015,
+    "valueList": [
+      122,
+      244,
+      365,
+      487
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1016,
+    "valueList": [
+      142,
+      284,
+      427,
+      569
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1017,
+    "valueList": [
+      142,
+      283,
+      425,
+      566
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1019,
+    "valueList": [
+      128,
+      256,
+      384,
+      512
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1020,
+    "valueList": [
+      185,
+      370,
+      554,
+      739
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1021,
+    "valueList": [
+      192,
+      384,
+      576,
+      768
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1022,
+    "valueList": [
+      131,
+      263,
+      394,
+      526
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1023,
+    "valueList": [
+      151,
+      302,
+      452,
+      603
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1024,
+    "valueList": [
+      149,
+      298,
+      447,
+      596
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1025,
+    "valueList": [
+      151,
+      302,
+      453,
+      604
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1026,
+    "valueList": [
+      138,
+      276,
+      415,
+      553
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1027,
+    "valueList": [
+      123,
+      246,
+      370,
+      493
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1028,
+    "valueList": [
+      154,
+      308,
+      463,
+      617
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1029,
+    "valueList": [
+      144,
+      289,
+      433,
+      578
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1030,
+    "valueList": [
+      161,
+      321,
+      482,
+      642
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1031,
+    "valueList": [
+      158,
+      317,
+      475,
+      634
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1032,
+    "valueList": [
+      134,
+      268,
+      402,
+      536
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1033,
+    "valueList": [
+      160,
+      321,
+      481,
+      642
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1035,
+    "valueList": [
+      123,
+      246,
+      370,
+      493
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1037,
+    "valueList": [
+      158,
+      317,
+      475,
+      634
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1038,
+    "valueList": [
+      132,
+      263,
+      395,
+      526
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1039,
+    "valueList": [
+      152,
+      304,
+      457,
+      609
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1040,
+    "valueList": [
+      109,
+      217,
+      326,
+      434
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1041,
+    "valueList": [
+      199,
+      398,
+      596,
+      795
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1042,
+    "valueList": [
+      162,
+      323,
+      485,
+      646
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1044,
+    "valueList": [
+      110,
+      219,
+      329,
+      438
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1045,
+    "valueList": [
+      138,
+      275,
+      413,
+      550
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1046,
+    "valueList": [
+      89,
+      179,
+      268,
+      358
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1047,
+    "valueList": [
+      90,
+      181,
+      271,
+      362
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1048,
+    "valueList": [
+      110,
+      220,
+      331,
+      441
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1049,
+    "valueList": [
+      139,
+      278,
+      418,
+      557
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1050,
+    "valueList": [
+      129,
+      258,
+      387,
+      516
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1054,
+    "valueList": [
+      139,
+      278,
+      417,
+      556
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1055,
+    "valueList": [
+      136,
+      271,
+      407,
+      542
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1057,
+    "valueList": [
+      198,
+      396,
+      595,
+      793
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1058,
+    "valueList": [
+      150,
+      300,
+      450,
+      600
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1059,
+    "valueList": [
+      173,
+      346,
+      518,
+      691
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1060,
+    "valueList": [
+      139,
+      279,
+      418,
+      558
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1061,
+    "valueList": [
+      190,
+      381,
+      571,
+      762
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1062,
+    "valueList": [
+      144,
+      288,
+      431,
+      575
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1063,
+    "valueList": [
+      131,
+      262,
+      392,
+      523
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1064,
+    "valueList": [
+      123,
+      246,
+      370,
+      493
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1066,
+    "valueList": [
+      122,
+      243,
+      365,
+      486
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1067,
+    "valueList": [
+      88,
+      176,
+      263,
+      351
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1068,
+    "valueList": [
+      127,
+      253,
+      380,
+      506
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1069,
+    "valueList": [
+      118,
+      236,
+      353,
+      471
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1070,
+    "valueList": [
+      158,
+      316,
+      474,
+      632
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1071,
+    "valueList": [
+      101,
+      202,
+      303,
+      404
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1072,
+    "valueList": [
+      136,
+      271,
+      407,
+      542
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1073,
+    "valueList": [
+      158,
+      316,
+      475,
+      633
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1074,
+    "valueList": [
+      122,
+      244,
+      365,
+      487
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1075,
+    "valueList": [
+      138,
+      276,
+      414,
+      552
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1076,
+    "valueList": [
+      135,
+      270,
+      405,
+      540
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1077,
+    "valueList": [
+      180,
+      360,
+      541,
+      721
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1078,
+    "valueList": [
+      169,
+      337,
+      506,
+      674
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1079,
+    "valueList": [
+      127,
+      254,
+      380,
+      507
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1080,
+    "valueList": [
+      112,
+      224,
+      337,
+      449
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1081,
+    "valueList": [
+      147,
+      294,
+      441,
+      588
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1082,
+    "valueList": [
+      154,
+      308,
+      463,
+      617
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1083,
+    "valueList": [
+      113,
+      225,
+      338,
+      450
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1084,
+    "valueList": [
+      141,
+      282,
+      424,
+      565
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1085,
+    "valueList": [
+      88,
+      177,
+      265,
+      354
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1086,
+    "valueList": [
+      212,
+      424,
+      637,
+      849
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1087,
+    "valueList": [
+      120,
+      240,
+      360,
+      480
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1088,
+    "valueList": [
+      128,
+      256,
+      383,
+      511
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1089,
+    "valueList": [
+      190,
+      380,
+      569,
+      759
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1090,
+    "valueList": [
+      126,
+      251,
+      377,
+      502
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1091,
+    "valueList": [
+      144,
+      288,
+      431,
+      575
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1092,
+    "valueList": [
+      97,
+      194,
+      290,
+      387
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1093,
+    "valueList": [
+      115,
+      230,
+      345,
+      460
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1094,
+    "valueList": [
+      88,
+      175,
+      263,
+      350
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1095,
+    "valueList": [
+      173,
+      346,
+      520,
+      693
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1096,
+    "valueList": [
+      120,
+      240,
+      360,
+      480
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1097,
+    "valueList": [
+      164,
+      328,
+      493,
+      657
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1098,
+    "valueList": [
+      91,
+      183,
+      274,
+      366
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1099,
+    "valueList": [
+      125,
+      251,
+      376,
+      502
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1100,
+    "valueList": [
+      150,
+      300,
+      450,
+      600
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1101,
+    "valueList": [
+      162,
+      324,
+      485,
+      647
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1102,
+    "valueList": [
+      161,
+      322,
+      483,
+      644
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1103,
+    "valueList": [
+      106,
+      212,
+      317,
+      423
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1104,
+    "valueList": [
+      157,
+      314,
+      472,
+      629
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1105,
+    "valueList": [
+      133,
+      267,
+      400,
+      534
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1106,
+    "valueList": [
+      162,
+      323,
+      485,
+      646
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1107,
+    "valueList": [
+      168,
+      336,
+      505,
+      673
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1108,
+    "valueList": [
+      165,
+      329,
+      494,
+      658
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1109,
+    "valueList": [
+      139,
+      278,
+      416,
+      555
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1110,
+    "valueList": [
+      141,
+      283,
+      424,
+      566
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1111,
+    "valueList": [
+      102,
+      204,
+      305,
+      407
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1112,
+    "valueList": [
+      183,
+      366,
+      549,
+      732
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1113,
+    "valueList": [
+      140,
+      281,
+      421,
+      562
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1114,
+    "valueList": [
+      162,
+      325,
+      487,
+      650
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1115,
+    "valueList": [
+      163,
+      326,
+      489,
+      652
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1116,
+    "valueList": [
+      137,
+      274,
+      411,
+      548
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1117,
+    "valueList": [
+      199,
+      397,
+      596,
+      794
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1118,
+    "valueList": [
+      145,
+      290,
+      434,
+      579
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1119,
+    "valueList": [
+      126,
+      252,
+      377,
+      503
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1120,
+    "valueList": [
+      147,
+      294,
+      441,
+      588
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1121,
+    "valueList": [
+      163,
+      325,
+      488,
+      650
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1123,
+    "valueList": [
+      132,
+      263,
+      395,
+      526
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1124,
+    "valueList": [
+      135,
+      270,
+      406,
+      541
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1126,
+    "valueList": [
+      175,
+      349,
+      524,
+      698
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1127,
+    "valueList": [
+      146,
+      292,
+      439,
+      585
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1128,
+    "valueList": [
+      128,
+      256,
+      384,
+      512
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1129,
+    "valueList": [
+      147,
+      294,
+      441,
+      588
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1130,
+    "valueList": [
+      148,
+      295,
+      443,
+      590
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1131,
+    "valueList": [
+      92,
+      183,
+      275,
+      366
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 1132,
+    "valueList": [
+      106,
+      212,
+      319,
+      425
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1133,
+    "valueList": [
+      130,
+      260,
+      390,
+      520
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1134,
+    "valueList": [
+      123,
+      246,
+      368,
+      491
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1135,
+    "valueList": [
+      92,
+      184,
+      277,
+      369
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1136,
+    "valueList": [
+      94,
+      188,
+      281,
+      375
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1137,
+    "valueList": [
+      92,
+      184,
+      277,
+      369
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1138,
+    "valueList": [
+      106,
+      212,
+      317,
+      423
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1139,
+    "valueList": [
+      150,
+      299,
+      449,
+      598
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 1140,
+    "valueList": [
+      128,
+      257,
+      385,
+      514
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 2001,
+    "valueList": [
+      158,
+      316,
+      475,
+      633
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2002,
+    "valueList": [
+      114,
+      229,
+      343,
+      458
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2003,
+    "valueList": [
+      118,
+      236,
+      353,
+      471
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2004,
+    "valueList": [
+      69,
+      138,
+      208,
+      277
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2005,
+    "valueList": [
+      123,
+      247,
+      370,
+      494
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2006,
+    "valueList": [
+      75,
+      150,
+      224,
+      299
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2007,
+    "valueList": [
+      99,
+      198,
+      296,
+      395
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2008,
+    "valueList": [
+      75,
+      149,
+      224,
+      298
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2009,
+    "valueList": [
+      67,
+      134,
+      200,
+      267
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2010,
+    "valueList": [
+      74,
+      148,
+      223,
+      297
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2011,
+    "valueList": [
+      100,
+      200,
+      300,
+      400
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2012,
+    "valueList": [
+      104,
+      207,
+      311,
+      414
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2013,
+    "valueList": [
+      88,
+      176,
+      263,
+      351
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2014,
+    "valueList": [
+      87,
+      175,
+      262,
+      350
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2015,
+    "valueList": [
+      137,
+      274,
+      412,
+      549
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2016,
+    "valueList": [
+      74,
+      147,
+      221,
+      294
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2017,
+    "valueList": [
+      91,
+      182,
+      273,
+      364
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2018,
+    "valueList": [
+      88,
+      176,
+      263,
+      351
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2019,
+    "valueList": [
+      76,
+      153,
+      229,
+      306
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2020,
+    "valueList": [
+      76,
+      152,
+      228,
+      304
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2021,
+    "valueList": [
+      99,
+      198,
+      298,
+      397
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2022,
+    "valueList": [
+      83,
+      167,
+      250,
+      334
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2023,
+    "valueList": [
+      87,
+      174,
+      261,
+      348
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2024,
+    "valueList": [
+      96,
+      192,
+      287,
+      383
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2025,
+    "valueList": [
+      90,
+      179,
+      269,
+      358
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2026,
+    "valueList": [
+      86,
+      172,
+      257,
+      343
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2027,
+    "valueList": [
+      91,
+      183,
+      274,
+      366
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2028,
+    "valueList": [
+      81,
+      162,
+      243,
+      324
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2029,
+    "valueList": [
+      131,
+      261,
+      392,
+      522
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2030,
+    "valueList": [
+      125,
+      250,
+      376,
+      501
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2031,
+    "valueList": [
+      143,
+      286,
+      430,
+      573
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2032,
+    "valueList": [
+      146,
+      291,
+      437,
+      582
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2033,
+    "valueList": [
+      168,
+      336,
+      504,
+      672
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2034,
+    "valueList": [
+      135,
+      270,
+      404,
+      539
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2035,
+    "valueList": [
+      145,
+      289,
+      434,
+      578
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2036,
+    "valueList": [
+      151,
+      302,
+      452,
+      603
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2037,
+    "valueList": [
+      146,
+      291,
+      437,
+      582
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2038,
+    "valueList": [
+      151,
+      303,
+      454,
+      606
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2039,
+    "valueList": [
+      180,
+      360,
+      540,
+      720
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2040,
+    "valueList": [
+      156,
+      312,
+      468,
+      624
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2041,
+    "valueList": [
+      108,
+      217,
+      325,
+      434
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2042,
+    "valueList": [
+      154,
+      307,
+      461,
+      614
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2043,
+    "valueList": [
+      125,
+      250,
+      376,
+      501
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2044,
+    "valueList": [
+      138,
+      277,
+      415,
+      554
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2045,
+    "valueList": [
+      127,
+      254,
+      380,
+      507
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2046,
+    "valueList": [
+      139,
+      278,
+      418,
+      557
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2047,
+    "valueList": [
+      109,
+      219,
+      328,
+      438
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2048,
+    "valueList": [
+      159,
+      318,
+      478,
+      637
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2049,
+    "valueList": [
+      200,
+      401,
+      601,
+      802
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2050,
+    "valueList": [
+      188,
+      376,
+      565,
+      753
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2051,
+    "valueList": [
+      200,
+      400,
+      599,
+      799
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2052,
+    "valueList": [
+      160,
+      320,
+      481,
+      641
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2053,
+    "valueList": [
+      150,
+      299,
+      449,
+      598
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2054,
+    "valueList": [
+      131,
+      261,
+      392,
+      522
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2055,
+    "valueList": [
+      150,
+      299,
+      449,
+      598
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2056,
+    "valueList": [
+      162,
+      325,
+      487,
+      650
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2057,
+    "valueList": [
+      119,
+      238,
+      357,
+      476
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2058,
+    "valueList": [
+      134,
+      267,
+      401,
+      534
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2059,
+    "valueList": [
+      122,
+      243,
+      365,
+      486
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2060,
+    "valueList": [
+      99,
+      199,
+      298,
+      398
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2061,
+    "valueList": [
+      108,
+      215,
+      323,
+      430
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2062,
+    "valueList": [
+      192,
+      384,
+      577,
+      769
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2063,
+    "valueList": [
+      129,
+      258,
+      386,
+      515
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2064,
+    "valueList": [
+      121,
+      243,
+      364,
+      486
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2065,
+    "valueList": [
+      133,
+      266,
+      400,
+      533
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2066,
+    "valueList": [
+      108,
+      215,
+      323,
+      430
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2067,
+    "valueList": [
+      159,
+      318,
+      478,
+      637
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2068,
+    "valueList": [
+      139,
+      278,
+      418,
+      557
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2069,
+    "valueList": [
+      144,
+      289,
+      433,
+      578
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2070,
+    "valueList": [
+      115,
+      229,
+      344,
+      458
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2071,
+    "valueList": [
+      111,
+      222,
+      334,
+      445
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2072,
+    "valueList": [
+      125,
+      250,
+      375,
+      500
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2073,
+    "valueList": [
+      123,
+      246,
+      370,
+      493
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2074,
+    "valueList": [
+      158,
+      315,
+      473,
+      630
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2075,
+    "valueList": [
+      122,
+      245,
+      367,
+      490
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2076,
+    "valueList": [
+      88,
+      176,
+      264,
+      352
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2077,
+    "valueList": [
+      187,
+      373,
+      560,
+      746
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2078,
+    "valueList": [
+      142,
+      284,
+      425,
+      567
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2079,
+    "valueList": [
+      159,
+      318,
+      477,
+      636
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2080,
+    "valueList": [
+      126,
+      252,
+      378,
+      504
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2081,
+    "valueList": [
+      171,
+      342,
+      512,
+      683
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2082,
+    "valueList": [
+      139,
+      278,
+      417,
+      556
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2083,
+    "valueList": [
+      144,
+      289,
+      433,
+      578
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2084,
+    "valueList": [
+      129,
+      258,
+      386,
+      515
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2086,
+    "valueList": [
+      154,
+      309,
+      463,
+      618
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2087,
+    "valueList": [
+      137,
+      274,
+      412,
+      549
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2088,
+    "valueList": [
+      178,
+      356,
+      533,
+      711
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2089,
+    "valueList": [
+      150,
+      300,
+      449,
+      599
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2090,
+    "valueList": [
+      121,
+      241,
+      362,
+      482
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2091,
+    "valueList": [
+      133,
+      265,
+      398,
+      530
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2092,
+    "valueList": [
+      114,
+      227,
+      341,
+      454
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2093,
+    "valueList": [
+      155,
+      311,
+      466,
+      622
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2094,
+    "valueList": [
+      133,
+      266,
+      400,
+      533
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2095,
+    "valueList": [
+      161,
+      322,
+      483,
+      644
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2096,
+    "valueList": [
+      136,
+      272,
+      409,
+      545
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2097,
+    "valueList": [
+      123,
+      246,
+      369,
+      492
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2098,
+    "valueList": [
+      131,
+      263,
+      394,
+      526
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2099,
+    "valueList": [
+      118,
+      236,
+      353,
+      471
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2100,
+    "valueList": [
+      108,
+      216,
+      323,
+      431
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2101,
+    "valueList": [
+      89,
+      178,
+      267,
+      356
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2102,
+    "valueList": [
+      143,
+      287,
+      430,
+      574
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2103,
+    "valueList": [
+      134,
+      267,
+      401,
+      534
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2104,
+    "valueList": [
+      158,
+      317,
+      475,
+      634
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2105,
+    "valueList": [
+      119,
+      237,
+      356,
+      474
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2106,
+    "valueList": [
+      89,
+      178,
+      266,
+      355
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2107,
+    "valueList": [
+      152,
+      305,
+      457,
+      610
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2108,
+    "valueList": [
+      106,
+      212,
+      318,
+      424
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2109,
+    "valueList": [
+      154,
+      308,
+      461,
+      615
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2111,
+    "valueList": [
+      164,
+      328,
+      492,
+      656
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2112,
+    "valueList": [
+      100,
+      200,
+      300,
+      400
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2113,
+    "valueList": [
+      200,
+      400,
+      599,
+      799
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2114,
+    "valueList": [
+      95,
+      190,
+      285,
+      380
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2115,
+    "valueList": [
+      128,
+      257,
+      385,
+      514
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2116,
+    "valueList": [
+      138,
+      276,
+      415,
+      553
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2117,
+    "valueList": [
+      114,
+      228,
+      343,
+      457
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2118,
+    "valueList": [
+      164,
+      328,
+      492,
+      656
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2119,
+    "valueList": [
+      138,
+      276,
+      415,
+      553
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2120,
+    "valueList": [
+      114,
+      227,
+      341,
+      454
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2121,
+    "valueList": [
+      153,
+      306,
+      459,
+      612
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2122,
+    "valueList": [
+      165,
+      330,
+      496,
+      661
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2123,
+    "valueList": [
+      157,
+      315,
+      472,
+      630
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2124,
+    "valueList": [
+      158,
+      316,
+      473,
+      631
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2125,
+    "valueList": [
+      135,
+      270,
+      406,
+      541
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2126,
+    "valueList": [
+      102,
+      204,
+      306,
+      408
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2127,
+    "valueList": [
+      115,
+      230,
+      346,
+      461
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2128,
+    "valueList": [
+      126,
+      251,
+      377,
+      502
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2129,
+    "valueList": [
+      105,
+      211,
+      316,
+      422
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2130,
+    "valueList": [
+      73,
+      146,
+      218,
+      291
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2131,
+    "valueList": [
+      131,
+      262,
+      392,
+      523
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2132,
+    "valueList": [
+      87,
+      174,
+      261,
+      348
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2133,
+    "valueList": [
+      142,
+      284,
+      426,
+      568
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2134,
+    "valueList": [
+      112,
+      224,
+      337,
+      449
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2135,
+    "valueList": [
+      133,
+      265,
+      398,
+      530
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2136,
+    "valueList": [
+      87,
+      174,
+      261,
+      348
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2137,
+    "valueList": [
+      73,
+      146,
+      219,
+      292
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2138,
+    "valueList": [
+      103,
+      206,
+      309,
+      412
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2142,
+    "valueList": [
+      139,
+      278,
+      416,
+      555
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2143,
+    "valueList": [
+      93,
+      186,
+      280,
+      373
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2144,
+    "valueList": [
+      103,
+      207,
+      310,
+      414
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2145,
+    "valueList": [
+      132,
+      265,
+      397,
+      530
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2146,
+    "valueList": [
+      128,
+      256,
+      384,
+      512
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2147,
+    "valueList": [
+      100,
+      200,
+      299,
+      399
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2148,
+    "valueList": [
+      89,
+      179,
+      268,
+      358
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2149,
+    "valueList": [
+      75,
+      149,
+      224,
+      298
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2150,
+    "valueList": [
+      94,
+      188,
+      283,
+      377
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2151,
+    "valueList": [
+      89,
+      178,
+      267,
+      356
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2152,
+    "valueList": [
+      78,
+      156,
+      233,
+      311
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2153,
+    "valueList": [
+      99,
+      197,
+      296,
+      394
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2154,
+    "valueList": [
+      86,
+      173,
+      259,
+      346
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2156,
+    "valueList": [
+      71,
+      142,
+      214,
+      285
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2157,
+    "valueList": [
+      95,
+      190,
+      286,
+      381
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2158,
+    "valueList": [
+      120,
+      240,
+      360,
+      480
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2159,
+    "valueList": [
+      73,
+      145,
+      218,
+      290
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2160,
+    "valueList": [
+      60,
+      120,
+      181,
+      241
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2161,
+    "valueList": [
+      85,
+      170,
+      255,
+      340
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2162,
+    "valueList": [
+      102,
+      204,
+      305,
+      407
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2163,
+    "valueList": [
+      89,
+      178,
+      268,
+      357
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2164,
+    "valueList": [
+      95,
+      191,
+      286,
+      382
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2165,
+    "valueList": [
+      169,
+      338,
+      507,
+      676
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2166,
+    "valueList": [
+      77,
+      154,
+      230,
+      307
+    ],
+    "masterReleaseLabelId": 223061105
+  },
+  {
+    "masterMusicId": 2167,
+    "valueList": [
+      72,
+      143,
+      215,
+      286
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 2168,
+    "valueList": [
+      78,
+      156,
+      234,
+      312
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 2169,
+    "valueList": [
+      59,
+      118,
+      177,
+      236
+    ],
+    "masterReleaseLabelId": 223100303
+  },
+  {
+    "masterMusicId": 2170,
+    "valueList": [
+      52,
+      104,
+      157,
+      209
+    ],
+    "masterReleaseLabelId": 223100303
+  },
+  {
+    "masterMusicId": 2171,
+    "valueList": [
+      89,
+      178,
+      268,
+      357
+    ],
+    "masterReleaseLabelId": 223100303
+  },
+  {
+    "masterMusicId": 2172,
+    "valueList": [
+      81,
+      162,
+      243,
+      324
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2173,
+    "valueList": [
+      76,
+      152,
+      228,
+      304
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2174,
+    "valueList": [
+      106,
+      213,
+      319,
+      426
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 2175,
+    "valueList": [
+      88,
+      176,
+      265,
+      353
+    ],
+    "masterReleaseLabelId": 223100303
+  },
+  {
+    "masterMusicId": 2176,
+    "valueList": [
+      172,
+      345,
+      517,
+      690
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 2177,
+    "valueList": [
+      149,
+      299,
+      448,
+      598
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 2178,
+    "valueList": [
+      112,
+      225,
+      337,
+      450
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 2179,
+    "valueList": [
+      137,
+      274,
+      412,
+      549
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 2180,
+    "valueList": [
+      134,
+      268,
+      402,
+      536
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 2181,
+    "valueList": [
+      119,
+      239,
+      358,
+      478
+    ],
+    "masterReleaseLabelId": 224012901
+  },
+  {
+    "masterMusicId": 3001,
+    "valueList": [
+      46,
+      92,
+      138,
+      184
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3002,
+    "valueList": [
+      99,
+      198,
+      296,
+      395
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3003,
+    "valueList": [
+      93,
+      186,
+      279,
+      372
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3004,
+    "valueList": [
+      86,
+      172,
+      259,
+      345
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3005,
+    "valueList": [
+      81,
+      161,
+      242,
+      322
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3006,
+    "valueList": [
+      97,
+      195,
+      292,
+      390
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3007,
+    "valueList": [
+      60,
+      120,
+      179,
+      239
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3008,
+    "valueList": [
+      75,
+      149,
+      224,
+      298
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3009,
+    "valueList": [
+      74,
+      148,
+      221,
+      295
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3010,
+    "valueList": [
+      66,
+      132,
+      197,
+      263
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3011,
+    "valueList": [
+      59,
+      117,
+      176,
+      234
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3012,
+    "valueList": [
+      65,
+      130,
+      195,
+      260
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3013,
+    "valueList": [
+      118,
+      235,
+      353,
+      470
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3014,
+    "valueList": [
+      102,
+      204,
+      305,
+      407
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3015,
+    "valueList": [
+      80,
+      160,
+      240,
+      320
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3016,
+    "valueList": [
+      89,
+      178,
+      268,
+      357
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3017,
+    "valueList": [
+      86,
+      172,
+      258,
+      344
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3018,
+    "valueList": [
+      83,
+      167,
+      250,
+      334
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3019,
+    "valueList": [
+      97,
+      195,
+      292,
+      390
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3020,
+    "valueList": [
+      80,
+      159,
+      239,
+      318
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3021,
+    "valueList": [
+      80,
+      160,
+      240,
+      320
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3022,
+    "valueList": [
+      101,
+      201,
+      302,
+      402
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3023,
+    "valueList": [
+      82,
+      164,
+      246,
+      328
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3024,
+    "valueList": [
+      75,
+      149,
+      224,
+      298
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3025,
+    "valueList": [
+      106,
+      213,
+      319,
+      426
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3026,
+    "valueList": [
+      96,
+      192,
+      288,
+      384
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3027,
+    "valueList": [
+      110,
+      220,
+      331,
+      441
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3028,
+    "valueList": [
+      76,
+      151,
+      227,
+      302
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3029,
+    "valueList": [
+      74,
+      148,
+      223,
+      297
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3030,
+    "valueList": [
+      91,
+      181,
+      272,
+      362
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3031,
+    "valueList": [
+      60,
+      119,
+      179,
+      238
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3032,
+    "valueList": [
+      53,
+      106,
+      158,
+      211
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3034,
+    "valueList": [
+      90,
+      180,
+      270,
+      360
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3035,
+    "valueList": [
+      94,
+      188,
+      281,
+      375
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3036,
+    "valueList": [
+      80,
+      160,
+      240,
+      320
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3037,
+    "valueList": [
+      68,
+      137,
+      205,
+      274
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3038,
+    "valueList": [
+      74,
+      147,
+      221,
+      294
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3039,
+    "valueList": [
+      75,
+      150,
+      226,
+      301
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3040,
+    "valueList": [
+      107,
+      214,
+      321,
+      428
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3041,
+    "valueList": [
+      81,
+      162,
+      242,
+      323
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3042,
+    "valueList": [
+      83,
+      167,
+      250,
+      334
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3043,
+    "valueList": [
+      68,
+      137,
+      205,
+      274
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3044,
+    "valueList": [
+      83,
+      167,
+      250,
+      334
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3045,
+    "valueList": [
+      90,
+      179,
+      269,
+      358
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3046,
+    "valueList": [
+      75,
+      151,
+      226,
+      302
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3047,
+    "valueList": [
+      88,
+      176,
+      263,
+      351
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3048,
+    "valueList": [
+      99,
+      197,
+      296,
+      394
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3049,
+    "valueList": [
+      103,
+      205,
+      308,
+      410
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3050,
+    "valueList": [
+      85,
+      169,
+      254,
+      338
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3051,
+    "valueList": [
+      67,
+      134,
+      202,
+      269
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3052,
+    "valueList": [
+      76,
+      152,
+      228,
+      304
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3053,
+    "valueList": [
+      80,
+      160,
+      240,
+      320
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3054,
+    "valueList": [
+      78,
+      156,
+      235,
+      313
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3055,
+    "valueList": [
+      91,
+      182,
+      273,
+      364
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3056,
+    "valueList": [
+      81,
+      163,
+      244,
+      326
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3057,
+    "valueList": [
+      67,
+      133,
+      200,
+      266
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3058,
+    "valueList": [
+      62,
+      125,
+      187,
+      250
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3059,
+    "valueList": [
+      85,
+      170,
+      256,
+      341
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3060,
+    "valueList": [
+      59,
+      119,
+      178,
+      238
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3061,
+    "valueList": [
+      82,
+      164,
+      246,
+      328
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3062,
+    "valueList": [
+      91,
+      183,
+      274,
+      366
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3063,
+    "valueList": [
+      73,
+      146,
+      218,
+      291
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3064,
+    "valueList": [
+      85,
+      171,
+      256,
+      342
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3065,
+    "valueList": [
+      87,
+      174,
+      260,
+      347
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3066,
+    "valueList": [
+      77,
+      155,
+      232,
+      310
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3067,
+    "valueList": [
+      78,
+      157,
+      235,
+      314
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3068,
+    "valueList": [
+      82,
+      164,
+      246,
+      328
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3069,
+    "valueList": [
+      75,
+      150,
+      225,
+      300
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3070,
+    "valueList": [
+      106,
+      212,
+      318,
+      424
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3071,
+    "valueList": [
+      82,
+      163,
+      245,
+      326
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3072,
+    "valueList": [
+      80,
+      161,
+      241,
+      322
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3073,
+    "valueList": [
+      64,
+      128,
+      191,
+      255
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3074,
+    "valueList": [
+      89,
+      177,
+      266,
+      354
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3075,
+    "valueList": [
+      88,
+      175,
+      263,
+      350
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3076,
+    "valueList": [
+      76,
+      152,
+      228,
+      304
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3077,
+    "valueList": [
+      94,
+      188,
+      282,
+      376
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3078,
+    "valueList": [
+      84,
+      168,
+      252,
+      336
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3079,
+    "valueList": [
+      92,
+      184,
+      275,
+      367
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3080,
+    "valueList": [
+      88,
+      176,
+      264,
+      352
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3081,
+    "valueList": [
+      97,
+      195,
+      292,
+      390
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3082,
+    "valueList": [
+      76,
+      152,
+      228,
+      304
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3083,
+    "valueList": [
+      109,
+      218,
+      328,
+      437
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3084,
+    "valueList": [
+      86,
+      172,
+      259,
+      345
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3085,
+    "valueList": [
+      86,
+      172,
+      257,
+      343
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3086,
+    "valueList": [
+      82,
+      164,
+      246,
+      328
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3087,
+    "valueList": [
+      97,
+      194,
+      291,
+      388
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3088,
+    "valueList": [
+      132,
+      264,
+      396,
+      528
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3089,
+    "valueList": [
+      119,
+      238,
+      358,
+      477
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3090,
+    "valueList": [
+      81,
+      162,
+      243,
+      324
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3091,
+    "valueList": [
+      80,
+      160,
+      241,
+      321
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3092,
+    "valueList": [
+      60,
+      120,
+      180,
+      240
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3094,
+    "valueList": [
+      85,
+      170,
+      254,
+      339
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3095,
+    "valueList": [
+      91,
+      183,
+      274,
+      366
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3096,
+    "valueList": [
+      81,
+      163,
+      244,
+      326
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3097,
+    "valueList": [
+      55,
+      109,
+      164,
+      218
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3098,
+    "valueList": [
+      94,
+      188,
+      282,
+      376
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3099,
+    "valueList": [
+      53,
+      106,
+      160,
+      213
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3100,
+    "valueList": [
+      89,
+      178,
+      268,
+      357
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3101,
+    "valueList": [
+      67,
+      134,
+      202,
+      269
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3102,
+    "valueList": [
+      57,
+      115,
+      172,
+      230
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3103,
+    "valueList": [
+      54,
+      109,
+      163,
+      218
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3104,
+    "valueList": [
+      82,
+      165,
+      247,
+      330
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3105,
+    "valueList": [
+      70,
+      140,
+      210,
+      280
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3106,
+    "valueList": [
+      87,
+      174,
+      261,
+      348
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3107,
+    "valueList": [
+      110,
+      219,
+      329,
+      438
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3108,
+    "valueList": [
+      100,
+      200,
+      299,
+      399
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3109,
+    "valueList": [
+      74,
+      148,
+      221,
+      295
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3110,
+    "valueList": [
+      122,
+      244,
+      366,
+      488
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3111,
+    "valueList": [
+      71,
+      143,
+      214,
+      286
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3112,
+    "valueList": [
+      74,
+      148,
+      221,
+      295
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3113,
+    "valueList": [
+      75,
+      151,
+      226,
+      302
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3114,
+    "valueList": [
+      104,
+      208,
+      313,
+      417
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3115,
+    "valueList": [
+      89,
+      178,
+      268,
+      357
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3116,
+    "valueList": [
+      86,
+      172,
+      259,
+      345
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3117,
+    "valueList": [
+      84,
+      168,
+      252,
+      336
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3118,
+    "valueList": [
+      88,
+      176,
+      263,
+      351
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3119,
+    "valueList": [
+      93,
+      186,
+      279,
+      372
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3121,
+    "valueList": [
+      95,
+      190,
+      285,
+      380
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3122,
+    "valueList": [
+      83,
+      167,
+      250,
+      334
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3123,
+    "valueList": [
+      85,
+      171,
+      256,
+      342
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3124,
+    "valueList": [
+      98,
+      195,
+      293,
+      390
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3125,
+    "valueList": [
+      87,
+      174,
+      261,
+      348
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3126,
+    "valueList": [
+      89,
+      178,
+      268,
+      357
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3127,
+    "valueList": [
+      85,
+      171,
+      256,
+      342
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3128,
+    "valueList": [
+      85,
+      171,
+      256,
+      342
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3129,
+    "valueList": [
+      85,
+      171,
+      256,
+      342
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 3134,
+    "valueList": [
+      90,
+      180,
+      270,
+      360
+    ],
+    "masterReleaseLabelId": 223063007
+  },
+  {
+    "masterMusicId": 3135,
+    "valueList": [
+      111,
+      221,
+      332,
+      442
+    ],
+    "masterReleaseLabelId": 223060801
+  },
+  {
+    "masterMusicId": 3136,
+    "valueList": [
+      77,
+      154,
+      231,
+      308
+    ],
+    "masterReleaseLabelId": 223060801
+  },
+  {
+    "masterMusicId": 3137,
+    "valueList": [
+      62,
+      124,
+      185,
+      247
+    ],
+    "masterReleaseLabelId": 223063007
+  },
+  {
+    "masterMusicId": 3138,
+    "valueList": [
+      69,
+      138,
+      207,
+      276
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 3139,
+    "valueList": [
+      74,
+      148,
+      222,
+      296
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 3140,
+    "valueList": [
+      109,
+      218,
+      327,
+      436
+    ],
+    "masterReleaseLabelId": 223083101
+  },
+  {
+    "masterMusicId": 3141,
+    "valueList": [
+      70,
+      141,
+      211,
+      282
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3142,
+    "valueList": [
+      90,
+      180,
+      269,
+      359
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3143,
+    "valueList": [
+      70,
+      140,
+      211,
+      281
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3144,
+    "valueList": [
+      75,
+      150,
+      224,
+      299
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3145,
+    "valueList": [
+      75,
+      149,
+      224,
+      298
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3146,
+    "valueList": [
+      88,
+      176,
+      264,
+      352
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3147,
+    "valueList": [
+      93,
+      186,
+      280,
+      373
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3148,
+    "valueList": [
+      81,
+      162,
+      243,
+      324
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3149,
+    "valueList": [
+      54,
+      109,
+      163,
+      218
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3150,
+    "valueList": [
+      77,
+      154,
+      231,
+      308
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3151,
+    "valueList": [
+      93,
+      186,
+      279,
+      372
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3152,
+    "valueList": [
+      72,
+      143,
+      215,
+      286
+    ],
+    "masterReleaseLabelId": 223090602
+  },
+  {
+    "masterMusicId": 3153,
+    "valueList": [
+      164,
+      328,
+      492,
+      656
+    ],
+    "masterReleaseLabelId": 223100402
+  },
+  {
+    "masterMusicId": 3154,
+    "valueList": [
+      113,
+      226,
+      340,
+      453
+    ],
+    "masterReleaseLabelId": 224010111
+  },
+  {
+    "masterMusicId": 3155,
+    "valueList": [
+      130,
+      261,
+      391,
+      522
+    ],
+    "masterReleaseLabelId": 224010111
+  },
+  {
+    "masterMusicId": 4001,
+    "valueList": [
+      77,
+      155,
+      232,
+      310
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4002,
+    "valueList": [
+      114,
+      227,
+      341,
+      454
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4003,
+    "valueList": [
+      129,
+      257,
+      386,
+      514
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4004,
+    "valueList": [
+      89,
+      178,
+      267,
+      356
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4005,
+    "valueList": [
+      142,
+      284,
+      425,
+      567
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4006,
+    "valueList": [
+      109,
+      218,
+      328,
+      437
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4007,
+    "valueList": [
+      25,
+      51,
+      76,
+      102
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4008,
+    "valueList": [
+      106,
+      212,
+      319,
+      425
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4009,
+    "valueList": [
+      75,
+      150,
+      224,
+      299
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4010,
+    "valueList": [
+      74,
+      148,
+      221,
+      295
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4011,
+    "valueList": [
+      48,
+      96,
+      144,
+      192
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4012,
+    "valueList": [
+      117,
+      234,
+      351,
+      468
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4013,
+    "valueList": [
+      79,
+      159,
+      238,
+      318
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4014,
+    "valueList": [
+      79,
+      158,
+      236,
+      315
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4015,
+    "valueList": [
+      80,
+      160,
+      240,
+      320
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4016,
+    "valueList": [
+      70,
+      140,
+      209,
+      279
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4017,
+    "valueList": [
+      76,
+      151,
+      227,
+      302
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4018,
+    "valueList": [
+      83,
+      165,
+      248,
+      330
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4019,
+    "valueList": [
+      27,
+      54,
+      81,
+      108
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4020,
+    "valueList": [
+      141,
+      282,
+      422,
+      563
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4021,
+    "valueList": [
+      36,
+      73,
+      109,
+      146
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4022,
+    "valueList": [
+      129,
+      257,
+      386,
+      514
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4023,
+    "valueList": [
+      102,
+      204,
+      307,
+      409
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4024,
+    "valueList": [
+      138,
+      275,
+      413,
+      550
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4025,
+    "valueList": [
+      32,
+      64,
+      97,
+      129
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4026,
+    "valueList": [
+      41,
+      81,
+      122,
+      162
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4027,
+    "valueList": [
+      63,
+      127,
+      190,
+      254
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4028,
+    "valueList": [
+      59,
+      118,
+      177,
+      236
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4030,
+    "valueList": [
+      110,
+      221,
+      331,
+      442
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4031,
+    "valueList": [
+      138,
+      276,
+      414,
+      552
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4032,
+    "valueList": [
+      145,
+      290,
+      436,
+      581
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4033,
+    "valueList": [
+      74,
+      148,
+      222,
+      296
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4034,
+    "valueList": [
+      121,
+      242,
+      364,
+      485
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4035,
+    "valueList": [
+      76,
+      152,
+      227,
+      303
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4036,
+    "valueList": [
+      73,
+      147,
+      220,
+      294
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4037,
+    "valueList": [
+      169,
+      337,
+      506,
+      674
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4038,
+    "valueList": [
+      95,
+      190,
+      286,
+      381
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4039,
+    "valueList": [
+      68,
+      135,
+      203,
+      270
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4040,
+    "valueList": [
+      109,
+      218,
+      327,
+      436
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4041,
+    "valueList": [
+      89,
+      179,
+      268,
+      358
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4042,
+    "valueList": [
+      46,
+      93,
+      139,
+      186
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4043,
+    "valueList": [
+      106,
+      212,
+      319,
+      425
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4044,
+    "valueList": [
+      112,
+      225,
+      337,
+      450
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4045,
+    "valueList": [
+      60,
+      120,
+      181,
+      241
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4046,
+    "valueList": [
+      102,
+      204,
+      306,
+      408
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4047,
+    "valueList": [
+      57,
+      114,
+      172,
+      229
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4048,
+    "valueList": [
+      145,
+      289,
+      434,
+      578
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4049,
+    "valueList": [
+      64,
+      128,
+      191,
+      255
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4050,
+    "valueList": [
+      106,
+      213,
+      319,
+      426
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4051,
+    "valueList": [
+      79,
+      158,
+      236,
+      315
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4052,
+    "valueList": [
+      119,
+      238,
+      356,
+      475
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4053,
+    "valueList": [
+      116,
+      232,
+      348,
+      464
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4054,
+    "valueList": [
+      163,
+      326,
+      489,
+      652
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4055,
+    "valueList": [
+      153,
+      307,
+      460,
+      614
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4056,
+    "valueList": [
+      129,
+      258,
+      388,
+      517
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4057,
+    "valueList": [
+      152,
+      304,
+      455,
+      607
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4059,
+    "valueList": [
+      75,
+      150,
+      224,
+      299
+    ],
+    "masterReleaseLabelId": 223063007
+  },
+  {
+    "masterMusicId": 4060,
+    "valueList": [
+      42,
+      84,
+      127,
+      169
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4061,
+    "valueList": [
+      50,
+      100,
+      150,
+      200
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4064,
+    "valueList": [
+      53,
+      106,
+      158,
+      211
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4065,
+    "valueList": [
+      142,
+      284,
+      427,
+      569
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4066,
+    "valueList": [
+      83,
+      167,
+      250,
+      334
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4067,
+    "valueList": [
+      82,
+      164,
+      245,
+      327
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4068,
+    "valueList": [
+      78,
+      156,
+      233,
+      311
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4069,
+    "valueList": [
+      74,
+      148,
+      221,
+      295
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4071,
+    "valueList": [
+      113,
+      226,
+      338,
+      451
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4073,
+    "valueList": [
+      66,
+      132,
+      199,
+      265
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4074,
+    "valueList": [
+      62,
+      124,
+      187,
+      249
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4075,
+    "valueList": [
+      62,
+      124,
+      185,
+      247
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4076,
+    "valueList": [
+      56,
+      112,
+      167,
+      223
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4077,
+    "valueList": [
+      63,
+      126,
+      189,
+      252
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4078,
+    "valueList": [
+      67,
+      134,
+      202,
+      269
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4079,
+    "valueList": [
+      52,
+      104,
+      156,
+      208
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4080,
+    "valueList": [
+      64,
+      128,
+      193,
+      257
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4081,
+    "valueList": [
+      44,
+      88,
+      133,
+      177
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4082,
+    "valueList": [
+      31,
+      62,
+      92,
+      123
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4083,
+    "valueList": [
+      61,
+      122,
+      182,
+      243
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4084,
+    "valueList": [
+      31,
+      63,
+      94,
+      126
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4085,
+    "valueList": [
+      40,
+      80,
+      120,
+      160
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4086,
+    "valueList": [
+      43,
+      86,
+      128,
+      171
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4087,
+    "valueList": [
+      42,
+      85,
+      127,
+      170
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4088,
+    "valueList": [
+      61,
+      122,
+      183,
+      244
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4089,
+    "valueList": [
+      69,
+      138,
+      207,
+      276
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4090,
+    "valueList": [
+      63,
+      125,
+      188,
+      250
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4091,
+    "valueList": [
+      87,
+      174,
+      262,
+      349
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4092,
+    "valueList": [
+      73,
+      147,
+      220,
+      294
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 4094,
+    "valueList": [
+      61,
+      121,
+      182,
+      242
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 4095,
+    "valueList": [
+      73,
+      146,
+      220,
+      293
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 4096,
+    "valueList": [
+      60,
+      120,
+      180,
+      240
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 4097,
+    "valueList": [
+      45,
+      90,
+      134,
+      179
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 4098,
+    "valueList": [
+      79,
+      158,
+      237,
+      316
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 4099,
+    "valueList": [
+      58,
+      116,
+      174,
+      232
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 4100,
+    "valueList": [
+      59,
+      118,
+      176,
+      235
+    ],
+    "masterReleaseLabelId": 223081402
+  },
+  {
+    "masterMusicId": 4101,
+    "valueList": [
+      75,
+      150,
+      225,
+      300
+    ],
+    "masterReleaseLabelId": 223081402
+  },
+  {
+    "masterMusicId": 4102,
+    "valueList": [
+      76,
+      151,
+      227,
+      302
+    ],
+    "masterReleaseLabelId": 223081402
+  },
+  {
+    "masterMusicId": 4103,
+    "valueList": [
+      79,
+      158,
+      238,
+      317
+    ],
+    "masterReleaseLabelId": 223081402
+  },
+  {
+    "masterMusicId": 4104,
+    "valueList": [
+      53,
+      105,
+      158,
+      210
+    ],
+    "masterReleaseLabelId": 223081402
+  },
+  {
+    "masterMusicId": 4105,
+    "valueList": [
+      77,
+      154,
+      231,
+      308
+    ],
+    "masterReleaseLabelId": 223081402
+  },
+  {
+    "masterMusicId": 4106,
+    "valueList": [
+      68,
+      137,
+      205,
+      274
+    ],
+    "masterReleaseLabelId": 223061105
+  },
+  {
+    "masterMusicId": 4107,
+    "valueList": [
+      101,
+      201,
+      302,
+      402
+    ],
+    "masterReleaseLabelId": 223061105
+  },
+  {
+    "masterMusicId": 4108,
+    "valueList": [
+      93,
+      186,
+      280,
+      373
+    ],
+    "masterReleaseLabelId": 223101301
+  },
+  {
+    "masterMusicId": 4110,
+    "valueList": [
+      86,
+      172,
+      258,
+      344
+    ],
+    "masterReleaseLabelId": 223091002
+  },
+  {
+    "masterMusicId": 4111,
+    "valueList": [
+      77,
+      154,
+      230,
+      307
+    ],
+    "masterReleaseLabelId": 223101301
+  },
+  {
+    "masterMusicId": 4112,
+    "valueList": [
+      78,
+      156,
+      235,
+      313
+    ],
+    "masterReleaseLabelId": 223110801
+  },
+  {
+    "masterMusicId": 4113,
+    "valueList": [
+      63,
+      126,
+      188,
+      251
+    ],
+    "masterReleaseLabelId": 223101301
+  },
+  {
+    "masterMusicId": 4114,
+    "valueList": [
+      63,
+      126,
+      190,
+      253
+    ],
+    "masterReleaseLabelId": 223110801
+  },
+  {
+    "masterMusicId": 4115,
+    "valueList": [
+      54,
+      108,
+      162,
+      216
+    ],
+    "masterReleaseLabelId": 223101301
+  },
+  {
+    "masterMusicId": 4116,
+    "valueList": [
+      67,
+      134,
+      201,
+      268
+    ],
+    "masterReleaseLabelId": 223110801
+  },
+  {
+    "masterMusicId": 4117,
+    "valueList": [
+      127,
+      254,
+      380,
+      507
+    ],
+    "masterReleaseLabelId": 224012006
+  },
+  {
+    "masterMusicId": 4118,
+    "valueList": [
+      82,
+      165,
+      247,
+      330
+    ],
+    "masterReleaseLabelId": 224012006
+  },
+  {
+    "masterMusicId": 4119,
+    "valueList": [
+      147,
+      294,
+      440,
+      587
+    ],
+    "masterReleaseLabelId": 224021202
+  },
+  {
+    "masterMusicId": 5001,
+    "valueList": [
+      103,
+      205,
+      308,
+      410
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 5002,
+    "valueList": [
+      114,
+      228,
+      341,
+      455
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 5003,
+    "valueList": [
+      76,
+      152,
+      227,
+      303
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 5004,
+    "valueList": [
+      91,
+      182,
+      274,
+      365
+    ],
+    "masterReleaseLabelId": 223053107
+  },
+  {
+    "masterMusicId": 5005,
+    "valueList": [
+      75,
+      150,
+      224,
+      299
+    ],
+    "masterReleaseLabelId": 223053107
+  },
+  {
+    "masterMusicId": 5006,
+    "valueList": [
+      113,
+      226,
+      340,
+      453
+    ],
+    "masterReleaseLabelId": 223053107
+  },
+  {
+    "masterMusicId": 5007,
+    "valueList": [
+      81,
+      162,
+      243,
+      324
+    ],
+    "masterReleaseLabelId": 223053107
+  },
+  {
+    "masterMusicId": 5008,
+    "valueList": [
+      82,
+      164,
+      247,
+      329
+    ],
+    "masterReleaseLabelId": 223053107
+  },
+  {
+    "masterMusicId": 5009,
+    "valueList": [
+      78,
+      156,
+      233,
+      311
+    ],
+    "masterReleaseLabelId": 223053107
+  },
+  {
+    "masterMusicId": 5010,
+    "valueList": [
+      89,
+      178,
+      267,
+      356
+    ],
+    "masterReleaseLabelId": 223061507
+  },
+  {
+    "masterMusicId": 5011,
+    "valueList": [
+      85,
+      170,
+      254,
+      339
+    ],
+    "masterReleaseLabelId": 223061507
+  },
+  {
+    "masterMusicId": 5012,
+    "valueList": [
+      85,
+      170,
+      254,
+      339
+    ],
+    "masterReleaseLabelId": 223061507
+  },
+  {
+    "masterMusicId": 5013,
+    "valueList": [
+      61,
+      121,
+      182,
+      242
+    ],
+    "masterReleaseLabelId": 223061507
+  },
+  {
+    "masterMusicId": 5014,
+    "valueList": [
+      85,
+      170,
+      256,
+      341
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 5015,
+    "valueList": [
+      74,
+      148,
+      221,
+      295
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 5016,
+    "valueList": [
+      98,
+      196,
+      294,
+      392
+    ],
+    "masterReleaseLabelId": 223081102
+  },
+  {
+    "masterMusicId": 5017,
+    "valueList": [
+      102,
+      204,
+      306,
+      408
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 5018,
+    "valueList": [
+      86,
+      172,
+      257,
+      343
+    ],
+    "masterReleaseLabelId": 223111507
+  },
+  {
+    "masterMusicId": 5019,
+    "valueList": [
+      112,
+      224,
+      336,
+      448
+    ],
+    "masterReleaseLabelId": 223111507
+  },
+  {
+    "masterMusicId": 5020,
+    "valueList": [
+      90,
+      180,
+      271,
+      361
+    ],
+    "masterReleaseLabelId": 223111507
+  },
+  {
+    "masterMusicId": 5021,
+    "valueList": [
+      64,
+      127,
+      191,
+      254
+    ],
+    "masterReleaseLabelId": 223111507
+  },
+  {
+    "masterMusicId": 5022,
+    "valueList": [
+      94,
+      187,
+      281,
+      374
+    ],
+    "masterReleaseLabelId": 223120504
+  },
+  {
+    "masterMusicId": 5023,
+    "valueList": [
+      68,
+      136,
+      204,
+      272
+    ],
+    "masterReleaseLabelId": 223120504
+  },
+  {
+    "masterMusicId": 5024,
+    "valueList": [
+      112,
+      225,
+      337,
+      450
+    ],
+    "masterReleaseLabelId": 224011107
+  },
+  {
+    "masterMusicId": 5025,
+    "valueList": [
+      108,
+      217,
+      325,
+      434
+    ],
+    "masterReleaseLabelId": 223120108
+  },
+  {
+    "masterMusicId": 5026,
+    "valueList": [
+      63,
+      126,
+      188,
+      251
+    ],
+    "masterReleaseLabelId": 223120108
+  },
+  {
+    "masterMusicId": 5027,
+    "valueList": [
+      102,
+      205,
+      307,
+      410
+    ],
+    "masterReleaseLabelId": 224011107
+  },
+  {
+    "masterMusicId": 5028,
+    "valueList": [
+      57,
+      114,
+      170,
+      227
+    ],
+    "masterReleaseLabelId": 224011107
+  },
+  {
+    "masterMusicId": 5029,
+    "valueList": [
+      82,
+      163,
+      245,
+      326
+    ],
+    "masterReleaseLabelId": 223120108
+  },
+  {
+    "masterMusicId": 5030,
+    "valueList": [
+      91,
+      182,
+      274,
+      365
+    ],
+    "masterReleaseLabelId": 224011107
+  },
+  {
+    "masterMusicId": 5031,
+    "valueList": [
+      106,
+      212,
+      319,
+      425
+    ],
+    "masterReleaseLabelId": 223120108
+  },
+  {
+    "masterMusicId": 6001,
+    "valueList": [
+      69,
+      137,
+      206,
+      274
+    ],
+    "masterReleaseLabelId": 223060801
+  },
+  {
+    "masterMusicId": 6002,
+    "valueList": [
+      81,
+      162,
+      244,
+      325
+    ],
+    "masterReleaseLabelId": 223070301
+  },
+  {
+    "masterMusicId": 6003,
+    "valueList": [
+      77,
+      153,
+      230,
+      306
+    ],
+    "masterReleaseLabelId": 223062602
+  },
+  {
+    "masterMusicId": 6004,
+    "valueList": [
+      106,
+      212,
+      319,
+      425
+    ],
+    "masterReleaseLabelId": 223071001
+  },
+  {
+    "masterMusicId": 6005,
+    "valueList": [
+      66,
+      133,
+      199,
+      266
+    ],
+    "masterReleaseLabelId": 223071701
+  },
+  {
+    "masterMusicId": 6006,
+    "valueList": [
+      62,
+      123,
+      185,
+      246
+    ],
+    "masterReleaseLabelId": 223073107
+  },
+  {
+    "masterMusicId": 6007,
+    "valueList": [
+      111,
+      221,
+      332,
+      442
+    ],
+    "masterReleaseLabelId": 223081402
+  },
+  {
+    "masterMusicId": 6008,
+    "valueList": [
+      81,
+      162,
+      243,
+      324
+    ],
+    "masterReleaseLabelId": 223091102
+  },
+  {
+    "masterMusicId": 6009,
+    "valueList": [
+      68,
+      136,
+      204,
+      272
+    ],
+    "masterReleaseLabelId": 223080703
+  },
+  {
+    "masterMusicId": 6010,
+    "valueList": [
+      75,
+      151,
+      226,
+      302
+    ],
+    "masterReleaseLabelId": 223091801
+  },
+  {
+    "masterMusicId": 6011,
+    "valueList": [
+      89,
+      179,
+      268,
+      358
+    ],
+    "masterReleaseLabelId": 223121802
+  },
+  {
+    "masterMusicId": 6012,
+    "valueList": [
+      70,
+      141,
+      211,
+      282
+    ],
+    "masterReleaseLabelId": 223121802
+  },
+  {
+    "masterMusicId": 9001,
+    "valueList": [
+      96,
+      193,
+      289,
+      386
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 9002,
+    "valueList": [
+      78,
+      156,
+      234,
+      312
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 9003,
+    "valueList": [
+      86,
+      172,
+      257,
+      343
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 9004,
+    "valueList": [
+      89,
+      178,
+      267,
+      356
+    ],
+    "masterReleaseLabelId": 1
+  },
+  {
+    "masterMusicId": 9005,
+    "valueList": [
+      81,
+      162,
+      243,
+      324
+    ],
+    "masterReleaseLabelId": 223050801
+  },
+  {
+    "masterMusicId": 9006,
+    "valueList": [
+      67,
+      133,
+      200,
+      266
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9007,
+    "valueList": [
+      74,
+      147,
+      221,
+      294
+    ],
+    "masterReleaseLabelId": 223050801
+  },
+  {
+    "masterMusicId": 9008,
+    "valueList": [
+      52,
+      103,
+      155,
+      206
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9009,
+    "valueList": [
+      71,
+      142,
+      213,
+      284
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9010,
+    "valueList": [
+      74,
+      148,
+      222,
+      296
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9011,
+    "valueList": [
+      66,
+      131,
+      197,
+      262
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9012,
+    "valueList": [
+      51,
+      102,
+      152,
+      203
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9013,
+    "valueList": [
+      63,
+      126,
+      189,
+      252
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9014,
+    "valueList": [
+      108,
+      215,
+      323,
+      430
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9015,
+    "valueList": [
+      45,
+      90,
+      136,
+      181
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9016,
+    "valueList": [
+      50,
+      100,
+      150,
+      200
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9017,
+    "valueList": [
+      55,
+      110,
+      165,
+      220
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9018,
+    "valueList": [
+      99,
+      197,
+      296,
+      394
+    ],
+    "masterReleaseLabelId": 223050801
+  },
+  {
+    "masterMusicId": 9019,
+    "valueList": [
+      82,
+      163,
+      245,
+      326
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9020,
+    "valueList": [
+      56,
+      111,
+      167,
+      222
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9021,
+    "valueList": [
+      74,
+      148,
+      222,
+      296
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9022,
+    "valueList": [
+      56,
+      112,
+      169,
+      225
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9023,
+    "valueList": [
+      33,
+      65,
+      98,
+      130
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9024,
+    "valueList": [
+      79,
+      158,
+      236,
+      315
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9025,
+    "valueList": [
+      56,
+      112,
+      167,
+      223
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9026,
+    "valueList": [
+      46,
+      92,
+      137,
+      183
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9027,
+    "valueList": [
+      50,
+      100,
+      149,
+      199
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9028,
+    "valueList": [
+      91,
+      182,
+      273,
+      364
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9029,
+    "valueList": [
+      69,
+      139,
+      208,
+      278
+    ],
+    "masterReleaseLabelId": 223052603
+  },
+  {
+    "masterMusicId": 9030,
+    "valueList": [
+      90,
+      179,
+      269,
+      358
+    ],
+    "masterReleaseLabelId": 223050801
+  },
+  {
+    "masterMusicId": 9031,
+    "valueList": [
+      87,
+      174,
+      262,
+      349
+    ],
+    "masterReleaseLabelId": 223050801
+  },
+  {
+    "masterMusicId": 9032,
+    "valueList": [
+      130,
+      259,
+      389,
+      518
+    ],
+    "masterReleaseLabelId": 223111507
+  }
+]

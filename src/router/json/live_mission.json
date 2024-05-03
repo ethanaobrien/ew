@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "type": 1,
+    "level": 2,
+    "value": "C",
+    "masterLiveMissionRewardId": 140000001,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 2,
+    "type": 1,
+    "level": 0,
+    "value": "B",
+    "masterLiveMissionRewardId": 140000002,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 3,
+    "type": 1,
+    "level": 0,
+    "value": "A",
+    "masterLiveMissionRewardId": 140000003,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 4,
+    "type": 1,
+    "level": 0,
+    "value": "S",
+    "masterLiveMissionRewardId": 140000004,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 11,
+    "type": 2,
+    "level": 0,
+    "value": "0",
+    "masterLiveMissionRewardId": 140000011,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 12,
+    "type": 2,
+    "level": 0,
+    "value": "1",
+    "masterLiveMissionRewardId": 140000012,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 13,
+    "type": 2,
+    "level": 0,
+    "value": "2",
+    "masterLiveMissionRewardId": 140000013,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 14,
+    "type": 2,
+    "level": 0,
+    "value": "3",
+    "masterLiveMissionRewardId": 140000014,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 21,
+    "type": 3,
+    "level": 1,
+    "value": "",
+    "masterLiveMissionRewardId": 140000021,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 22,
+    "type": 3,
+    "level": 2,
+    "value": "",
+    "masterLiveMissionRewardId": 140000022,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 23,
+    "type": 3,
+    "level": 3,
+    "value": "",
+    "masterLiveMissionRewardId": 140000023,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 24,
+    "type": 3,
+    "level": 4,
+    "value": "",
+    "masterLiveMissionRewardId": 140000024,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 31,
+    "type": 4,
+    "level": 0,
+    "value": "5",
+    "masterLiveMissionRewardId": 140000031,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 32,
+    "type": 4,
+    "level": 0,
+    "value": "10",
+    "masterLiveMissionRewardId": 140000032,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 33,
+    "type": 4,
+    "level": 0,
+    "value": "30",
+    "masterLiveMissionRewardId": 140000033,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 34,
+    "type": 4,
+    "level": 0,
+    "value": "50",
+    "masterLiveMissionRewardId": 140000034,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 41,
+    "type": 5,
+    "level": 1,
+    "value": "",
+    "masterLiveMissionRewardId": 0,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 42,
+    "type": 5,
+    "level": 2,
+    "value": "",
+    "masterLiveMissionRewardId": 0,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 43,
+    "type": 5,
+    "level": 3,
+    "value": "",
+    "masterLiveMissionRewardId": 0,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 44,
+    "type": 5,
+    "level": 4,
+    "value": "",
+    "masterLiveMissionRewardId": 0,
+    "masterReleaseLabelId": 1
+  }
+]

@@ -1,0 +1,162 @@
+[
+  {
+    "id": 140000001,
+    "number": 1,
+    "type": 4,
+    "giveType": 1,
+    "value": 1,
+    "level": 0,
+    "amount": 5000,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000002,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 16005003,
+    "level": 0,
+    "amount": 1,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000003,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 19100001,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000004,
+    "number": 1,
+    "type": 1,
+    "giveType": 1,
+    "value": 0,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000011,
+    "number": 1,
+    "type": 4,
+    "giveType": 1,
+    "value": 1,
+    "level": 0,
+    "amount": 5000,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000012,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 16005003,
+    "level": 0,
+    "amount": 1,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000013,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 19100001,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000014,
+    "number": 1,
+    "type": 1,
+    "giveType": 1,
+    "value": 1,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000021,
+    "number": 1,
+    "type": 4,
+    "giveType": 1,
+    "value": 1,
+    "level": 0,
+    "amount": 5000,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000022,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 16005003,
+    "level": 0,
+    "amount": 1,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000023,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 19100001,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000024,
+    "number": 1,
+    "type": 1,
+    "giveType": 1,
+    "value": 0,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000031,
+    "number": 1,
+    "type": 4,
+    "giveType": 1,
+    "value": 1,
+    "level": 0,
+    "amount": 5000,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000032,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 16005003,
+    "level": 0,
+    "amount": 1,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000033,
+    "number": 1,
+    "type": 3,
+    "giveType": 1,
+    "value": 19100001,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "id": 140000034,
+    "number": 1,
+    "type": 1,
+    "giveType": 1,
+    "value": 0,
+    "level": 0,
+    "amount": 10,
+    "masterReleaseLabelId": 1
+  }
+]
