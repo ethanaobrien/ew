@@ -108,8 +108,10 @@ pub fn timestamp_since_midnight() -> u64 {
     rv
 }
 
-pub fn send(data: JsonValue) -> HttpResponse {
+pub fn send(mut data: JsonValue) -> HttpResponse {
     //println!("{}", json::stringify(data.clone()));
+    data["server_time"] = 1711741114.into();
+    
     let encrypted = encryption::encrypt_packet(&json::stringify(data)).unwrap();
     let resp = encrypted.into_bytes();
 

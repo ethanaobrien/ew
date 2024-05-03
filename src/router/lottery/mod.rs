@@ -157,7 +157,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut cardstogive;
     
-    let mut lottery_id = body["master_lottery_id"].as_i64().unwrap();
+    let lottery_id = body["master_lottery_id"].as_i64().unwrap();
     if user["tutorial_step"].as_i32().unwrap() != 130 {
         cardstogive = get_random_cards(body["master_lottery_id"].as_i64().unwrap(), 9);
         let item_id = (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1;
@@ -169,14 +169,13 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
         };
         cardstogive.push(new_card).unwrap();
     } else {
-        lottery_id = 1110024;
         let price = PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
         
-        //if price["consumeType"].as_i32().unwrap() == 1 {
-        //    global::remove_gems(&mut user, price["price"].as_i64().unwrap());
-        //} else if price["consumeType"].as_i32().unwrap() == 4 {
-        //    global::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
-        //}
+        if price["consumeType"].as_i32().unwrap() == 1 {
+            global::remove_gems(&mut user, price["price"].as_i64().unwrap());
+        } else if price["consumeType"].as_i32().unwrap() == 4 {
+            global::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
+        }
         
         cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
     }
