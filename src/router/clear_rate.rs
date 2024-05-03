@@ -236,28 +236,21 @@ lazy_static! {
     static ref CACHED_DATA: Mutex<Option<JsonValue>> = Mutex::new(None);
     static ref LIVE_LIST: JsonValue = {
         let mut info = object!{};
-        let mut info2 = object!{};
         let items = json::parse(include_str!("json/live.json")).unwrap();
         for (_i, data) in items.members().enumerate() {
             info[data["id"].to_string()] = data["masterMusicId"].clone();
         }
-        for (_i, data) in items.members().enumerate() {
-            info2[data["masterMusicId"].to_string()] = data["id"].clone();
-        }
-        object!{
-            masterMusicId: info,
-            id: info2
-        }
+        info
     };
 }
 fn get_live_id(id: i64) -> i64 {
-    LIVE_LIST["masterMusicId"][id.to_string()].as_i64().unwrap()
+    LIVE_LIST[id.to_string()].as_i64().unwrap()
 }
 
 fn get_pass_percent(failed: i64, pass: i64) -> String {
     let total = (failed + pass) as f64;
     if failed + pass == 0 {
-        return String::from("--/--%");
+        return String::from("--:--%");
     }
     let pass = pass as f64;
     format!("{:.2}%", pass / total * 100.0)

@@ -79,25 +79,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
             if data["id"].to_string() != gift_id.to_string() {
                 continue;
             }
-            let limit_reached;
-            //println!("{}", json::stringify(data.clone()));
-            if data["reward_type"].to_string() == "1" {
-                // basically primogems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                limit_reached = global::give_primogems(data["amount"].as_i64().unwrap(), &mut userr);
-            } else if data["reward_type"].to_string() == "2" {
-                //character
-                global::give_character(data["value"].to_string(), &mut userr);
-                limit_reached = false;
-            } else if data["reward_type"].to_string() == "3" {
-                limit_reached = global::give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), &mut userr);
-            } else if data["reward_type"].to_string() == "4" {
-                // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                limit_reached = global::give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), &mut userr);
-            } else {
-                println!("Redeeming reward not implimented for reward type {}", data["reward_type"].to_string());
-                limit_reached = true;
-            }
-            if limit_reached {
+            if !global::give_gift(&data, &mut userr) {
                 failed.push(gift_id.clone()).unwrap();
                 break;
             }

@@ -174,6 +174,33 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool
     false
 }
 
+pub fn give_gift(data: &JsonValue, user: &mut JsonValue) -> bool {
+    if data.is_empty() {
+        return false;
+    }
+    if data["reward_type"].to_string() == "1" {
+        // basically primogems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        return !give_primogems(data["amount"].as_i64().unwrap(), user);
+    } else if data["reward_type"].to_string() == "2" {
+        //character
+        give_character(data["value"].to_string(), user);
+        return true;
+    } else if data["reward_type"].to_string() == "3" {
+        return !give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
+    } else if data["reward_type"].to_string() == "4" {
+        // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        return !give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
+    }
+    println!("Redeeming reward not implimented for reward type {}", data["reward_type"].to_string());
+    return false;
+}
+pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i32, user: &mut JsonValue) -> bool {
+    give_gift(&object!{
+        reward_type: ty_pe,
+        amount: amount,
+        value: id
+    }, user)
+}
 pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
     let mut has = false;
     for (_j, dataa) in user["point_list"].members_mut().enumerate() {
@@ -194,6 +221,16 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bo
         }).unwrap();
     }
     false
+}
+pub fn use_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
+    for (_j, dataa) in user["item_list"].members_mut().enumerate() {
+        if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
+            if dataa["amount"].as_i64().unwrap() >= amount {
+                dataa["amount"] = (dataa["amount"].as_i64().unwrap() - amount).into();
+            }
+            break;
+        }
+    }
 }
 
 pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) -> bool {
