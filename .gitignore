@@ -5,3 +5,4 @@ python/
 *.db
 webui/node_modules/
 webui/dist/
+Cargo.lock
