@@ -25,7 +25,7 @@ function Bonus() {
             error[1](resp.message);
             return;
         }
-    
+        error[1]("");
         setSubmittedItems([...submittedItems, resp.id]);
         setInputValue('');
     };
@@ -63,10 +63,32 @@ function Bonus() {
 
 function Home() {
     const [user, userdata] = useState();
+    const [inputValue, setInputValue] = useState('');
+    const [serverTime, setServerTime] = useState('');
+    const error = useState("");
     
     const logout = () => {
         window.location.href = "/webui/logout";
     }
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        let input = parseInt(inputValue.trim());
+        let time = Math.round((new Date(inputValue.trim()).getTime() + 200000) / 1000);
+        if (input === -1) {
+            time = 1711741114;
+        }
+        if (time < 0 || isNaN(time)) return;
+        let resp = await Request("/api/webui/set_time", {
+            timestamp: time
+        });
+        if (resp.result !== "OK") {
+            error[1](resp.message);
+            return;
+        }
+        error[1]("");
+        setServerTime((new Date(time * 1000)).toString());
+        setInputValue('');
+    };
     
     useEffect(() => {
         if (user) return;
@@ -86,8 +108,11 @@ function Home() {
                     rank: 3,
                     exp: 10,
                     last_login_time: 5
-                }
+                },
+                time: new Date()
             }*/
+            setServerTime((new Date(resp.data.time * 1000)).toString());
+            
             userdata(
                 <div>
                     <p>User id: { user.user.id } </p>
@@ -104,7 +129,21 @@ function Home() {
             <button id="logout" onClick={logout}>Logout</button>
             <h1>Home</h1>
             
-            { user ? <div> { user } </div> : <p>Loading...</p> }
+            { user ? <div> 
+                { user } 
+                <h2>Server time</h2>
+                <div id="error"> { error[0] ? <p>Error: { error[0] } </p> : <p></p> } </div>
+                <p>Currently set to { serverTime }. Setting to 0 will set it to now, and -1 will reset it.</p>
+                <form onSubmit={handleSubmit}>
+                    <input
+                        type="text"
+                        value={inputValue}
+                        onChange={(event) => setInputValue(event.target.value)}
+                        placeholder="Enter Server Time"
+                    />
+                    <button type="submit">Submit</button>
+                </form></div>
+            : <p>Loading...</p> }
         </div>
     );
 }

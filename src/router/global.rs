@@ -83,15 +83,15 @@ pub fn timestamp_since_midnight() -> u64 {
 fn set_time(data: &mut JsonValue, req: HttpRequest) {
     data["server_time"] = 1711741114.into();
     let blank_header = HeaderValue::from_static("");
-    let uid = headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse<i64>().unwrap_or(0);
+    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
     if uid == 0 {
         return;
     }
-    let server_data = userdata::get_server_data(get_login_token(uid));
+    let server_data = userdata::get_server_data(&userdata::get_login_token(uid));
     
-    if server_data["timestamp"].as_i64().is_ok() {
+    if !server_data["timestamp"].as_i64().is_none() {
         if server_data["timestamp"].as_i64().unwrap() == 0 {
-            data["server_time"] = global::timestamp().into();
+            data["server_time"] = timestamp().into();
             return;
         }
         data["server_time"] = server_data["timestamp"].clone();
@@ -100,7 +100,7 @@ fn set_time(data: &mut JsonValue, req: HttpRequest) {
 
 pub fn send(mut data: JsonValue, req: HttpRequest) -> HttpResponse {
     //println!("{}", json::stringify(data.clone()));
-    set_time(&data, req)
+    set_time(&mut data, req);
     
     let encrypted = encryption::encrypt_packet(&json::stringify(data)).unwrap();
     let resp = encrypted.into_bytes();

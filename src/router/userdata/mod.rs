@@ -494,7 +494,8 @@ pub fn webui_get_user(token: &str) -> Option<JsonValue> {
     
     return Some(object!{
         userdata: get_acc(&login_token),
-        loginbonus: get_acc_loginbonus(&login_token)
+        loginbonus: get_acc_loginbonus(&login_token),
+        time: get_server_data(&login_token)["server_time"].clone()
     });
 }
 
@@ -523,7 +524,7 @@ pub fn webui_start_loginbonus(bonus_id: i64, token: &str) -> JsonValue {
 }
 
 pub fn set_server_time(time: i64, token: &str) -> JsonValue {
-    if time > global::timestamp() {
+    if time as u64 > global::timestamp() {
         return object!{
             result: "ERR",
             message: "Timestamp is in the future"
