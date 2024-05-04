@@ -1,8 +1,7 @@
 use json::object;
 use actix_web::{HttpResponse, HttpRequest};
 
-use crate::router::global;
-use crate::router::userdata;
+use crate::router::{global, userdata, items};
 use crate::encryption;
 
 pub fn events(_req: HttpRequest) -> HttpResponse {
@@ -23,13 +22,13 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
     
     let item;
     if body["input_code"].to_string() == "SIF2REVIVALREAL!" {
-        item = global::gift_item_basic(1, 100000, 4, "Another game died... This makes me sad :(", &mut user);
+        item = items::gift_item_basic(1, 100000, 4, "Another game died... This makes me sad :(", &mut user);
     } else if body["input_code"].to_string() == "pweasegivegems11" {
-        item = global::gift_item_basic(1, 6000, 1, "Only because you asked...", &mut user);
+        item = items::gift_item_basic(1, 6000, 1, "Only because you asked...", &mut user);
     } else if body["input_code"].to_string() == "sleepysleepyslep" {
-        item = global::gift_item_basic(15540001, 50, 3, "I am tired", &mut user);
+        item = items::gift_item_basic(15540001, 50, 3, "I am tired", &mut user);
     } else if body["input_code"].to_string() == "ilikeganyu!!!!!!" {
-        item = global::gift_item_basic(16005003, 100, 3, "I need more primogems", &mut user);
+        item = items::gift_item_basic(16005003, 100, 3, "I need more primogems", &mut user);
     } else {
         let resp = object!{
             "code": 0,

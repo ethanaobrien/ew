@@ -3,9 +3,8 @@ use actix_web::{HttpResponse, HttpRequest};
 use lazy_static::lazy_static;
 use rand::Rng;
 
-use crate::router::global;
+use crate::router::{global, userdata, items};
 use crate::encryption;
-use crate::router::userdata;
 
 lazy_static! {
     static ref CARDS: JsonValue = {
@@ -172,9 +171,9 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
         let price = PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
         
         if price["consumeType"].as_i32().unwrap() == 1 {
-            global::remove_gems(&mut user, price["price"].as_i64().unwrap());
+            items::remove_gems(&mut user, price["price"].as_i64().unwrap());
         } else if price["consumeType"].as_i32().unwrap() == 4 {
-            global::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
+            items::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
         }
         
         cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
@@ -188,7 +187,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     if lottery_type == 1 {
         for (_i, data) in cardstogive.members().enumerate() {
             let mut is_new = true;
-            if !global::give_character(data["master_card_id"].to_string(), &mut user) {
+            if !items::give_character(data["master_card_id"].to_string(), &mut user) {
                 is_new = false;
             }
             if is_new {
@@ -213,11 +212,11 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
             }
             lottery_list.push(to_push).unwrap();
         }
-        global::give_gift_basic(3, 15540034, 10, &mut user);
+        items::give_gift_basic(3, 15540034, 10, &mut user);
     } else if lottery_type == 2 {
         for (_i, data) in cardstogive.members().enumerate() {
             let info = get_card(data["master_lottery_item_id"].to_string(), data["master_lottery_item_number"].to_string());
-            global::give_gift_basic(info["type"].as_i32().unwrap(), info["value"].as_i64().unwrap(), info["amount"].as_i64().unwrap(), &mut user);
+            items::give_gift_basic(info["type"].as_i32().unwrap(), info["value"].as_i64().unwrap(), info["amount"].as_i64().unwrap(), &mut user);
             let to_push = object!{
                 "master_lottery_item_id": data["master_lottery_item_id"].clone(),
                 "master_lottery_item_number": data["master_lottery_item_number"].clone(),

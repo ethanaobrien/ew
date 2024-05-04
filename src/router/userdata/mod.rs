@@ -6,6 +6,7 @@ use sha2::{Digest, Sha256};
 use base64::{Engine as _, engine::general_purpose};
 
 use crate::router::global;
+use crate::router::items;
 use crate::sql::SQLite;
 
 lazy_static! {
@@ -152,7 +153,7 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     cleanup_account(&mut user);
     
-    global::lp_modification(&mut user, 0, false);
+    items::lp_modification(&mut user, 0, false);
     return user;
 }
 
@@ -279,7 +280,7 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
     
     return object!{
         user_name: data["user"]["name"].clone(),
-        user_rank: global::get_user_rank_data(data["user"]["exp"].as_i64().unwrap())["rank"].clone() //todo
+        user_rank: items::get_user_rank_data(data["user"]["exp"].as_i64().unwrap())["rank"].clone() //todo
     }
 }
 

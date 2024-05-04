@@ -2,7 +2,7 @@ use json::{object, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 use lazy_static::lazy_static;
 
-use crate::router::{userdata, global};
+use crate::router::{userdata, global, items};
 use crate::encryption;
 
 lazy_static! {
@@ -42,9 +42,9 @@ pub fn buy(req: HttpRequest, body: String) -> HttpResponse {
     
     let item = get_item_info(body["master_shop_item_id"].as_i64().unwrap());
     
-    global::remove_gems(&mut user, item["price"].as_i64().unwrap());
-    global::give_shop(item["masterShopRewardId"].as_i64().unwrap(), item["price"].as_i64().unwrap(), &mut user);
-    global::lp_modification(&mut user, item["price"].as_u64().unwrap() / 2, false);
+    items::remove_gems(&mut user, item["price"].as_i64().unwrap());
+    items::give_shop(item["masterShopRewardId"].as_i64().unwrap(), item["price"].as_i64().unwrap(), &mut user);
+    items::lp_modification(&mut user, item["price"].as_u64().unwrap() / 2, false);
     
     userdata::save_acc(&key, user.clone());
     

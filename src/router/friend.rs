@@ -1,9 +1,8 @@
 use json::{object, array};
 use actix_web::{HttpResponse, HttpRequest};
 
-use crate::router::userdata;
+use crate::router::{userdata, global};
 use crate::encryption;
-use crate::router::global;
 
 pub fn friend(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);

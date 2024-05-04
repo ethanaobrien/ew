@@ -6,8 +6,7 @@ use actix_web::{
 };
 use json::object;
 
-use crate::router::userdata;
-use crate::router::global;
+use crate::router::{userdata, items};
 
 fn get_login_token(req: &HttpRequest) -> Option<String> {
     let blank_header = HeaderValue::from_static("");
@@ -78,7 +77,7 @@ pub fn user(req: HttpRequest) -> HttpResponse {
     }
     let mut data = data.unwrap();
     
-    data["userdata"]["user"]["rank"] = global::get_user_rank_data(data["userdata"]["user"]["exp"].as_i64().unwrap())["rank"].clone();
+    data["userdata"]["user"]["rank"] = items::get_user_rank_data(data["userdata"]["user"]["exp"].as_i64().unwrap())["rank"].clone();
     
     let resp = object!{
         result: "OK",

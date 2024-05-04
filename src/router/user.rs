@@ -3,7 +3,7 @@ use actix_web::{HttpResponse, HttpRequest};
 use lazy_static::lazy_static;
 
 use crate::encryption;
-use crate::router::{userdata, global};
+use crate::router::{userdata, global, items};
 
 pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
@@ -78,7 +78,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
             if data["id"].to_string() != gift_id.to_string() {
                 continue;
             }
-            if !global::give_gift(&data, &mut userr) {
+            if !items::give_gift(&data, &mut userr) {
                 failed.push(gift_id.clone()).unwrap();
                 break;
             }
@@ -440,7 +440,7 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     // User is rewarded with all base cards in the team they chose. This makes up their new deck_list
     
     for (i, data) in cardstoreward.members().enumerate() {
-        global::give_character(data.to_string(), &mut user);
+        items::give_character(data.to_string(), &mut user);
         if i < 10 {
             user["deck_list"][0]["main_card_ids"][i] = data.clone();
         }

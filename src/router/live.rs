@@ -3,10 +3,9 @@ use actix_web::{HttpResponse, HttpRequest};
 use rand::Rng;
 use lazy_static::lazy_static;
 
-use crate::router::global;
+use crate::router::{global, userdata, items};
 use crate::encryption;
 use crate::router::clear_rate::live_completed;
-use crate::router::userdata;
 
 pub fn retire(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -193,7 +192,7 @@ pub fn continuee(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
     
-    global::remove_gems(&mut user, 100);
+    items::remove_gems(&mut user, 100);
     
     userdata::save_acc(&key, user.clone());
     
@@ -364,12 +363,12 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, multiplier: 
         let mut gift = get_live_mission_info(data["masterLiveMissionRewardId"].as_i64().unwrap());
         gift["reward_type"] = gift["type"].clone();
         gift["amount"] = (gift["amount"].as_i64().unwrap() * multiplier).into();
-        global::give_gift(&gift, user);
+        items::give_gift(&gift, user);
     }
-    if global::give_gift_basic(3, 16005001, 10 * multiplier, user) {
+    if items::give_gift_basic(3, 16005001, 10 * multiplier, user) {
         rv.push(object!{"type":3,"value":16005001,"level":0,"amount":10}).unwrap();
     }
-    if global::give_gift_basic(3, 17001001, 2 * multiplier, user) {
+    if items::give_gift_basic(3, 17001001, 2 * multiplier, user) {
         rv.push(object!{"type":3,"value":17001001,"level":0,"amount":2}).unwrap();
     }
     rv
@@ -395,9 +394,9 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     
     let reward_list = give_mission_rewards(&mut user, &missions, 1);
     
-    global::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
+    items::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
     
-    global::give_exp(body["use_lp"].as_i32().unwrap(), &mut user);
+    items::give_exp(body["use_lp"].as_i32().unwrap(), &mut user);
     
     userdata::save_acc(&key, user.clone());
     
@@ -449,11 +448,11 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
     
     let reward_list = give_mission_rewards(&mut user, &missions, body["live_boost"].as_i64().unwrap());
     
-    global::lp_modification(&mut user, 10 * body["live_boost"].as_u64().unwrap(), true);
+    items::lp_modification(&mut user, 10 * body["live_boost"].as_u64().unwrap(), true);
     
-    global::give_exp(10 * body["live_boost"].as_i32().unwrap(), &mut user);
+    items::give_exp(10 * body["live_boost"].as_i32().unwrap(), &mut user);
     
-    global::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
+    items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
     
     userdata::save_acc(&key, user.clone());
     

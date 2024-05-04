@@ -4,6 +4,7 @@ use lazy_static::lazy_static;
 
 use crate::router::global;
 use crate::router::userdata;
+use crate::router::items;
 
 pub fn dummy(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
@@ -76,7 +77,7 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
             }
             let item_id = crate::router::user::get_info_from_id(info["days"][current]["masterLoginBonusRewardId"].as_i64().unwrap());
             
-            global::gift_item(&item_id, &format!("Login bonus day {}!", current+1), &mut user_home);
+            items::gift_item(&item_id, &format!("Login bonus day {}!", current+1), &mut user_home);
             data["day_counts"].push(current + 1).unwrap();
         }
         for (i, data) in to_rm.members().enumerate() {

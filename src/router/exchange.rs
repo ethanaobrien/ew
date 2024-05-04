@@ -2,8 +2,7 @@ use json::{JsonValue, object};
 use actix_web::{HttpResponse, HttpRequest};
 use lazy_static::lazy_static;
 
-use crate::router::global;
-use crate::router::userdata;
+use crate::router::{global, userdata, items};
 use crate::encryption;
 
 lazy_static! {
@@ -42,7 +41,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
     let item = &EXCHANGE_LIST[body["master_exchange_item_id"].to_string()];
     
     if item["consumeType"].as_i32().unwrap() == 4 {
-        global::use_item(item["value"].as_i64().unwrap(), item["amount"].as_i64().unwrap() * body["count"].as_i64().unwrap(), &mut user);
+        items::use_item(item["value"].as_i64().unwrap(), item["amount"].as_i64().unwrap() * body["count"].as_i64().unwrap(), &mut user);
     } else {
         println!("Unknown consume type {}", item["consumeType"]);
     }
@@ -50,7 +49,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut gift = EXCHANGE_REWARD[item["masterExchangeItemRewardId"].to_string()].clone();
     gift["reward_type"] = gift["type"].clone();
     gift["amount"] = (gift["amount"].as_i64().unwrap() * body["count"].as_i64().unwrap()).into();
-    global::give_gift(&gift, &mut user);
+    items::give_gift(&gift, &mut user);
     
     userdata::save_acc(&key, user.clone());
     
