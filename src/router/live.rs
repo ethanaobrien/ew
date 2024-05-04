@@ -188,6 +188,15 @@ pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn event_start(_req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": []
+    };
+    global::send(resp)
+}
+
 pub fn continuee(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
@@ -374,9 +383,9 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, multiplier: 
     rv
 }
 
-pub fn end(req: HttpRequest, body: String) -> HttpResponse {
-    let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
+    let key = global::get_login(req.headers(), body);
+    let body = json::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     let live = update_live_data(&mut user, &body, true);
@@ -400,7 +409,7 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
+    object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": {
@@ -421,7 +430,60 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
             "event_member": [],
             "event_ranking_data": []
         }
+    }
+}
+
+pub fn end(req: HttpRequest, body: String) -> HttpResponse {
+    let resp = live_end(&req, &body);
+    global::send(resp)
+}
+
+pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
+    let mut resp = live_end(&req, &body);
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let mut event = userdata::get_acc_event(&key);
+    
+    let live_id = crate::router::clear_rate::get_live_id(body["master_live_id"].as_i64().unwrap());
+    
+    let mut all_clear = 1;
+    for (_i, data) in event["event_data"]["star_event"]["star_music_list"].members_mut().enumerate() {
+        if data["master_music_id"].as_i64().unwrap() == live_id {
+            data["is_cleared"] = 1.into();
+        }
+        if !data["is_cleared"].as_i32().unwrap() == 0 {
+            all_clear = 0;
+        }
+    }
+    
+    resp["event_point_list"] = array![];
+    resp["event_ranking_data"] = object!{
+        "event_point_rank": event["event_data"]["point_ranking"]["point"].clone(),
+        "next_reward_rank_point": 0,
+        "event_score_rank": 0,
+        "next_reward_rank_score": 0,
+        "next_reward_rank_level": 0
     };
+    resp["star_level"] = event["event_data"]["star_event"]["star_level"].clone();
+    resp["music_data"] = event["event_data"]["star_event"]["star_music_list"].clone();
+    resp["is_star_all_clear"] = all_clear.into();
+    resp["star_event_bonus_list"] = object!{
+        "star_event_bonus": 0,
+        "star_event_bonus_score": 0,
+        "star_play_times_bonus": 0,
+        "star_play_times_bonus_score": 0,
+        "card_bonus": 0,
+        "card_bonus_score": 0
+    };
+    resp["total_score"] = body["live_score"]["score"].clone();
+    resp["star_event"] = object!{
+        "star_event_bonus_daily_count": event["event_data"]["point_ranking"]["star_event_bonus_daily_count"].clone(),
+        "star_event_bonus_count": event["event_data"]["point_ranking"]["star_event_bonus_count"].clone(),
+        "star_event_play_times_bonus_count": event["event_data"]["point_ranking"]["star_event_play_times_bonus_count"].clone()
+    };
+    
+    userdata::save_acc_event(&key, event);
+    
     global::send(resp)
 }
 

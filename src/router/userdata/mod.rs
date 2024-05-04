@@ -26,14 +26,17 @@ fn setup_tables(conn: &SQLite) {
         password  TEXT NOT NULL
     )");
     conn.create_store_v2("CREATE TABLE IF NOT EXISTS users (
-        user_id         BIGINT NOT NULL PRIMARY KEY,
-        userdata        TEXT NOT NULL,
-        userhome        TEXT NOT NULL,
-        missions        TEXT NOT NULL,
-        loginbonus      TEXT NOT NULL,
-        sifcards        TEXT NOT NULL,
-        friends         TEXT NOT NULL,
-        friend_request_disabled  INT NOT NULL
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        userdata         TEXT NOT NULL,
+        userhome         TEXT NOT NULL,
+        missions         TEXT NOT NULL,
+        loginbonus       TEXT NOT NULL,
+        sifcards         TEXT NOT NULL,
+        friends          TEXT NOT NULL,
+        friend_request_disabled  INT NOT NULL,
+        event            TEXT NOT NULL,
+        eventloginbonus  TEXT NOT NULL,
+        server_data      TEXT NOT NULL
     )");
 }
 
@@ -75,7 +78,7 @@ fn create_acc(uid: i64, login: &str) {
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)", params!(
+    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)", params!(
         uid,
         json::stringify(new_user),
         include_str!("new_user_home.json"),
@@ -83,7 +86,10 @@ fn create_acc(uid: i64, login: &str) {
         format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
         "[]",
         r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
-        0
+        0,
+        include_str!("new_user_event.json"),
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
+        "{}"
     ));
     
     DATABASE.lock_and_exec("DELETE FROM tokens WHERE token=?1", params!(login));
@@ -175,6 +181,16 @@ pub fn get_acc_sif(auth_key: &str) -> JsonValue {
 pub fn get_acc_friends(auth_key: &str) -> JsonValue {
     get_data(auth_key, "friends")
 }
+pub fn get_acc_event(auth_key: &str) -> JsonValue {
+    let event = get_data(auth_key, "event");
+    if event.is_empty() {
+        return json::parse(include_str!("new_user_event.json")).unwrap();
+    }
+    event
+}
+pub fn get_acc_eventlogin(auth_key: &str) -> JsonValue {
+    get_data(auth_key, "eventloginbonus")
+}
 
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
     let key = get_key(&auth_key);
@@ -197,6 +213,12 @@ pub fn save_acc_loginbonus(auth_key: &str, data: JsonValue) {
 }
 pub fn save_acc_friends(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "friends", data);
+}
+pub fn save_acc_event(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "event", data);
+}
+pub fn save_acc_eventlogin(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "eventloginbonus", data);
 }
 
 fn generate_salt() -> Vec<u8> {

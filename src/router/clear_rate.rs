@@ -138,7 +138,7 @@ lazy_static! {
         info
     };
 }
-fn get_live_id(id: i64) -> i64 {
+pub fn get_live_id(id: i64) -> i64 {
     LIVE_LIST[id.to_string()].as_i64().unwrap()
 }
 
