@@ -241,6 +241,12 @@ async fn exchange(req: HttpRequest) -> HttpResponse { router::exchange::exchange
 #[post("/api/exchange")]
 async fn exchange_post(req: HttpRequest, body: String) -> HttpResponse { router::exchange::exchange_post(req, body) }
 
+#[post("/api/user/sif/migrate")]
+async fn sif_migrate(req: HttpRequest, body: String) -> HttpResponse { router::user::sif_migrate(req, body) }
+
+#[post("/api/user/ss/migrate")]
+async fn sifas_migrate(req: HttpRequest, body: String) -> HttpResponse { router::user::sifas_migrate(req, body) }
+
 
 #[post("/api/webui/login")]
 async fn webui_login(req: HttpRequest, body: String) -> HttpResponse { router::webui::login(req, body) }
@@ -294,6 +300,8 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(sifas_migrate)
+        .service(sif_migrate)
         .service(exchange_post)
         .service(exchange)
         .service(serial_code)

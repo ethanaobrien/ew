@@ -360,6 +360,31 @@ pub fn sif(req: HttpRequest) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn sifas_migrate(_req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "ss_migrate_status": 1,
+            "user": null,
+            "gift_list": null,
+            "lock_remain_time": null
+        }
+    };
+    global::send(resp)
+}
+
+pub fn sif_migrate(_req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "sif_migrate_status": 38
+        }
+    };
+    global::send(resp)
+}
+
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
