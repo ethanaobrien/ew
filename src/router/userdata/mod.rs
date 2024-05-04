@@ -8,26 +8,22 @@ use base64::{Engine as _, engine::general_purpose};
 use crate::sql::SQLite;
 
 lazy_static! {
-    static ref DATABASE: SQLite = SQLite::new("userdata.db");
+    static ref DATABASE: SQLite = SQLite::new("userdata.db", setup_tables);
     static ref NEW_USER: JsonValue = {
         json::parse(include_str!("new_user.json")).unwrap()
     };
 }
 
-fn create_token_store() {
-    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS tokens (
+fn setup_tables(conn: &SQLite) {
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS tokens (
         user_id  BIGINT NOT NULL PRIMARY KEY,
         token    TEXT NOT NULL
     )");
-}
-fn create_migration_store() {
-    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS migration (
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS migration (
         token     TEXT NOT NULL PRIMARY KEY,
         password  TEXT NOT NULL
     )");
-}
-fn create_users_store() {
-    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS users (
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS users (
         user_id         BIGINT NOT NULL PRIMARY KEY,
         userdata        TEXT NOT NULL,
         userhome        TEXT NOT NULL,
@@ -40,7 +36,6 @@ fn create_users_store() {
 }
 
 fn acc_exists(uid: i64) -> bool {
-    create_users_store();
     DATABASE.lock_and_select("SELECT user_id FROM users WHERE user_id=?1", params!(uid)).is_ok()
 }
 fn get_key(auth_key: &str) -> i64 {
@@ -74,8 +69,6 @@ fn generate_uid() -> i64 {
 }
 
 fn create_acc(uid: i64, login: &str) {
-    create_users_store();
-    
     let mut new_user = NEW_USER.clone();
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
@@ -91,13 +84,11 @@ fn create_acc(uid: i64, login: &str) {
         0
     ));
     
-    create_token_store();
     DATABASE.lock_and_exec("DELETE FROM tokens WHERE token=?1", params!(login));
     DATABASE.lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, login));
 }
 
 fn get_uid(token: &str) -> i64 {
-    create_token_store();
     let data = DATABASE.lock_and_select("SELECT user_id FROM tokens WHERE token = ?1;", params!(token));
     if !data.is_ok() {
         return 0;
@@ -108,7 +99,6 @@ fn get_uid(token: &str) -> i64 {
 
 // Needed by gree
 pub fn get_login_token(uid: i64) -> String {
-    create_token_store();
     let data = DATABASE.lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid));
     if !data.is_ok() {
         return String::new();
@@ -249,7 +239,6 @@ fn verify_password(password: &str, salted_hash: &str) -> bool {
 }
 
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
-    create_migration_store();
     let data = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token));
     if !data.is_ok() {
         return object!{success: false};
@@ -265,7 +254,6 @@ pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
 }
 
 pub fn save_acc_transfer(token: &str, password: &str) {
-    create_migration_store();
     DATABASE.lock_and_exec("DELETE FROM migration WHERE token=?1", params!(token));
     DATABASE.lock_and_exec("INSERT INTO migration (token, password) VALUES (?1, ?2)", params!(token, hash_password(password)));
 }
@@ -396,7 +384,6 @@ fn create_webui_token() -> String {
 
 pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
     create_webui_store();
-    create_migration_store();
     let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or(String::new());
     if !verify_password(password, &pass) {
         if acc_exists(uid) && pass == "" {
@@ -414,9 +401,6 @@ pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
 
 pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
     let mut user = user;
-    create_webui_store();
-    create_migration_store();
-    create_token_store();
     let uid = user["userdata"]["user"]["id"].as_i64().unwrap();
     if acc_exists(uid) {
         return Err(String::from("User already exists"));

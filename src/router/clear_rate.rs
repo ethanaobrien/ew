@@ -9,7 +9,7 @@ use crate::encryption;
 use crate::sql::SQLite;
 
 lazy_static! {
-    static ref DATABASE: SQLite = SQLite::new("live_statistics.db");
+    static ref DATABASE: SQLite = SQLite::new("live_statistics.db", setup_tables);
 }
 
 pub struct Live {
@@ -24,8 +24,8 @@ pub struct Live {
     pub master_pass: i64,
 }
 
-fn create_store() {
-    DATABASE.lock_and_exec("CREATE TABLE IF NOT EXISTS lives (
+fn setup_tables(conn: &SQLite) {
+    conn.lock_and_exec("CREATE TABLE IF NOT EXISTS lives (
         live_id         INT NOT NULL PRIMARY KEY,
         normal_failed   BIGINT NOT NULL,
         normal_pass     BIGINT NOT NULL,
@@ -36,13 +36,13 @@ fn create_store() {
         master_failed   BIGINT NOT NULL,
         master_pass     BIGINT NOT NULL
     )", params!());
-}
-
-fn update_live_score(id: i64, uid: i64, score: i64) {
-    DATABASE.lock_and_exec("CREATE TABLE IF NOT EXISTS scores (
+    conn.lock_and_exec("CREATE TABLE IF NOT EXISTS scores (
         live_id      INT NOT NULL PRIMARY KEY,
         score_data   TEXT NOT NULL
     )", params!());
+}
+
+fn update_live_score(id: i64, uid: i64, score: i64) {
     if uid == 0 || score == 0 {
         return;
     }
@@ -181,7 +181,6 @@ fn get_json() -> JsonValue {
 }
 
 fn get_clearrate_json() -> JsonValue {
-    create_store();
     loop {
         match CACHED_DATA.lock() {
             Ok(mut result) => {

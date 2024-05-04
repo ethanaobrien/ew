@@ -20,7 +20,15 @@ use openssl::hash::MessageDigest;
 use openssl::sign::Verifier;
 
 lazy_static! {
-    static ref DATABASE: SQLite = SQLite::new("gree.db");
+    static ref DATABASE: SQLite = SQLite::new("gree.db", setup_tables);
+}
+
+fn setup_tables(conn: &SQLite) {
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS users (
+        cert     TEXT NOT NULL,
+        uuid     TEXT NOT NULL,
+        user_id  BIGINT NOT NULL PRIMARY KEY
+    )");
 }
 
 fn update_cert(uid: i64, cert: &str) {
@@ -37,11 +45,6 @@ fn update_cert(uid: i64, cert: &str) {
     DATABASE.lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
 }
 fn create_acc(cert: &str) -> String {
-    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS users (
-        cert     TEXT NOT NULL,
-        uuid     TEXT NOT NULL,
-        user_id  BIGINT NOT NULL PRIMARY KEY
-    )");
     let uuid = global::create_token();
     let user = userdata::get_acc(&uuid);
     let user_id = user["user"]["id"].as_i64().unwrap();

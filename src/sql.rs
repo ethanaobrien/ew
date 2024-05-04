@@ -9,14 +9,15 @@ pub struct SQLite {
 }
 
 impl SQLite {
-    pub fn new(path: &str) -> SQLite {
+    pub fn new(path: &str, setup: fn(&SQLite)) -> SQLite {
         let conn = Connection::open(path).unwrap();
         conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
-        
-        SQLite {
+        let instance = SQLite {
             engine: Mutex::new(conn),
             sleep_duration: 10
-        }
+        };
+        setup(&instance);
+        instance
     }
     pub fn lock_and_exec(&self, command: &str, args: &[&dyn ToSql]) {
         loop {
