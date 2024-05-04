@@ -31,25 +31,25 @@ pub fn home(req: HttpRequest, body: String) -> HttpResponse {
             "master_chat_attachment_ids": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
-pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn start(req: HttpRequest, _body: String) -> HttpResponse {
     
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": {"select_talk_id_list":[],"get_item_list":[],"is_read":0}
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
-pub fn end(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn end(req: HttpRequest, _body: String) -> HttpResponse {
     
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }

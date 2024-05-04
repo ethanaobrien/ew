@@ -17,7 +17,7 @@ pub fn dummy(req: HttpRequest, body: String) -> HttpResponse {
             "user_id": user["user"]["id"].clone()
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 lazy_static! {
@@ -105,7 +105,7 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
             "clear_mission_ids": user["clear_mission_ids"].clone()
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn bonus_event(req: HttpRequest, body: String) -> HttpResponse {
@@ -131,5 +131,5 @@ pub fn bonus_event(req: HttpRequest, body: String) -> HttpResponse {
             "clear_mission_ids": user["clear_mission_ids"].clone()
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

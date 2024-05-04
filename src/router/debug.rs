@@ -4,7 +4,7 @@ use actix_web::{HttpResponse, HttpRequest};
 use crate::router::global;
 use crate::encryption;
 
-pub fn error(_req: HttpRequest, body: String) -> HttpResponse {
+pub fn error(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     println!("client error: {}", body["code"]);
@@ -14,5 +14,5 @@ pub fn error(_req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "message": ""
     };
-    global::send(resp)
+    global::send(resp, req)
 }

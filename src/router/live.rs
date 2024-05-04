@@ -7,7 +7,7 @@ use crate::router::{global, userdata, items};
 use crate::encryption;
 use crate::router::clear_rate::live_completed;
 
-pub fn retire(_req: HttpRequest, body: String) -> HttpResponse {
+pub fn retire(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
     let resp = object!{
@@ -19,7 +19,7 @@ pub fn retire(_req: HttpRequest, body: String) -> HttpResponse {
             "event_point_list": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 fn random_number(lowest: usize, highest: usize) -> usize {
@@ -162,10 +162,10 @@ pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
             "guest_list": guest_list
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
-pub fn mission(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn mission(req: HttpRequest, _body: String) -> HttpResponse {
     //todo
     let resp = object!{
         "code": 0,
@@ -176,25 +176,25 @@ pub fn mission(_req: HttpRequest, _body: String) -> HttpResponse {
             "clear_count_ranking": ""
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
-pub fn start(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn start(req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
-pub fn event_start(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn event_start(req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn continuee(req: HttpRequest, body: String) -> HttpResponse {
@@ -210,7 +210,7 @@ pub fn continuee(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "gem": user["gem"].clone()
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> JsonValue {
@@ -435,7 +435,7 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
 
 pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let resp = live_end(&req, &body);
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
@@ -484,7 +484,7 @@ pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc_event(&key, event);
     
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
@@ -540,5 +540,5 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
             "event_ranking_data": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

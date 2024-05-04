@@ -3,7 +3,7 @@ use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::global;
 
-pub fn purchase(_req: HttpRequest) -> HttpResponse {
+pub fn purchase(req: HttpRequest) -> HttpResponse {
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -35,5 +35,5 @@ pub fn purchase(_req: HttpRequest) -> HttpResponse {
             ]
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

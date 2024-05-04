@@ -32,7 +32,7 @@ pub fn friend(req: HttpRequest, body: String) -> HttpResponse {
             "friend_list": rv
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn ids(req: HttpRequest) -> HttpResponse {
@@ -44,7 +44,7 @@ pub fn ids(req: HttpRequest) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": friends
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn recommend(req: HttpRequest, body: String) -> HttpResponse {
@@ -74,7 +74,7 @@ pub fn recommend(req: HttpRequest, body: String) -> HttpResponse {
             friend_list: rv
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn search(req: HttpRequest, body: String) -> HttpResponse {
@@ -90,7 +90,7 @@ pub fn search(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": user
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn request(req: HttpRequest, body: String) -> HttpResponse {
@@ -113,7 +113,7 @@ pub fn request(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn approve(req: HttpRequest, body: String) -> HttpResponse {
@@ -139,7 +139,7 @@ pub fn approve(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn cancel(req: HttpRequest, body: String) -> HttpResponse {
@@ -161,7 +161,7 @@ pub fn cancel(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn delete(req: HttpRequest, body: String) -> HttpResponse {
@@ -183,5 +183,5 @@ pub fn delete(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }

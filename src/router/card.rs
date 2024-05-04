@@ -54,7 +54,7 @@ pub fn reinforce(req: HttpRequest, body: String) -> HttpResponse {
             clear_mission_ids: []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn skill_reinforce(req: HttpRequest, body: String) -> HttpResponse {
@@ -76,7 +76,7 @@ pub fn skill_reinforce(req: HttpRequest, body: String) -> HttpResponse {
             clear_mission_ids: []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn evolve(req: HttpRequest, body: String) -> HttpResponse {
@@ -98,5 +98,5 @@ pub fn evolve(req: HttpRequest, body: String) -> HttpResponse {
             clear_mission_ids: []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

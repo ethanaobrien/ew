@@ -31,7 +31,7 @@ pub fn shop(req: HttpRequest) -> HttpResponse {
             "shop_list": user["shop_list"].clone()
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn buy(req: HttpRequest, body: String) -> HttpResponse {
@@ -60,5 +60,5 @@ pub fn buy(req: HttpRequest, body: String) -> HttpResponse {
             }
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

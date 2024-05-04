@@ -4,7 +4,7 @@ use actix_web::{HttpResponse, HttpRequest};
 use crate::router::{global, userdata, items};
 use crate::encryption;
 
-pub fn events(_req: HttpRequest) -> HttpResponse {
+pub fn events(req: HttpRequest) -> HttpResponse {
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -12,7 +12,7 @@ pub fn events(_req: HttpRequest) -> HttpResponse {
             "serial_code_list": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
@@ -37,7 +37,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
                 "result_code": 3
             }
         };
-        return global::send(resp);
+        return global::send(resp, req);
     }
     
     userdata::save_acc_home(&key, user.clone());
@@ -53,5 +53,5 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             "excluded_gift_list": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

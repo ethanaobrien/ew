@@ -20,5 +20,5 @@ pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }

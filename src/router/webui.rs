@@ -101,6 +101,19 @@ pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
         .body(json::stringify(resp))
 }
 
+pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
+    let token = get_login_token(&req);
+    if token.is_none() {
+        return error("Not logged in");
+    }
+    let body = json::parse(&body).unwrap();
+    let resp = userdata::set_server_time(body["timestamp"].as_i64().unwrap(), &token.unwrap());
+    
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(json::stringify(resp))
+}
+
 pub fn logout(req: HttpRequest) -> HttpResponse {
     let token = get_login_token(&req);
     if !token.is_none() {

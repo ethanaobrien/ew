@@ -39,7 +39,7 @@ pub fn asset_hash(req: HttpRequest, body: String) -> HttpResponse {
             "asset_hash": get_asset_hash(&req, &body)
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn start(req: HttpRequest, body: String) -> HttpResponse {
@@ -61,5 +61,5 @@ pub fn start(req: HttpRequest, body: String) -> HttpResponse {
             "token": hex::encode("Hello") //what is this?
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

@@ -181,6 +181,9 @@ pub fn get_acc_sif(auth_key: &str) -> JsonValue {
 pub fn get_acc_friends(auth_key: &str) -> JsonValue {
     get_data(auth_key, "friends")
 }
+pub fn get_server_data(auth_key: &str) -> JsonValue {
+    get_data(auth_key, "server_data")
+}
 pub fn get_acc_event(auth_key: &str) -> JsonValue {
     let event = get_data(auth_key, "event");
     if event.is_empty() {
@@ -219,6 +222,9 @@ pub fn save_acc_event(auth_key: &str, data: JsonValue) {
 }
 pub fn save_acc_eventlogin(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "eventloginbonus", data);
+}
+pub fn save_server_data(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "server_data", data);
 }
 
 fn generate_salt() -> Vec<u8> {
@@ -513,6 +519,30 @@ pub fn webui_start_loginbonus(bonus_id: i64, token: &str) -> JsonValue {
     return object!{
         result: "OK",
         id: bonus_id
+    };
+}
+
+pub fn set_server_time(time: i64, token: &str) -> JsonValue {
+    if time > global::timestamp() {
+        return object!{
+            result: "ERR",
+            message: "Timestamp is in the future"
+        };
+    }
+    let login_token = webui_login_token(token);
+    if login_token.is_none() {
+        return object!{
+            result: "ERR",
+            message: "Failed to validate token"
+        };
+    }
+    let login_token = login_token.unwrap();
+    let mut server_data = get_server_data(&login_token);
+    server_data["server_time"] = time.into();
+    save_server_data(&login_token, server_data);
+    
+    return object!{
+        result: "OK"
     };
 }
 

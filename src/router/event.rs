@@ -16,7 +16,7 @@ pub fn event(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": event["event_data"].clone()
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 fn switch_music(event: &mut JsonValue, music_id: i32, target_score: i64, index: i32) {
@@ -60,7 +60,7 @@ pub fn star_event(req: HttpRequest, body: String) -> HttpResponse {
             reward_list: []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 //todo - randomize
@@ -75,5 +75,5 @@ pub fn change_target_music(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": event["event_data"]["star_event"].clone()
     };
-    global::send(resp)
+    global::send(resp, req)
 }

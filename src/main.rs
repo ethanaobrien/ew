@@ -27,7 +27,7 @@ fn unhandled(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": router::global::timestamp(),
         "data": ""
     };
-    router::global::send(resp)
+    router::global::send(resp, req)
 }
 
 async fn request(req: HttpRequest, body: String) -> HttpResponse {
@@ -94,6 +94,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/login" => router::webui::login(req, body),
             "/api/webui/startLoginbonus" => router::webui::start_loginbonus(req, body),
             "/api/webui/import" => router::webui::import(req, body),
+            "/api/webui/set_time" => router::webui::set_time(req, body),
             "/api/user/getregisteredplatformlist" => router::user::getregisteredplatformlist(req, body),
             "/api/user/sif/migrate" => router::user::sif_migrate(req, body),
             "/api/user/ss/migrate" => router::user::sifas_migrate(req, body),

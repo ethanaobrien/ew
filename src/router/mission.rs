@@ -15,7 +15,7 @@ pub fn mission(req: HttpRequest) -> HttpResponse {
             "mission_list": missions
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn clear(req: HttpRequest, body: String) -> HttpResponse {
@@ -42,10 +42,10 @@ pub fn clear(req: HttpRequest, body: String) -> HttpResponse {
             "clear_mission_ids": body["master_mission_ids"].clone()
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
-pub fn receive(_req: HttpRequest, _body: String) -> HttpResponse {
+pub fn receive(req: HttpRequest, _body: String) -> HttpResponse {
     //let key = global::get_login(req.headers(), &body);
     //let missions = userdata::get_acc_missions(&key);
     //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -59,5 +59,5 @@ pub fn receive(_req: HttpRequest, _body: String) -> HttpResponse {
             "reward_list": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

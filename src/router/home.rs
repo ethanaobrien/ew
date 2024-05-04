@@ -22,7 +22,7 @@ pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": []
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 fn check_gifts(user: &mut JsonValue) {
@@ -49,7 +49,7 @@ pub fn gift_get(req: HttpRequest) -> HttpResponse {
             "gift_list": user["home"]["gift_list"].clone()
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn preset_get(req: HttpRequest) -> HttpResponse {
@@ -65,7 +65,7 @@ pub fn preset_get(req: HttpRequest) -> HttpResponse {
             "card_list": user["card_list"].clone()
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn home(req: HttpRequest) -> HttpResponse {
@@ -80,5 +80,5 @@ pub fn home(req: HttpRequest) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": user
     };
-    global::send(resp)
+    global::send(resp, req)
 }

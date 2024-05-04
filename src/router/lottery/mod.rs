@@ -61,7 +61,7 @@ lazy_static! {
     };
 }
 
-pub fn tutorial(_req: HttpRequest, body: String) -> HttpResponse {
+pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let id = body["master_character_id"].to_string();
@@ -92,7 +92,7 @@ pub fn tutorial(_req: HttpRequest, body: String) -> HttpResponse {
             "item_list": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 fn get_card_master_id(lottery_id: String, lottery_number: String) -> Option<i64> {
@@ -136,7 +136,7 @@ fn get_random_cards(id: i64, count: usize) -> JsonValue {
     rv
 }
 
-pub fn lottery(_req: HttpRequest) -> HttpResponse {
+pub fn lottery(req: HttpRequest) -> HttpResponse {
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -144,7 +144,7 @@ pub fn lottery(_req: HttpRequest) -> HttpResponse {
             "lottery_list": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
@@ -243,5 +243,5 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
             "draw_count_list": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }

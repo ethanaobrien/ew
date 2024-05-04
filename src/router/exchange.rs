@@ -24,13 +24,13 @@ lazy_static! {
     };
 }
 
-pub fn exchange(_req: HttpRequest) -> HttpResponse {
+pub fn exchange(req: HttpRequest) -> HttpResponse {
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
         "data": {"exchange_list":[]}
     };
-    global::send(resp)
+    global::send(resp, req)
 }
 
 pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
@@ -66,5 +66,5 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
             "clear_mission_ids": []
         }
     };
-    global::send(resp)
+    global::send(resp, req)
 }
