@@ -1,9 +1,8 @@
-use json;
 use json::object;
-use crate::router::global;
-use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
-use crate::router::userdata;
+
+use crate::router::{userdata, global};
+use crate::encryption;
 
 pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);

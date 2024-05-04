@@ -1,8 +1,8 @@
-use json;
-use json::{object};
+use json::object;
+use actix_web::{HttpResponse, HttpRequest};
+
 use crate::router::global;
 use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest};
 
 pub fn error(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();

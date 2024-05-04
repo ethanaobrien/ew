@@ -1,12 +1,13 @@
 use json::{object, array, JsonValue};
-use crate::router::global;
 use actix_web::{HttpResponse, HttpRequest};
 use rusqlite::params;
 use std::sync::Mutex;
-use lazy_static::lazy_static;
 use std::thread;
+use lazy_static::lazy_static;
+
 use crate::encryption;
 use crate::sql::SQLite;
+use crate::router::global;
 
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("live_statistics.db", setup_tables);

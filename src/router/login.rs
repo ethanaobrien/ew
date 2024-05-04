@@ -1,14 +1,11 @@
-use json;
 use json::{object, array, JsonValue};
-use crate::router::global;
-//use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
-use crate::router::userdata;
 use lazy_static::lazy_static;
 
-//First time login handler
+use crate::router::global;
+use crate::router::userdata;
+
 pub fn dummy(req: HttpRequest, body: String) -> HttpResponse {
-    //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let key = global::get_login(req.headers(), &body);
     let user = userdata::get_acc(&key);
     
@@ -54,7 +51,6 @@ pub fn get_login_bonus_info(id: i64) -> JsonValue {
 }
 
 pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
-    //let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let key = global::get_login(req.headers(), &body);
     let user = userdata::get_acc(&key);
     let mut user_home = userdata::get_acc_home(&key);
@@ -92,7 +88,6 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
     } else {
         to_send = array![];
     }
-   // println!("{}", json::stringify(to_send.clone()));
     
     userdata::save_acc_home(&key, user_home);
     

@@ -1,12 +1,9 @@
-use json;
 use json::object;
-use crate::router::global;
-//use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
-//use crate::router::userdata;
+
+use crate::router::global;
 
 pub fn read(_req: HttpRequest, _body: String) -> HttpResponse {
-    
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),

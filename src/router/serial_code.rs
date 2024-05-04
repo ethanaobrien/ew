@@ -1,8 +1,9 @@
-use crate::encryption;
 use json::object;
+use actix_web::{HttpResponse, HttpRequest};
+
 use crate::router::global;
 use crate::router::userdata;
-use actix_web::{HttpResponse, HttpRequest};
+use crate::encryption;
 
 pub fn events(_req: HttpRequest) -> HttpResponse {
     let resp = object!{

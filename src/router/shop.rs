@@ -1,10 +1,9 @@
-use crate::encryption;
-use json::object;
-use crate::router::global;
-use json::JsonValue;
+use json::{object, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 use lazy_static::lazy_static;
-use crate::router::userdata;
+
+use crate::router::{userdata, global};
+use crate::encryption;
 
 lazy_static! {
     static ref SHOP_INFO: JsonValue = {

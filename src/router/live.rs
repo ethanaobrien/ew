@@ -1,11 +1,12 @@
 use json::{object, array, JsonValue};
+use actix_web::{HttpResponse, HttpRequest};
+use rand::Rng;
+use lazy_static::lazy_static;
+
 use crate::router::global;
 use crate::encryption;
-use actix_web::{HttpResponse, HttpRequest};
-use crate::router::userdata;
-use rand::Rng;
 use crate::router::clear_rate::live_completed;
-use lazy_static::lazy_static;
+use crate::router::userdata;
 
 pub fn retire(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();

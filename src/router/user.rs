@@ -1,10 +1,9 @@
-use json;
 use json::{array, object, JsonValue};
-use crate::router::global;
-use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
-use crate::router::userdata;
 use lazy_static::lazy_static;
+
+use crate::encryption;
+use crate::router::{userdata, global};
 
 pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);

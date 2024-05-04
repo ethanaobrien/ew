@@ -1,5 +1,4 @@
-use crate::router::global;
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue, http::header::ContentType, http::header::HeaderMap};
+use actix_web::{HttpResponse, HttpRequest, http::header::{HeaderValue, ContentType, HeaderMap}};
 use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
 use std::env;
@@ -7,11 +6,6 @@ use sha1::Sha1;
 use substring::Substring;
 use json::{object, JsonValue};
 use hmac::{Hmac, Mac};
-use crate::router::userdata;
-use crate::encryption;
-use crate::router::user::{code_to_uid, uid_to_code};
-use crate::sql::SQLite;
-
 use rusqlite::params;
 use lazy_static::lazy_static;
 
@@ -19,6 +13,12 @@ use openssl::pkey::PKey;
 use openssl::rsa::Rsa;
 use openssl::hash::MessageDigest;
 use openssl::sign::Verifier;
+
+use crate::router::global;
+use crate::router::userdata;
+use crate::encryption;
+use crate::router::user::{code_to_uid, uid_to_code};
+use crate::sql::SQLite;
 
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("gree.db", setup_tables);

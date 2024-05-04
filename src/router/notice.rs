@@ -1,7 +1,7 @@
-use json;
 use json::object;
-use crate::router::global;
 use actix_web::{HttpResponse, HttpRequest};
+
+use crate::router::global;
 
 //todo
 pub fn reward(_req: HttpRequest) -> HttpResponse {

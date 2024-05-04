@@ -1,8 +1,7 @@
-use json;
 use json::object;
-use crate::router::global;
 use actix_web::{HttpResponse, HttpRequest};
-use crate::router::userdata;
+
+use crate::router::{global, userdata};
 use crate::encryption;
 
 pub fn mission(req: HttpRequest) -> HttpResponse {

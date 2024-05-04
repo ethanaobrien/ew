@@ -1,9 +1,10 @@
-use crate::encryption;
 use json::{JsonValue, object};
-use crate::router::global;
-use crate::router::userdata;
 use actix_web::{HttpResponse, HttpRequest};
 use lazy_static::lazy_static;
+
+use crate::router::global;
+use crate::router::userdata;
+use crate::encryption;
 
 lazy_static! {
     static ref EXCHANGE_LIST: JsonValue = {

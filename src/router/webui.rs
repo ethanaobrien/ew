@@ -1,5 +1,11 @@
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue, http::header::ContentType};
+use actix_web::{
+    HttpResponse,
+    HttpRequest,
+    http::header::HeaderValue,
+    http::header::ContentType
+};
 use json::object;
+
 use crate::router::userdata;
 use crate::router::global;
 

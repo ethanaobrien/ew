@@ -1,11 +1,11 @@
-use json;
 use json::{array, object, JsonValue};
-use crate::router::global;
-use crate::encryption;
 use actix_web::{HttpResponse, HttpRequest};
-use crate::router::userdata;
 use lazy_static::lazy_static;
 use rand::Rng;
+
+use crate::router::global;
+use crate::encryption;
+use crate::router::userdata;
 
 lazy_static! {
     static ref CARDS: JsonValue = {
