@@ -1,106 +1,31 @@
 use json::{object, array, JsonValue};
 use crate::router::global;
 use actix_web::{HttpResponse, HttpRequest};
-use rusqlite::{Connection, params, ToSql};
-use std::sync::{Mutex, MutexGuard};
+use rusqlite::params;
+use std::sync::Mutex;
 use lazy_static::lazy_static;
 use std::thread;
 use crate::encryption;
+use crate::sql::SQLite;
 
 lazy_static! {
-    static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
-}
-fn init(engine: &mut MutexGuard<'_, Option<Connection>>) {
-    let conn = Connection::open("live_statistics.db").unwrap();
-    conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
-
-    engine.replace(conn);
-}
-fn lock_and_exec(command: &str, args: &[&dyn ToSql]) {
-    loop {
-        match ENGINE.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    init(&mut result);
-                }
-                let conn = result.as_ref().unwrap();
-                conn.execute(command, args).unwrap();
-                return;
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
-    }
-}
-fn lock_and_select(command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlite::Error> {
-    loop {
-        match ENGINE.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    init(&mut result);
-                }
-                let conn = result.as_ref().unwrap();
-                let mut stmt = conn.prepare(command)?;
-                return stmt.query_row(args, |row| {
-                    match row.get::<usize, i64>(0) {
-                        Ok(val) => Ok(val.to_string()),
-                        Err(_) => row.get(0)
-                    }
-                });
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
-    }
-}
-fn lock_and_select_all(command: &str, args: &[&dyn ToSql]) -> Result<JsonValue, rusqlite::Error> {
-    loop {
-        match ENGINE.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    init(&mut result);
-                }
-                let conn = result.as_ref().unwrap();
-                let mut stmt = conn.prepare(command)?;
-                let map = stmt.query_map(args, |row| {
-                    match row.get::<usize, i64>(0) {
-                        Ok(val) => Ok(val.to_string()),
-                        Err(_) => row.get(0)
-                    }
-                })?;
-                let mut rv = array![];
-                for val in map {
-                    let res = val?;
-                    match res.clone().parse::<i64>() {
-                        Ok(v) => rv.push(v).unwrap(),
-                        Err(_) => rv.push(res).unwrap()
-                    };
-                }
-                return Ok(rv);
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
-    }
+    static ref DATABASE: SQLite = SQLite::new("live_statistics.db");
 }
 
-struct Live {
-    live_id: i32,
-    normal_failed: i64,
-    normal_pass: i64,
-    hard_failed: i64,
-    hard_pass: i64,
-    expert_failed: i64,
-    expert_pass: i64,
-    master_failed: i64,
-    master_pass: i64,
+pub struct Live {
+    pub live_id: i32,
+    pub normal_failed: i64,
+    pub normal_pass: i64,
+    pub hard_failed: i64,
+    pub hard_pass: i64,
+    pub expert_failed: i64,
+    pub expert_pass: i64,
+    pub master_failed: i64,
+    pub master_pass: i64,
 }
 
 fn create_store() {
-    lock_and_exec("CREATE TABLE IF NOT EXISTS lives (
+    DATABASE.lock_and_exec("CREATE TABLE IF NOT EXISTS lives (
         live_id         INT NOT NULL PRIMARY KEY,
         normal_failed   BIGINT NOT NULL,
         normal_pass     BIGINT NOT NULL,
@@ -113,39 +38,8 @@ fn create_store() {
     )", params!());
 }
 
-fn get_live_data(id: i64) -> Result<Live, rusqlite::Error> {
-    loop {
-        match ENGINE.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    init(&mut result);
-                }
-                let conn = result.as_ref().unwrap();
-                
-                let mut stmt = conn.prepare("SELECT * FROM lives WHERE live_id=?1")?;
-                return Ok(stmt.query_row(params!(id), |row| {
-                    Ok(Live {
-                        live_id: row.get(0)?,
-                        normal_failed: row.get(1)?,
-                        normal_pass: row.get(2)?,
-                        hard_failed: row.get(3)?,
-                        hard_pass: row.get(4)?,
-                        expert_failed: row.get(5)?,
-                        expert_pass: row.get(6)?,
-                        master_failed: row.get(7)?,
-                        master_pass: row.get(8)?,
-                    })
-                })?);
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
-    }
-}
-
 fn update_live_score(id: i64, uid: i64, score: i64) {
-    lock_and_exec("CREATE TABLE IF NOT EXISTS scores (
+    DATABASE.lock_and_exec("CREATE TABLE IF NOT EXISTS scores (
         live_id      INT NOT NULL PRIMARY KEY,
         score_data   TEXT NOT NULL
     )", params!());
@@ -153,7 +47,7 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
         return;
     }
     
-    let info = lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(id)).unwrap_or(String::from("[]"));
+    let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(id)).unwrap_or(String::from("[]"));
     let scores = json::parse(&info).unwrap();
     
     let mut result = array![];
@@ -189,17 +83,17 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
     }
     
     if added {
-        if lock_and_select("SELECT live_id FROM scores WHERE live_id=?1", params!(id)).is_ok() {
-            lock_and_exec("UPDATE scores SET score_data=?1 WHERE live_id=?2", params!(json::stringify(result), id));
+        if DATABASE.lock_and_select("SELECT live_id FROM scores WHERE live_id=?1", params!(id)).is_ok() {
+            DATABASE.lock_and_exec("UPDATE scores SET score_data=?1 WHERE live_id=?2", params!(json::stringify(result), id));
         } else {
-            lock_and_exec("INSERT INTO scores (score_data, live_id) VALUES (?1, ?2)", params!(json::stringify(result), id));
+            DATABASE.lock_and_exec("INSERT INTO scores (score_data, live_id) VALUES (?1, ?2)", params!(json::stringify(result), id));
         }
     }
 }
 
 pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
     update_live_score(id, uid, score);
-    match get_live_data(id) {
+    match DATABASE.get_live_data(id) {
         Ok(info) => {
             let value = format!("{}_{}", 
                 if 1 == level { "normal" } else if 2 == level { "hard" } else if 3 == level { "expert" } else { "master" },
@@ -214,10 +108,10 @@ pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
                            else if 4 == level && failed { info.master_failed }
                            else if 4 == level && !failed { info.master_pass } else { return; };
             
-            lock_and_exec(&format!("UPDATE lives SET {}=?1 WHERE live_id=?2", value), params!(new_info + 1, info.live_id));
+            DATABASE.lock_and_exec(&format!("UPDATE lives SET {}=?1 WHERE live_id=?2", value), params!(new_info + 1, info.live_id));
         },
         Err(_) => {
-            lock_and_exec("INSERT INTO lives (live_id, normal_failed, normal_pass, hard_failed, hard_pass, expert_failed, expert_pass, master_failed, master_pass) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)", params!(
+            DATABASE.lock_and_exec("INSERT INTO lives (live_id, normal_failed, normal_pass, hard_failed, hard_pass, expert_failed, expert_pass, master_failed, master_pass) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)", params!(
                 id,
                 if 1 == level && failed { 1 } else { 0 },
                 if 1 == level && !failed { 1 } else { 0 },
@@ -257,11 +151,11 @@ fn get_pass_percent(failed: i64, pass: i64) -> String {
 }
 
 fn get_json() -> JsonValue {
-    let lives = lock_and_select_all("SELECT live_id FROM lives", params!()).unwrap();
+    let lives = DATABASE.lock_and_select_all("SELECT live_id FROM lives", params!()).unwrap();
     let mut rates = array![];
     let mut ids = array![];
     for (_i, id) in lives.members().enumerate() {
-        let info = get_live_data(id.as_i64().unwrap());
+        let info = DATABASE.get_live_data(id.as_i64().unwrap());
         if !info.is_ok() {
             continue;
         }
@@ -334,7 +228,7 @@ pub fn ranking(_req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
     
-    let info = lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(live)).unwrap_or(String::from("[]"));
+    let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(live)).unwrap_or(String::from("[]"));
     let scores = json::parse(&info).unwrap();
     
     let mut rank = array![];

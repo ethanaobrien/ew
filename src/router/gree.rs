@@ -4,14 +4,14 @@ use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
 use sha1::Sha1;
 use substring::Substring;
-use json::object;
+use json::{object, JsonValue};
 use hmac::{Hmac, Mac};
 use crate::router::userdata;
 use crate::encryption;
 use crate::router::user::{code_to_uid, uid_to_code};
+use crate::sql::SQLite;
 
-use rusqlite::{Connection, params, ToSql};
-use std::sync::{Mutex, MutexGuard};
+use rusqlite::params;
 use lazy_static::lazy_static;
 use uuid::Uuid;
 
@@ -21,85 +21,38 @@ use openssl::hash::MessageDigest;
 use openssl::sign::Verifier;
 
 lazy_static! {
-    static ref ENGINE: Mutex<Option<Connection>> = Mutex::new(None);
+    static ref DATABASE: SQLite = SQLite::new("gree.db");
 }
-fn init(engine: &mut MutexGuard<'_, Option<Connection>>) {
-    let conn = Connection::open("gree.db").unwrap();
-    conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
 
-    engine.replace(conn);
-}
-fn lock_and_exec(command: &str, args: &[&dyn ToSql]) {
-    loop {
-        match ENGINE.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    init(&mut result);
-                }
-                let conn = result.as_ref().unwrap();
-                conn.execute(command, args).unwrap();
-                return;
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
-    }
-}
-fn lock_and_select(command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlite::Error> {
-    loop {
-        match ENGINE.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    init(&mut result);
-                }
-                let conn = result.as_ref().unwrap();
-                let mut stmt = conn.prepare(command)?;
-                return stmt.query_row(args, |row| {
-                    match row.get::<usize, i64>(0) {
-                        Ok(val) => Ok(val.to_string()),
-                        Err(_) => row.get(0)
-                    }
-                });
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
-    }
-}
-fn create_store_v2(table: &str) {
-    lock_and_exec(table, params!());
-}
 fn uuid_exists(uuid: &str) -> bool {
-    let data = lock_and_select("SELECT uuid FROM uuids WHERE uuid=?1", params!(uuid));
+    let data = DATABASE.lock_and_select("SELECT uuid FROM uuids WHERE uuid=?1", params!(uuid));
     data.is_ok()
 }
 fn get_new_uuid() -> String {
-    create_store_v2("CREATE TABLE IF NOT EXISTS uuids (
+    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS uuids (
         uuid  TEXT NOT NULL PRIMARY KEY
     )");
     let id = format!("{}", Uuid::new_v4());
     if uuid_exists(&id) {
         return get_new_uuid();
     }
-    lock_and_exec("INSERT INTO uuids (uuid) VALUES (?1)", params!(&id));
+    DATABASE.lock_and_exec("INSERT INTO uuids (uuid) VALUES (?1)", params!(&id));
     
     id
 }
 pub fn import_user(uid: i64) -> String {
     let token = get_new_uuid();
-    lock_and_exec(
+    DATABASE.lock_and_exec(
         "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
         params!("none", token, uid)
     );
     token
 }
 fn update_cert(uid: i64, cert: &str) {
-    lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
+    DATABASE.lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
 }
 fn create_acc(cert: &str) -> String {
-    create_store_v2("CREATE TABLE IF NOT EXISTS users (
+    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS users (
         cert     TEXT NOT NULL,
         uuid     TEXT NOT NULL,
         user_id  BIGINT NOT NULL PRIMARY KEY
@@ -107,7 +60,7 @@ fn create_acc(cert: &str) -> String {
     let uuid = get_new_uuid();
     let user = userdata::get_acc(&uuid);
     let user_id = user["user"]["id"].as_i64().unwrap();
-    lock_and_exec(
+    DATABASE.lock_and_exec(
         "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
         params!(cert, uuid, user_id)
     );
@@ -143,7 +96,7 @@ pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
         return String::new();
     }
     
-    let cert = lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).unwrap();
+    let cert = DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).unwrap();
     
     let data = format!("{}{}{}{}{}", uid, "sk1bdzb310n0s9tl", version, timestamp, body);
     let encoded = general_purpose::STANDARD.encode(data.as_bytes());
@@ -151,7 +104,7 @@ pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
     let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
     
     if verify_signature(&decoded, &encoded.as_bytes(), &cert.as_bytes()) {
-        return lock_and_select("SELECT uuid FROM users WHERE user_id=?1;", params!(uid)).unwrap();
+        return DATABASE.lock_and_select("SELECT uuid FROM users WHERE user_id=?1;", params!(uid)).unwrap();
     } else {
         return String::new();
     }

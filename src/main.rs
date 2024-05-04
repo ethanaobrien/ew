@@ -1,5 +1,6 @@
 mod encryption;
 mod router;
+mod sql;
 use json::object;
 use actix_web::{
     get,
