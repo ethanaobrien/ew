@@ -381,9 +381,11 @@ pub fn end(req: HttpRequest, body: String) -> HttpResponse {
     let mut user = userdata::get_acc(&key);
     let live = update_live_data(&mut user, &body, true);
     
-    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
+    if body["live_score"]["score"].as_i64().unwrap() > 0 {
+        live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
+    }
     
-    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), body["level"].as_i64().unwrap()).unwrap_or(array![]);
+    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap_or(0), body["level"].as_i64().unwrap()).unwrap_or(array![]);
     
     update_live_mission_data(&mut user, &object!{
         master_live_id: body["master_live_id"].as_i64().unwrap(),
