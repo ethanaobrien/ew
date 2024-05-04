@@ -177,6 +177,16 @@ fn decrypt_transfer_password(password: &str) -> String {
     String::from_utf8_lossy(&decoded).to_string()
 }
 
+fn send(req: HttpRequest, resp: JsonValue) -> HttpResponse {
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .insert_header(("Expires", "-1"))
+        .insert_header(("Pragma", "no-cache"))
+        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
+        .insert_header(("Vary", "Authorization,Accept-Encoding"))
+        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
+        .body(json::stringify(resp))
+}
 
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&body).unwrap();
@@ -189,28 +199,15 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
         uuid: token
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization,Accept-Encoding"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 pub fn authorize(req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization,Accept-Encoding"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    
+    send(req, resp)
 }
 
 pub fn moderate_keyword(req: HttpRequest) -> HttpResponse {
@@ -221,27 +218,15 @@ pub fn moderate_keyword(req: HttpRequest) -> HttpResponse {
             keywords: [{"id":"1","type":"0","keyword":"oink","rank":"0"}]
         }
     };
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization,Accept-Encoding"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    
+    send(req, resp)
 }
 pub fn moderate_commit(req: HttpRequest, _body: String) -> HttpResponse {
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization,Accept-Encoding"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    
+    send(req, resp)
 }
 
 pub fn uid(req: HttpRequest) -> HttpResponse {
@@ -255,10 +240,8 @@ pub fn uid(req: HttpRequest) -> HttpResponse {
             uid = uid_str.to_string();
         }
     }
-    //println!("{}", uid);
     
     let user = userdata::get_acc(&uid);
-    //println!("{}", user["user"]["id"].to_string());
     
     let resp = object!{
         result: "OK",
@@ -266,14 +249,7 @@ pub fn uid(req: HttpRequest) -> HttpResponse {
         x_app_id: "100900301"
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 pub fn payment(req: HttpRequest) -> HttpResponse {
@@ -285,14 +261,7 @@ pub fn payment(req: HttpRequest) -> HttpResponse {
         }
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 pub fn payment_ticket(req: HttpRequest) -> HttpResponse {
     let resp = object!{
@@ -300,14 +269,7 @@ pub fn payment_ticket(req: HttpRequest) -> HttpResponse {
         entry: []
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
@@ -337,14 +299,7 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
         };
     }
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
@@ -362,14 +317,7 @@ pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
         result: "OK"
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 pub fn balance(req: HttpRequest) -> HttpResponse {
@@ -395,14 +343,7 @@ pub fn balance(req: HttpRequest) -> HttpResponse {
         }
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 pub fn migration_code(req: HttpRequest) -> HttpResponse {
@@ -424,14 +365,7 @@ pub fn migration_code(req: HttpRequest) -> HttpResponse {
         migration_code: uid_to_code(user["user"]["id"].to_string())
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 pub fn migration_password_register(req: HttpRequest, body: String) -> HttpResponse {
@@ -457,14 +391,7 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
         result: "OK"
     };
     
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+    send(req, resp)
 }
 
 
