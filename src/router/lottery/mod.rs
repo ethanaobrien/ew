@@ -117,7 +117,7 @@ fn get_random_cards(id: i64, count: usize) -> JsonValue {
                 
                 let mut random_id = 0;
                 while random_id == 0 {
-                    let card = rng.gen_range(1..POOL[lottery_id.to_string()].len() + 1);
+                    let card = rng.gen_range(1..POOL[lottery_id.to_string()][POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
                     if !get_card_master_id(lottery_id.to_string(), card.to_string()).is_none() {
                         random_id = card;
                         break;
