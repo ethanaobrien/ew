@@ -13,7 +13,6 @@ use crate::sql::SQLite;
 
 use rusqlite::params;
 use lazy_static::lazy_static;
-use uuid::Uuid;
 
 use openssl::pkey::PKey;
 use openssl::rsa::Rsa;
@@ -24,31 +23,17 @@ lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("gree.db");
 }
 
-fn uuid_exists(uuid: &str) -> bool {
-    let data = DATABASE.lock_and_select("SELECT uuid FROM uuids WHERE uuid=?1", params!(uuid));
-    data.is_ok()
-}
-fn get_new_uuid() -> String {
-    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS uuids (
-        uuid  TEXT NOT NULL PRIMARY KEY
-    )");
-    let id = format!("{}", Uuid::new_v4());
-    if uuid_exists(&id) {
-        return get_new_uuid();
-    }
-    DATABASE.lock_and_exec("INSERT INTO uuids (uuid) VALUES (?1)", params!(&id));
-    
-    id
-}
-pub fn import_user(uid: i64) -> String {
-    let token = get_new_uuid();
-    DATABASE.lock_and_exec(
-        "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
-        params!("none", token, uid)
-    );
-    token
-}
 fn update_cert(uid: i64, cert: &str) {
+    if !DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).is_ok() {
+        let token = userdata::get_login_token(uid);
+        if token != String::new() {
+            DATABASE.lock_and_exec(
+                "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
+                params!(cert, token, uid)
+            );
+            return;
+        }
+    }
     DATABASE.lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
 }
 fn create_acc(cert: &str) -> String {
@@ -57,7 +42,7 @@ fn create_acc(cert: &str) -> String {
         uuid     TEXT NOT NULL,
         user_id  BIGINT NOT NULL PRIMARY KEY
     )");
-    let uuid = get_new_uuid();
+    let uuid = global::create_token();
     let user = userdata::get_acc(&uuid);
     let user_id = user["user"]["id"].as_i64().unwrap();
     DATABASE.lock_and_exec(

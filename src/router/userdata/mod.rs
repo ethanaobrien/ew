@@ -2,7 +2,6 @@ use rusqlite::params;
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
 use crate::router::global;
-use uuid::Uuid;
 use rand::Rng;
 use sha2::{Digest, Sha256};
 use base64::{Engine as _, engine::general_purpose};
@@ -107,7 +106,8 @@ fn get_uid(token: &str) -> i64 {
     data.parse::<i64>().unwrap_or(0)
 }
 
-fn get_login_token(uid: i64) -> String {
+// Needed by gree
+pub fn get_login_token(uid: i64) -> String {
     create_token_store();
     let data = DATABASE.lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid));
     if !data.is_ok() {
@@ -387,7 +387,7 @@ fn create_webui_store() {
 }
 
 fn create_webui_token() -> String {
-    let token = format!("{}", Uuid::new_v4());
+    let token = global::create_token();
     if DATABASE.lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).is_ok() {
         return create_webui_token();
     }
@@ -439,12 +439,7 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
         user["userdata"]["user"]["friend_request_disabled"].as_i32().unwrap()
     ));
     
-    let token;
-    if !user["jp"].is_empty() {
-        token = crate::router::gree::import_user(uid);
-    } else {
-        token = format!("{}", Uuid::new_v4());
-    }
+    let token = global::create_token();
     
     DATABASE.lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, token));
     let mig = crate::router::user::uid_to_code(uid.to_string());

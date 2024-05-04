@@ -10,6 +10,7 @@ use base64::{Engine as _, engine::general_purpose};
 use crate::router::userdata;
 use lazy_static::lazy_static;
 use rand::Rng;
+use uuid::Uuid;
 
 pub const ASSET_VERSION:          &str = "cb87bc1468c8631a262ff65b2960470b";
 pub const ASSET_HASH_ANDROID:     &str = "4715e873031ae4abc3c625e2bd8c935b";
@@ -32,6 +33,10 @@ lazy_static! {
 
 pub fn get_item_info(id: i64) -> JsonValue {
     ITEM_INFO[id.to_string()].clone()
+}
+
+pub fn create_token() -> String {
+    format!("{}", Uuid::now_v7())
 }
 
 pub fn remove_gems(user: &mut JsonValue, amount: i64) {
