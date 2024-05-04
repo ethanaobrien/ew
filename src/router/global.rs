@@ -224,11 +224,14 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bo
     }
     false
 }
+
 pub fn use_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
     for (_j, dataa) in user["item_list"].members_mut().enumerate() {
         if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
             if dataa["amount"].as_i64().unwrap() >= amount {
                 dataa["amount"] = (dataa["amount"].as_i64().unwrap() - amount).into();
+            } else {
+                dataa["amount"] = (0).into();
             }
             break;
         }

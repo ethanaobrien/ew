@@ -205,8 +205,7 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
     json::parse(&result.unwrap()).unwrap()
 }
 
-pub fn get_acc(auth_key: &str) -> JsonValue {
-    let mut user = get_data(auth_key, "userdata");
+fn cleanup_account(user: &mut JsonValue) {
     user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
     if user["master_music_ids"].len() != NEW_USER["master_music_ids"].len() {
         user["master_music_ids"] = NEW_USER["master_music_ids"].clone();
@@ -214,6 +213,34 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
     if user["master_title_ids"].is_empty() {
         user["master_title_ids"] = NEW_USER["master_title_ids"].clone();
     }
+    
+    let mut to_remove = array![];
+    let items = user["item_list"].clone();
+    for (i, data) in user["item_list"].members_mut().enumerate() {
+        if to_remove.contains(i) {
+            continue;
+        }
+        if data["master_item_id"].as_i64().unwrap() != data["id"].as_i64().unwrap() {
+            data["id"] = data["master_item_id"].clone();
+        }
+        for (j, data2) in items.members().enumerate() {
+            if i == j {
+                continue;
+            }
+            if data["master_item_id"].as_i64().unwrap() == data2["master_item_id"].as_i64().unwrap() {
+                to_remove.push(j).unwrap();
+                data["amount"] = (data["amount"].as_i64().unwrap() + data2["amount"].as_i64().unwrap()).into();
+            }
+        }
+    }
+    for (i, data) in to_remove.members().enumerate() {
+        user["item_list"].array_remove(data.as_usize().unwrap() - i);
+    }
+}
+
+pub fn get_acc(auth_key: &str) -> JsonValue {
+    let mut user = get_data(auth_key, "userdata");
+    cleanup_account(&mut user);
     
     global::lp_modification(&mut user, 0, false);
     return user;
