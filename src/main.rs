@@ -235,6 +235,12 @@ async fn shop(req: HttpRequest) -> HttpResponse { router::shop::shop(req) }
 #[post("/api/shop/buy")]
 async fn shop_buy(req: HttpRequest, body: String) -> HttpResponse { router::shop::buy(req, body) }
 
+#[get("/api/exchange")]
+async fn exchange(req: HttpRequest) -> HttpResponse { router::exchange::exchange(req) }
+
+#[post("/api/exchange")]
+async fn exchange_post(req: HttpRequest, body: String) -> HttpResponse { router::exchange::exchange_post(req, body) }
+
 
 #[post("/api/webui/login")]
 async fn webui_login(req: HttpRequest, body: String) -> HttpResponse { router::webui::login(req, body) }
@@ -288,6 +294,8 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .service(exchange_post)
+        .service(exchange)
         .service(serial_code)
         .service(shop)
         .service(shop_buy)

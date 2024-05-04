@@ -213,6 +213,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
             }
             lottery_list.push(to_push).unwrap();
         }
+        global::give_gift_basic(3, 15540034, 10, &mut user);
     } else if lottery_type == 2 {
         for (_i, data) in cardstogive.members().enumerate() {
             let info = get_card(data["master_lottery_item_id"].to_string(), data["master_lottery_item_number"].to_string());

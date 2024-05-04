@@ -22,3 +22,4 @@ pub mod card;
 pub mod shop;
 pub mod webui;
 pub mod clear_rate;
+pub mod exchange;
