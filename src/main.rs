@@ -1,7 +1,7 @@
 mod encryption;
 mod router;
+use json::object;
 use actix_web::{
-    post,
     get,
     HttpResponse,
     HttpRequest,
@@ -10,265 +10,120 @@ use actix_web::{
     http::header::ContentType
 };
 
-#[post("/v1.0/auth/initialize")]
-async fn gree_init(req: HttpRequest, body: String) -> HttpResponse { router::gree::initialize(req, body) }
-
-#[get("/v1.0/auth/x_uid")]
-async fn gree_uid(req: HttpRequest) -> HttpResponse { router::gree::uid(req) }
-
-#[get("/v1.0/payment/productlist")]
-async fn gree_payment(req: HttpRequest) -> HttpResponse { router::gree::payment(req) }
-
-#[get("/v1.0/payment/subscription/productlist")]
-async fn gree_payment_sub(req: HttpRequest) -> HttpResponse { router::gree::payment(req) }
-
-#[get("/v1.0/payment/ticket/status")]
-async fn gree_payment_ticket(req: HttpRequest) -> HttpResponse { router::gree::payment_ticket(req) }
-
-#[get("/v1.0/moderate/keywordlist")]
-async fn gree_moderate_keyword(req: HttpRequest) -> HttpResponse { router::gree::moderate_keyword(req) }
-
-#[post("/v1.0/moderate/filtering/commit")]
-async fn gree_moderate_commit(req: HttpRequest, body: String) -> HttpResponse { router::gree::moderate_commit(req, body) }
-
-#[post("/v1.0/auth/authorize")]
-async fn gree_authorize(req: HttpRequest, body: String) -> HttpResponse { router::gree::authorize(req, body) }
-
-#[get("/v1.0/migration/code")]
-async fn gree_migration_code(req: HttpRequest) -> HttpResponse { router::gree::migration_code(req) }
-
-#[post("/v1.0/migration/code/verify")]
-async fn gree_migration_verify(req: HttpRequest, body: String) -> HttpResponse { router::gree::migration_verify(req, body) }
-
-#[post("/v1.0/migration/password/register")]
-async fn gree_migration_password_register(req: HttpRequest, body: String) -> HttpResponse { router::gree::migration_password_register(req, body) }
-
-#[get("/v1.0/payment/balance")]
-async fn gree_balance(req: HttpRequest) -> HttpResponse { router::gree::balance(req) }
-
-#[post("/v1.0/migration")]
-async fn gree_migration(req: HttpRequest, body: String) -> HttpResponse { router::gree::migration(req, body) }
-
-#[post("/api/debug/error")]
-async fn debug_error(req: HttpRequest, body: String) -> HttpResponse { router::debug::error(req, body) }
-
-#[post("/api/start")]
-async fn start_start(req: HttpRequest, body: String) -> HttpResponse { router::start::start(req, body) }
-
-#[post("/api/start/assetHash")]
-async fn start_assethash(req: HttpRequest, body: String) -> HttpResponse { router::start::asset_hash(req, body) }
-
-#[post("/api/dummy/login")]
-async fn dummy_login(req: HttpRequest, body: String) -> HttpResponse { router::login::dummy(req, body) }
-
-#[get("/api/user")]
-async fn user(req: HttpRequest) -> HttpResponse { router::user::user(req) }
-
-#[post("/api/user")]
-async fn user_post(req: HttpRequest, body: String) -> HttpResponse { router::user::user_post(req, body) }
-
-#[post("/api/chat/home")]
-async fn chat_home(req: HttpRequest, body: String) -> HttpResponse { router::chat::home(req, body) }
-
-#[post("/api/chat/talk/start")]
-async fn chat_start(req: HttpRequest, body: String) -> HttpResponse { router::chat::start(req, body) }
-
-#[post("/api/chat/talk/end")]
-async fn chat_end(req: HttpRequest, body: String) -> HttpResponse { router::chat::end(req, body) }
-
-#[post("/api/story/read")]
-async fn story_read(req: HttpRequest, body: String) -> HttpResponse { router::story::read(req, body) }
-
-#[post("/api/user/initialize")]
-async fn user_initialize(req: HttpRequest, body: String) -> HttpResponse { router::user::initialize(req, body) }
-
-#[post("/api/user/detail")]
-async fn user_detail(req: HttpRequest, body: String) -> HttpResponse { router::user::detail(req, body) }
-
-#[get("/api/gift")]
-async fn gift_get(req: HttpRequest) -> HttpResponse { router::home::gift_get(req) }
-
-#[post("/api/gift")]
-async fn gift(req: HttpRequest, body: String) -> HttpResponse { router::user::gift(req, body) }
-
-#[post("/api/deck")]
-async fn user_deck(req: HttpRequest, body: String) -> HttpResponse { router::user::deck(req, body) }
-
-#[get("/api/purchase")]
-async fn purchase(req: HttpRequest) -> HttpResponse { router::purchase::purchase(req) }
-
-#[post("/api/tutorial")]
-async fn tutorial(req: HttpRequest, body: String) -> HttpResponse { router::tutorial::tutorial(req, body) }
-
-#[post("/api/friend")]
-async fn friend(req: HttpRequest, body: String) -> HttpResponse { router::friend::friend(req, body) }
-
-#[get("/api/friend/ids")]
-async fn friend_ids(req: HttpRequest) -> HttpResponse { router::friend::ids(req) }
-
-#[post("/api/friend/search")]
-async fn friend_search(req: HttpRequest, body: String) -> HttpResponse { router::friend::search(req, body) }
-
-#[post("/api/friend/search/recommend")]
-async fn friend_recommend(req: HttpRequest, body: String) -> HttpResponse { router::friend::recommend(req, body) }
-
-#[post("/api/friend/request")]
-async fn friend_request(req: HttpRequest, body: String) -> HttpResponse { router::friend::request(req, body) }
-
-#[post("/api/friend/request/approve")]
-async fn friend_approve(req: HttpRequest, body: String) -> HttpResponse { router::friend::approve(req, body) }
-
-#[post("/api/friend/request/cancel")]
-async fn friend_cancel(req: HttpRequest, body: String) -> HttpResponse { router::friend::cancel(req, body) }
-
-#[post("/api/friend/delete")]
-async fn friend_delete(req: HttpRequest, body: String) -> HttpResponse { router::friend::delete(req, body) }
-
-#[post("/api/live/guest")]
-async fn live_guest(req: HttpRequest, body: String) -> HttpResponse { router::live::guest(req, body) }
-
-#[post("/api/live/mission")]
-async fn live_mission(req: HttpRequest, body: String) -> HttpResponse { router::live::mission(req, body) }
-
-#[post("/api/live/ranking")]
-async fn live_ranking(req: HttpRequest, body: String) -> HttpResponse { router::clear_rate::ranking(req, body) }
-
-#[post("/api/event")]
-async fn event(req: HttpRequest, body: String) -> HttpResponse { router::event::event(req, body) }
-
-#[post("/api/live/start")]
-async fn live_start(req: HttpRequest, body: String) -> HttpResponse { router::live::start(req, body) }
-
-#[post("/api/live/end")]
-async fn live_end(req: HttpRequest, body: String) -> HttpResponse { router::live::end(req, body) }
-
-#[post("/api/live/skip")]
-async fn live_skip(req: HttpRequest, body: String) -> HttpResponse { router::live::skip(req, body) }
-
-#[post("/api/live/retire")]
-async fn live_retire(req: HttpRequest, body: String) -> HttpResponse { router::live::retire(req, body) }
-
-#[get("/api/live/clearRate")]
-async fn live_clearrate(req: HttpRequest) -> HttpResponse { router::clear_rate::clearrate(req) }
-
-#[post("/api/live/continue")]
-async fn live_continue(req: HttpRequest, body: String) -> HttpResponse { router::live::continuee(req, body) }
-
-#[get("/api/mission")]
-async fn mission(req: HttpRequest) -> HttpResponse { router::mission::mission(req) }
-
-#[post("/api/mission/clear")]
-async fn mission_clear(req: HttpRequest, body: String) -> HttpResponse { router::mission::clear(req, body) }
-
-#[get("/api/mission/receive")]
-async fn mission_receive(req: HttpRequest, body: String) -> HttpResponse { router::mission::receive(req, body) }
-
-#[get("/api/home")]
-async fn home(req: HttpRequest) -> HttpResponse { router::home::home(req) }
-
-#[get("/api/home/preset")]
-async fn preset_get(req: HttpRequest) -> HttpResponse { router::home::preset_get(req) }
-
-#[post("/api/home/preset")]
-async fn preset(req: HttpRequest, body: String) -> HttpResponse { router::home::preset(req, body) }
-
-#[post("/api/lottery/get_tutorial")]
-async fn lottery_tutorial(req: HttpRequest, body: String) -> HttpResponse { router::lottery::tutorial(req, body) }
-
-#[get("/api/lottery")]
-async fn lottery(req: HttpRequest) -> HttpResponse { router::lottery::lottery(req) }
-
-#[post("/api/lottery")]
-async fn lottery_post(req: HttpRequest, body: String) -> HttpResponse { router::lottery::lottery_post(req, body) }
-
-#[post("/api/login_bonus")]
-async fn login_bonus(req: HttpRequest, body: String) -> HttpResponse { router::login::bonus(req, body) }
-
-#[get("/api/notice/reward")]
-async fn reward(req: HttpRequest) -> HttpResponse { router::notice::reward(req) }
-
-#[post("/api/notice/reward")]
-async fn reward_post(req: HttpRequest, body: String) -> HttpResponse { router::notice::reward_post(req, body) }
-
-#[post("/api/user/getmigrationcode")]
-async fn getmigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::get_migration_code(req, body) }
-
-#[post("/api/user/registerpassword")]
-async fn registerpassword(req: HttpRequest, body: String) -> HttpResponse { router::user::register_password(req, body) }
-
-#[post("/api/user/migration")]
-async fn migration(req: HttpRequest, body: String) -> HttpResponse { router::user::migration(req, body) }
-
-#[post("/api/user/gglrequestmigrationcode")]
-async fn gglrequestmigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::request_migration_code(req, body) }
-
-#[post("/api/user/gglverifymigrationcode")]
-async fn gglverifymigrationcode(req: HttpRequest, body: String) -> HttpResponse { router::user::verify_migration_code(req, body) }
-
-#[post("/api/serial_code")]
-async fn serial_code(req: HttpRequest, body: String) -> HttpResponse { router::serial_code::serial_code(req, body) }
-
-#[get("/api/serial_code/events")]
-async fn serial_code_events(req: HttpRequest) -> HttpResponse { router::serial_code::events(req) }
-
-#[get("/api/album/sif")]
-async fn sif_album(req: HttpRequest) -> HttpResponse { router::user::sif(req) }
-
-#[get("/web/announcement")]
-async fn announcement(req: HttpRequest) -> HttpResponse { router::web::announcement(req) }
-
-#[get("/api/home/announcement")]
-async fn announcement_api(req: HttpRequest) -> HttpResponse { router::user::announcement(req) }
-
-#[post("/api/card/reinforce")]
-async fn card_reinforce(req: HttpRequest, body: String) -> HttpResponse { router::card::reinforce(req, body) }
-
-#[post("/api/card/skill/reinforce")]
-async fn card_skill_reinforce(req: HttpRequest, body: String) -> HttpResponse { router::card::skill_reinforce(req, body) }
-
-#[post("/api/card/evolve")]
-async fn card_evolve(req: HttpRequest, body: String) -> HttpResponse { router::card::evolve(req, body) }
-
-#[get("/api/shop")]
-async fn shop(req: HttpRequest) -> HttpResponse { router::shop::shop(req) }
-
-#[post("/api/shop/buy")]
-async fn shop_buy(req: HttpRequest, body: String) -> HttpResponse { router::shop::buy(req, body) }
-
-#[get("/api/exchange")]
-async fn exchange(req: HttpRequest) -> HttpResponse { router::exchange::exchange(req) }
-
-#[post("/api/exchange")]
-async fn exchange_post(req: HttpRequest, body: String) -> HttpResponse { router::exchange::exchange_post(req, body) }
-
-#[post("/api/user/sif/migrate")]
-async fn sif_migrate(req: HttpRequest, body: String) -> HttpResponse { router::user::sif_migrate(req, body) }
-
-#[post("/api/user/ss/migrate")]
-async fn sifas_migrate(req: HttpRequest, body: String) -> HttpResponse { router::user::sifas_migrate(req, body) }
-
-#[post("/api/user/getregisteredplatformlist")]
-async fn getregisteredplatformlist(req: HttpRequest, body: String) -> HttpResponse { router::user::getregisteredplatformlist(req, body) }
-
-
-#[post("/api/webui/login")]
-async fn webui_login(req: HttpRequest, body: String) -> HttpResponse { router::webui::login(req, body) }
-
-#[post("/api/webui/startLoginbonus")]
-async fn webui_start_loginbonus(req: HttpRequest, body: String) -> HttpResponse { router::webui::start_loginbonus(req, body) }
-
-#[get("/api/webui/userInfo")]
-async fn webui_user(req: HttpRequest) -> HttpResponse { router::webui::user(req) }
-
-#[get("/webui/logout")]
-async fn webui_logout(req: HttpRequest) -> HttpResponse { router::webui::logout(req) }
-
-#[post("/api/webui/import")]
-async fn webui_import(req: HttpRequest, body: String) -> HttpResponse { router::webui::import(req, body) }
-
-fn unhandled(req: HttpRequest) -> HttpResponse {
-    router::webui::main(req)
+fn unhandled(req: HttpRequest, body: String) -> HttpResponse {
+    if !req.path().starts_with("/api") {
+        return router::webui::main(req);
+    }
+    if body != String::new() {
+        println!("{}", encryption::decrypt_packet(&body).unwrap_or(body));
+    }
+    println!("Unhandled request: {}", req.path());
+    let resp = object!{
+        "code": 2,
+        "server_time": router::global::timestamp(),
+        "data": ""
+    };
+    router::global::send(resp)
 }
+
+async fn request(req: HttpRequest, body: String) -> HttpResponse {
+    //let origbody = body.clone();
+    if req.method() == "POST" {
+        match req.path() {
+            "/v1.0/auth/initialize" => router::gree::initialize(req, body),
+            "/v1.0/moderate/filtering/commit" => router::gree::moderate_commit(req, body),
+            "/v1.0/auth/authorize" => router::gree::authorize(req, body),
+            "/v1.0/migration/code/verify" => router::gree::migration_verify(req, body),
+            "/v1.0/migration/password/register" => router::gree::migration_password_register(req, body),
+            "/v1.0/migration" => router::gree::migration(req, body),
+            "/api/debug/error" => router::debug::error(req, body),
+            "/api/start" => router::start::start(req, body),
+            "/api/start/assetHash" => router::start::asset_hash(req, body),
+            "/api/dummy/login" => router::login::dummy(req, body),
+            "/api/user" => router::user::user_post(req, body),
+            "/api/chat/home" => router::chat::home(req, body),
+            "/api/chat/talk/start" => router::chat::start(req, body),
+            "/api/chat/talk/end" => router::chat::end(req, body),
+            "/api/story/read" => router::story::read(req, body),
+            "/api/user/initialize" => router::user::initialize(req, body),
+            "/api/user/detail" => router::user::detail(req, body),
+            "/api/gift" => router::user::gift(req, body),
+            "/api/deck" => router::user::deck(req, body),
+            "/api/tutorial" => router::tutorial::tutorial(req, body),
+            "/api/friend" => router::friend::friend(req, body),
+            "/api/friend/search" => router::friend::search(req, body),
+            "/api/friend/search/recommend" => router::friend::recommend(req, body),
+            "/api/friend/request" => router::friend::request(req, body),
+            "/api/friend/request/approve" => router::friend::approve(req, body),
+            "/api/friend/request/cancel" => router::friend::cancel(req, body),
+            "/api/friend/delete" => router::friend::delete(req, body),
+            "/api/live/guest" => router::live::guest(req, body),
+            "/api/live/mission" => router::live::mission(req, body),
+            "/api/live/ranking" => router::clear_rate::ranking(req, body),
+            "/api/event" => router::event::event(req, body),
+            "/api/live/start" => router::live::start(req, body),
+            "/api/live/end" => router::live::end(req, body),
+            "/api/live/skip" => router::live::skip(req, body),
+            "/api/live/retire" => router::live::retire(req, body),
+            "/api/live/continue" => router::live::continuee(req, body),
+            "/api/mission/clear" => router::mission::clear(req, body),
+            "/api/home/preset" => router::home::preset(req, body),
+            "/api/lottery/get_tutorial" => router::lottery::tutorial(req, body),
+            "/api/lottery" => router::lottery::lottery_post(req, body),
+            "/api/login_bonus" => router::login::bonus(req, body),
+            "/api/notice/reward" => router::notice::reward_post(req, body),
+            "/api/user/getmigrationcode" => router::user::get_migration_code(req, body),
+            "/api/user/registerpassword" => router::user::register_password(req, body),
+            "/api/user/migration" => router::user::migration(req, body),
+            "/api/user/gglrequestmigrationcode" => router::user::request_migration_code(req, body),
+            "/api/user/gglverifymigrationcode" => router::user::verify_migration_code(req, body),
+            "/api/serial_code" => router::serial_code::serial_code(req, body),
+            "/api/card/reinforce" => router::card::reinforce(req, body),
+            "/api/card/skill/reinforce" => router::card::skill_reinforce(req, body),
+            "/api/card/evolve" => router::card::evolve(req, body),
+            "/api/shop/buy" => router::shop::buy(req, body),
+            "/api/webui/login" => router::webui::login(req, body),
+            "/api/webui/startLoginbonus" => router::webui::start_loginbonus(req, body),
+            "/api/webui/import" => router::webui::import(req, body),
+            "/api/user/getregisteredplatformlist" => router::user::getregisteredplatformlist(req, body),
+            "/api/user/sif/migrate" => router::user::sif_migrate(req, body),
+            "/api/user/ss/migrate" => router::user::sifas_migrate(req, body),
+            "/api/exchange" => router::exchange::exchange_post(req, body),
+            _ => unhandled(req, body)
+        }
+    } else {
+        match req.path() {
+            "/v1.0/auth/x_uid" => router::gree::uid(req),
+            "/v1.0/payment/productlist" => router::gree::payment(req),
+            "/v1.0/payment/subscription/productlist" => router::gree::payment(req),
+            "/v1.0/payment/ticket/status" => router::gree::payment_ticket(req),
+            "/v1.0/moderate/keywordlist" => router::gree::moderate_keyword(req),
+            "/v1.0/migration/code" => router::gree::migration_code(req),
+            "/v1.0/payment/balance" => router::gree::balance(req),
+            "/api/user" => router::user::user(req),
+            "/api/gift" => router::home::gift_get(req),
+            "/api/purchase" => router::purchase::purchase(req),
+            "/api/friend/ids" => router::friend::ids(req),
+            "/api/live/clearRate" => router::clear_rate::clearrate(req),
+            "/api/mission" => router::mission::mission(req),
+            "/api/mission/receive" => router::mission::receive(req, body),
+            "/api/home" => router::home::home(req),
+            "/api/home/preset" => router::home::preset_get(req),
+            "/api/lottery" => router::lottery::lottery(req),
+            "/api/notice/reward" => router::notice::reward(req),
+            "/api/serial_code/events" => router::serial_code::events(req),
+            "/api/album/sif" => router::user::sif(req),
+            "/web/announcement" => router::web::announcement(req),
+            "/api/home/announcement" => router::user::announcement(req),
+            "/api/shop" => router::shop::shop(req),
+            "/api/webui/userInfo" => router::webui::user(req),
+            "/webui/logout" => router::webui::logout(req),
+            "/api/exchange" => router::exchange::exchange(req),
+            _ => unhandled(req, body)
+        }
+    }
+}
+
 #[get("/index.css")]
 async fn css(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
@@ -283,16 +138,6 @@ async fn js(_req: HttpRequest) -> HttpResponse {
 }
 
 
-async fn log_unknown_request(req: HttpRequest, body: String) -> HttpResponse {
-    if !req.path().starts_with("/api") {
-        return unhandled(req);
-    }
-    if body != String::new() {
-        println!("{}", encryption::decrypt_packet(&body).unwrap());
-    }
-    println!("Unhandled request: {}", req.path());
-    HttpResponse::Ok().body("ok")
-}
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -303,94 +148,9 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
-        .service(sifas_migrate)
-        .service(sif_migrate)
-        .service(exchange_post)
-        .service(exchange)
-        .service(serial_code)
-        .service(shop)
-        .service(shop_buy)
         .service(css)
         .service(js)
-        .service(webui_start_loginbonus)
-        .service(webui_import)
-        .service(webui_logout)
-        .service(webui_user)
-        .service(webui_login)
-        .service(card_evolve)
-        .service(card_skill_reinforce)
-        .service(card_reinforce)
-        .service(announcement_api)
-        .service(announcement)
-        .service(sif_album)
-        .service(preset)
-        .service(preset_get)
-        .service(gree_init)
-        .service(gree_uid)
-        .service(gree_authorize)
-        .service(gree_payment)
-        .service(gree_payment_ticket)
-        .service(gree_payment_sub)
-        .service(gree_moderate_keyword)
-        .service(gree_moderate_commit)
-        .service(gree_migration_code)
-        .service(gree_migration_verify)
-        .service(gree_migration_password_register)
-        .service(gree_balance)
-        .service(gree_migration)
-        .service(debug_error)
-        .service(login_bonus)
-        .service(reward)
-        .service(reward_post)
-        .service(live_continue)
-        .service(live_guest)
-        .service(live_mission)
-        .service(live_ranking)
-        .service(live_clearrate)
-        .service(live_start)
-        .service(live_end)
-        .service(live_skip)
-        .service(live_retire)
-        .service(chat_home)
-        .service(chat_end)
-        .service(chat_start)
-        .service(story_read)
-        .service(event)
-        .service(purchase)
-        .service(user_initialize)
-        .service(start_start)
-        .service(tutorial)
-        .service(lottery_tutorial)
-        .service(lottery_post)
-        .service(lottery)
-        .service(friend)
-        .service(friend_search)
-        .service(friend_recommend)
-        .service(friend_ids)
-        .service(friend_request)
-        .service(friend_approve)
-        .service(friend_cancel)
-        .service(friend_delete)
-        .service(mission)
-        .service(mission_clear)
-        .service(mission_receive)
-        .service(home)
-        .service(start_assethash)
-        .service(user)
-        .service(user_post)
-        .service(user_deck)
-        .service(user_detail)
-        .service(dummy_login)
-        .service(getmigrationcode)
-        .service(registerpassword)
-        .service(migration)
-        .service(gglrequestmigrationcode)
-        .service(gglverifymigrationcode)
-        .service(getregisteredplatformlist)
-        .service(serial_code_events)
-        .service(gift)
-        .service(gift_get)
-        .default_service(web::route().to(log_unknown_request)))
+        .default_service(web::route().to(request)))
         .bind(("0.0.0.0", 8080))?
         .run();
     println!("Server started: http://127.0.0.1:{}", 8080);
