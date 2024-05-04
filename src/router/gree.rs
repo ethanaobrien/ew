@@ -2,6 +2,7 @@ use crate::router::global;
 use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue, http::header::ContentType, http::header::HeaderMap};
 use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
+use std::env;
 use sha1::Sha1;
 use substring::Substring;
 use json::{object, JsonValue};
@@ -335,6 +336,12 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
     send(req, resp)
 }
 
+fn get_protocol() -> String {
+    if env::args().nth(1).unwrap_or(String::new()) == String::from("https") {
+        return String::from("https");
+    }
+    String::from("http")
+}
 
 fn gree_authorize(req: &HttpRequest) -> String {
     type HmacSha1 = Hmac<Sha1>;
@@ -357,7 +364,7 @@ fn gree_authorize(req: &HttpRequest) -> String {
     }
     
     let hostname = req.headers().get("host").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let current_url = format!("http://{}{}", hostname, req.path());
+    let current_url = format!("{}://{}{}", get_protocol(), hostname, req.path());
     let uri = req.uri().to_string();
     let extra = if uri.contains("?") {
         format!("&{}", uri.split('?').nth(1).unwrap_or(""))

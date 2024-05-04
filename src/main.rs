@@ -3,6 +3,8 @@ mod router;
 mod sql;
 use json::object;
 use actix_web::{
+    App,
+    HttpServer,
     get,
     HttpResponse,
     HttpRequest,
@@ -28,7 +30,6 @@ fn unhandled(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 async fn request(req: HttpRequest, body: String) -> HttpResponse {
-    //let origbody = body.clone();
     if req.method() == "POST" {
         match req.path() {
             "/v1.0/auth/initialize" => router::gree::initialize(req, body),
@@ -138,12 +139,8 @@ async fn js(_req: HttpRequest) -> HttpResponse {
         .body(include_str!("../webui/dist/index.js"))
 }
 
-
-
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    use actix_web::{App, HttpServer};
-
     let rv = HttpServer::new(|| App::new()
         .wrap_fn(|req, srv| {
             println!("Request: {}", req.path());
