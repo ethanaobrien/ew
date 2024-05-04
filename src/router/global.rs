@@ -89,12 +89,12 @@ fn set_time(data: &mut JsonValue, req: HttpRequest) {
     }
     let server_data = userdata::get_server_data(&userdata::get_login_token(uid));
     
-    if !server_data["timestamp"].as_i64().is_none() {
-        if server_data["timestamp"].as_i64().unwrap() == 0 {
+    if !server_data["server_time"].as_i64().is_none() {
+        if server_data["server_time"].as_i64().unwrap() == 0 {
             data["server_time"] = timestamp().into();
             return;
         }
-        data["server_time"] = server_data["timestamp"].clone();
+        data["server_time"] = server_data["server_time"].clone();
     }
 }
 
