@@ -247,6 +247,9 @@ async fn sif_migrate(req: HttpRequest, body: String) -> HttpResponse { router::u
 #[post("/api/user/ss/migrate")]
 async fn sifas_migrate(req: HttpRequest, body: String) -> HttpResponse { router::user::sifas_migrate(req, body) }
 
+#[post("/api/user/getregisteredplatformlist")]
+async fn getregisteredplatformlist(req: HttpRequest, body: String) -> HttpResponse { router::user::getregisteredplatformlist(req, body) }
+
 
 #[post("/api/webui/login")]
 async fn webui_login(req: HttpRequest, body: String) -> HttpResponse { router::webui::login(req, body) }
@@ -383,6 +386,7 @@ async fn main() -> std::io::Result<()> {
         .service(migration)
         .service(gglrequestmigrationcode)
         .service(gglverifymigrationcode)
+        .service(getregisteredplatformlist)
         .service(serial_code_events)
         .service(gift)
         .service(gift_get)

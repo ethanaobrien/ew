@@ -385,6 +385,19 @@ pub fn sif_migrate(_req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp)
 }
 
+pub fn getregisteredplatformlist(_req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "google": 0,
+            "apple": 0,
+            "twitter": 0
+        }
+    };
+    global::send(resp)
+}
+
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
