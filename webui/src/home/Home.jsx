@@ -73,7 +73,7 @@ function Home() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         let input = parseInt(inputValue.trim());
-        let time = Math.round((new Date(inputValue.trim()).getTime() + 200000) / 1000);
+        let time = Math.round((new Date(inputValue.trim()).getTime() + 70000) / 1000);
         if (input === -1) {
             time = 1711741114;
         }
