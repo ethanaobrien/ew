@@ -40,6 +40,30 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             items::gift_item_basic(40030013, 1, 2, "I need more primogem!!!!!!", &mut user),
             items::gift_item_basic(10070016, 1, 2, "I need more primogem!!!!!!", &mut user)
         ];
+    } else if body["input_code"].to_string() == "meow" {
+        itemz = array![
+            items::gift_item_basic(10010020, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(10040016, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(10050018, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(10080016, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(10090015, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20010019, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20030015, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20050014, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20070013, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20080016, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20090013, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(30010017, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(30020009, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(30040012, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(30090009, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(40010011, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(40030009, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(40040013, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(40060010, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(40080011, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(40090011, 1, 2, "I need more primogem!!!!!!", &mut user)
+        ];
     } else if body["input_code"].to_string() == "hu tao" {
         itemz = array![
             items::gift_item_basic(15500001, 10, 3, "Okay...............", &mut user),

@@ -75,6 +75,8 @@ function Home() {
         let time = Math.round((new Date(inputValue.trim()).getTime() + 70000) / 1000);
         if (inputValue.trim() === "-1") {
             time = 1711741114;
+        } else if (inputValue.trim() === "0") {
+            time = 0;
         }
         if (time < 0 || isNaN(time)) return;
         let resp = await Request("/api/webui/set_time", {
