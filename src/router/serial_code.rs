@@ -40,6 +40,14 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             items::gift_item_basic(40030013, 1, 2, "I need more primogem!!!!!!", &mut user),
             items::gift_item_basic(10070016, 1, 2, "I need more primogem!!!!!!", &mut user)
         ];
+    } else if body["input_code"].to_string() == "kode" {
+        itemz = array![
+            items::gift_item_basic(10060018, 1, 2, "meow", &mut user),
+            items::gift_item_basic(20050019, 1, 2, "meow", &mut user),
+            items::gift_item_basic(10020018, 1, 2, "meow", &mut user),
+            items::gift_item_basic(10010014, 1, 2, "meow", &mut user),
+            items::gift_item_basic(10010015, 1, 2, "meow", &mut user)
+        ];
     } else if body["input_code"].to_string() == "meow" {
         itemz = array![
             items::gift_item_basic(10010020, 1, 2, "I need more primogem!!!!!!", &mut user),
@@ -64,7 +72,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             items::gift_item_basic(40080011, 1, 2, "I need more primogem!!!!!!", &mut user),
             items::gift_item_basic(40090011, 1, 2, "I need more primogem!!!!!!", &mut user)
         ];
-    } else if body["input_code"].to_string() == "hu tao" {
+    } else if body["input_code"].to_string() == "HuTao" {
         itemz = array![
             items::gift_item_basic(15500001, 10, 3, "Okay...............", &mut user),
             items::gift_item_basic(15500002, 10, 3, "Okay...............", &mut user),
@@ -190,7 +198,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
         return global::send(resp, req);
     }
     
-    if body["receive_flg"].as_i32().unwrap_or(0) != 1 {
+    if body["receive_flg"].as_i32().unwrap_or(1) == 1 {
         userdata::save_acc_home(&key, user.clone());
     }
     
