@@ -87,7 +87,11 @@ function Home() {
             return;
         }
         error[1]("");
-        setServerTime((new Date(time * 1000)).toString());
+        if (time === 0) {
+            setServerTime("now");
+        } else {
+            setServerTime((new Date(time * 1000)).toString());
+        }
         setInputValue('');
     };
     
@@ -112,7 +116,11 @@ function Home() {
                 },
                 time: new Date()
             }*/
-            setServerTime((new Date(resp.data.time * 1000)).toString());
+            if (resp.data.time === 0 {
+                setServerTime("now");
+            } else {
+                setServerTime((new Date(resp.data.time * 1000)).toString());
+            }
             
             userdata(
                 <div>
