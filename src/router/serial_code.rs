@@ -19,6 +19,20 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc_home(&key);
+    let mut data = userdata::get_server_data(&key);
+    
+    if data["last_serial_code"].as_u64().unwrap_or(0) + 5 > global::timestamp() {
+        let resp = object!{
+            "code": 0,
+            "server_time": global::timestamp(),
+            "data": {
+                "result_code": 3
+            }
+        };
+        return global::send(resp, req);
+    }
+    data["last_serial_code"] = global::timestamp().into();
+    userdata::save_server_data(&key, data);
     
     let itemz;
     if body["input_code"].to_string() == "SIF2REVIVALREAL!" {
