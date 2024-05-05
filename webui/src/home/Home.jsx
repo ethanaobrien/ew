@@ -116,7 +116,7 @@ function Home() {
                 },
                 time: new Date()
             }*/
-            if (resp.data.time === 0 {
+            if (resp.data.time === 0) {
                 setServerTime("now");
             } else {
                 setServerTime((new Date(resp.data.time * 1000)).toString());
