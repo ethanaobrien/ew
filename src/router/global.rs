@@ -80,22 +80,39 @@ pub fn timestamp_since_midnight() -> u64 {
     rv
 }
 
+fn init_time(server_data: &mut JsonValue, token: &str) {
+    let mut edited = false;
+    if server_data["server_time_set"].as_u64().is_none() {
+        server_data["server_time_set"] = timestamp().into();
+        edited = true;
+    }
+    if server_data["server_time"].as_u64().is_none() {
+        server_data["server_time"] = 1709272800.into();
+        edited = true;
+    }
+    if edited {
+        userdata::save_server_data(&token, server_data.clone());
+    }
+}
+
 fn set_time(data: &mut JsonValue, req: HttpRequest) {
-    data["server_time"] = 1711741114.into();
     let blank_header = HeaderValue::from_static("");
     let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
     if uid == 0 {
         return;
     }
-    let server_data = userdata::get_server_data(&userdata::get_login_token(uid));
+    let token = userdata::get_login_token(uid);
+    let mut server_data = userdata::get_server_data(&token);
+    init_time(&mut server_data, &token);
     
-    if !server_data["server_time"].as_i64().is_none() {
-        if server_data["server_time"].as_i64().unwrap() == 0 {
-            data["server_time"] = timestamp().into();
-            return;
-        }
-        data["server_time"] = server_data["server_time"].clone();
+    let time_set = server_data["server_time_set"].as_u64().unwrap_or(timestamp());
+    let server_time = server_data["server_time"].as_u64().unwrap_or(0);//1711741114
+    if server_time == 0 {
+        return;
     }
+    
+    let time_since_set = timestamp() - time_set;
+    data["server_time"] = (server_time + time_since_set).into();
 }
 
 pub fn send(mut data: JsonValue, req: HttpRequest) -> HttpResponse {

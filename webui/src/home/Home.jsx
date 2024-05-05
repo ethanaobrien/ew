@@ -72,7 +72,7 @@ function Home() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let time = Math.round((new Date(inputValue.trim()).getTime() + 70000) / 1000);
+        let time = Math.round(new Date(inputValue.trim()).getTime() / 1000);
         if (inputValue.trim() === "-1") {
             time = 1711741114;
         } else if (inputValue.trim() === "0") {
@@ -142,7 +142,7 @@ function Home() {
                 { user } 
                 <h2>Server time</h2>
                 <div id="error"> { error[0] ? <p>Error: { error[0] } </p> : <p></p> } </div>
-                <p>Currently set to { serverTime }. Setting to 0 will set it to now, and -1 will reset it.</p>
+                <p>Currently set to { serverTime }. Setting to 0 will set it to now, and -1 will reset it. Time will still progress, based off of when you set this timestamp.</p>
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
