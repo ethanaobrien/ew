@@ -174,6 +174,16 @@ fn get_full_combo_count(user: &JsonValue, level: i32) -> i64 {
     rv
 }
 
+fn get_perfect_count(user: &JsonValue, level: i32) -> i64 {
+    let mut rv = 0;
+    for (_i, current) in user["live_mission_list"].members().enumerate() {
+        if current["clear_master_live_mission_ids"].contains(40 + level) {
+            rv += 1;
+        }
+    }
+    rv
+}
+
 pub fn get_user(id: i64, friends: &JsonValue, live_data: bool) -> JsonValue {
     let user = userdata::get_acc_from_uid(id);
     if !user["error"].is_empty() {
@@ -197,7 +207,7 @@ pub fn get_user(id: i64, friends: &JsonValue, live_data: bool) -> JsonValue {
         rv["live_data_summary"] = object!{
             clear_count_list: [get_clear_count(&user, 1), get_clear_count(&user, 2), get_clear_count(&user, 3), get_clear_count(&user, 4)],
             full_combo_list: [get_full_combo_count(&user, 1), get_full_combo_count(&user, 2), get_full_combo_count(&user, 3), get_full_combo_count(&user, 4)],
-            all_perfect_list: [0, 0, 0, 0],
+            all_perfect_list: [get_perfect_count(&user, 1), get_perfect_count(&user, 2), get_perfect_count(&user, 3), get_perfect_count(&user, 4)],
             high_score_rate: {
                 rate: 0,
                 detail: []
