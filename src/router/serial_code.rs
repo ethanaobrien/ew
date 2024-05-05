@@ -43,6 +43,17 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
         itemz = array![items::gift_item_basic(15540001, 50, 3, "I am tired", &mut user)];
     } else if body["input_code"].to_string() == "ilikeganyu!!!!!!" {
         itemz = array![items::gift_item_basic(16005003, 100, 3, "I need more primogems", &mut user)];
+    } else if body["input_code"].to_string() == "ganuy" {
+        itemz = array![
+            items::gift_item_basic(40010015, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(30010015, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20010018, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(10040018, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(20050016, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(30070015, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(40030013, 1, 2, "I need more primogem!!!!!!", &mut user),
+            items::gift_item_basic(10070016, 1, 2, "I need more primogem!!!!!!", &mut user)
+        ];
     } else if body["input_code"].to_string() == "hu tao" {
         itemz = array![
             items::gift_item_basic(15500001, 10, 3, "Okay...............", &mut user),
