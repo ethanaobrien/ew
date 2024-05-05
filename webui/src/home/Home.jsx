@@ -72,9 +72,8 @@ function Home() {
     }
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let input = parseInt(inputValue.trim());
         let time = Math.round((new Date(inputValue.trim()).getTime() + 70000) / 1000);
-        if (input === -1) {
+        if (inputValue.trim() === "-1") {
             time = 1711741114;
         }
         if (time < 0 || isNaN(time)) return;
