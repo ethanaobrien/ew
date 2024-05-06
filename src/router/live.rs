@@ -396,7 +396,18 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
     let body = json::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
+    let mut user_missions = userdata::get_acc_missions(&key);
     let live = update_live_data(&mut user, &body, true);
+    
+    //1273009, 1273010, 1273011, 1273012
+    let mut cleared_missions = array![];
+    if body["master_live_id"].to_string().len() > 1 {
+        let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
+        if id <= 4 && id >= 1 {
+            cleared_missions = items::completed_daily_mission(1273009 + id - 1, &mut user_missions);
+        }
+    }
+    
     
     if body["live_score"]["score"].as_i64().unwrap() > 0 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
@@ -418,6 +429,7 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
     items::give_exp(body["use_lp"].as_i32().unwrap(), &mut user);
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_missions(&key, user_missions.clone());
     
     object!{
         "code": 0,
@@ -434,7 +446,7 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
             "character_list": user["character_list"].clone(),
             "reward_list": reward_list,
             "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": user2["clear_mission_ids"].clone(),
+            "clear_mission_ids": cleared_missions,
             "event_point_reward_list": [],
             "ranking_change": [],
             "event_member": [],
@@ -543,7 +555,7 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
             "character_list": user["character_list"].clone(),
             "reward_list": reward_list,
             "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": user2["clear_mission_ids"].clone(),
+            "clear_mission_ids": [],
             "event_point_reward_list": [],
             "ranking_change": [],
             "event_member": [],

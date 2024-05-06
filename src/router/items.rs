@@ -1,4 +1,4 @@
-use json::{object, JsonValue};
+use json::{array, object, JsonValue};
 use lazy_static::lazy_static;
 use rand::Rng;
 
@@ -270,4 +270,75 @@ pub fn give_exp(amount: i32, user: &mut JsonValue) {
         user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i64().unwrap() + new_rank["maxLp"].as_i64().unwrap()).into();
         user["stamina"]["last_updated_time"] = global::timestamp().into();
     }
+}
+
+pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: bool, claimed: bool, advance: bool, missions: &mut JsonValue) -> Option<i64> {
+    for (_i, mission) in missions.members_mut().enumerate() {
+        if mission["master_mission_id"].as_i64().unwrap() == master_mission_id {
+            mission["status"] = if claimed { 3 } else if completed { 2 } else { 1 }.into();
+            if expire != 0 {
+                mission["expire_date_time"] = expire.into();
+            }
+            
+            if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() || expire != 0 {
+                mission["progress"] = 0.into();
+            }
+            if advance {
+                mission["progress"] = (mission["progress"].as_i32().unwrap() + 1).into();
+            }
+            
+            
+            if completed && !claimed {
+                return Some(master_mission_id);
+            }
+            return None;
+        }
+    }
+    None
+}
+
+pub fn update_mission_status_multi(master_mission_id: JsonValue, expire: u64, completed: bool, claimed: bool, advance: bool, missions: &mut JsonValue) -> JsonValue {
+    let mut rv = array![];
+    for (_i, mission) in master_mission_id.members().enumerate() {
+        let val = update_mission_status(mission.as_i64().unwrap(), expire, completed, claimed, advance, missions);
+        if !val.is_none() {
+            rv.push(val.unwrap()).unwrap();
+        }
+    }
+    rv
+}
+
+pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
+    let all_daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
+    for (_i, mission) in missions.members().enumerate() {
+        if mission["master_mission_id"].as_i64().unwrap() == id {
+            if mission["expire_date_time"].as_u64().unwrap() >= global::timestamp() && mission["status"].as_i32().unwrap() > 1 {
+                return array![];
+            }
+        }
+    }
+    let mut rv = array![];
+    for (_i, mission) in missions.clone().members().enumerate() {
+        if mission["master_mission_id"].as_i64().unwrap() == 1224003 {
+            let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);
+            if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() {
+                update_mission_status_multi(all_daily_missions, next_reset, false, false, false, missions);
+            }
+            
+            if mission["progress"].as_i32().unwrap() == 4 {
+                if !update_mission_status(1224003, 0, true, false, true, missions).is_none() {
+                    rv.push(1224003).unwrap();
+                }
+            } else {
+                if !update_mission_status(1224003, 0, false, false, true, missions).is_none() {
+                    rv.push(1224003).unwrap();
+                }
+            }
+            if !update_mission_status(id, next_reset, true, false, true, missions).is_none() {
+                rv.push(id).unwrap();
+            }
+            return rv;
+        }
+    }
+    rv
 }

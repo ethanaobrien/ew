@@ -98,7 +98,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
         }
     }
     
-    userdata::save_acc_home(&key, user.clone());
+    userdata::save_acc_home(&key, user);
     userdata::save_acc(&key, userr.clone());
     let userr = userdata::get_acc(&key);
     
@@ -112,7 +112,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
                 "item_list": userr["item_list"].clone(),
                 "point_list": userr["point_list"].clone()
             },
-            "clear_mission_ids": user["clear_mission_ids"].clone(),
+            "clear_mission_ids": [],
             "reward_list": rewards
         }
     };
@@ -124,7 +124,6 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let mut user = userdata::get_acc(&key);
-    let user_2 = userdata::get_acc_home(&key);
     
     if !body["name"].is_null() {
         user["user"]["name"] = body["name"].clone();
@@ -168,7 +167,7 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
         "server_time": global::timestamp(),
         "data": {
             "user": user["user"].clone(),
-            "clear_mission_ids": user_2["clear_mission_ids"].clone()
+            "clear_mission_ids": []
         }
     };
     global::send(resp, req)

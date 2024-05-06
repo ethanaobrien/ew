@@ -1,8 +1,7 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
-use crate::router::userdata;
-use crate::router::global;
+use crate::router::{global, userdata, items};
 use crate::encryption;
 
 pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
@@ -73,7 +72,14 @@ pub fn home(req: HttpRequest) -> HttpResponse {
     let mut user = userdata::get_acc_home(&key);
     
     check_gifts(&mut user);
+    
     userdata::save_acc_home(&key, user.clone());
+    
+    let mut user_missions = userdata::get_acc_missions(&key);
+    user["clear_mission_ids"] = items::completed_daily_mission(1253003, &mut user_missions);
+    if !user["clear_mission_ids"].is_empty() {
+        userdata::save_acc_missions(&key, user_missions);
+    }
     
     let resp = object!{
         "code": 0,

@@ -73,24 +73,32 @@ fn generate_uid() -> i64 {
     random_number
 }
 
+fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_missions: JsonValue, sif_cards: JsonValue) {
+    let home = json::stringify(user_home.clone());
+    let missions = json::stringify(user_missions.clone());
+    let cards = json::stringify(sif_cards.clone());
+    
+    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)", params!(
+        uid,
+        json::stringify(user.clone()),
+        if user_home.is_empty() {include_str!("new_user_home.json")} else {&home},
+        if user_missions.is_empty() {include_str!("missions.json")} else {&missions},
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
+        if sif_cards.is_empty() {"[]"} else {&cards},
+        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
+        user["user"]["friend_request_disabled"].as_i32().unwrap(),
+        include_str!("new_user_event.json"),
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
+        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
+    ));
+}
+
 fn create_acc(uid: i64, login: &str) {
     let mut new_user = NEW_USER.clone();
     new_user["user"]["id"] = uid.into();
     new_user["stamina"]["last_updated_time"] = global::timestamp().into();
     
-    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)", params!(
-        uid,
-        json::stringify(new_user),
-        include_str!("new_user_home.json"),
-        include_str!("chat_missions.json"),
-        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        "[]",
-        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
-        0,
-        include_str!("new_user_event.json"),
-        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
-    ));
+    add_user_to_database(uid, new_user, JsonValue::Null, JsonValue::Null, JsonValue::Null);
     
     DATABASE.lock_and_exec("DELETE FROM tokens WHERE token=?1", params!(login));
     DATABASE.lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, login));
@@ -430,31 +438,12 @@ pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
 }
 
 pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
-    let mut user = user;
     let uid = user["userdata"]["user"]["id"].as_i64().unwrap();
     if acc_exists(uid) {
         return Err(String::from("User already exists"));
     }
-    if user["missions"].is_empty() {
-        user["missions"] = json::parse(include_str!("chat_missions.json")).unwrap();
-    }
-    if user["sif_cards"].is_empty() {
-        user["sif_cards"] = array![];
-    }
     
-    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)", params!(
-        uid,
-        json::stringify(user["userdata"].clone()),
-        json::stringify(user["home"].clone()),
-        json::stringify(user["missions"].clone()),
-        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        json::stringify(user["sif_cards"].clone()),
-        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
-        user["userdata"]["user"]["friend_request_disabled"].as_i32().unwrap(),
-        include_str!("new_user_event.json"),
-        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
-    ));
+    add_user_to_database(uid, user["userdata"].clone(), user["home"].clone(), user["missions"].clone(), user["sif_cards"].clone());
     
     let token = global::create_token();
     

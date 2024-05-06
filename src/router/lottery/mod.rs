@@ -239,7 +239,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
                 "item_list": user["item_list"].clone()
             },
             "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": user2["clear_mission_ids"].clone(),
+            "clear_mission_ids": [],
             "draw_count_list": []
         }
     };
