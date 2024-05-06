@@ -442,7 +442,7 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
         user["sif_cards"] = array![];
     }
     
-    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)", params!(
+    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)", params!(
         uid,
         json::stringify(user["userdata"].clone()),
         json::stringify(user["home"].clone()),
@@ -450,7 +450,10 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
         format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
         json::stringify(user["sif_cards"].clone()),
         r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
-        user["userdata"]["user"]["friend_request_disabled"].as_i32().unwrap()
+        user["userdata"]["user"]["friend_request_disabled"].as_i32().unwrap(),
+        include_str!("new_user_event.json"),
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
+        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
     ));
     
     let token = global::create_token();
