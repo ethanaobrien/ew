@@ -73,13 +73,33 @@ pub fn home(req: HttpRequest) -> HttpResponse {
     
     check_gifts(&mut user);
     
-    userdata::save_acc_home(&key, user.clone());
-    
     let mut user_missions = userdata::get_acc_missions(&key);
-    user["clear_mission_ids"] = items::completed_daily_mission(1253003, &mut user_missions);
+    let clear = items::completed_daily_mission(1253003, &mut user_missions);
+    userdata::save_acc_home(&key, user.clone());
+    user["clear_mission_ids"] = clear;
     if !user["clear_mission_ids"].is_empty() {
-        userdata::save_acc_missions(&key, user_missions);
+        userdata::save_acc_missions(&key, user_missions.clone());
     }
+    
+    let daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
+    let home_missions = array![];
+    
+    let mut clear_ct = 0;
+    let mut daily_ct = 0;
+    for (_i, mission) in user_missions.members().enumerate() {
+        if mission["status"].as_i32().unwrap() != 2 {
+            continue;
+        }
+        if home_missions.contains(mission["master_mission_id"].as_i64().unwrap()) {
+            clear_ct += 1;
+        }
+        if daily_missions.contains(mission["master_mission_id"].as_i64().unwrap()) {
+            daily_ct += 1;
+            clear_ct += 1;
+        }
+    }
+    user["home"]["clear_mission_count"] = clear_ct.into();
+    user["home"]["not_cleared_daily_mission_count"] = (6 - daily_ct).into();
     
     let resp = object!{
         "code": 0,
