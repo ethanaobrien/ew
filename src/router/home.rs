@@ -1,5 +1,6 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
+use lazy_static::lazy_static;
 
 use crate::router::{global, userdata, items};
 use crate::encryption;
@@ -67,6 +68,20 @@ pub fn preset_get(req: HttpRequest) -> HttpResponse {
     global::send(resp, req)
 }
 
+
+lazy_static! {
+    pub static ref HOME_MISSIONS: JsonValue = {
+        let mut missions = array![];
+        for i in 1153001..=1153019 {
+            missions.push(i).unwrap();
+        }
+        for i in 1105001..=1105017 {
+            missions.push(i).unwrap();
+        }
+        missions
+    };
+}
+
 pub fn home(req: HttpRequest) -> HttpResponse {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc_home(&key);
@@ -82,10 +97,6 @@ pub fn home(req: HttpRequest) -> HttpResponse {
     }
     
     let daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
-    let mut home_missions = array![];
-    for i in 1153001..=1153019 {
-        home_missions.push(i).unwrap();
-    }
     
     let mut clear_ct = 0;
     let mut daily_ct = 0;
@@ -93,7 +104,7 @@ pub fn home(req: HttpRequest) -> HttpResponse {
         if mission["status"].as_i32().unwrap() != 2 {
             continue;
         }
-        if home_missions.contains(mission["master_mission_id"].as_i64().unwrap()) {
+        if HOME_MISSIONS.contains(mission["master_mission_id"].as_i64().unwrap()) {
             clear_ct += 1;
         }
         if daily_missions.contains(mission["master_mission_id"].as_i64().unwrap()) {

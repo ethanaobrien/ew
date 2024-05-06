@@ -287,7 +287,6 @@ pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: boo
                 mission["progress"] = (mission["progress"].as_i32().unwrap() + 1).into();
             }
             
-            
             if completed && !claimed {
                 return Some(master_mission_id);
             }
@@ -326,6 +325,28 @@ pub fn change_mission_id(old: i64, new: i64, missions: &mut JsonValue) {
     }
 }
 
+pub fn advance_variable_mission(min: i64, max: i64, missions: &mut JsonValue) -> JsonValue {
+    let mut rv = array![];
+    for i in min..=max {
+        let mission_status = get_mission_status(i, missions);
+        if mission_status.is_empty() {
+            continue;
+        }
+        let mission_info = &crate::router::mission::MISSION_LIST[i.to_string()];
+        if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + 1 {
+            if !update_mission_status(i, 0, false, false, true, missions).is_none() {
+                rv.push(i).unwrap();
+            }
+        } else {
+            if !update_mission_status(i, 0, true, false, true, missions).is_none() {
+                rv.push(i).unwrap();
+            }
+        }
+        break;
+    }
+    rv
+}
+
 pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     let all_daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
     
@@ -335,23 +356,7 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     }
     let mut rv = array![];
     if id == 1253003 {
-        for i in 1153001..=1153019 {
-            let mission_status = get_mission_status(i, missions);
-            if mission_status.is_empty() {
-                continue;
-            }
-            let mission_info = crate::router::mission::MISSION_LIST[i as usize].clone();
-            if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + 1 {
-                if !update_mission_status(i, 0, true, false, false, missions).is_none() {
-                    rv.push(i).unwrap();
-                }
-            } else {
-                if !update_mission_status(i, 0, false, false, true, missions).is_none() {
-                    rv.push(i).unwrap();
-                }
-            }
-            break;
-        }
+        rv = advance_variable_mission(1153001, 1153019, missions);
     }
     let mission = get_mission_status(1224003, missions);
     let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);

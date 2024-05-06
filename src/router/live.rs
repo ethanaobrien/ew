@@ -400,14 +400,13 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
     let live = update_live_data(&mut user, &body, true);
     
     //1273009, 1273010, 1273011, 1273012
-    let mut cleared_missions = array![];
+    let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, &mut user_missions);
     if body["master_live_id"].to_string().len() > 1 {
         let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
         if id <= 4 && id >= 1 {
             cleared_missions = items::completed_daily_mission(1273009 + id - 1, &mut user_missions);
         }
     }
-    
     
     if body["live_score"]["score"].as_i64().unwrap() > 0 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
@@ -514,6 +513,7 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
+    //let mut user_missions = userdata::get_acc_missions(&key);
     let live = update_live_data(&mut user, &object!{
         master_live_id: body["master_live_id"].clone(),
         level: 1,
@@ -539,6 +539,7 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
     items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
     
     userdata::save_acc(&key, user.clone());
+    //userdata::save_acc_missions(&key, user_missions.clone());
     
     let resp = object!{
         "code": 0,

@@ -82,7 +82,8 @@ pub fn receive(req: HttpRequest, body: String) -> HttpResponse {
         items::give_gift(&gift, &mut user);
         rewards.push(gift).unwrap();
         
-        if mission.as_i64().unwrap() >= 1153001 && mission.as_i64().unwrap() < 1153019 {
+        if mission.as_i64().unwrap() >= 1153001 && mission.as_i64().unwrap() < 1153019 ||
+           mission.as_i64().unwrap() >= 1105001 && mission.as_i64().unwrap() < 1105017 {
             items::change_mission_id(mission.as_i64().unwrap(), mission.as_i64().unwrap() + 1, &mut missions);
             items::update_mission_status(mission.as_i64().unwrap() + 1, 0, false, false, false, &mut missions);
         } else {
