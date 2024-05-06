@@ -280,7 +280,7 @@ pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: boo
                 mission["expire_date_time"] = expire.into();
             }
             
-            if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() || expire != 0 {
+            if (mission["expire_date_time"].as_u64().unwrap() < global::timestamp() || expire != 0) && (mission["expire_date_time"].as_u64().unwrap() != 0 || expire != 0) {
                 mission["progress"] = 0.into();
             }
             if advance {
@@ -308,37 +308,68 @@ pub fn update_mission_status_multi(master_mission_id: JsonValue, expire: u64, co
     rv
 }
 
-pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
-    let all_daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
+pub fn get_mission_status(id: i64, missions: &JsonValue) -> JsonValue {
     for (_i, mission) in missions.members().enumerate() {
         if mission["master_mission_id"].as_i64().unwrap() == id {
-            if mission["expire_date_time"].as_u64().unwrap() >= global::timestamp() && mission["status"].as_i32().unwrap() > 1 {
-                return array![];
-            }
+            return mission.clone();
         }
     }
+    JsonValue::Null
+}
+
+pub fn change_mission_id(old: i64, new: i64, missions: &mut JsonValue) {
+    for (_i, mission) in missions.members_mut().enumerate() {
+        if mission["master_mission_id"].as_i64().unwrap() == old {
+            mission["master_mission_id"] = new.into();
+            return;
+        }
+    }
+}
+
+pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
+    let all_daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
+    
+    let mission = get_mission_status(id, missions);
+    if mission["expire_date_time"].as_u64().unwrap() >= global::timestamp() && mission["status"].as_i32().unwrap() > 1 {
+        return array![];
+    }
     let mut rv = array![];
-    for (_i, mission) in missions.clone().members().enumerate() {
-        if mission["master_mission_id"].as_i64().unwrap() == 1224003 {
-            let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);
-            if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() {
-                update_mission_status_multi(all_daily_missions, next_reset, false, false, false, missions);
+    if id == 1253003 {
+        for i in 1153001..=1153019 {
+            let mission_status = get_mission_status(i, missions);
+            if mission_status.is_empty() {
+                continue;
             }
-            
-            if mission["progress"].as_i32().unwrap() == 4 {
-                if !update_mission_status(1224003, 0, true, false, true, missions).is_none() {
-                    rv.push(1224003).unwrap();
+            let mission_info = crate::router::mission::MISSION_LIST[i as usize].clone();
+            if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + 1 {
+                if !update_mission_status(i, 0, true, false, false, missions).is_none() {
+                    rv.push(i).unwrap();
                 }
             } else {
-                if !update_mission_status(1224003, 0, false, false, true, missions).is_none() {
-                    rv.push(1224003).unwrap();
+                if !update_mission_status(i, 0, false, false, true, missions).is_none() {
+                    rv.push(i).unwrap();
                 }
             }
-            if !update_mission_status(id, next_reset, true, false, true, missions).is_none() {
-                rv.push(id).unwrap();
-            }
-            return rv;
+            break;
         }
+    }
+    let mission = get_mission_status(1224003, missions);
+    let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);
+    if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() {
+        update_mission_status_multi(all_daily_missions, next_reset, false, false, false, missions);
+    }
+    
+    if mission["progress"].as_i32().unwrap() == 4 {
+        if !update_mission_status(1224003, 0, true, false, true, missions).is_none() {
+            rv.push(1224003).unwrap();
+        }
+    } else {
+        if !update_mission_status(1224003, 0, false, false, true, missions).is_none() {
+            rv.push(1224003).unwrap();
+        }
+    }
+    if !update_mission_status(id, next_reset, true, false, true, missions).is_none() {
+        rv.push(id).unwrap();
     }
     rv
 }

@@ -82,7 +82,10 @@ pub fn home(req: HttpRequest) -> HttpResponse {
     }
     
     let daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
-    let home_missions = array![];
+    let mut home_missions = array![];
+    for i in 1153001..=1153019 {
+        home_missions.push(i).unwrap();
+    }
     
     let mut clear_ct = 0;
     let mut daily_ct = 0;

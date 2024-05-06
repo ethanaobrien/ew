@@ -48,7 +48,7 @@ pub fn clear(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 lazy_static! {
-    static ref MISSION_LIST: JsonValue = {
+    pub static ref MISSION_LIST: JsonValue = {
         let mut info = object!{};
         let items = json::parse(include_str!("json/mission.json")).unwrap();
         for (_i, data) in items.members().enumerate() {
@@ -75,13 +75,19 @@ pub fn receive(req: HttpRequest, body: String) -> HttpResponse {
     let mut rewards = array![];
     
     for (_i, mission) in body["master_mission_ids"].members().enumerate() {
-        items::update_mission_status(mission.as_i64().unwrap(), 0, true, true, false, &mut missions);
         let mission_info = MISSION_LIST[mission.to_string()].clone();
         let mut gift = MISSION_REWARD[mission_info["masterMissionRewardId"].to_string()].clone();
         gift["reward_type"] = gift["type"].clone();
         gift["amount"] = gift["amount"].as_i64().unwrap().into();
         items::give_gift(&gift, &mut user);
         rewards.push(gift).unwrap();
+        
+        if mission.as_i64().unwrap() >= 1153001 && mission.as_i64().unwrap() < 1153019 {
+            items::change_mission_id(mission.as_i64().unwrap(), mission.as_i64().unwrap() + 1, &mut missions);
+            items::update_mission_status(mission.as_i64().unwrap() + 1, 0, false, false, false, &mut missions);
+        } else {
+            items::update_mission_status(mission.as_i64().unwrap(), 0, true, true, false, &mut missions);
+        }
     }
     
     userdata::save_acc(&key, user.clone());
