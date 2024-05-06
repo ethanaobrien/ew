@@ -89,7 +89,7 @@ fn create_acc(uid: i64, login: &str) {
         0,
         include_str!("new_user_event.json"),
         format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        format!(r#"{{"server_time_set":{},server_time:1709272800}}"#, global::timestamp())
+        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
     ));
     
     DATABASE.lock_and_exec("DELETE FROM tokens WHERE token=?1", params!(login));
