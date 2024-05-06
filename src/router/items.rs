@@ -333,6 +333,9 @@ pub fn advance_variable_mission(min: i64, max: i64, missions: &mut JsonValue) ->
             continue;
         }
         let mission_info = &crate::router::mission::MISSION_LIST[i.to_string()];
+        if i == max && mission_info["conditionNumber"].as_i64().unwrap() <= mission_status["progress"].as_i64().unwrap() {
+            break;
+        }
         if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + 1 {
             if !update_mission_status(i, 0, false, false, true, missions).is_none() {
                 rv.push(i).unwrap();
