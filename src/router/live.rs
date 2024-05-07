@@ -400,7 +400,7 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
     let live = update_live_data(&mut user, &body, true);
     
     //1273009, 1273010, 1273011, 1273012
-    let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, &mut user_missions);
+    let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, 1, &mut user_missions);
     if body["master_live_id"].to_string().len() > 1 {
         let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
         if id <= 4 && id >= 1 {
@@ -425,10 +425,10 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
     
     items::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
     
-    items::give_exp(body["use_lp"].as_i32().unwrap(), &mut user);
+    items::give_exp(body["use_lp"].as_i32().unwrap(), &mut user, &mut user_missions);
     
     userdata::save_acc(&key, user.clone());
-    userdata::save_acc_missions(&key, user_missions.clone());
+    userdata::save_acc_missions(&key, user_missions);
     
     object!{
         "code": 0,
@@ -513,7 +513,7 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
-    //let mut user_missions = userdata::get_acc_missions(&key);
+    let mut user_missions = userdata::get_acc_missions(&key);
     let live = update_live_data(&mut user, &object!{
         master_live_id: body["master_live_id"].clone(),
         level: 1,
@@ -534,12 +534,12 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
     
     items::lp_modification(&mut user, 10 * body["live_boost"].as_u64().unwrap(), true);
     
-    items::give_exp(10 * body["live_boost"].as_i32().unwrap(), &mut user);
+    items::give_exp(10 * body["live_boost"].as_i32().unwrap(), &mut user, &mut user_missions);
     
     items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
     
     userdata::save_acc(&key, user.clone());
-    //userdata::save_acc_missions(&key, user_missions.clone());
+    userdata::save_acc_missions(&key, user_missions);
     
     let resp = object!{
         "code": 0,

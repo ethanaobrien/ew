@@ -262,17 +262,24 @@ pub fn get_user_rank_data(exp: i64) -> JsonValue {
     return ranks[ranks.len() - 1].clone();
 }
 
-pub fn give_exp(amount: i32, user: &mut JsonValue) {
+pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue) {
     let current_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
     user["user"]["exp"] = (user["user"]["exp"].as_i32().unwrap() + amount).into();
     let new_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
     if current_rank["rank"].to_string() != new_rank["rank"].to_string() {
         user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i64().unwrap() + new_rank["maxLp"].as_i64().unwrap()).into();
         user["stamina"]["last_updated_time"] = global::timestamp().into();
+        
+        let status = get_mission_status(get_variable_mission_num(1101001, 1101030, mission), mission);
+        if status.is_empty() {
+            return;
+        }
+        let to_advance = new_rank["rank"].as_i64().unwrap() - status["progress"].as_i64().unwrap();
+        advance_variable_mission(1101001, 1101030, to_advance, mission);
     }
 }
 
-pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: bool, claimed: bool, advance: bool, missions: &mut JsonValue) -> Option<i64> {
+pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: bool, claimed: bool, advance: i64, missions: &mut JsonValue) -> Option<i64> {
     for (_i, mission) in missions.members_mut().enumerate() {
         if mission["master_mission_id"].as_i64().unwrap() == master_mission_id {
             mission["status"] = if claimed { 3 } else if completed { 2 } else { 1 }.into();
@@ -283,8 +290,8 @@ pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: boo
             if (mission["expire_date_time"].as_u64().unwrap() < global::timestamp() || expire != 0) && (mission["expire_date_time"].as_u64().unwrap() != 0 || expire != 0) {
                 mission["progress"] = 0.into();
             }
-            if advance {
-                mission["progress"] = (mission["progress"].as_i32().unwrap() + 1).into();
+            if advance > 0 {
+                mission["progress"] = (mission["progress"].as_i64().unwrap() + advance).into();
             }
             
             if completed && !claimed {
@@ -296,7 +303,7 @@ pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: boo
     None
 }
 
-pub fn update_mission_status_multi(master_mission_id: JsonValue, expire: u64, completed: bool, claimed: bool, advance: bool, missions: &mut JsonValue) -> JsonValue {
+pub fn update_mission_status_multi(master_mission_id: JsonValue, expire: u64, completed: bool, claimed: bool, advance: i64, missions: &mut JsonValue) -> JsonValue {
     let mut rv = array![];
     for (_i, mission) in master_mission_id.members().enumerate() {
         let val = update_mission_status(mission.as_i64().unwrap(), expire, completed, claimed, advance, missions);
@@ -325,7 +332,18 @@ pub fn change_mission_id(old: i64, new: i64, missions: &mut JsonValue) {
     }
 }
 
-pub fn advance_variable_mission(min: i64, max: i64, missions: &mut JsonValue) -> JsonValue {
+pub fn get_variable_mission_num(min: i64, max: i64, missions: &JsonValue) -> i64 {
+    for i in min..=max {
+        let mission_status = get_mission_status(i, missions);
+        if mission_status.is_empty() {
+            continue;
+        }
+        return i;
+    }
+    0
+}
+
+pub fn advance_variable_mission(min: i64, max: i64, count: i64, missions: &mut JsonValue) -> JsonValue {
     let mut rv = array![];
     for i in min..=max {
         let mission_status = get_mission_status(i, missions);
@@ -337,11 +355,11 @@ pub fn advance_variable_mission(min: i64, max: i64, missions: &mut JsonValue) ->
             break;
         }
         if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + 1 {
-            if !update_mission_status(i, 0, false, false, true, missions).is_none() {
+            if !update_mission_status(i, 0, false, false, count, missions).is_none() {
                 rv.push(i).unwrap();
             }
         } else {
-            if !update_mission_status(i, 0, true, false, true, missions).is_none() {
+            if !update_mission_status(i, 0, true, false, count, missions).is_none() {
                 rv.push(i).unwrap();
             }
         }
@@ -359,24 +377,24 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     }
     let mut rv = array![];
     if id == 1253003 {
-        rv = advance_variable_mission(1153001, 1153019, missions);
+        rv = advance_variable_mission(1153001, 1153019, 1, missions);
     }
     let mission = get_mission_status(1224003, missions);
     let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);
     if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() {
-        update_mission_status_multi(all_daily_missions, next_reset, false, false, false, missions);
+        update_mission_status_multi(all_daily_missions, next_reset, false, false, 0, missions);
     }
     
     if mission["progress"].as_i32().unwrap() == 4 {
-        if !update_mission_status(1224003, 0, true, false, true, missions).is_none() {
+        if !update_mission_status(1224003, 0, true, false, 1, missions).is_none() {
             rv.push(1224003).unwrap();
         }
     } else {
-        if !update_mission_status(1224003, 0, false, false, true, missions).is_none() {
+        if !update_mission_status(1224003, 0, false, false, 1, missions).is_none() {
             rv.push(1224003).unwrap();
         }
     }
-    if !update_mission_status(id, next_reset, true, false, true, missions).is_none() {
+    if !update_mission_status(id, next_reset, true, false, 1, missions).is_none() {
         rv.push(id).unwrap();
     }
     rv
