@@ -262,7 +262,7 @@ pub fn get_user_rank_data(exp: i64) -> JsonValue {
     return ranks[ranks.len() - 1].clone();
 }
 
-pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue) {
+pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue, rv: &mut JsonValue) {
     let current_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
     user["user"]["exp"] = (user["user"]["exp"].as_i32().unwrap() + amount).into();
     let new_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
@@ -275,7 +275,10 @@ pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue) {
             return;
         }
         let to_advance = new_rank["rank"].as_i64().unwrap() - status["progress"].as_i64().unwrap();
-        advance_variable_mission(1101001, 1101030, to_advance, mission);
+        let rvv = advance_variable_mission(1101001, 1101030, to_advance, mission);
+        for (_i, id) in rvv.members().enumerate() {
+            rv.push(id.as_i64().unwrap()).unwrap();
+        }
     }
 }
 
@@ -354,7 +357,7 @@ pub fn advance_variable_mission(min: i64, max: i64, count: i64, missions: &mut J
         if i == max && mission_info["conditionNumber"].as_i64().unwrap() <= mission_status["progress"].as_i64().unwrap() {
             break;
         }
-        if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + 1 {
+        if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + count {
             if !update_mission_status(i, 0, false, false, count, missions).is_none() {
                 rv.push(i).unwrap();
             }

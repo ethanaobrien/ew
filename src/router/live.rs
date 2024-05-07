@@ -425,7 +425,7 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
     
     items::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
     
-    items::give_exp(body["use_lp"].as_i32().unwrap(), &mut user, &mut user_missions);
+    items::give_exp(body["use_lp"].as_i32().unwrap(), &mut user, &mut user_missions, &mut cleared_missions);
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, user_missions);
@@ -534,7 +534,8 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
     
     items::lp_modification(&mut user, 10 * body["live_boost"].as_u64().unwrap(), true);
     
-    items::give_exp(10 * body["live_boost"].as_i32().unwrap(), &mut user, &mut user_missions);
+    let mut cleared_missions = array![];
+    items::give_exp(10 * body["live_boost"].as_i32().unwrap(), &mut user, &mut user_missions, &mut cleared_missions);
     
     items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
     
@@ -556,7 +557,7 @@ pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
             "character_list": user["character_list"].clone(),
             "reward_list": reward_list,
             "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": [],
+            "clear_mission_ids": cleared_missions,
             "event_point_reward_list": [],
             "ranking_change": [],
             "event_member": [],

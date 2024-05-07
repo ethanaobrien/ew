@@ -82,11 +82,17 @@ pub fn receive(req: HttpRequest, body: String) -> HttpResponse {
         items::give_gift(&gift, &mut user);
         rewards.push(gift).unwrap();
         
-        if mission.as_i64().unwrap() >= 1153001 && mission.as_i64().unwrap() < 1153019 ||
-           mission.as_i64().unwrap() >= 1105001 && mission.as_i64().unwrap() < 1105017 {
-            items::change_mission_id(mission.as_i64().unwrap(), mission.as_i64().unwrap() + 1, &mut missions);
-            items::update_mission_status(mission.as_i64().unwrap() + 1, 0, false, false, 0, &mut missions);
-        } else {
+        let variable_missions = array![[1153001, 1153019], [1105001, 1105017], [1101001, 1101030]];
+        let mut variable = false;
+        for (_i, id) in variable_missions.members().enumerate() {
+            if mission.as_i64().unwrap() >= id[0].as_i64().unwrap() && mission.as_i64().unwrap() < id[1].as_i64().unwrap() {
+                items::change_mission_id(mission.as_i64().unwrap(), mission.as_i64().unwrap() + 1, &mut missions);
+                items::advance_variable_mission(id[0].as_i64().unwrap(), id[1].as_i64().unwrap(), 0, &mut missions);
+                variable = true;
+                break;
+            }
+        }
+        if !variable {
             items::update_mission_status(mission.as_i64().unwrap(), 0, true, true, 0, &mut missions);
         }
     }
