@@ -107,6 +107,13 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue) -> bool {
     } else if data["reward_type"].to_string() == "4" {
         // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return !give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
+    } else if data["reward_type"].to_string() == "8" {
+        // title
+        let title = data["value"].as_i64().unwrap();
+        if !user["master_title_ids"].contains(title) {
+            user["master_title_ids"].push(title).unwrap();
+        }
+        return true;
     }
     println!("Redeeming reward not implimented for reward type {}", data["reward_type"].to_string());
     return false;

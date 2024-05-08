@@ -308,6 +308,14 @@ lazy_static! {
         }
         info
     };
+    static ref CARD_LIST: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(include_str!("json/card.json")).unwrap();
+        for (_i, data) in items.members().enumerate() {
+            info[data["id"].to_string()] = data.clone();
+        }
+        info
+    };
 }
 fn get_live_info(id: i64) -> JsonValue {
     LIVE_LIST[id.to_string()].clone()
@@ -391,13 +399,86 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, multiplier: 
     rv
 }
 
-fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
+fn get_master_id(id: i64) -> i64 {
+    let id = id.to_string();
+    let mut masterid = 0;
+    if id.starts_with("2") {
+        masterid += 9;
+    } else if id.starts_with("3") {
+        masterid += 9 + 9;
+    } else if id.starts_with("4") {
+        masterid += 9 + 9 + 12;
+    }
+    masterid + id.char_indices().last().unwrap().1.to_string().parse::<i64>().unwrap()
+}
+
+const MAX_BOND: i64 = 50000;
+
+fn get_live_character_list(deck_id: i32, user: &JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue) -> JsonValue {
+    let mut rv = array![];
+    let characters_in_deck = user["deck_list"][(deck_id - 1) as usize]["main_card_ids"].clone();
+    for (_i, data) in user["card_list"].members().enumerate() {
+        if !characters_in_deck.contains(data["id"].as_i64().unwrap()) && !characters_in_deck.contains(data["master_card_id"].as_i64().unwrap())  {
+            continue;
+        }
+        let character = CARD_LIST[data["master_card_id"].to_string()]["masterCharacterId"].as_i64().unwrap();
+        let mut mission_id = 1158000 + get_master_id(character);
+        let mut full = false;
+        let mut status = items::get_mission_status(mission_id, missions);
+        let mut limit = 1500;
+        
+        if status.is_empty() {
+            mission_id += 39;
+            limit *= 10;
+            status = items::get_mission_status(mission_id, missions);
+            if status["status"].as_i32().unwrap_or(0) > 1 {
+                full = true;
+            }
+        }
+        let additional_exp = 20;
+        let start = status["progress"].as_i64().unwrap_or(0);
+        let mut bond = start + additional_exp;
+        if bond >= MAX_BOND {
+            bond = MAX_BOND;
+        }
+        if !full {
+            let completed = bond >= limit;
+            let mission = items::update_mission_status(mission_id, 0, completed, false, bond - start, missions);
+            if !mission.is_none() {
+                completed_missions.push(mission.unwrap()).unwrap();
+            }
+        }
+        
+        rv.push(object!{
+            master_character_id: character,
+            exp: start,
+            before_exp: bond
+        }).unwrap();
+    }
+    rv
+}
+
+fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
     let key = global::get_login(req.headers(), body);
     let body = json::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
-    let live = update_live_data(&mut user, &body, true);
+    let live;
+    
+    if skipped {
+        items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
+        live = update_live_data(&mut user, &object!{
+            master_live_id: body["master_live_id"].clone(),
+            level: 1,
+            live_score: {
+                score: 1,
+                max_combo: 1
+            }
+        }, false);
+    } else {
+        live = update_live_data(&mut user, &body, true);
+    }
     
     //1273009, 1273010, 1273011, 1273012
     let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, 1, &mut user_missions);
@@ -408,24 +489,33 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
         }
     }
     
-    if body["live_score"]["score"].as_i64().unwrap() > 0 {
+    if body["live_score"]["score"].as_i64().unwrap_or(0) > 0 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
     }
     
-    let is_full_combo = (body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
-    let is_perfect = (body["live_score"]["great"].as_i32().unwrap_or(1) + body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
-    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap_or(0), body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
+    let missions;
+    if skipped {
+        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap(), false, false).unwrap_or(array![]);
+    } else {
+        let is_full_combo = (body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
+        let is_perfect = (body["live_score"]["great"].as_i32().unwrap_or(1) + body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
+        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap_or(0), body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
+    }
     
     update_live_mission_data(&mut user, &object!{
         master_live_id: body["master_live_id"].as_i64().unwrap(),
         clear_master_live_mission_ids: missions.clone()
     });
     
-    let reward_list = give_mission_rewards(&mut user, &missions, 1);
+    let reward_list = give_mission_rewards(&mut user, &missions, body["live_boost"].as_i64().unwrap_or(1));
     
-    items::lp_modification(&mut user, body["use_lp"].as_u64().unwrap(), true);
+    let lp_used: i32 = body["use_lp"].as_i32().unwrap_or(10 * body["live_boost"].as_i32().unwrap_or(0));
     
-    items::give_exp(body["use_lp"].as_i32().unwrap(), &mut user, &mut user_missions, &mut cleared_missions);
+    items::lp_modification(&mut user, lp_used as u64, true);
+    
+    items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
+    
+    let characters = get_live_character_list(body["deck_slot"].as_i32().unwrap(), &user, &mut user_missions, &mut cleared_missions);
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, user_missions);
@@ -442,7 +532,7 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
             "clear_master_live_mission_ids": missions,
             "user": user["user"].clone(),
             "stamina": user["stamina"].clone(),
-            "character_list": user["character_list"].clone(),
+            "character_list": characters,
             "reward_list": reward_list,
             "gift_list": user2["home"]["gift_list"].clone(),
             "clear_mission_ids": cleared_missions,
@@ -455,12 +545,17 @@ fn live_end(req: &HttpRequest, body: &String) -> JsonValue {
 }
 
 pub fn end(req: HttpRequest, body: String) -> HttpResponse {
-    let resp = live_end(&req, &body);
+    let resp = live_end(&req, &body, false);
+    global::send(resp, req)
+}
+
+pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
+    let resp = live_end(&req, &body, true);
     global::send(resp, req)
 }
 
 pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
-    let mut resp = live_end(&req, &body);
+    let mut resp = live_end(&req, &body, false);
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut event = userdata::get_acc_event(&key);
@@ -505,64 +600,5 @@ pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc_event(&key, event);
     
-    global::send(resp, req)
-}
-
-pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
-    let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let user2 = userdata::get_acc_home(&key);
-    let mut user = userdata::get_acc(&key);
-    let mut user_missions = userdata::get_acc_missions(&key);
-    let live = update_live_data(&mut user, &object!{
-        master_live_id: body["master_live_id"].clone(),
-        level: 1,
-        live_score: {
-            score: 1,
-            max_combo: 1
-        }
-    }, false);
-    
-    let missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap(), false, false).unwrap_or(array![]);
-    
-    update_live_mission_data(&mut user, &object!{
-        master_live_id: body["master_live_id"].as_i64().unwrap(),
-        clear_master_live_mission_ids: missions.clone()
-    });
-    
-    let reward_list = give_mission_rewards(&mut user, &missions, body["live_boost"].as_i64().unwrap());
-    
-    items::lp_modification(&mut user, 10 * body["live_boost"].as_u64().unwrap(), true);
-    
-    let mut cleared_missions = array![];
-    items::give_exp(10 * body["live_boost"].as_i32().unwrap(), &mut user, &mut user_missions, &mut cleared_missions);
-    
-    items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
-    
-    userdata::save_acc(&key, user.clone());
-    userdata::save_acc_missions(&key, user_missions);
-    
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "gem": user["gem"].clone(),
-            "high_score": live["high_score"].clone(),
-            "item_list": user["item_list"].clone(),
-            "point_list": user["point_list"].clone(),
-            "live": live,
-            "clear_master_live_mission_ids": missions,
-            "user": user["user"].clone(),
-            "stamina": user["stamina"].clone(),
-            "character_list": user["character_list"].clone(),
-            "reward_list": reward_list,
-            "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": cleared_missions,
-            "event_point_reward_list": [],
-            "ranking_change": [],
-            "event_member": [],
-            "event_ranking_data": []
-        }
-    };
     global::send(resp, req)
 }

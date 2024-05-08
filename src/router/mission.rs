@@ -92,6 +92,11 @@ pub fn receive(req: HttpRequest, body: String) -> HttpResponse {
                 break;
             }
         }
+        if mission.as_i64().unwrap() >= 1158001 && mission.as_i64().unwrap() <= 1158039 {
+            items::change_mission_id(mission.as_i64().unwrap(), mission.as_i64().unwrap() + 39, &mut missions);
+            items::update_mission_status(mission.as_i64().unwrap() + 39, 0, false, false, 0, &mut missions);
+            variable = true;
+        }
         if !variable {
             items::update_mission_status(mission.as_i64().unwrap(), 0, true, true, 0, &mut missions);
         }

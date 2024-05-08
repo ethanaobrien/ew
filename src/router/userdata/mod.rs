@@ -135,9 +135,6 @@ fn cleanup_account(user: &mut JsonValue) {
     if user["master_music_ids"].len() != NEW_USER["master_music_ids"].len() {
         user["master_music_ids"] = NEW_USER["master_music_ids"].clone();
     }
-    if user["master_title_ids"].is_empty() {
-        user["master_title_ids"] = NEW_USER["master_title_ids"].clone();
-    }
     
     let mut to_remove = array![];
     let items = user["item_list"].clone();
