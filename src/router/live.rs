@@ -412,7 +412,7 @@ fn get_master_id(id: i64) -> i64 {
     masterid + id.char_indices().last().unwrap().1.to_string().parse::<i64>().unwrap()
 }
 
-const MAX_BOND: i64 = 50000;
+const MAX_BOND: i64 = 500000;
 
 fn get_live_character_list(deck_id: i32, user: &JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue) -> JsonValue {
     let mut rv = array![];
@@ -451,8 +451,8 @@ fn get_live_character_list(deck_id: i32, user: &JsonValue, missions: &mut JsonVa
         
         rv.push(object!{
             master_character_id: character,
-            exp: start,
-            before_exp: bond
+            exp: bond,
+            before_exp: start
         }).unwrap();
     }
     rv
