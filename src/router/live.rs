@@ -515,7 +515,7 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
     
     items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
     
-    let characters = get_live_character_list(body["deck_slot"].as_i32().unwrap(), &user, &mut user_missions, &mut cleared_missions);
+    let characters = get_live_character_list(body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()), &user, &mut user_missions, &mut cleared_missions);
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, user_missions);
