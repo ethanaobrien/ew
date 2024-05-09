@@ -9,7 +9,9 @@ use crate::router::clear_rate::live_completed;
 
 pub fn retire(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
+    if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
+        live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
+    }
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -17,6 +19,18 @@ pub fn retire(req: HttpRequest, body: String) -> HttpResponse {
             "stamina": {},
             "item_list": [],
             "event_point_list": []
+        }
+    };
+    global::send(resp, req)
+}
+
+pub fn reward(req: HttpRequest, _body: String) -> HttpResponse {
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "ensured_list": [],
+            "random_list": []
         }
     };
     global::send(resp, req)
@@ -492,9 +506,7 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
         }
     }
     
-    if body["live_score"]["score"].as_i64().unwrap_or(0) > 0 {
-        live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
-    }
+    live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
     
     let missions;
     if skipped {

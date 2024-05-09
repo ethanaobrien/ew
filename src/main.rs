@@ -74,6 +74,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/live/skip" => router::live::skip(req, body),
             "/api/live/retire" => router::live::retire(req, body),
             "/api/live/continue" => router::live::continuee(req, body),
+            "/api/live/reward" => router::live::reward(req, body),
             "/api/mission/clear" => router::mission::clear(req, body),
             "/api/mission/receive" => router::mission::receive(req, body),
             "/api/home/preset" => router::home::preset(req, body),
