@@ -1,25 +1,9 @@
 use json::{array, object, JsonValue};
-use lazy_static::lazy_static;
 use rand::Rng;
 use actix_web::{HttpResponse, HttpRequest};
 use crate::encryption;
 
-use crate::router::{userdata, global};
-
-lazy_static! {
-    static ref ITEM_INFO: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/item.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data.clone();
-        }
-        info
-    };
-}
-
-pub fn get_item_info(id: i64) -> JsonValue {
-    ITEM_INFO[id.to_string()].clone()
-}
+use crate::router::{userdata, global, databases};
 
 pub fn remove_gems(user: &mut JsonValue, amount: i64) {
     let mut amount = amount;
@@ -376,7 +360,7 @@ pub fn advance_variable_mission(min: i64, max: i64, count: i64, missions: &mut J
         if mission_status.is_empty() {
             continue;
         }
-        let mission_info = &crate::router::mission::MISSION_LIST[i.to_string()];
+        let mission_info = &databases::MISSION_LIST[i.to_string()];
         if i == max && mission_info["conditionNumber"].as_i64().unwrap() <= mission_status["progress"].as_i64().unwrap() {
             break;
         }
@@ -449,7 +433,7 @@ pub fn use_item_req(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     
-    let item = get_item_info(body["id"].as_i64().unwrap());
+    let item = &databases::ITEM_INFO[body["id"].to_string()];
     let amount = body["amount"].as_i64().unwrap();
     
     if item["effectType"].as_i32().unwrap() == 1 {

@@ -1,7 +1,7 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
-use crate::router::{userdata, global, items};
+use crate::router::{userdata, global, items, databases};
 use crate::encryption;
 
 fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_multiplier: i64, evolve: bool) -> JsonValue {
@@ -13,7 +13,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
             
             for (_j, data2) in materials.members().enumerate() {
                 items::use_item(data2["master_item_id"].as_i64().unwrap(), data2["amount"].as_i64().unwrap(), user);
-                let item = items::get_item_info(data2["master_item_id"].as_i64().unwrap());
+                let item = &databases::ITEM_INFO[data2["master_item_id"].to_string()];
                 if evolve {
                     card["evolve"] = array![{type: 2,count: 1}];
                     money = money_multiplier;

@@ -1,9 +1,8 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 use rand::Rng;
-use lazy_static::lazy_static;
 
-use crate::router::{global, userdata, items};
+use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 use crate::router::clear_rate::live_completed;
 
@@ -294,59 +293,12 @@ pub fn update_live_mission_data(user: &mut JsonValue, data: &JsonValue) {
     user["live_mission_list"].push(rv.clone()).unwrap();
 }
 
-lazy_static! {
-    static ref LIVE_LIST: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/live.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data.clone();
-        }
-        info
-    };
-    static ref MISSION_DATA: JsonValue = {
-        json::parse(include_str!("json/live_mission.json")).unwrap()
-    };
-    static ref MISSION_COMBO_DATA: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/live_mission_combo.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["masterMusicId"].to_string()] = data.clone();
-        }
-        info
-    };
-    static ref MISSION_REWARD_DATA: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/live_mission_reward.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data.clone();
-        }
-        info
-    };
-    static ref CARD_LIST: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/card.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data.clone();
-        }
-        info
-    };
-}
-fn get_live_info(id: i64) -> JsonValue {
-    LIVE_LIST[id.to_string()].clone()
-}
-fn get_live_combo_info(id: i64) -> JsonValue {
-    MISSION_COMBO_DATA[id.to_string()].clone()
-}
-fn get_live_mission_info(id: i64) -> JsonValue {
-    MISSION_REWARD_DATA[id.to_string()].clone()
-}
-
 fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, combo: i64, clear_count: i64, level: i64, full_combo: bool, all_perfect: bool) -> Option<JsonValue> {
-    let live_info = get_live_info(live_id);
+    let live_info = &databases::LIVE_LIST[live_id.to_string()];
     let mut out = array![];
-    let combo_info = get_live_combo_info(live_info["masterMusicId"].as_i64()?);
+    let combo_info = &databases::MISSION_COMBO_DATA[live_info["masterMusicId"].to_string()];
     
-    for (_i, data) in MISSION_DATA.members().enumerate() {
+    for (_i, data) in databases::MISSION_DATA.members().enumerate() {
         match data["type"].as_i32()? {
             1 => {
                 if live_info[&format!("score{}", data["value"].to_string())].as_i64()? <= score {
@@ -392,14 +344,14 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
 
 fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, user_missions: &mut JsonValue, cleared_missions: &mut JsonValue, multiplier: i64) -> JsonValue {
     let mut rv = array![];
-    for (_i, data) in MISSION_DATA.members().enumerate() {
+    for (_i, data) in databases::MISSION_DATA.members().enumerate() {
         if !missions.contains(data["id"].as_i32().unwrap()) {
             continue;
         }
         if data["masterLiveMissionRewardId"].as_i64().unwrap() == 0 {
             continue;
         }
-        let mut gift = get_live_mission_info(data["masterLiveMissionRewardId"].as_i64().unwrap());
+        let mut gift = databases::MISSION_REWARD_DATA[data["masterLiveMissionRewardId"].to_string()].clone();
         gift["reward_type"] = gift["type"].clone();
         gift["amount"] = (gift["amount"].as_i64().unwrap() * multiplier).into();
         items::give_gift(&gift, user, user_missions, cleared_missions);
@@ -435,7 +387,7 @@ fn get_live_character_list(deck_id: i32, user: &JsonValue, missions: &mut JsonVa
         if !characters_in_deck.contains(data["id"].as_i64().unwrap()) && !characters_in_deck.contains(data["master_card_id"].as_i64().unwrap())  {
             continue;
         }
-        let character = CARD_LIST[data["master_card_id"].to_string()]["masterCharacterId"].as_i64().unwrap();
+        let character = databases::CARD_LIST[data["master_card_id"].to_string()]["masterCharacterId"].as_i64().unwrap();
         let mut mission_id = 1158000 + get_master_id(character);
         let mut full = false;
         let mut status = items::get_mission_status(mission_id, missions);
@@ -606,7 +558,7 @@ pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut event = userdata::get_acc_event(&key);
     
-    let live_id = crate::router::clear_rate::get_live_id(body["master_live_id"].as_i64().unwrap());
+    let live_id = databases::LIVE_LIST[body["master_live_id"].to_string()]["masterMusicId"].as_i64().unwrap();
     
     let mut all_clear = 1;
     for (_i, data) in event["event_data"]["star_event"]["star_music_list"].members_mut().enumerate() {

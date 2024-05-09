@@ -7,10 +7,11 @@ use lazy_static::lazy_static;
 
 use crate::encryption;
 use crate::sql::SQLite;
-use crate::router::global;
+use crate::router::{global, databases};
 
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("live_statistics.db", setup_tables);
+    static ref CACHED_DATA: Mutex<Option<JsonValue>> = Mutex::new(None);
 }
 
 pub struct Live {
@@ -127,21 +128,6 @@ pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
     };
 }
 
-lazy_static! {
-    static ref CACHED_DATA: Mutex<Option<JsonValue>> = Mutex::new(None);
-    static ref LIVE_LIST: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/live.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data["masterMusicId"].clone();
-        }
-        info
-    };
-}
-pub fn get_live_id(id: i64) -> i64 {
-    LIVE_LIST[id.to_string()].as_i64().unwrap()
-}
-
 fn get_pass_percent(failed: i64, pass: i64) -> String {
     let total = (failed + pass) as f64;
     if failed + pass == 0 {
@@ -168,7 +154,7 @@ fn get_json() -> JsonValue {
             expert: get_pass_percent(info.expert_failed, info.expert_pass),
             master: get_pass_percent(info.master_failed, info.master_pass)
         };
-        ids.push(get_live_id(info.live_id.into())).unwrap();
+        ids.push(databases::LIVE_LIST[info.live_id.to_string()]["masterMusicId"].as_i64().unwrap()).unwrap();
         rates.push(to_push).unwrap();
     }
     object!{

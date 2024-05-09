@@ -1,65 +1,9 @@
 use json::{array, object, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
-use lazy_static::lazy_static;
 use rand::Rng;
 
-use crate::router::{global, userdata, items};
+use crate::router::{global, userdata, items, databases};
 use crate::encryption;
-
-lazy_static! {
-    static ref CARDS: JsonValue = {
-        let mut cardz = object!{};
-        let items = json::parse(include_str!("lottery_item.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            if cardz[data["id"].to_string()].is_null() {
-                cardz[data["id"].to_string()] = object!{};
-            }
-            cardz[data["id"].to_string()][data["number"].to_string()] = data.clone();
-        }
-        cardz
-    };
-    static ref POOL: JsonValue = {
-        let mut cardz = object!{};
-        let items = json::parse(include_str!("lottery_item.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            if cardz[data["id"].to_string()].is_null() {
-                cardz[data["id"].to_string()] = array![];
-            }
-            cardz[data["id"].to_string()].push(data["number"].clone()).unwrap();
-        }
-        cardz
-    };
-    static ref RARITY: JsonValue = {
-        let mut cardz = object!{};
-        let items = json::parse(include_str!("lottery_rarity.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            if cardz[data["id"].to_string()].is_null() {
-                cardz[data["id"].to_string()] = array![];
-            }
-            cardz[data["id"].to_string()].push(data.clone()).unwrap();
-        }
-        cardz
-    };
-    static ref LOTTERY: JsonValue = {
-        let mut cardz = object!{};
-        let items = json::parse(include_str!("lottery.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            cardz[data["id"].to_string()] = data.clone();
-        }
-        cardz
-    };
-    static ref PRICE: JsonValue = {
-        let mut cardz = object!{};
-        let items = json::parse(include_str!("lottery_price.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            if cardz[data["id"].to_string()].is_null() {
-                cardz[data["id"].to_string()] = object!{};
-            }
-            cardz[data["id"].to_string()][data["number"].to_string()] = data.clone();
-        }
-        cardz
-    };
-}
 
 pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -96,10 +40,10 @@ pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 fn get_card_master_id(lottery_id: String, lottery_number: String) -> Option<i64> {
-    CARDS[lottery_id][lottery_number]["value"].as_i64()
+    databases::CARDS[lottery_id][lottery_number]["value"].as_i64()
 }
 fn get_card(lottery_id: String, lottery_number: String) -> JsonValue {
-    CARDS[lottery_id][lottery_number].clone()
+    databases::CARDS[lottery_id][lottery_number].clone()
 }
 
 fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::ThreadRng) {
@@ -107,7 +51,7 @@ fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::T
     
     let mut random_id = 0;
     while random_id == 0 {
-        let card = rng.gen_range(1..POOL[lottery_id.to_string()][POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
+        let card = rng.gen_range(1..databases::POOL[lottery_id.to_string()][databases::POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
         if !get_card_master_id(lottery_id.to_string(), card.to_string()).is_none() {
             random_id = card;
             break;
@@ -123,12 +67,12 @@ fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::T
 }
 
 fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
-    let total_ratio: i64 = RARITY[id.to_string()].members().into_iter().map(|item| if item["ensured"].as_i32().unwrap() == 1 { 0 } else { item["ratio"].as_i64().unwrap() }).sum();
+    let total_ratio: i64 = databases::RARITY[id.to_string()].members().into_iter().map(|item| if item["ensured"].as_i32().unwrap() == 1 { 0 } else { item["ratio"].as_i64().unwrap() }).sum();
     let mut rng = rand::thread_rng();
     let mut rv = array![];
     let mut promised = false;
     
-    for (_i, item) in RARITY[id.to_string()].members().enumerate() {
+    for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
         if item["ensured"].as_i32().unwrap() == 1 {
             get_random_card(&item, &mut rv, &mut rng);
             promised = true;
@@ -141,7 +85,7 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     for _i in 0..count {
         let random_number: i64 = rng.gen_range(1..total_ratio + 1);
         let mut cumulative_ratio = 0;
-        for (_i, item) in RARITY[id.to_string()].members().enumerate() {
+        for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
             cumulative_ratio += item["ratio"].as_i64().unwrap();
             if random_number <= cumulative_ratio {
                 get_random_card(&item, &mut rv, &mut rng);
@@ -173,7 +117,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut cleared_missions = array![];
     
     let lottery_id = body["master_lottery_id"].as_i64().unwrap();
-    let price = PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
+    let price = databases::PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
     
     if price["consumeType"].as_i32().unwrap() == 1 {
         items::remove_gems(&mut user, price["price"].as_i64().unwrap());
@@ -183,7 +127,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     
     let cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
     
-    let lottery_type = LOTTERY[lottery_id.to_string()]["category"].as_i32().unwrap();
+    let lottery_type = databases::LOTTERY[lottery_id.to_string()]["category"].as_i32().unwrap();
     
     let mut new_cards = array![];
     let mut lottery_list = array![];

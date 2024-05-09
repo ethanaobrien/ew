@@ -1,41 +1,14 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
-use lazy_static::lazy_static;
 
-use crate::router::{global, items, userdata};
+use crate::router::{global, items, userdata, databases};
 use crate::encryption;
-
-lazy_static! {
-    static ref CHATS: JsonValue = {
-        let mut chats = object!{};
-        let items = json::parse(include_str!("json/chat_room.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            if chats[data["masterChatId"].to_string()].is_null() {
-                chats[data["masterChatId"].to_string()] = object!{};
-            }
-            chats[data["masterChatId"].to_string()][data["roomId"].to_string()] = data.clone();
-        }
-        chats
-    };
-    static ref CHAPTERS: JsonValue = {
-        let mut chats = object!{};
-        let items = json::parse(include_str!("json/chat_chapter.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            if chats[data["masterChatId"].to_string()].is_null() {
-                chats[data["masterChatId"].to_string()] = object!{};
-            }
-            chats[data["masterChatId"].to_string()][data["roomId"].to_string()] = data.clone();
-        }
-        chats
-    };
-}
-
 
 pub fn add_chat(id: i64, num: i64, chats: &mut JsonValue) {
     chats.push(object!{
         chat_id: id,
         room_id: num,
-        chapter_id: CHAPTERS[id.to_string()][num.to_string()]["id"].clone(),
+        chapter_id: databases::CHAPTERS[id.to_string()][num.to_string()]["id"].clone(),
         is_read: 0,
         created_at: global::timestamp()
     }).unwrap();
@@ -47,7 +20,7 @@ pub fn home(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut rooms = array![];
     for (_i, data) in chats.members().enumerate() {
-        rooms.push(CHATS[data["chat_id"].to_string()][data["room_id"].to_string()]["id"].clone()).unwrap();
+        rooms.push(databases::CHATS[data["chat_id"].to_string()][data["room_id"].to_string()]["id"].clone()).unwrap();
     }
     
     let resp = object!{

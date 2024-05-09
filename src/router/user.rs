@@ -1,6 +1,5 @@
 use json::{array, object, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
-use lazy_static::lazy_static;
 
 use crate::encryption;
 use crate::router::{userdata, global, items};
@@ -55,21 +54,6 @@ pub fn user(req: HttpRequest) -> HttpResponse {
         "data": user
     };
     global::send(resp, req)
-}
-
-lazy_static! {
-    static ref LOGIN_REWARDS: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/login_bonus_reward.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data.clone();
-        }
-        info
-    };
-}
-
-pub fn get_info_from_id(id: i64) -> JsonValue {
-    LOGIN_REWARDS[id.to_string()].clone()
 }
 
 pub fn gift(req: HttpRequest, body: String) -> HttpResponse {

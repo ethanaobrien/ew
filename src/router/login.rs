@@ -1,10 +1,7 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
-use lazy_static::lazy_static;
 
-use crate::router::global;
-use crate::router::userdata;
-use crate::router::items;
+use crate::router::{global, userdata, items, databases};
 
 pub fn dummy(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
@@ -20,35 +17,8 @@ pub fn dummy(req: HttpRequest, body: String) -> HttpResponse {
     global::send(resp, req)
 }
 
-lazy_static! {
-    static ref LOTTERY_INFO: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/login_bonus.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            if info[data["id"].to_string()].is_null() {
-                info[data["id"].to_string()] = object!{
-                    info: data.clone(),
-                    days: []
-                };
-            }
-        }
-        let days = json::parse(include_str!("json/login_bonus_reward_setting.json")).unwrap();
-        for (_i, data) in days.members().enumerate() {
-            if info[data["masterLoginBonusId"].to_string()].is_null() {
-                continue;
-            }
-            info[data["masterLoginBonusId"].to_string()]["days"].push(data.clone()).unwrap();
-        }
-        let mut real_info = object!{};
-        for (_i, data) in info.entries().enumerate() {
-            real_info[data.1["info"]["id"].to_string()] = data.1.clone();
-        }
-        real_info
-    };
-}
-
 pub fn get_login_bonus_info(id: i64) -> JsonValue {
-    LOTTERY_INFO[id.to_string()].clone()
+    databases::LOTTERY_INFO[id.to_string()].clone()
 }
 
 fn do_bonus(user_home: &mut JsonValue, bonuses: &mut JsonValue) -> JsonValue {
@@ -66,9 +36,9 @@ fn do_bonus(user_home: &mut JsonValue, bonuses: &mut JsonValue) -> JsonValue {
                 to_rm.push(i).unwrap();
                 continue;
             }
-            let item_id = crate::router::user::get_info_from_id(info["days"][current]["masterLoginBonusRewardId"].as_i64().unwrap());
+            let item_id = &databases::LOGIN_REWARDS[info["days"][current]["masterLoginBonusRewardId"].to_string()];
             
-            items::gift_item(&item_id, &format!("Event login bonus day {}!", current+1), user_home);
+            items::gift_item(item_id, &format!("Event login bonus day {}!", current+1), user_home);
             data["day_counts"].push(current + 1).unwrap();
         }
         for (i, data) in to_rm.members().enumerate() {

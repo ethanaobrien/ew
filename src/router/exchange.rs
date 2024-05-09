@@ -1,28 +1,8 @@
-use json::{JsonValue, object, array};
+use json::{object, array};
 use actix_web::{HttpResponse, HttpRequest};
-use lazy_static::lazy_static;
 
-use crate::router::{global, userdata, items};
+use crate::router::{global, userdata, items, databases};
 use crate::encryption;
-
-lazy_static! {
-    static ref EXCHANGE_LIST: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/exchange_item.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data.clone();
-        }
-        info
-    };
-    static ref EXCHANGE_REWARD: JsonValue = {
-        let mut info = object!{};
-        let items = json::parse(include_str!("json/exchange_item_reward.json")).unwrap();
-        for (_i, data) in items.members().enumerate() {
-            info[data["id"].to_string()] = data.clone();
-        }
-        info
-    };
-}
 
 pub fn exchange(req: HttpRequest) -> HttpResponse {
     let resp = object!{
@@ -40,7 +20,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut missions = userdata::get_acc_missions(&key);
     let mut cleared_missions = array![];
     
-    let item = &EXCHANGE_LIST[body["master_exchange_item_id"].to_string()];
+    let item = &databases::EXCHANGE_LIST[body["master_exchange_item_id"].to_string()];
     
     if item["consumeType"].as_i32().unwrap() == 4 {
         items::use_item(item["value"].as_i64().unwrap(), item["amount"].as_i64().unwrap() * body["count"].as_i64().unwrap(), &mut user);
@@ -48,7 +28,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
         println!("Unknown consume type {}", item["consumeType"]);
     }
     
-    let mut gift = EXCHANGE_REWARD[item["masterExchangeItemRewardId"].to_string()].clone();
+    let mut gift = databases::EXCHANGE_REWARD[item["masterExchangeItemRewardId"].to_string()].clone();
     gift["reward_type"] = gift["type"].clone();
     gift["amount"] = (gift["amount"].as_i64().unwrap() * body["count"].as_i64().unwrap()).into();
     items::give_gift(&gift, &mut user, &mut missions, &mut cleared_missions);
