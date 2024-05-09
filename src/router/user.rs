@@ -78,7 +78,9 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut user = userdata::get_acc_home(&key);
     let mut userr = userdata::get_acc(&key);
+    let mut missions = userdata::get_acc_missions(&key);
     
+    let mut cleared_missions = array![];
     let mut rewards = array![];
     let mut failed = array![];
     
@@ -88,7 +90,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
             if data["id"].to_string() != gift_id.to_string() {
                 continue;
             }
-            if !items::give_gift(&data, &mut userr) {
+            if !items::give_gift(&data, &mut userr, &mut missions, &mut cleared_missions) {
                 failed.push(gift_id.clone()).unwrap();
                 break;
             }
@@ -108,6 +110,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
         }
     }
     
+    userdata::save_acc_missions(&key, missions);
     userdata::save_acc_home(&key, user);
     userdata::save_acc(&key, userr.clone());
     let userr = userdata::get_acc(&key);
@@ -122,7 +125,7 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
                 "item_list": userr["item_list"].clone(),
                 "point_list": userr["point_list"].clone()
             },
-            "clear_mission_ids": [],
+            "clear_mission_ids": cleared_missions,
             "reward_list": rewards
         }
     };

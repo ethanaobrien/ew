@@ -84,6 +84,9 @@ lazy_static! {
         for i in 1158001..=1158082 {
             missions.push(i).unwrap();
         }
+        for i in 1121001..=1121019 {
+            missions.push(i).unwrap();
+        }
         missions
     };
 }

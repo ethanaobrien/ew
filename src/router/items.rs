@@ -93,7 +93,7 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool
     false
 }
 
-pub fn give_gift(data: &JsonValue, user: &mut JsonValue) -> bool {
+pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     if data.is_empty() {
         return false;
     }
@@ -108,7 +108,7 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue) -> bool {
         return !give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
     } else if data["reward_type"].to_string() == "4" {
         // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        return !give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
+        return !give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user, missions, clear_missions);
     } else if data["reward_type"].to_string() == "8" {
         // title
         let title = data["value"].as_i64().unwrap();
@@ -120,23 +120,29 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue) -> bool {
     println!("Redeeming reward not implemented for reward type {}", data["reward_type"].to_string());
     return false;
 }
-pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue) -> bool {
+pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     give_gift(&object!{
         reward_type: ty_pe,
         amount: amount,
         value: id
-    }, user)
+    }, user, missions, clear_missions)
 }
-pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
+pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
+    if master_item_id == 1 {
+        let cleared = advance_variable_mission(1121001, 1121019, amount, missions);
+        for (_i, data) in cleared.members().enumerate() {
+            clear_missions.push(data.clone()).unwrap();
+        }
+    }
     let mut has = false;
-    for (_j, dataa) in user["point_list"].members_mut().enumerate() {
-        if dataa["type"].as_i64().unwrap() == master_item_id {
+    for (_j, data) in user["point_list"].members_mut().enumerate() {
+        if data["type"].as_i64().unwrap() == master_item_id {
             has = true;
-            let new_amount = dataa["amount"].as_i64().unwrap() + amount;
+            let new_amount = data["amount"].as_i64().unwrap() + amount;
             if new_amount > LIMIT_COINS {
                 return true;
             }
-            dataa["amount"] = new_amount.into();
+            data["amount"] = new_amount.into();
             break;
         }
     }
@@ -150,12 +156,12 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bo
 }
 
 pub fn use_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
-    for (_j, dataa) in user["item_list"].members_mut().enumerate() {
-        if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
-            if dataa["amount"].as_i64().unwrap() >= amount {
-                dataa["amount"] = (dataa["amount"].as_i64().unwrap() - amount).into();
+    for (_j, data) in user["item_list"].members_mut().enumerate() {
+        if data["master_item_id"].as_i64().unwrap() == master_item_id {
+            if data["amount"].as_i64().unwrap() >= amount {
+                data["amount"] = (data["amount"].as_i64().unwrap() - amount).into();
             } else {
-                dataa["amount"] = (0).into();
+                data["amount"] = (0).into();
             }
             break;
         }

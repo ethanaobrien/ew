@@ -1,4 +1,4 @@
-use json::{JsonValue, object};
+use json::{JsonValue, object, array};
 use actix_web::{HttpResponse, HttpRequest};
 use lazy_static::lazy_static;
 
@@ -37,6 +37,8 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
+    let mut missions = userdata::get_acc_missions(&key);
+    let mut cleared_missions = array![];
     
     let item = &EXCHANGE_LIST[body["master_exchange_item_id"].to_string()];
     
@@ -49,9 +51,10 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut gift = EXCHANGE_REWARD[item["masterExchangeItemRewardId"].to_string()].clone();
     gift["reward_type"] = gift["type"].clone();
     gift["amount"] = (gift["amount"].as_i64().unwrap() * body["count"].as_i64().unwrap()).into();
-    items::give_gift(&gift, &mut user);
+    items::give_gift(&gift, &mut user, &mut missions, &mut cleared_missions);
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_missions(&key, missions);
     
     let resp = object!{
         "code": 0,
@@ -63,7 +66,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
                 "item_list": user["item_list"].clone(),
                 "point_list": user["point_list"].clone()
             },
-            "clear_mission_ids": []
+            "clear_mission_ids": cleared_missions
         }
     };
     global::send(resp, req)

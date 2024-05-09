@@ -153,6 +153,8 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     println!("lottery: {}", body);
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);
+    let mut missions = userdata::get_acc_missions(&key);
+    let mut cleared_missions = array![];
     
     let mut cardstogive;
     
@@ -212,11 +214,11 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
             }
             lottery_list.push(to_push).unwrap();
         }
-        items::give_gift_basic(3, 15540034, 10, &mut user);
+        items::give_gift_basic(3, 15540034, 10, &mut user, &mut missions, &mut cleared_missions);
     } else if lottery_type == 2 {
         for (_i, data) in cardstogive.members().enumerate() {
             let info = get_card(data["master_lottery_item_id"].to_string(), data["master_lottery_item_number"].to_string());
-            items::give_gift_basic(info["type"].as_i32().unwrap(), info["value"].as_i64().unwrap(), info["amount"].as_i64().unwrap(), &mut user);
+            items::give_gift_basic(info["type"].as_i32().unwrap(), info["value"].as_i64().unwrap(), info["amount"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions);
             let to_push = object!{
                 "master_lottery_item_id": data["master_lottery_item_id"].clone(),
                 "master_lottery_item_number": data["master_lottery_item_number"].clone(),
@@ -227,8 +229,8 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     }
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_missions(&key, missions);
     
-    //todo
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -239,7 +241,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
                 "item_list": user["item_list"].clone()
             },
             "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": [],
+            "clear_mission_ids": cleared_missions,
             "draw_count_list": []
         }
     };
