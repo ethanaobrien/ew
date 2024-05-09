@@ -102,33 +102,49 @@ fn get_card(lottery_id: String, lottery_number: String) -> JsonValue {
     CARDS[lottery_id][lottery_number].clone()
 }
 
-fn get_random_cards(id: i64, count: usize) -> JsonValue {
-    let total_ratio: i64 = RARITY[id.to_string()].members().into_iter().map(|item| item["ratio"].as_i64().unwrap()).sum();
+fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::ThreadRng) {
+    let lottery_id = item["masterLotteryItemId"].as_i64().unwrap();
+    
+    let mut random_id = 0;
+    while random_id == 0 {
+        let card = rng.gen_range(1..POOL[lottery_id.to_string()][POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
+        if !get_card_master_id(lottery_id.to_string(), card.to_string()).is_none() {
+            random_id = card;
+            break;
+        }
+    }
+    let to_push = object!{
+        "id": get_card_master_id(lottery_id.to_string(), random_id.to_string()).unwrap(),
+        "master_card_id": get_card_master_id(lottery_id.to_string(), random_id.to_string()).unwrap(),
+        "master_lottery_item_id": lottery_id,
+        "master_lottery_item_number": random_id
+    };
+    rv.push(to_push).unwrap();
+}
+
+fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
+    let total_ratio: i64 = RARITY[id.to_string()].members().into_iter().map(|item| if item["ensured"].as_i32().unwrap() == 1 { 0 } else { item["ratio"].as_i64().unwrap() }).sum();
     let mut rng = rand::thread_rng();
     let mut rv = array![];
+    let mut promised = false;
+    
+    for (_i, item) in RARITY[id.to_string()].members().enumerate() {
+        if item["ensured"].as_i32().unwrap() == 1 {
+            get_random_card(&item, &mut rv, &mut rng);
+            promised = true;
+            break;
+        }
+    }
+    if promised {
+        count -= 1;
+    }
     for _i in 0..count {
         let random_number: i64 = rng.gen_range(1..total_ratio + 1);
         let mut cumulative_ratio = 0;
         for (_i, item) in RARITY[id.to_string()].members().enumerate() {
             cumulative_ratio += item["ratio"].as_i64().unwrap();
             if random_number <= cumulative_ratio {
-                let lottery_id = item["masterLotteryItemId"].as_i64().unwrap();
-                
-                let mut random_id = 0;
-                while random_id == 0 {
-                    let card = rng.gen_range(1..POOL[lottery_id.to_string()][POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
-                    if !get_card_master_id(lottery_id.to_string(), card.to_string()).is_none() {
-                        random_id = card;
-                        break;
-                    }
-                }
-                let to_push = object!{
-                    "id": get_card_master_id(lottery_id.to_string(), random_id.to_string()).unwrap(),
-                    "master_card_id": get_card_master_id(lottery_id.to_string(), random_id.to_string()).unwrap(),
-                    "master_lottery_item_id": lottery_id,
-                    "master_lottery_item_number": random_id
-                };
-                rv.push(to_push).unwrap();
+                get_random_card(&item, &mut rv, &mut rng);
                 break;
             }
         }
@@ -156,30 +172,16 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     let mut missions = userdata::get_acc_missions(&key);
     let mut cleared_missions = array![];
     
-    let mut cardstogive;
-    
     let lottery_id = body["master_lottery_id"].as_i64().unwrap();
-    if user["tutorial_step"].as_i32().unwrap() != 130 {
-        cardstogive = get_random_cards(body["master_lottery_id"].as_i64().unwrap(), 9);
-        let item_id = (body["master_lottery_id"].to_string().parse::<i32>().unwrap() * 100) + 1;
-        //tutorial
-        let new_card = object!{
-            "master_card_id": get_card_master_id(item_id.to_string(), String::from("1")).unwrap(),
-            "master_lottery_item_id": item_id,
-            "master_lottery_item_number": 1
-        };
-        cardstogive.push(new_card).unwrap();
-    } else {
-        let price = PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
-        
-        if price["consumeType"].as_i32().unwrap() == 1 {
-            items::remove_gems(&mut user, price["price"].as_i64().unwrap());
-        } else if price["consumeType"].as_i32().unwrap() == 4 {
-            items::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
-        }
-        
-        cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
+    let price = PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
+    
+    if price["consumeType"].as_i32().unwrap() == 1 {
+        items::remove_gems(&mut user, price["price"].as_i64().unwrap());
+    } else if price["consumeType"].as_i32().unwrap() == 4 {
+        items::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
     }
+    
+    let cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
     
     let lottery_type = LOTTERY[lottery_id.to_string()]["category"].as_i32().unwrap();
     

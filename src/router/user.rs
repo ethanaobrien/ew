@@ -416,18 +416,23 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     let mut user = userdata::get_acc(&key);
     let mut user2 = userdata::get_acc_home(&key);
     let mut missions = userdata::get_acc_missions(&key);
-    let ur = user["card_list"][user["card_list"].len() - 1]["master_card_id"].clone();
+    let mut chats = userdata::get_acc_chats(&key);
+    let id = body["master_character_id"].as_i64().unwrap();
     
-    let id = ur.as_i32().unwrap(); //todo
-    user["user"]["favorite_master_card_id"] = id.into();
-    user["user"]["guest_smile_master_card_id"] = id.into();
-    user["user"]["guest_cool_master_card_id"] = id.into();
-    user["user"]["guest_pure_master_card_id"] = id.into();
-    user2["home"]["preset_setting"][0]["illust_master_card_id"] = id.into();
+    crate::router::chat::add_chat(id, 1, &mut chats);
+    
+    let id = id.to_string();
+    
+    let ur = user["card_list"][0]["master_card_id"].as_i64().unwrap();
+    
+    user["user"]["favorite_master_card_id"] = ur.into();
+    user["user"]["guest_smile_master_card_id"] = ur.into();
+    user["user"]["guest_cool_master_card_id"] = ur.into();
+    user["user"]["guest_pure_master_card_id"] = ur.into();
+    user2["home"]["preset_setting"][0]["illust_master_card_id"] = ur.into();
     user["gem"]["free"] = (3000).into();
     user["gem"]["total"] = (3000).into();
     
-    let id = body["master_character_id"].to_string();
     let userr = &id[id.len() - 2..].parse::<i32>().unwrap();
     
     let cardstoreward: JsonValue;
@@ -459,9 +464,10 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
         }
     }
     //todo - should the chosen character be in the team twice?
-    user["deck_list"][0]["main_card_ids"][4] = ur;
+    user["deck_list"][0]["main_card_ids"][4] = ur.into();
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_chats(&key, chats);
     userdata::save_acc_home(&key, user2);
     userdata::save_acc_missions(&key, missions);
     
