@@ -33,6 +33,7 @@ fn setup_tables(conn: &SQLite) {
         loginbonus       TEXT NOT NULL,
         sifcards         TEXT NOT NULL,
         friends          TEXT NOT NULL,
+        chats            TEXT NOT NULL,
         friend_request_disabled  INT NOT NULL,
         event            TEXT NOT NULL,
         eventloginbonus  TEXT NOT NULL,
@@ -78,7 +79,7 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
     let missions = json::stringify(user_missions.clone());
     let cards = json::stringify(sif_cards.clone());
     
-    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)", params!(
+    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data, chats) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)", params!(
         uid,
         json::stringify(user.clone()),
         if user_home.is_empty() {include_str!("new_user_home.json")} else {&home},
@@ -89,7 +90,8 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
         user["user"]["friend_request_disabled"].as_i32().unwrap(),
         include_str!("new_user_event.json"),
         format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
+        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp()),
+        "[]"
     ));
 }
 
@@ -189,6 +191,9 @@ pub fn get_acc_friends(auth_key: &str) -> JsonValue {
 pub fn get_server_data(auth_key: &str) -> JsonValue {
     get_data(auth_key, "server_data")
 }
+pub fn get_acc_chats(auth_key: &str) -> JsonValue {
+    get_data(auth_key, "chats")
+}
 pub fn get_acc_event(auth_key: &str) -> JsonValue {
     let event = get_data(auth_key, "event");
     if event.is_empty() {
@@ -230,6 +235,9 @@ pub fn save_acc_eventlogin(auth_key: &str, data: JsonValue) {
 }
 pub fn save_server_data(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "server_data", data);
+}
+pub fn save_acc_chats(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "chats", data);
 }
 
 fn generate_salt() -> Vec<u8> {
