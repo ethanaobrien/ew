@@ -376,7 +376,7 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
     Some(out)
 }
 
-fn give_mission_rewards(user: &mut JsonValue, missions: &mut JsonValue, cleared_missions: &mut JsonValue, multiplier: i64) -> JsonValue {
+fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, user_missions: &mut JsonValue, cleared_missions: &mut JsonValue, multiplier: i64) -> JsonValue {
     let mut rv = array![];
     for (_i, data) in MISSION_DATA.members().enumerate() {
         if !missions.contains(data["id"].as_i32().unwrap()) {
@@ -388,12 +388,12 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &mut JsonValue, cleared_
         let mut gift = get_live_mission_info(data["masterLiveMissionRewardId"].as_i64().unwrap());
         gift["reward_type"] = gift["type"].clone();
         gift["amount"] = (gift["amount"].as_i64().unwrap() * multiplier).into();
-        items::give_gift(&gift, user, missions, cleared_missions);
+        items::give_gift(&gift, user, user_missions, cleared_missions);
     }
-    if items::give_gift_basic(3, 16005001, 10 * multiplier, user, missions, cleared_missions) {
+    if items::give_gift_basic(3, 16005001, 10 * multiplier, user, user_missions, cleared_missions) {
         rv.push(object!{"type":3,"value":16005001,"level":0,"amount":10}).unwrap();
     }
-    if items::give_gift_basic(3, 17001001, 2 * multiplier, user, missions, cleared_missions) {
+    if items::give_gift_basic(3, 17001001, 2 * multiplier, user, user_missions, cleared_missions) {
         rv.push(object!{"type":3,"value":17001001,"level":0,"amount":2}).unwrap();
     }
     rv
@@ -507,7 +507,7 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
         clear_master_live_mission_ids: missions.clone()
     });
     
-    let reward_list = give_mission_rewards(&mut user, &mut user_missions, &mut cleared_missions, body["live_boost"].as_i64().unwrap_or(1));
+    let reward_list = give_mission_rewards(&mut user, &missions, &mut user_missions, &mut cleared_missions, body["live_boost"].as_i64().unwrap_or(1));
     
     let lp_used: i32 = body["use_lp"].as_i32().unwrap_or(10 * body["live_boost"].as_i32().unwrap_or(0));
     
