@@ -1,8 +1,10 @@
 use json::{array, object, JsonValue};
 use lazy_static::lazy_static;
 use rand::Rng;
+use actix_web::{HttpResponse, HttpRequest};
+use crate::encryption;
 
-use crate::router::global;
+use crate::router::{userdata, global};
 
 lazy_static! {
     static ref ITEM_INFO: JsonValue = {
@@ -115,7 +117,7 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue) -> bool {
         }
         return true;
     }
-    println!("Redeeming reward not implimented for reward type {}", data["reward_type"].to_string());
+    println!("Redeeming reward not implemented for reward type {}", data["reward_type"].to_string());
     return false;
 }
 pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue) -> bool {
@@ -408,4 +410,32 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
         rv.push(id).unwrap();
     }
     rv
+}
+
+pub fn use_item_req(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let mut user = userdata::get_acc(&key);
+    
+    let item = get_item_info(body["id"].as_i64().unwrap());
+    let amount = body["amount"].as_i64().unwrap();
+    
+    if item["effectType"].as_i32().unwrap() == 1 {
+        lp_modification(&mut user, item["effectValue"].as_u64().unwrap() * (amount as u64), false);
+    } else {
+        println!("Use item not implemented for effect type {}", item["effectType"]);
+    }
+    use_item(body["id"].as_i64().unwrap(), amount, &mut user);
+    
+    userdata::save_acc(&key, user.clone());
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            item_list: user["item_list"].clone(),
+            stamina: user["stamina"].clone()
+        }
+    };
+    global::send(resp, req)
 }

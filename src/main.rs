@@ -100,6 +100,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/user/sif/migrate" => router::user::sif_migrate(req, body),
             "/api/user/ss/migrate" => router::user::sifas_migrate(req, body),
             "/api/exchange" => router::exchange::exchange_post(req, body),
+            "/api/item/use" => router::items::use_item_req(req, body),
             _ => unhandled(req, body)
         }
     } else {
