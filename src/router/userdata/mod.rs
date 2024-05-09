@@ -25,24 +25,52 @@ fn setup_tables(conn: &SQLite) {
         token     TEXT NOT NULL PRIMARY KEY,
         password  TEXT NOT NULL
     )");
-    conn.create_store_v2("CREATE TABLE IF NOT EXISTS users (
+    
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS userdata (
         user_id          BIGINT NOT NULL PRIMARY KEY,
         userdata         TEXT NOT NULL,
-        userhome         TEXT NOT NULL,
-        missions         TEXT NOT NULL,
-        loginbonus       TEXT NOT NULL,
-        sifcards         TEXT NOT NULL,
-        friends          TEXT NOT NULL,
-        chats            TEXT NOT NULL,
-        friend_request_disabled  INT NOT NULL,
-        event            TEXT NOT NULL,
-        eventloginbonus  TEXT NOT NULL,
+        friend_request_disabled  INT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS userhome (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        userhome         TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS missions (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        missions         TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS loginbonus (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        loginbonus       TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS sifcards (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        sifcards         TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS friends (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        friends          TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS chats (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        chats            TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS event (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        event            TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS eventloginbonus (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
+        eventloginbonus  TEXT NOT NULL
+    )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS server_data (
+        user_id          BIGINT NOT NULL PRIMARY KEY,
         server_data      TEXT NOT NULL
     )");
 }
 
 fn acc_exists(uid: i64) -> bool {
-    DATABASE.lock_and_select("SELECT user_id FROM users WHERE user_id=?1", params!(uid)).is_ok()
+    DATABASE.lock_and_select("SELECT user_id FROM userdata WHERE user_id=?1", params!(uid)).is_ok()
 }
 fn get_key(auth_key: &str) -> i64 {
     let uid = get_uid(&auth_key);
@@ -58,16 +86,12 @@ fn get_key(auth_key: &str) -> i64 {
     
     key
 }
-fn uid_exists(uid: i64) -> bool {
-    let data = DATABASE.lock_and_select("SELECT user_id FROM users WHERE user_id=?1", params!(uid));
-    data.is_ok()
-}
 
 fn generate_uid() -> i64 {
     let mut rng = rand::thread_rng();
     let random_number = rng.gen_range(100_000_000_000_000..=999_999_999_999_999);
     //the chances of this...?
-    if uid_exists(random_number) {
+    if acc_exists(random_number) {
         return generate_uid();
     }
     
@@ -79,18 +103,45 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
     let missions = json::stringify(user_missions.clone());
     let cards = json::stringify(sif_cards.clone());
     
-    DATABASE.lock_and_exec("INSERT INTO users (user_id, userdata, userhome, missions, loginbonus, sifcards, friends, friend_request_disabled, event, eventloginbonus, server_data, chats) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)", params!(
+    DATABASE.lock_and_exec("INSERT INTO userdata (user_id, userdata, friend_request_disabled) VALUES (?1, ?2, ?3)", params!(
         uid,
         json::stringify(user.clone()),
-        if user_home.is_empty() {include_str!("new_user_home.json")} else {&home},
-        if user_missions.is_empty() {include_str!("missions.json")} else {&missions},
-        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        if sif_cards.is_empty() {"[]"} else {&cards},
-        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#,
-        user["user"]["friend_request_disabled"].as_i32().unwrap(),
-        include_str!("new_user_event.json"),
-        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp()),
-        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp()),
+        user["user"]["friend_request_disabled"].as_i32().unwrap()
+    ));
+    DATABASE.lock_and_exec("INSERT INTO userhome (user_id, userhome) VALUES (?1, ?2)", params!(
+        uid,
+        if user_home.is_empty() {include_str!("new_user_home.json")} else {&home}
+    ));
+    DATABASE.lock_and_exec("INSERT INTO missions (user_id, missions) VALUES (?1, ?2)", params!(
+        uid,
+        if user_missions.is_empty() {include_str!("missions.json")} else {&missions}
+    ));
+    DATABASE.lock_and_exec("INSERT INTO loginbonus (user_id, loginbonus) VALUES (?1, ?2)", params!(
+        uid,
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp())
+    ));
+    DATABASE.lock_and_exec("INSERT INTO sifcards (user_id, sifcards) VALUES (?1, ?2)", params!(
+        uid,
+        if sif_cards.is_empty() {"[]"} else {&cards}
+    ));
+    DATABASE.lock_and_exec("INSERT INTO friends (user_id, friends) VALUES (?1, ?2)", params!(
+        uid,
+        r#"{"friend_user_id_list":[],"request_user_id_list":[],"pending_user_id_list":[]}"#
+    ));
+    DATABASE.lock_and_exec("INSERT INTO event (user_id, event) VALUES (?1, ?2)", params!(
+        uid,
+        include_str!("new_user_event.json")
+    ));
+    DATABASE.lock_and_exec("INSERT INTO eventloginbonus (user_id, eventloginbonus) VALUES (?1, ?2)", params!(
+        uid,
+        format!(r#"{{"last_rewarded": 0, "bonus_list": [], "start_time": {}}}"#, global::timestamp())
+    ));
+    DATABASE.lock_and_exec("INSERT INTO server_data (user_id, server_data) VALUES (?1, ?2)", params!(
+        uid,
+        format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
+    ));
+    DATABASE.lock_and_exec("INSERT INTO chats (user_id, chats) VALUES (?1, ?2)", params!(
+        uid,
         "[]"
     ));
 }
@@ -124,14 +175,6 @@ pub fn get_login_token(uid: i64) -> String {
     data.unwrap()
 }
 
-fn get_data(auth_key: &str, row: &str) -> JsonValue {
-    let key = get_key(&auth_key);
-    
-    let result = DATABASE.lock_and_select(&format!("SELECT {} FROM users WHERE user_id=?1", row), params!(key));
-    
-    json::parse(&result.unwrap()).unwrap()
-}
-
 fn cleanup_account(user: &mut JsonValue) {
     user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
     if user["master_music_ids"].len() != NEW_USER["master_music_ids"].len() {
@@ -160,6 +203,14 @@ fn cleanup_account(user: &mut JsonValue) {
     for (i, data) in to_remove.members().enumerate() {
         user["item_list"].array_remove(data.as_usize().unwrap() - i);
     }
+}
+
+fn get_data(auth_key: &str, row: &str) -> JsonValue {
+    let key = get_key(&auth_key);
+    
+    let result = DATABASE.lock_and_select(&format!("SELECT {} FROM {} WHERE user_id=?1", row, row), params!(key));
+    
+    json::parse(&result.unwrap()).unwrap()
 }
 
 pub fn get_acc(auth_key: &str) -> JsonValue {
@@ -208,11 +259,11 @@ pub fn get_acc_eventlogin(auth_key: &str) -> JsonValue {
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
     let key = get_key(&auth_key);
     
-    DATABASE.lock_and_exec(&format!("UPDATE users SET {}=?1 WHERE user_id=?2", row), params!(json::stringify(data), key));
+    DATABASE.lock_and_exec(&format!("UPDATE {} SET {}=?1 WHERE user_id=?2", row, row), params!(json::stringify(data), key));
 }
 
 pub fn save_acc(auth_key: &str, data: JsonValue) {
-    DATABASE.lock_and_exec("UPDATE users SET friend_request_disabled=?1 WHERE user_id=?2", params!(data["user"]["friend_request_disabled"].as_i32().unwrap(), get_key(&auth_key)));
+    DATABASE.lock_and_exec("UPDATE userdata SET friend_request_disabled=?1 WHERE user_id=?2", params!(data["user"]["friend_request_disabled"].as_i32().unwrap(), get_key(&auth_key)));
     save_data(auth_key, "userdata", data);
 }
 pub fn save_acc_home(auth_key: &str, data: JsonValue) {
@@ -316,7 +367,7 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
             user_rank: 1
         }
     }
-    let result = DATABASE.lock_and_select("SELECT userdata FROM users WHERE user_id=?1", params!(uid));
+    let result = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
     let data = json::parse(&result.unwrap()).unwrap();
     
     return object!{
@@ -336,7 +387,7 @@ pub fn get_acc_from_uid(uid: i64) -> JsonValue {
     if uid == 0 || !acc_exists(uid) {
         return object!{"error": true}
     }
-    let result = DATABASE.lock_and_select("SELECT userdata FROM users WHERE user_id=?1", params!(uid));
+    let result = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
     json::parse(&result.unwrap()).unwrap()
 }
 
@@ -346,11 +397,11 @@ pub fn friend_request(uid: i64, requestor: i64) {
         return;
     }
     let uid = get_uid(&login_token);
-    let friends = DATABASE.lock_and_select("SELECT friends FROM users WHERE user_id=?1", params!(uid));
+    let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
     let mut friends = json::parse(&friends.unwrap()).unwrap();
     if !friends["pending_user_id_list"].contains(requestor) {
         friends["pending_user_id_list"].push(requestor).unwrap();
-        DATABASE.lock_and_exec("UPDATE users SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+        DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
     }
 }
 
@@ -360,7 +411,7 @@ pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool, key: &st
         return;
     }
     let uid = get_uid(&login_token);
-    let friends = DATABASE.lock_and_select("SELECT friends FROM users WHERE user_id=?1", params!(uid));
+    let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
     let mut friends = json::parse(&friends.unwrap()).unwrap();
     let index = friends[key].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
     if !index.is_none() {
@@ -373,7 +424,7 @@ pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool, key: &st
     if accepted && !friends["friend_user_id_list"].contains(requestor) {
         friends["friend_user_id_list"].push(requestor).unwrap();
     }
-    DATABASE.lock_and_exec("UPDATE users SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+    DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
 }
 
 pub fn friend_request_disabled(uid: i64) -> bool {
@@ -382,7 +433,7 @@ pub fn friend_request_disabled(uid: i64) -> bool {
         return true;
     }
     let uid = get_uid(&login_token);
-    let user = DATABASE.lock_and_select("SELECT userdata FROM users WHERE user_id=?1", params!(uid));
+    let user = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
     let user = json::parse(&user.unwrap()).unwrap();
     user["user"]["friend_request_disabled"].to_string() == "1"
 }
@@ -393,20 +444,20 @@ pub fn friend_remove(uid: i64, requestor: i64) {
         return;
     }
     let uid = get_uid(&login_token);
-    let friends = DATABASE.lock_and_select("SELECT friends FROM users WHERE user_id=?1", params!(uid));
+    let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
     let mut friends = json::parse(&friends.unwrap()).unwrap();
     let index = friends["friend_user_id_list"].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
     if !index.is_none() {
         friends["friend_user_id_list"].array_remove(index.unwrap());
     }
-    DATABASE.lock_and_exec("UPDATE users SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+    DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
 }
 
 pub fn get_random_uids(count: i32) -> JsonValue {
     if count <= 0 {
         return array![];
     }
-    DATABASE.lock_and_select_all(&format!("SELECT user_id FROM users WHERE friend_request_disabled=?1 ORDER BY RANDOM() LIMIT {}", count), params!(0)).unwrap()
+    DATABASE.lock_and_select_all(&format!("SELECT user_id FROM userdata WHERE friend_request_disabled=?1 ORDER BY RANDOM() LIMIT {}", count), params!(0)).unwrap()
 }
 
 fn create_webui_store() {
