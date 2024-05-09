@@ -11,7 +11,7 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     let mut user = userdata::get_acc(&key);
     
     for (i, data) in user["deck_list"].members().enumerate() {
-        if data["slot"].to_string() == body["slot"].to_string() {
+        if data["slot"].as_i32().unwrap() == body["slot"].as_i32().unwrap() {
             user["deck_list"][i]["main_card_ids"] = body["main_card_ids"].clone();
             break;
         }
