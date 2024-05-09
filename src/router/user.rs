@@ -10,9 +10,19 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     
-    for (i, data) in user["deck_list"].members().enumerate() {
+    for (i, data) in user["deck_list"].clone().members().enumerate() {
+        if data["slot"].as_usize().unwrap_or(100) != i + 1 && i < 10 {
+            user["deck_list"][i] = object!{
+                "slot": i + 1,
+                "leader_role": 0,
+                "main_card_ids": [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            }
+        }
+    }
+    
+    for (_i, data) in user["deck_list"].members_mut().enumerate() {
         if data["slot"].as_i32().unwrap() == body["slot"].as_i32().unwrap() {
-            user["deck_list"][i]["main_card_ids"] = body["main_card_ids"].clone();
+            data["main_card_ids"] = body["main_card_ids"].clone();
             break;
         }
     }
