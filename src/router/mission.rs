@@ -82,7 +82,7 @@ pub fn receive(req: HttpRequest, body: String) -> HttpResponse {
         items::give_gift(&gift, &mut user, &mut missions, &mut array![]);
         rewards.push(gift).unwrap();
         
-        let variable_missions = array![[1153001, 1153019], [1105001, 1105017], [1101001, 1101030], [1121001, 1121019]];
+        let variable_missions = array![[1153001, 1153019], [1105001, 1105017], [1101001, 1101030], [1121001, 1121019], [1112001, 1112033]];
         let mut variable = false;
         for (_i, id) in variable_missions.members().enumerate() {
             if mission.as_i64().unwrap() >= id[0].as_i64().unwrap() && mission.as_i64().unwrap() < id[1].as_i64().unwrap() {

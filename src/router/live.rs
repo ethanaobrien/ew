@@ -485,7 +485,10 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
     if body["master_live_id"].to_string().len() > 1 {
         let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
         if id <= 4 && id >= 1 {
-            cleared_missions = items::completed_daily_mission(1273009 + id - 1, &mut user_missions);
+            let to_push = items::completed_daily_mission(1273009 + id - 1, &mut user_missions);
+            for (_i, data) in to_push.members().enumerate() {
+                cleared_missions.push(data.as_i32().unwrap()).unwrap();
+            }
         }
     }
     
@@ -500,6 +503,37 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
         let is_full_combo = (body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
         let is_perfect = (body["live_score"]["great"].as_i32().unwrap_or(1) + body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
         missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap_or(0), body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
+    
+        if is_full_combo {
+            if !items::advance_mission(1176001, 1, 1, &mut user_missions).is_none() {
+                cleared_missions.push(1176001).unwrap();
+            }
+            if !items::advance_mission(1176002, 1, 100, &mut user_missions).is_none() {
+                cleared_missions.push(1176002).unwrap();
+            }
+            if !items::advance_mission(1176003, 1, 200, &mut user_missions).is_none() {
+                cleared_missions.push(1176003).unwrap();
+            }
+            if !items::advance_mission(1176004, 1, 300, &mut user_missions).is_none() {
+                cleared_missions.push(1176004).unwrap();
+            }
+            if !items::advance_mission(1176005, 1, 400, &mut user_missions).is_none() {
+                cleared_missions.push(1176005).unwrap();
+            }
+            if !items::advance_mission(1176006, 1, 500, &mut user_missions).is_none() {
+                cleared_missions.push(1176006).unwrap();
+            }
+        }
+        if is_perfect {
+            if !items::advance_mission(1177001, 1, 1, &mut user_missions).is_none() {
+                cleared_missions.push(1177001).unwrap();
+            }
+        }
+        if is_perfect && body["level"].as_i32().unwrap() == 4 {
+            if !items::advance_mission(1177002, 1, 1, &mut user_missions).is_none() {
+                cleared_missions.push(1177002).unwrap();
+            }
+        }
     }
     
     update_live_mission_data(&mut user, &object!{

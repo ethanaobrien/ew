@@ -71,7 +71,7 @@ pub fn preset_get(req: HttpRequest) -> HttpResponse {
 
 lazy_static! {
     pub static ref HOME_MISSIONS: JsonValue = {
-        let mut missions = array![];
+        let mut missions = array![1176001, 1177001, 1177002, 1176002, 1176003, 1176004, 1176005, 1176006, 1169001];
         for i in 1153001..=1153019 {
             missions.push(i).unwrap();
         }
@@ -85,6 +85,9 @@ lazy_static! {
             missions.push(i).unwrap();
         }
         for i in 1121001..=1121019 {
+            missions.push(i).unwrap();
+        }
+        for i in 1112001..=1112033 {
             missions.push(i).unwrap();
         }
         missions

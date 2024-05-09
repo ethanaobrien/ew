@@ -1,8 +1,7 @@
 use json::object;
 use actix_web::{HttpResponse, HttpRequest};
 
-use crate::router::userdata;
-use crate::router::global;
+use crate::router::{global, items, userdata};
 
 pub fn home(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
@@ -44,7 +43,12 @@ pub fn start(req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp, req)
 }
 
-pub fn end(req: HttpRequest, _body: String) -> HttpResponse {
+pub fn end(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let mut missions = userdata::get_acc_missions(&key);
+    items::advance_mission(1169001, 1, 50, &mut missions);
+    
+    userdata::save_acc_missions(&key, missions);
     
     let resp = object!{
         "code": 0,

@@ -102,7 +102,7 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValu
         return !give_primogems(data["amount"].as_i64().unwrap(), user);
     } else if data["reward_type"].to_string() == "2" {
         //character
-        give_character(data["value"].to_string(), user);
+        give_character(data["value"].to_string(), user, missions, clear_missions);
         return true;
     } else if data["reward_type"].to_string() == "3" {
         return !give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
@@ -131,7 +131,9 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missi
     if master_item_id == 1 {
         let cleared = advance_variable_mission(1121001, 1121019, amount, missions);
         for (_i, data) in cleared.members().enumerate() {
-            clear_missions.push(data.clone()).unwrap();
+            if !clear_missions.contains(data.as_i64().unwrap()) {
+                clear_missions.push(data.clone()).unwrap();
+            }
         }
     }
     let mut has = false;
@@ -246,11 +248,17 @@ pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
 
 // true - added
 // false - already has
-pub fn give_character(id: String, user: &mut JsonValue) -> bool {
+pub fn give_character(id: String, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     for (_i, data) in user["card_list"].members().enumerate() {
         if data["master_card_id"].to_string() == id || data["id"].to_string() == id {
             give_item(19100001, 50, user);
             return false;
+        }
+    }
+    let cleared = advance_variable_mission(1112001, 1112033, 1, missions);
+    for (_i, data) in cleared.members().enumerate() {
+        if !clear_missions.contains(data.as_i64().unwrap()) {
+            clear_missions.push(data.clone()).unwrap();
         }
     }
     
@@ -384,6 +392,24 @@ pub fn advance_variable_mission(min: i64, max: i64, count: i64, missions: &mut J
         break;
     }
     rv
+}
+
+pub fn advance_mission(id: i64, count: i64, max: i64, missions: &mut JsonValue) -> Option<i64> {
+    let mission = get_mission_status(id, missions);
+    
+    if mission["status"].as_i32().unwrap() > 1 {
+        return None;
+    }
+    let mut new = mission["progress"].as_i64().unwrap() + count;
+    if new > max {
+        new = max;
+    }
+    let completed = new == max;
+    let advanced = new - mission["progress"].as_i64().unwrap();
+    if !update_mission_status(id, 0, completed, false, advanced, missions).is_none() {
+        return Some(id);
+    }
+    None
 }
 
 pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {

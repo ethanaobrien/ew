@@ -415,6 +415,7 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     
     let mut user = userdata::get_acc(&key);
     let mut user2 = userdata::get_acc_home(&key);
+    let mut missions = userdata::get_acc_missions(&key);
     let ur = user["card_list"][user["card_list"].len() - 1]["master_card_id"].clone();
     
     let id = ur.as_i32().unwrap(); //todo
@@ -452,7 +453,7 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     // User is rewarded with all base cards in the team they chose. This makes up their new deck_list
     
     for (i, data) in cardstoreward.members().enumerate() {
-        items::give_character(data.to_string(), &mut user);
+        items::give_character(data.to_string(), &mut user, &mut missions, &mut array![]);
         if i < 10 {
             user["deck_list"][0]["main_card_ids"][i] = data.clone();
         }
@@ -462,6 +463,7 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_home(&key, user2);
+    userdata::save_acc_missions(&key, missions);
     
     let resp = object!{
         "code": 0,
