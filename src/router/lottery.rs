@@ -72,11 +72,13 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     let mut rv = array![];
     let mut promised = false;
     
-    for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
-        if item["ensured"].as_i32().unwrap() == 1 {
-            get_random_card(&item, &mut rv, &mut rng);
-            promised = true;
-            break;
+    if count > 1 {
+        for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
+            if item["ensured"].as_i32().unwrap() == 1 {
+                get_random_card(&item, &mut rv, &mut rng);
+                promised = true;
+                break;
+            }
         }
     }
     if promised {
