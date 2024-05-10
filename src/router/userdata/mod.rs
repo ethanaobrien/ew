@@ -400,7 +400,7 @@ pub fn friend_request(uid: i64, requestor: i64) {
     let uid = get_uid(&login_token);
     let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
     let mut friends = json::parse(&friends.unwrap()).unwrap();
-    if !friends["pending_user_id_list"].contains(requestor) {
+    if !friends["pending_user_id_list"].contains(requestor) && friends["pending_user_id_list"].len() < crate::router::friend::FRIEND_LIMIT {
         friends["pending_user_id_list"].push(requestor).unwrap();
         DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
     }
@@ -422,7 +422,7 @@ pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool, key: &st
     if !index.is_none() {
         friends["request_user_id_list"].array_remove(index.unwrap());
     }
-    if accepted && !friends["friend_user_id_list"].contains(requestor) {
+    if accepted && !friends["friend_user_id_list"].contains(requestor) && friends["friend_user_id_list"].len() < crate::router::friend::FRIEND_LIMIT {
         friends["friend_user_id_list"].push(requestor).unwrap();
     }
     DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));

@@ -4,6 +4,8 @@ use actix_web::{HttpResponse, HttpRequest};
 use crate::router::{userdata, global};
 use crate::encryption;
 
+pub const FRIEND_LIMIT: usize = 40;
+
 pub fn friend(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -101,7 +103,7 @@ pub fn request(req: HttpRequest, body: String) -> HttpResponse {
     
     let uid = body["user_id"].as_i64().unwrap();
     if !userdata::friend_request_disabled(uid) {
-        if !friends["request_user_id_list"].contains(uid) { 
+        if !friends["request_user_id_list"].contains(uid) && friends["request_user_id_list"].len() < FRIEND_LIMIT { 
             friends["request_user_id_list"].push(uid).unwrap(); 
             userdata::save_acc_friends(&key, friends);
         }
@@ -126,7 +128,7 @@ pub fn approve(req: HttpRequest, body: String) -> HttpResponse {
     let index = friends["pending_user_id_list"].members().into_iter().position(|r| *r.to_string() == uid.to_string());
     if !index.is_none() {
         friends["pending_user_id_list"].array_remove(index.unwrap());
-        if body["approve"].to_string() == "1" && ! friends["friend_user_id_list"].contains(uid) {
+        if body["approve"].to_string() == "1" && ! friends["friend_user_id_list"].contains(uid) && friends["friend_user_id_list"].len() < FRIEND_LIMIT {
             friends["friend_user_id_list"].push(uid).unwrap();
         }
         
