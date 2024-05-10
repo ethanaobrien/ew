@@ -6,6 +6,7 @@ use actix_web::{
 };
 use json::object;
 
+use crate::include_file;
 use crate::router::{userdata, items};
 
 fn get_login_token(req: &HttpRequest) -> Option<String> {
@@ -148,5 +149,5 @@ pub fn main(req: HttpRequest) -> HttpResponse {
     }
     HttpResponse::Ok()
         .insert_header(ContentType::html())
-        .body(include_str!("../../webui/dist/index.html"))
+        .body(include_file!("webui/dist/index.html"))
 }

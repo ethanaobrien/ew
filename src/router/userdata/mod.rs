@@ -8,11 +8,12 @@ use base64::{Engine as _, engine::general_purpose};
 use crate::router::global;
 use crate::router::items;
 use crate::sql::SQLite;
+use crate::include_file;
 
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("userdata.db", setup_tables);
     static ref NEW_USER: JsonValue = {
-        json::parse(include_str!("new_user.json")).unwrap()
+        json::parse(&include_file!("src/router/userdata/new_user.json")).unwrap()
     };
 }
 
@@ -110,11 +111,11 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
     ));
     DATABASE.lock_and_exec("INSERT INTO userhome (user_id, userhome) VALUES (?1, ?2)", params!(
         uid,
-        if user_home.is_empty() {include_str!("new_user_home.json")} else {&home}
+        if user_home.is_empty() {include_file!("src/router/userdata/new_user_home.json")} else {home}
     ));
     DATABASE.lock_and_exec("INSERT INTO missions (user_id, missions) VALUES (?1, ?2)", params!(
         uid,
-        if user_missions.is_empty() {include_str!("missions.json")} else {&missions}
+        if user_missions.is_empty() {include_file!("src/router/userdata/missions.json")} else {missions}
     ));
     DATABASE.lock_and_exec("INSERT INTO loginbonus (user_id, loginbonus) VALUES (?1, ?2)", params!(
         uid,
@@ -130,7 +131,7 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
     ));
     DATABASE.lock_and_exec("INSERT INTO event (user_id, event) VALUES (?1, ?2)", params!(
         uid,
-        include_str!("new_user_event.json")
+        include_file!("src/router/userdata/new_user_event.json")
     ));
     DATABASE.lock_and_exec("INSERT INTO eventloginbonus (user_id, eventloginbonus) VALUES (?1, ?2)", params!(
         uid,
@@ -248,7 +249,7 @@ pub fn get_acc_chats(auth_key: &str) -> JsonValue {
 pub fn get_acc_event(auth_key: &str) -> JsonValue {
     let event = get_data(auth_key, "event");
     if event.is_empty() {
-        return json::parse(include_str!("new_user_event.json")).unwrap();
+        return json::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
     }
     event
 }

@@ -259,14 +259,12 @@ pub fn give_character(id: String, user: &mut JsonValue, missions: &mut JsonValue
 }
 
 pub fn get_user_rank_data(exp: i64) -> JsonValue {
-    let ranks = json::parse(include_str!("userdata/user_rank.json")).unwrap();
-    
-    for (i, rank) in ranks.members().enumerate() {
+    for (i, rank) in databases::RANKS.members().enumerate() {
         if exp < rank["exp"].as_i64().unwrap() {
-            return ranks[i - 1].clone();
+            return databases::RANKS[i - 1].clone();
         }
     }
-    return ranks[ranks.len() - 1].clone();
+    return databases::RANKS[databases::RANKS.len() - 1].clone();
 }
 
 pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue, rv: &mut JsonValue) {

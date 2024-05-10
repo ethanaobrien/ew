@@ -140,13 +140,13 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
 async fn css(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType(mime::TEXT_CSS))
-        .body(include_str!("../webui/dist/index.css"))
+        .body(include_file!("webui/dist/index.css"))
 }
 #[get("/index.js")]
 async fn js(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType(mime::APPLICATION_JAVASCRIPT_UTF_8))
-        .body(include_str!("../webui/dist/index.js"))
+        .body(include_file!("webui/dist/index.js"))
 }
 
 #[actix_web::main]
@@ -163,4 +163,25 @@ async fn main() -> std::io::Result<()> {
         .run();
     println!("Server started: http://127.0.0.1:{}", 8080);
     rv.await
+}
+
+
+
+#[macro_export]
+macro_rules! include_file {
+    ( $s:expr ) => {
+        {
+            let file = include_flate_codegen::deflate_file!($s);
+            let ret = crate::decode(file);
+            std::string::String::from_utf8(ret).unwrap()
+        }
+    };
+}
+pub fn decode(bytes: &[u8]) -> Vec<u8> {
+    use std::io::{Cursor, Read};
+
+    let mut dec = libflate::deflate::Decoder::new(Cursor::new(bytes));
+    let mut ret = Vec::new();
+    dec.read_to_end(&mut ret).unwrap();
+    ret
 }
