@@ -19,7 +19,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14' # or the version you need
+        node-version: '18' # or the version you need
 
     - name: Install dependencies and build webui
       run: |
