@@ -26,7 +26,6 @@ jobs:
         cd webui
         npm install
         npm run build
-        rustup target add aarch64-unknown-linux-gnu
         rustup target add x86_64-pc-windows-msvc
 
     - name: Set up Rust
@@ -50,7 +49,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        arch: [arm64]
+        arch: [aarch64]
 
     steps:
     - name: Checkout code
@@ -66,6 +65,8 @@ jobs:
         cd webui
         npm install
         npm run build
+        cd ..
+        rustup target add aarch64-unknown-linux-gnu
 
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
@@ -75,7 +76,7 @@ jobs:
         override: true
 
     - name: Build Rust project for aarch64
-      run: cargo build --release
+      run: cargo build --release --target aarch64-unknown-linux-gnu
 
     - name: Archive production artifacts for aarch64
       uses: actions/upload-artifact@v3
