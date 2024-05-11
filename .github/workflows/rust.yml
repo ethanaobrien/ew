@@ -1,20 +1,41 @@
-name: Rust
+name: Rust Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main # or the branch you want to trigger this workflow
   pull_request:
-    branches: [ "main" ]
-
-env:
-  CARGO_TERM_COLOR: always
+    branches:
+      - main # or the branch you want to trigger this workflow
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-    - run: cd webui && npm install && npm run build
-    - run: cd .. && cargo build --verbose
-  
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14' # or the version you need
+
+    - name: Install dependencies and build webui
+      run: |
+        cd webui
+        npm install
+        npm run build
+
+    - name: Set up Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+
+    - name: Build Rust project
+      run: cargo build --release
+
+    - name: Test (optional)
+      run: cargo test --release
