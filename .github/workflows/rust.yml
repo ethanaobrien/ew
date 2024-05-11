@@ -100,6 +100,7 @@ jobs:
         cd webui
         npm install
         npm run build
+        cd ..
         rustup target add x86_64-pc-windows-msvc
 
     - name: Set up Rust
@@ -116,4 +117,4 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Windows_x86_64
-        path: target/x86_64-pc-windows-msvc/release/ew
+        path: target\x86_64-pc-windows-msvc\release\ew.exe
