@@ -66,7 +66,6 @@ jobs:
         npm install
         npm run build
         cd ..
-        rustup target add aarch64-unknown-linux-gnu
 
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
@@ -76,13 +75,13 @@ jobs:
         override: true
 
     - name: Build Rust project for aarch64
-      run: cargo build --release --target aarch64-unknown-linux-gnu
+      run: cargo build --release
 
     - name: Archive production artifacts for aarch64
       uses: actions/upload-artifact@v3
       with:
         name: Linux_aarch64
-        path: target/aarch64-unknown-linux-gnu/release/ew
+        path: target/release/ew
 
   build-windows:
     runs-on: windows-latest
