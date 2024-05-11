@@ -42,11 +42,15 @@ jobs:
     - name: Archive production artifacts for x86_64
       uses: actions/upload-artifact@v3
       with:
-        name: Linux x86_64
-        path: target/x86_64-unknown-linux-gnu/release/*
+        name: Linux_x86_64
+        path: target/x86_64-unknown-linux-gnu/release/ew
 
   build-aarch64:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        arch: [arm64]
 
     steps:
     - name: Checkout code
@@ -62,7 +66,6 @@ jobs:
         cd webui
         npm install
         npm run build
-        rustup target add aarch64-unknown-linux-gnu
 
     - name: Set up Rust
       uses: actions-rs/toolchain@v1
@@ -72,13 +75,13 @@ jobs:
         override: true
 
     - name: Build Rust project for aarch64
-      run: cargo build --release --target aarch64-unknown-linux-gnu
+      run: cargo build --release
 
     - name: Archive production artifacts for aarch64
       uses: actions/upload-artifact@v3
       with:
-        name: Linux aarch64
-        path: target/aarch64-unknown-linux-gnu/release/*
+        name: Linux_aarch64
+        path: target/aarch64-unknown-linux-gnu/release/ew
 
   build-windows:
     runs-on: windows-latest
@@ -112,5 +115,5 @@ jobs:
     - name: Archive production artifacts for Windows
       uses: actions/upload-artifact@v3
       with:
-        name: Windows x86_64
-        path: target/x86_64-pc-windows-msvc/release/*
+        name: Windows_x86_64
+        path: target/x86_64-pc-windows-msvc/release/ew
