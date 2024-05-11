@@ -37,5 +37,8 @@ jobs:
     - name: Build Rust project
       run: cargo build --release
 
-    - name: Test (optional)
-      run: cargo test --release
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Rust Binary
+        path: target/release/*
