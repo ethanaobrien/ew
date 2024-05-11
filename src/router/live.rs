@@ -1,6 +1,7 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 use rand::Rng;
+use lazy_static::lazy_static;
 
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
@@ -243,7 +244,7 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> Js
     
     let mut has = false;
     for (_i, current) in user["live_list"].members_mut().enumerate() {
-        if current["master_live_id"].to_string() == rv["master_live_id"].to_string() && current["level"].to_string() == rv["level"].to_string() {
+        if current["master_live_id"].to_string() == rv["master_live_id"].to_string() && (current["level"].to_string() == rv["level"].to_string() || data["level"].as_i32().unwrap() == 0) {
             has = true;
             if add {
                 rv["clear_count"] = (current["clear_count"].as_i64().unwrap() + 1).into();
@@ -262,7 +263,10 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> Js
                 rv["max_combo"] = current["max_combo"].clone();
             }
             current["updated_time"] = rv["updated_time"].clone();
-            break;
+            rv["level"] = current["level"].clone();
+            if data["level"].as_i32().unwrap() != 0 {
+                break;
+            }
         }
     }
     if !has {
@@ -380,9 +384,18 @@ fn get_master_id(id: i64) -> i64 {
 
 const MAX_BOND: i64 = 500000;
 
-fn get_live_character_list(deck_id: i32, user: &JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue) -> JsonValue {
+lazy_static! {
+    pub static ref BOND_WEIGHT: JsonValue = {
+        array![1, 1, 2, 2, 5, 2, 2, 1, 1]
+    };
+}
+
+fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue) -> JsonValue {
     let mut rv = array![];
+    let mut has = array![];
+    let mut has_i = array![];
     let characters_in_deck = user["deck_list"][(deck_id - 1) as usize]["main_card_ids"].clone();
+    let mut i = 0;
     for (_i, data) in user["card_list"].members().enumerate() {
         if !characters_in_deck.contains(data["id"].as_i64().unwrap()) && !characters_in_deck.contains(data["master_card_id"].as_i64().unwrap())  {
             continue;
@@ -401,13 +414,42 @@ fn get_live_character_list(deck_id: i32, user: &JsonValue, missions: &mut JsonVa
                 full = true;
             }
         }
-        let additional_exp = 20;
+        
+        let mut index = characters_in_deck.members().into_iter().position(|r| r.as_i64().unwrap() == data["id"].as_i64().unwrap());
+        if index.is_none() {
+            index = characters_in_deck.members().into_iter().position(|r| r.as_i64().unwrap() == data["master_card_id"].as_i64().unwrap());
+        }
+        let exp = BOND_WEIGHT[index.unwrap_or(10)].as_i32().unwrap_or(0) * (lp_used / 10);
+        let additional_exp;
+        if has.contains(character) {
+            additional_exp = 0;
+            let j = has.members().into_iter().position(|r| r.as_i64().unwrap() == character).unwrap_or(10);
+            if j != 10 {
+                let start = rv[has_i[j].as_usize().unwrap()]["before_exp"].as_i64().unwrap();
+                let mut bond = start + exp as i64;
+                if bond >= MAX_BOND { bond = MAX_BOND; }
+                if bond > rv[has_i[j].as_usize().unwrap()]["exp"].as_i64().unwrap() {
+                    let completed = bond >= limit;
+                    let mission = items::update_mission_status(mission_id, 0, completed, false, bond - start, missions);
+                    if !mission.is_none() {
+                        completed_missions.push(mission.unwrap()).unwrap();
+                    }
+                    rv[has_i[j].as_usize().unwrap()]["exp"] = bond.into();
+                    has_i[j] = i.into();
+                }
+            }
+        } else {
+            has.push(character).unwrap();
+            has_i.push(i).unwrap();
+            additional_exp = exp;
+        }
+        
         let start = status["progress"].as_i64().unwrap_or(0);
-        let mut bond = start + additional_exp;
+        let mut bond = start + additional_exp as i64;
         if bond >= MAX_BOND {
             bond = MAX_BOND;
         }
-        if !full {
+        if !full && additional_exp > 0 {
             let completed = bond >= limit;
             let mission = items::update_mission_status(mission_id, 0, completed, false, bond - start, missions);
             if !mission.is_none() {
@@ -420,6 +462,7 @@ fn get_live_character_list(deck_id: i32, user: &JsonValue, missions: &mut JsonVa
             exp: bond,
             before_exp: start
         }).unwrap();
+        i += 1;
     }
     rv
 }
@@ -436,7 +479,7 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
         items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
         live = update_live_data(&mut user, &object!{
             master_live_id: body["master_live_id"].clone(),
-            level: 1,
+            level: 0,
             live_score: {
                 score: 1,
                 max_combo: 1
@@ -513,7 +556,7 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
     
     items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
     
-    let characters = get_live_character_list(body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()), &user, &mut user_missions, &mut cleared_missions);
+    let characters = get_live_character_list(lp_used, body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()), &user, &mut user_missions, &mut cleared_missions);
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, user_missions);
