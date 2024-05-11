@@ -34,11 +34,30 @@ jobs:
         toolchain: stable
         override: true
 
-    - name: Build Rust project
-      run: cargo build --release
+    - name: Build Rust project for x86_64
+      run: cargo build --release --target x86_64-unknown-linux-gnu
 
-    - name: Archive production artifacts
+    - name: Build Rust project for aarch64
+      run: cargo build --release --target aarch64-unknown-linux-gnu
+      
+    - name: Build Rust project for Windows
+      run: cargo build --release --target x86_64-pc-windows-msvc
+
+    - name: Archive production artifacts for Windows
       uses: actions/upload-artifact@v3
       with:
-        name: Rust Binary
-        path: target/release/*
+        name: Windows x86_64
+        path: target/x86_64-pc-windows-msvc/release/ew
+
+    - name: Archive production artifacts for x86_64
+      uses: actions/upload-artifact@v3
+      with:
+        name: Linux x86_64
+        path: target/x86_64-unknown-linux-gnu/release/ew
+    
+    - name: Archive production artifacts for aarch64
+      uses: actions/upload-artifact@v3
+      with:
+        name: Linux aarch64
+        path: target/aarch64-unknown-linux-gnu/release/ew
+
