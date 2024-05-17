@@ -56,7 +56,7 @@ function Bonus() {
             />
             <button type="submit">Submit</button>
           </form>
-          <p>You can find a list of available login bonus IDs <a href="https://github.com/ethanaobrien/ew/blob/main/src/router/json/login_bonus.json">here</a>. You should input the <code>id</code> field</p>
+          <p>You can find a list of available login bonus IDs <a href="https://github.com/ethanaobrien/ew/blob/main/src/router/databases/json/login_bonus.json">here</a>. You should input the <code>id</code> field</p>
         </div>
     );
 }
