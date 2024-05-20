@@ -349,7 +349,7 @@ pub fn sif(req: HttpRequest) -> HttpResponse {
     
     // prevent duplicate data in the database
     if user["user"]["sif_user_id"].as_i64().unwrap() == 111111111 {
-        cards = json::parse(&include_file!("src/router/userdata/new_user_home.json")).unwrap();
+        cards = json::parse(&include_file!("src/router/userdata/full_sif.json")).unwrap();
     }
     
     let resp = object!{
