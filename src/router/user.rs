@@ -3,6 +3,7 @@ use actix_web::{HttpResponse, HttpRequest};
 
 use crate::encryption;
 use crate::router::{userdata, global, items};
+use crate::include_file;
 
 pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     let key = global::get_login(req.headers(), &body);
@@ -343,7 +344,13 @@ pub fn detail(req: HttpRequest, body: String) -> HttpResponse {
 
 pub fn sif(req: HttpRequest) -> HttpResponse {
     let key = global::get_login(req.headers(), "");
-    let cards = userdata::get_acc_sif(&key);
+    let user = userdata::get_acc(&key);
+    let mut cards = userdata::get_acc_sif(&key);
+    
+    // prevent duplicate data in the database
+    if user["user"]["sif_user_id"].as_i64().unwrap() == 111111111 {
+        cards = json::parse(&include_file!("src/router/userdata/new_user_home.json")).unwrap();
+    }
     
     let resp = object!{
         "code": 0,
@@ -369,7 +376,26 @@ pub fn sifas_migrate(req: HttpRequest, _body: String) -> HttpResponse {
     global::send(resp, req)
 }
 
-pub fn sif_migrate(req: HttpRequest, _body: String) -> HttpResponse {
+pub fn sif_migrate(req: HttpRequest, body: String) -> HttpResponse {
+    let key = global::get_login(req.headers(), &body);
+    let mut user = userdata::get_acc(&key);
+    user["user"]["sif_user_id"] = 111111111.into();
+    
+    userdata::save_acc(&key, user.clone());
+    
+    let resp = object!{
+        "code": 0,
+        "server_time": global::timestamp(),
+        "data": {
+            "sif_migrate_status": 0,
+            "user": user["user"].clone(),
+            "master_title_ids": user["master_title_ids"].clone()
+        }
+    };
+    
+    
+    /*
+    // Error response
     let resp = object!{
         "code": 0,
         "server_time": global::timestamp(),
@@ -377,6 +403,7 @@ pub fn sif_migrate(req: HttpRequest, _body: String) -> HttpResponse {
             "sif_migrate_status": 38
         }
     };
+    */
     global::send(resp, req)
 }
 
