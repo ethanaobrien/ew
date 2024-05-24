@@ -1,5 +1,5 @@
 use json::{object, array, JsonValue};
-use actix_web::{HttpResponse, HttpRequest};
+use actix_web::{HttpRequest};
 use rusqlite::params;
 use std::sync::Mutex;
 use std::thread;

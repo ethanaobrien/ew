@@ -1,7 +1,6 @@
-use json::{object, JsonValue};
-use actix_web::{HttpResponse, HttpRequest};
+use json::{JsonValue};
+use actix_web::{HttpRequest};
 
-use crate::router::global;
 use crate::encryption;
 
 pub fn error(req: HttpRequest, body: String) -> Option<JsonValue> {

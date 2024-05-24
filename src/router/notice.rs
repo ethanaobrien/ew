@@ -1,7 +1,6 @@
 use json::{object, array, JsonValue};
-use actix_web::{HttpResponse, HttpRequest};
+use actix_web::{HttpRequest};
 
-use crate::router::global;
 
 //todo
 pub fn reward(req: HttpRequest) -> Option<JsonValue> {

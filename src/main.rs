@@ -120,14 +120,14 @@ fn api_req(req: HttpRequest, body: String) -> HttpResponse {
             "server_time": global::timestamp(),
             "data": resp.unwrap()
         };
-        return global::send(rv, uid);
+        global::send(rv, uid)
     } else {
         let rv = object!{
             "code": 2,//Idontnermemrmemremremermrme
             "server_time": global::timestamp(),
             "data": ""
         };
-        return global::send(rv, uid);
+        global::send(rv, uid)
     }
 }
 

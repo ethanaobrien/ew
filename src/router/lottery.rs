@@ -1,5 +1,5 @@
 use json::{array, object, JsonValue};
-use actix_web::{HttpResponse, HttpRequest};
+use actix_web::{HttpRequest};
 use rand::Rng;
 
 use crate::router::{global, userdata, items, databases};

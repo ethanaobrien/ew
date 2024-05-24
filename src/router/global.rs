@@ -1,8 +1,7 @@
 use json::{array, object, JsonValue};
 use actix_web::{
     HttpResponse,
-    http::header::{HeaderValue, HeaderMap},
-    HttpRequest
+    http::header::{HeaderValue, HeaderMap}
 };
 use std::time::{SystemTime, UNIX_EPOCH};
 use base64::{Engine as _, engine::general_purpose};

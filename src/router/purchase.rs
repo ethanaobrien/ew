@@ -1,7 +1,6 @@
 use json::{object, JsonValue};
-use actix_web::{HttpResponse, HttpRequest};
+use actix_web::{HttpRequest};
 
-use crate::router::global;
 
 pub fn purchase(req: HttpRequest) -> Option<JsonValue> {
     Some(object!{

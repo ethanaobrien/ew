@@ -1,5 +1,5 @@
 use json::{object, array, JsonValue};
-use actix_web::{HttpResponse, HttpRequest};
+use actix_web::{HttpRequest};
 use rand::Rng;
 use lazy_static::lazy_static;
 

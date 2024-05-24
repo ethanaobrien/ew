@@ -1,5 +1,5 @@
 use json::{JsonValue, object};
-use actix_web::{HttpResponse, HttpRequest, http::header::HeaderValue};
+use actix_web::{HttpRequest, http::header::HeaderValue};
 
 use crate::encryption;
 use crate::router::{userdata, global};
