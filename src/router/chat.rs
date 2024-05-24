@@ -31,7 +31,7 @@ pub fn home(req: HttpRequest, body: String) -> Option<JsonValue> {
     })
 }
 
-pub fn start(req: HttpRequest, _body: String) -> Option<JsonValue> {
+pub fn start(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(object!{"select_talk_id_list":[],"get_item_list":[],"is_read":0})
 }
 

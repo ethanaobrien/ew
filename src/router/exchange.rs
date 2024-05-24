@@ -4,7 +4,7 @@ use actix_web::{HttpRequest};
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn exchange(req: HttpRequest) -> Option<JsonValue> {
+pub fn exchange(_req: HttpRequest) -> Option<JsonValue> {
     Some(object!{"exchange_list":[]})
 }
 

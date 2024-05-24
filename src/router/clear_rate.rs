@@ -201,11 +201,11 @@ fn get_clearrate_json() -> JsonValue {
     }
 }
 
-pub fn clearrate(req: HttpRequest) -> Option<JsonValue> {
+pub fn clearrate(_req: HttpRequest) -> Option<JsonValue> {
     Some(get_clearrate_json())
 }
 
-pub fn ranking(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
     

@@ -4,7 +4,7 @@ use actix_web::{HttpRequest};
 use crate::router::{global, userdata, items};
 use crate::encryption;
 
-pub fn events(req: HttpRequest) -> Option<JsonValue> {
+pub fn events(_req: HttpRequest) -> Option<JsonValue> {
     Some(object!{
         "serial_code_list": []
     })
