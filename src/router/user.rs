@@ -196,7 +196,7 @@ pub fn code_to_uid(code: String) -> String {
         .replace('M', "0")
 }
 
-pub fn get_migration_code(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn get_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let code = uid_to_code(body["user_id"].to_string());
@@ -218,7 +218,7 @@ pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
     Some(array![])
 }
 
-pub fn verify_migration_code(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn verify_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
@@ -238,7 +238,7 @@ pub fn verify_migration_code(req: HttpRequest, body: String) -> Option<JsonValue
         "free": data_user["gem"]["free"].clone()
     })
 }
-pub fn request_migration_code(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn request_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
@@ -253,7 +253,7 @@ pub fn request_migration_code(req: HttpRequest, body: String) -> Option<JsonValu
         "twxuid": user["login_token"].to_string()
     })
 }
-pub fn migration(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn migration(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::get_name_and_rank(body["user_id"].to_string().parse::<i64>().unwrap());
@@ -292,7 +292,7 @@ pub fn sif(req: HttpRequest) -> Option<JsonValue> {
     })
 }
 
-pub fn sifas_migrate(req: HttpRequest, _body: String) -> Option<JsonValue> {
+pub fn sifas_migrate(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(object!{
         "ss_migrate_status": 1,
         "user": null,
@@ -327,7 +327,7 @@ pub fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
     */
 }
 
-pub fn getregisteredplatformlist(req: HttpRequest, _body: String) -> Option<JsonValue> {
+pub fn getregisteredplatformlist(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(object!{
         "google": 0,
         "apple": 0,

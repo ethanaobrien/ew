@@ -7,7 +7,7 @@ use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 use crate::router::clear_rate::live_completed;
 
-pub fn retire(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn retire(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
@@ -19,7 +19,7 @@ pub fn retire(req: HttpRequest, body: String) -> Option<JsonValue> {
     })
 }
 
-pub fn reward(req: HttpRequest, _body: String) -> Option<JsonValue> {
+pub fn reward(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(object!{
         "ensured_list": [],
         "random_list": []
@@ -164,7 +164,7 @@ pub fn guest(req: HttpRequest, body: String) -> Option<JsonValue> {
     })
 }
 
-pub fn mission(req: HttpRequest, _body: String) -> Option<JsonValue> {
+pub fn mission(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     //todo
     Some(object!{
         "score_ranking": "",
@@ -173,11 +173,11 @@ pub fn mission(req: HttpRequest, _body: String) -> Option<JsonValue> {
     })
 }
 
-pub fn start(req: HttpRequest, _body: String) -> Option<JsonValue> {
+pub fn start(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(array![])
 }
 
-pub fn event_start(req: HttpRequest, _body: String) -> Option<JsonValue> {
+pub fn event_start(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(array![])
 }
 

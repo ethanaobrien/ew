@@ -2,7 +2,7 @@ use json::{object, JsonValue};
 use actix_web::{HttpRequest};
 
 
-pub fn purchase(req: HttpRequest) -> Option<JsonValue> {
+pub fn purchase(_req: HttpRequest) -> Option<JsonValue> {
     Some(object!{
         "product_list": [//Client will error if this is an empty array
             {

@@ -5,7 +5,7 @@ use rand::Rng;
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn tutorial(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn tutorial(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let id = body["master_character_id"].to_string();
@@ -93,7 +93,7 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     rv
 }
 
-pub fn lottery(req: HttpRequest) -> Option<JsonValue> {
+pub fn lottery(_req: HttpRequest) -> Option<JsonValue> {
     Some(object!{
         "lottery_list": []
     })

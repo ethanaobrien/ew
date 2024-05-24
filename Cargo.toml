@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 actix-web = { version = "4.5.1", features = [ "openssl" ] }
 rusqlite = { version = "0.30.0", features = ["bundled"] }
-openssl = { version = "0.10" }
+openssl = { version = "0.10", features = ["vendored"] }
 base64 = "0.21.5"
 json = "0.12.4"
 rand = "0.8.5"
