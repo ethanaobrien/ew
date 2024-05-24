@@ -33,7 +33,7 @@ fn setup_tables(conn: &SQLite) {
 }
 
 fn update_cert(uid: i64, cert: &str) {
-    if !DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).is_ok() {
+    if DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).is_err() {
         let token = userdata::get_login_token(uid);
         if token != String::new() {
             DATABASE.lock_and_exec(
@@ -69,19 +69,16 @@ fn verify_signature(signature: &[u8], message: &[u8], public_key: &[u8]) -> bool
     let mut verifier = Verifier::new(MessageDigest::sha1(), &pkey).unwrap();
     verifier.update(message).unwrap();
 
-    match verifier.verify(signature) {
-        Ok(_) => true,
-        Err(_) => false,
-    }
+    verifier.verify(signature).is_ok()
 }
 pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
-    let body = encryption::decrypt_packet(&body).unwrap();
+    let body = encryption::decrypt_packet(body).unwrap();
     let blank_header = HeaderValue::from_static("");
     let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
     let uid = headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
     let version = headers.get("aoharu-client-version").unwrap_or(&blank_header).to_str().unwrap_or("");
     let timestamp = headers.get("aoharu-timestamp").unwrap_or(&blank_header).to_str().unwrap_or("");
-    if uid == "" || login == "" || version == "" || timestamp == "" {
+    if uid.is_empty() || login.is_empty() || version.is_empty() || timestamp.is_empty() {
         return String::new();
     }
     
@@ -90,12 +87,12 @@ pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
     let data = format!("{}{}{}{}{}", uid, "sk1bdzb310n0s9tl", version, timestamp, body);
     let encoded = general_purpose::STANDARD.encode(data.as_bytes());
     
-    let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
+    let decoded = general_purpose::STANDARD.decode(login).unwrap_or_default();
     
-    if verify_signature(&decoded, &encoded.as_bytes(), &cert.as_bytes()) {
-        return DATABASE.lock_and_select("SELECT uuid FROM users WHERE user_id=?1;", params!(uid)).unwrap();
+    if verify_signature(&decoded, encoded.as_bytes(), cert.as_bytes()) {
+        DATABASE.lock_and_select("SELECT uuid FROM users WHERE user_id=?1;", params!(uid)).unwrap()
     } else {
-        return String::new();
+        String::new()
     }
 }
 
@@ -114,7 +111,7 @@ fn rot13(input: &str) -> String {
 fn decrypt_transfer_password(password: &str) -> String {
     let reversed = password.chars().rev().collect::<String>();
     let rot = rot13(&reversed);
-    let decoded = general_purpose::STANDARD.decode(rot).unwrap_or(vec![]);
+    let decoded = general_purpose::STANDARD.decode(rot).unwrap_or_default();
     
     String::from_utf8_lossy(&decoded).to_string()
 }
@@ -178,7 +175,7 @@ pub fn uid(req: HttpRequest) -> HttpResponse {
     let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
     if let Some(uid_data2) = uid_data.get(1) {
         let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.get(0) {
+        if let Some(uid_str) = uid_data2.first() {
             uid = uid_str.to_string();
         }
     }
@@ -223,7 +220,7 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
     let user = userdata::get_acc_transfer(uid, &body["migration_code"].to_string(), &password);
     
     let resp;
-    if user["success"].as_bool().unwrap() != true || uid == 0 {
+    if !user["success"].as_bool().unwrap() || uid == 0 {
         resp = object!{
             result: "ERR",
             messsage: "User Not Found"
@@ -269,7 +266,7 @@ pub fn balance(req: HttpRequest) -> HttpResponse {
     let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
     if let Some(uid_data2) = uid_data.get(1) {
         let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.get(0) {
+        if let Some(uid_str) = uid_data2.first() {
             uid = uid_str.to_string();
         }
     }
@@ -295,7 +292,7 @@ pub fn migration_code(req: HttpRequest) -> HttpResponse {
     let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
     if let Some(uid_data2) = uid_data.get(1) {
         let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.get(0) {
+        if let Some(uid_str) = uid_data2.first() {
             uid = uid_str.to_string();
         }
     }
@@ -318,7 +315,7 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
     let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
     if let Some(uid_data2) = uid_data.get(1) {
         let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.get(0) {
+        if let Some(uid_str) = uid_data2.first() {
             uid = uid_str.to_string();
         }
     }
@@ -337,7 +334,7 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
 }
 
 fn get_protocol() -> String {
-    if env::args().nth(1).unwrap_or(String::new()) == String::from("https") {
+    if env::args().nth(1).unwrap_or_default() == *"https" {
         return String::from("https");
     }
     String::from("http")
@@ -348,7 +345,7 @@ fn gree_authorize(req: &HttpRequest) -> String {
     
     let blank_header = HeaderValue::from_static("");
     let auth_header = req.headers().get("Authorization").unwrap_or(&blank_header).to_str().unwrap_or("");
-    if auth_header == "" {
+    if auth_header.is_empty() {
         return String::new();
     }
     let auth_header = auth_header.substring(6, auth_header.len());
@@ -366,7 +363,7 @@ fn gree_authorize(req: &HttpRequest) -> String {
     let hostname = req.headers().get("host").unwrap_or(&blank_header).to_str().unwrap_or("");
     let current_url = format!("{}://{}{}", get_protocol(), hostname, req.path());
     let uri = req.uri().to_string();
-    let extra = if uri.contains("?") {
+    let extra = if uri.contains('?') {
         format!("&{}", uri.split('?').nth(1).unwrap_or(""))
     } else { String::new() };
     

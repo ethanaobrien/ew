@@ -21,17 +21,17 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
     let mut user = userdata::get_acc_home(&key);
     
     let itemz;
-    if body["input_code"].to_string() == "SIF2REVIVALREAL!" {
+    if body["input_code"] == "SIF2REVIVALREAL!" {
         itemz = array![items::gift_item_basic(1, 100000, 4, "Another game died... This makes me sad :(", &mut user)];
-    } else if body["input_code"].to_string() == "pweasegivegems11" {
+    } else if body["input_code"] == "pweasegivegems11" {
         itemz = array![items::gift_item_basic(1, 6000, 1, "Only because you asked...", &mut user)];
-    } else if body["input_code"].to_string() == "sleepysleepyslep" {
+    } else if body["input_code"] == "sleepysleepyslep" {
         itemz = array![items::gift_item_basic(15540001, 50, 3, "I am tired", &mut user)];
-    } else if body["input_code"].to_string() == "ilikeganyu!!!!!!" {
+    } else if body["input_code"] == "ilikeganyu!!!!!!" {
         itemz = array![items::gift_item_basic(16005003, 100, 3, "I need more primogems", &mut user)];
-    } else if body["input_code"].to_string() == "serial_code" {
+    } else if body["input_code"] == "serial_code" {
         itemz = array![items::gift_item_basic(17001003, 100, 3, "nyaa~", &mut user)];
-    } else if body["input_code"].to_string() == "ganuy" {
+    } else if body["input_code"] == "ganuy" {
         itemz = array![
             items::gift_item_basic(40010015, 1, 2, "I need more primogem!!!!!!", &mut user),
             items::gift_item_basic(30010015, 1, 2, "I need more primogem!!!!!!", &mut user),
@@ -42,7 +42,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             items::gift_item_basic(40030013, 1, 2, "I need more primogem!!!!!!", &mut user),
             items::gift_item_basic(10070016, 1, 2, "I need more primogem!!!!!!", &mut user)
         ];
-    } else if body["input_code"].to_string() == "kode" {
+    } else if body["input_code"] == "kode" {
         itemz = array![
             items::gift_item_basic(10060018, 1, 2, "meow", &mut user),
             items::gift_item_basic(20050019, 1, 2, "meow", &mut user),
@@ -50,7 +50,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             items::gift_item_basic(10010014, 1, 2, "meow", &mut user),
             items::gift_item_basic(10010015, 1, 2, "meow", &mut user)
         ];
-    } else if body["input_code"].to_string() == "meow" {
+    } else if body["input_code"] == "meow" {
         itemz = array![
             items::gift_item_basic(10010020, 1, 2, "I need more primogem!!!!!!", &mut user),
             items::gift_item_basic(10040016, 1, 2, "I need more primogem!!!!!!", &mut user),
@@ -74,7 +74,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             items::gift_item_basic(40080011, 1, 2, "I need more primogem!!!!!!", &mut user),
             items::gift_item_basic(40090011, 1, 2, "I need more primogem!!!!!!", &mut user)
         ];
-    } else if body["input_code"].to_string() == "HuTao" {
+    } else if body["input_code"] == "HuTao" {
         itemz = array![
             items::gift_item_basic(15500001, 500, 3, "Okay...............", &mut user),
             items::gift_item_basic(15500002, 500, 3, "Okay...............", &mut user),

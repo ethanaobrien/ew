@@ -100,26 +100,26 @@ pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
             "status":0
         }).unwrap();
     } else {
-        if friends["friend_user_id_list"].len() != 0 {
+        if !friends["friend_user_id_list"].is_empty() {
             guest_list.push(global::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends, false)).unwrap();
         }
         let expected: usize = 5;
         if guest_list.len() < expected {
             let mut random = userdata::get_random_uids((expected-guest_list.len()) as i32);
-            let index = random.members().into_iter().position(|r| *r.to_string() == user_id.to_string());
-            if !index.is_none() {
+            let index = random.members().position(|r| *r.to_string() == user_id.to_string());
+            if index.is_some() {
                 random.array_remove(index.unwrap());
             }
             
             for (_i, uid) in random.members().enumerate() {
                 let guest = global::get_user(uid.as_i64().unwrap(), &friends, false);
-                if guest["user"]["friend_request_disabled"].to_string() == "1" || guest.is_empty() {
+                if guest["user"]["friend_request_disabled"] == "1" || guest.is_empty() {
                     continue;
                 }
                 guest_list.push(guest).unwrap();
             }
         }
-        if guest_list.len() == 0 {
+        if guest_list.is_empty() {
             guest_list.push(object!{
                 "user": {
                     "name": "A sad Guest",
@@ -244,7 +244,7 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> Js
     
     let mut has = false;
     for (_i, current) in user["live_list"].members_mut().enumerate() {
-        if current["master_live_id"].to_string() == rv["master_live_id"].to_string() && (current["level"].to_string() == rv["level"].to_string() || data["level"].as_i32().unwrap() == 0) {
+        if current["master_live_id"] == rv["master_live_id"] && (current["level"] == rv["level"] || data["level"].as_i32().unwrap() == 0) {
             has = true;
             if add {
                 rv["clear_count"] = (current["clear_count"].as_i64().unwrap() + 1).into();
@@ -285,7 +285,7 @@ pub fn update_live_mission_data(user: &mut JsonValue, data: &JsonValue) {
     };
     
     for (_i, current) in user["live_mission_list"].members_mut().enumerate() {
-        if current["master_live_id"].to_string() == rv["master_live_id"].to_string() {
+        if current["master_live_id"] == rv["master_live_id"] {
             for (_i, id) in data["clear_master_live_mission_ids"].members().enumerate() {
                 if !current["clear_master_live_mission_ids"].contains(id.as_i32().unwrap()) {
                     current["clear_master_live_mission_ids"].push(id.as_i32().unwrap()).unwrap();
@@ -305,7 +305,7 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
     for (_i, data) in databases::MISSION_DATA.members().enumerate() {
         match data["type"].as_i32()? {
             1 => {
-                if live_info[&format!("score{}", data["value"].to_string())].as_i64()? <= score {
+                if live_info[&format!("score{}", data["value"])].as_i64()? <= score {
                     out.push(data["id"].as_i32()?).ok()?;
                 }
             },
@@ -334,7 +334,7 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
     }
     let mut rv = array![];
     for (_i, current) in user["live_mission_list"].members().enumerate() {
-        if current["master_live_id"].to_string() == live_id.to_string() {
+        if current["master_live_id"] == live_id {
             for (_i, id) in out.members().enumerate() {
                 if !current["clear_master_live_mission_ids"].contains(id.as_i32().unwrap()) {
                     rv.push(id.as_i32().unwrap()).unwrap();
@@ -372,11 +372,11 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, user_mission
 fn get_master_id(id: i64) -> i64 {
     let id = id.to_string();
     let mut masterid = 0;
-    if id.starts_with("2") {
+    if id.starts_with('2') {
         masterid += 9;
-    } else if id.starts_with("3") {
+    } else if id.starts_with('3') {
         masterid += 9 + 9;
-    } else if id.starts_with("4") {
+    } else if id.starts_with('4') {
         masterid += 9 + 9 + 12;
     }
     masterid + id.char_indices().last().unwrap().1.to_string().parse::<i64>().unwrap()
@@ -415,15 +415,15 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
             }
         }
         
-        let mut index = characters_in_deck.members().into_iter().position(|r| r.as_i64().unwrap() == data["id"].as_i64().unwrap());
+        let mut index = characters_in_deck.members().position(|r| r.as_i64().unwrap() == data["id"].as_i64().unwrap());
         if index.is_none() {
-            index = characters_in_deck.members().into_iter().position(|r| r.as_i64().unwrap() == data["master_card_id"].as_i64().unwrap());
+            index = characters_in_deck.members().position(|r| r.as_i64().unwrap() == data["master_card_id"].as_i64().unwrap());
         }
         let exp = BOND_WEIGHT[index.unwrap_or(10)].as_i32().unwrap_or(0) * (lp_used / 10);
         let additional_exp;
         if has.contains(character) {
             additional_exp = 0;
-            let j = has.members().into_iter().position(|r| r.as_i64().unwrap() == character).unwrap_or(10);
+            let j = has.members().position(|r| r.as_i64().unwrap() == character).unwrap_or(10);
             if j != 10 {
                 let start = rv[has_i[j].as_usize().unwrap()]["before_exp"].as_i64().unwrap();
                 let mut bond = start + exp as i64;
@@ -431,7 +431,7 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
                 if bond > rv[has_i[j].as_usize().unwrap()]["exp"].as_i64().unwrap() {
                     let completed = bond >= limit;
                     let mission = items::update_mission_status(mission_id, 0, completed, false, bond - start, missions);
-                    if !mission.is_none() {
+                    if mission.is_some() {
                         completed_missions.push(mission.unwrap()).unwrap();
                     }
                     rv[has_i[j].as_usize().unwrap()]["exp"] = bond.into();
@@ -452,7 +452,7 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
         if !full && additional_exp > 0 {
             let completed = bond >= limit;
             let mission = items::update_mission_status(mission_id, 0, completed, false, bond - start, missions);
-            if !mission.is_none() {
+            if mission.is_some() {
                 completed_missions.push(mission.unwrap()).unwrap();
             }
         }
@@ -493,7 +493,7 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
     let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, 1, &mut user_missions);
     if body["master_live_id"].to_string().len() > 1 {
         let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
-        if id <= 4 && id >= 1 {
+        if (1..=4).contains(&id) {
             let to_push = items::completed_daily_mission(1273009 + id - 1, &mut user_missions);
             for (_i, data) in to_push.members().enumerate() {
                 cleared_missions.push(data.as_i32().unwrap()).unwrap();
@@ -512,34 +512,30 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
         missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap_or(0), body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
     
         if is_full_combo {
-            if !items::advance_mission(1176001, 1, 1, &mut user_missions).is_none() {
+            if items::advance_mission(1176001, 1, 1, &mut user_missions).is_some() {
                 cleared_missions.push(1176001).unwrap();
             }
-            if !items::advance_mission(1176002, 1, 100, &mut user_missions).is_none() {
+            if items::advance_mission(1176002, 1, 100, &mut user_missions).is_some() {
                 cleared_missions.push(1176002).unwrap();
             }
-            if !items::advance_mission(1176003, 1, 200, &mut user_missions).is_none() {
+            if items::advance_mission(1176003, 1, 200, &mut user_missions).is_some() {
                 cleared_missions.push(1176003).unwrap();
             }
-            if !items::advance_mission(1176004, 1, 300, &mut user_missions).is_none() {
+            if items::advance_mission(1176004, 1, 300, &mut user_missions).is_some() {
                 cleared_missions.push(1176004).unwrap();
             }
-            if !items::advance_mission(1176005, 1, 400, &mut user_missions).is_none() {
+            if items::advance_mission(1176005, 1, 400, &mut user_missions).is_some() {
                 cleared_missions.push(1176005).unwrap();
             }
-            if !items::advance_mission(1176006, 1, 500, &mut user_missions).is_none() {
+            if items::advance_mission(1176006, 1, 500, &mut user_missions).is_some() {
                 cleared_missions.push(1176006).unwrap();
             }
         }
-        if is_perfect {
-            if !items::advance_mission(1177001, 1, 1, &mut user_missions).is_none() {
-                cleared_missions.push(1177001).unwrap();
-            }
+        if is_perfect && items::advance_mission(1177001, 1, 1, &mut user_missions).is_some() {
+            cleared_missions.push(1177001).unwrap();
         }
-        if is_perfect && body["level"].as_i32().unwrap() == 4 {
-            if !items::advance_mission(1177002, 1, 1, &mut user_missions).is_none() {
-                cleared_missions.push(1177002).unwrap();
-            }
+        if is_perfect && body["level"].as_i32().unwrap() == 4 && items::advance_mission(1177002, 1, 1, &mut user_missions).is_some() {
+            cleared_missions.push(1177002).unwrap();
         }
     }
     

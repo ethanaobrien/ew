@@ -11,11 +11,11 @@ pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
     let id = body["master_character_id"].to_string();
     let user = &id[id.len() - 2..].parse::<i32>().unwrap();
     let mut lotteryid = 9110000;
-    if id.starts_with("2") {
+    if id.starts_with('2') {
         lotteryid += 9; //muse
-    } else if id.starts_with("3") {
+    } else if id.starts_with('3') {
         lotteryid += 9 + 9; //aquors
-    } else if id.starts_with("4") {
+    } else if id.starts_with('4') {
         lotteryid += 9 + 9 + 12; //nijigasaki
     }
     lotteryid += user;
@@ -52,7 +52,7 @@ fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::T
     let mut random_id = 0;
     while random_id == 0 {
         let card = rng.gen_range(1..databases::POOL[lottery_id.to_string()][databases::POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
-        if !get_card_master_id(lottery_id.to_string(), card.to_string()).is_none() {
+        if get_card_master_id(lottery_id.to_string(), card.to_string()).is_some() {
             random_id = card;
             break;
         }
@@ -67,7 +67,7 @@ fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::T
 }
 
 fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
-    let total_ratio: i64 = databases::RARITY[id.to_string()].members().into_iter().map(|item| if item["ensured"].as_i32().unwrap() == 1 { 0 } else { item["ratio"].as_i64().unwrap() }).sum();
+    let total_ratio: i64 = databases::RARITY[id.to_string()].members().map(|item| if item["ensured"].as_i32().unwrap() == 1 { 0 } else { item["ratio"].as_i64().unwrap() }).sum();
     let mut rng = rand::thread_rng();
     let mut rv = array![];
     let mut promised = false;
@@ -75,7 +75,7 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     if count > 1 {
         for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
             if item["ensured"].as_i32().unwrap() == 1 {
-                get_random_card(&item, &mut rv, &mut rng);
+                get_random_card(item, &mut rv, &mut rng);
                 promised = true;
                 break;
             }
@@ -90,7 +90,7 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
         for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
             cumulative_ratio += item["ratio"].as_i64().unwrap();
             if random_number <= cumulative_ratio {
-                get_random_card(&item, &mut rv, &mut rng);
+                get_random_card(item, &mut rv, &mut rng);
                 break;
             }
         }

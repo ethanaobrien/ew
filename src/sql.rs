@@ -83,7 +83,7 @@ impl SQLite {
             match self.engine.lock() {
                 Ok(conn) => {
                     let mut stmt = conn.prepare("SELECT * FROM lives WHERE live_id=?1")?;
-                    return Ok(stmt.query_row(params!(id), |row| {
+                    return stmt.query_row(params!(id), |row| {
                         Ok(Live {
                             live_id: row.get(0)?,
                             normal_failed: row.get(1)?,
@@ -95,7 +95,7 @@ impl SQLite {
                             master_failed: row.get(7)?,
                             master_pass: row.get(8)?,
                         })
-                    })?);
+                    });
                 }
                 Err(_) => {
                     std::thread::sleep(std::time::Duration::from_millis(self.sleep_duration));

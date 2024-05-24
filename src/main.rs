@@ -172,7 +172,7 @@ macro_rules! include_file {
     ( $s:expr ) => {
         {
             let file = include_flate_codegen::deflate_file!($s);
-            let ret = crate::decode(file);
+            let ret = $crate::decode(file);
             std::string::String::from_utf8(ret).unwrap()
         }
     };

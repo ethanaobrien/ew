@@ -81,19 +81,19 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValu
     if data.is_empty() {
         return false;
     }
-    if data["reward_type"].to_string() == "1" {
+    if data["reward_type"] == "1" {
         // basically primogems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return !give_primogems(data["amount"].as_i64().unwrap(), user);
-    } else if data["reward_type"].to_string() == "2" {
+    } else if data["reward_type"] == "2" {
         //character
         give_character(data["value"].to_string(), user, missions, clear_missions);
         return true;
-    } else if data["reward_type"].to_string() == "3" {
+    } else if data["reward_type"] == "3" {
         return !give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
-    } else if data["reward_type"].to_string() == "4" {
+    } else if data["reward_type"] == "4" {
         // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return !give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user, missions, clear_missions);
-    } else if data["reward_type"].to_string() == "8" {
+    } else if data["reward_type"] == "8" {
         // title
         let title = data["value"].as_i64().unwrap();
         if !user["master_title_ids"].contains(title) {
@@ -101,8 +101,8 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValu
         }
         return true;
     }
-    println!("Redeeming reward not implemented for reward type {}", data["reward_type"].to_string());
-    return false;
+    println!("Redeeming reward not implemented for reward type {}", data["reward_type"]);
+    false
 }
 pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     give_gift(&object!{
@@ -181,7 +181,7 @@ pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) -> JsonVa
         return to_push;
     }
     user["home"]["gift_list"].push(to_push.clone()).unwrap();
-    return to_push;
+    to_push
 }
 
 fn random_number(lowest: usize, highest: usize) -> usize {
@@ -234,7 +234,7 @@ pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
 // false - already has
 pub fn give_character(id: String, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     for (_i, data) in user["card_list"].members().enumerate() {
-        if data["master_card_id"].to_string() == id || data["id"].to_string() == id {
+        if data["master_card_id"] == id || data["id"] == id {
             give_item(19100001, 50, user);
             return false;
         }
@@ -264,14 +264,14 @@ pub fn get_user_rank_data(exp: i64) -> JsonValue {
             return databases::RANKS[i - 1].clone();
         }
     }
-    return databases::RANKS[databases::RANKS.len() - 1].clone();
+    databases::RANKS[databases::RANKS.len() - 1].clone()
 }
 
 pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue, rv: &mut JsonValue) {
     let current_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
     user["user"]["exp"] = (user["user"]["exp"].as_i32().unwrap() + amount).into();
     let new_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
-    if current_rank["rank"].to_string() != new_rank["rank"].to_string() {
+    if current_rank["rank"] != new_rank["rank"] {
         user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i64().unwrap() + new_rank["maxLp"].as_i64().unwrap()).into();
         user["stamina"]["last_updated_time"] = global::timestamp().into();
         
@@ -315,7 +315,7 @@ pub fn update_mission_status_multi(master_mission_id: JsonValue, expire: u64, co
     let mut rv = array![];
     for (_i, mission) in master_mission_id.members().enumerate() {
         let val = update_mission_status(mission.as_i64().unwrap(), expire, completed, claimed, advance, missions);
-        if !val.is_none() {
+        if val.is_some() {
             rv.push(val.unwrap()).unwrap();
         }
     }
@@ -363,13 +363,11 @@ pub fn advance_variable_mission(min: i64, max: i64, count: i64, missions: &mut J
             break;
         }
         if mission_info["conditionNumber"].as_i64().unwrap() > mission_status["progress"].as_i64().unwrap() + count {
-            if !update_mission_status(i, 0, false, false, count, missions).is_none() {
+            if update_mission_status(i, 0, false, false, count, missions).is_some() {
                 rv.push(i).unwrap();
             }
-        } else {
-            if !update_mission_status(i, 0, true, false, count, missions).is_none() {
-                rv.push(i).unwrap();
-            }
+        } else if update_mission_status(i, 0, true, false, count, missions).is_some() {
+            rv.push(i).unwrap();
         }
         break;
     }
@@ -388,7 +386,7 @@ pub fn advance_mission(id: i64, count: i64, max: i64, missions: &mut JsonValue) 
     }
     let completed = new == max;
     let advanced = new - mission["progress"].as_i64().unwrap();
-    if !update_mission_status(id, 0, completed, false, advanced, missions).is_none() {
+    if update_mission_status(id, 0, completed, false, advanced, missions).is_some() {
         return Some(id);
     }
     None
@@ -412,15 +410,13 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     }
     
     if mission["progress"].as_i32().unwrap() == 4 {
-        if !update_mission_status(1224003, 0, true, false, 1, missions).is_none() {
+        if update_mission_status(1224003, 0, true, false, 1, missions).is_some() {
             rv.push(1224003).unwrap();
         }
-    } else {
-        if !update_mission_status(1224003, 0, false, false, 1, missions).is_none() {
-            rv.push(1224003).unwrap();
-        }
+    } else if update_mission_status(1224003, 0, false, false, 1, missions).is_some() {
+        rv.push(1224003).unwrap();
     }
-    if !update_mission_status(id, next_reset, true, false, 1, missions).is_none() {
+    if update_mission_status(id, next_reset, true, false, 1, missions).is_some() {
         rv.push(id).unwrap();
     }
     rv

@@ -5,7 +5,7 @@ use crate::encryption;
 use crate::router::{userdata, global};
 
 fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
-    if body["asset_version"].to_string() != global::ASSET_VERSION && body["asset_version"].to_string() != global::ASSET_VERSION_JP {
+    if body["asset_version"] != global::ASSET_VERSION && body["asset_version"] != global::ASSET_VERSION_JP {
         println!("Warning! Asset version is not what was expected. (Did the app update?)");
     }
     
@@ -13,20 +13,18 @@ fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
     let platform = req.headers().get("aoharu-platform").unwrap_or(&blank_header).to_str().unwrap_or("");
     let android = !platform.to_lowercase().contains("iphone");
     
-    let hash = if body["asset_version"].to_string() == global::ASSET_VERSION_JP {
+    let hash = if body["asset_version"] == global::ASSET_VERSION_JP {
         if android {
             global::ASSET_HASH_ANDROID_JP
         } else {
             global::ASSET_HASH_IOS_JP
         }
+    } else if android {
+        global::ASSET_HASH_ANDROID
     } else {
-        if android {
-            global::ASSET_HASH_ANDROID
-        } else {
-            global::ASSET_HASH_IOS
-        }
+        global::ASSET_HASH_IOS
     };
-    return hash.to_string();
+    hash.to_string()
 }
 
 pub fn asset_hash(req: HttpRequest, body: String) -> HttpResponse {

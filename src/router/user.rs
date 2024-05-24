@@ -72,10 +72,10 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
     for (_i, gift_id) in body["gift_ids"].members().enumerate() {
         let mut to_remove = 0;
         for (j, data) in user["home"]["gift_list"].members_mut().enumerate() {
-            if data["id"].to_string() != gift_id.to_string() {
+            if data["id"] != *gift_id {
                 continue;
             }
-            if !items::give_gift(&data, &mut userr, &mut missions, &mut cleared_missions) {
+            if !items::give_gift(data, &mut userr, &mut missions, &mut cleared_missions) {
                 failed.push(gift_id.clone()).unwrap();
                 break;
             }
@@ -192,33 +192,33 @@ pub fn announcement(req: HttpRequest) -> HttpResponse {
 
 pub fn uid_to_code(uid: String) -> String {
     //just replace uid with numbers because im too lazy to have a real database and this is close enough anyways
-    return uid
-        .replace("1", "A")
-        .replace("2", "G")
-        .replace("3", "W")
-        .replace("4", "Q")
-        .replace("5", "Y")
-        .replace("6", "6")
-        .replace("7", "I")
-        .replace("8", "P")
-        .replace("9", "U")
-        .replace("0", "M")
-        + "7";
+    uid
+        .replace('1', "A")
+        .replace('2', "G")
+        .replace('3', "W")
+        .replace('4', "Q")
+        .replace('5', "Y")
+        .replace('6', "6")
+        .replace('7', "I")
+        .replace('8', "P")
+        .replace('9', "U")
+        .replace('0', "M")
+        + "7"
 }
 pub fn code_to_uid(code: String) -> String {
     //just replace uid with numbers because im too lazy to have a real database and this is close enough anyways
-    return code
-        .replace("7", "")
-        .replace("A", "1")
-        .replace("G", "2")
-        .replace("W", "3")
-        .replace("Q", "4")
-        .replace("Y", "5")
-        .replace("6", "6")
-        .replace("I", "7")
-        .replace("P", "8")
-        .replace("U", "9")
-        .replace("M", "0");
+    code
+        .replace('7', "")
+        .replace('A', "1")
+        .replace('G', "2")
+        .replace('W', "3")
+        .replace('Q', "4")
+        .replace('Y', "5")
+        .replace('6', "6")
+        .replace('I', "7")
+        .replace('P', "8")
+        .replace('U', "9")
+        .replace('M', "0")
 }
 
 pub fn get_migration_code(req: HttpRequest, body: String) -> HttpResponse {
@@ -260,7 +260,7 @@ pub fn verify_migration_code(req: HttpRequest, body: String) -> HttpResponse {
     
     let user = userdata::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
     
-    if user["success"].as_bool().unwrap() == false || uid == 0 {
+    if !user["success"].as_bool().unwrap() || uid == 0 {
         let resp = object!{
             "code": 2,
             "server_time": global::timestamp(),
@@ -290,7 +290,7 @@ pub fn request_migration_code(req: HttpRequest, body: String) -> HttpResponse {
     
     let user = userdata::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
     
-    if user["success"].as_bool().unwrap() != true || uid == 0 {
+    if !user["success"].as_bool().unwrap() || uid == 0 {
         let resp = object!{
             "code": 2,
             "server_time": global::timestamp(),
@@ -448,15 +448,15 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     
     let cardstoreward: JsonValue;
     let mut masterid = 3000000;
-    if id.starts_with("1") {
+    if id.starts_with('1') {
         cardstoreward = array![10010001, 10020001, 10030001, 10040001, 10050001, 10060001, 10070001, 10080001, 10090001]; //muse
-    } else if id.starts_with("2") {
+    } else if id.starts_with('2') {
         cardstoreward = array![20010001, 20020001, 20030001, 20040001, 20050001, 20060001, 20070001, 20080001, 20090001]; //aqours
         masterid += 9; //muse
-    } else if id.starts_with("3") {
+    } else if id.starts_with('3') {
         cardstoreward = array![30010001, 30020001, 30030001, 30040001, 30050001, 30060001, 30070001, 30080001, 30090001, 30100001, 30110001]; //nijigasaki
         masterid += 9 + 9; //aqours
-    } else if id.starts_with("4") {
+    } else if id.starts_with('4') {
         cardstoreward = array![40010001, 40020001, 40030001, 40040001, 40050001, 40060001, 40070001, 40080001, 40090001]; //liella
         masterid += 9 + 9 + 12; //nijigasaki
     } else {

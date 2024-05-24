@@ -12,7 +12,7 @@ use crate::router::{userdata, items};
 fn get_login_token(req: &HttpRequest) -> Option<String> {
     let blank_header = HeaderValue::from_static("");
     let cookies = req.headers().get("Cookie").unwrap_or(&blank_header).to_str().unwrap_or("");
-    if cookies == "" {
+    if cookies.is_empty() {
         return None;
     }
     return Some(cookies.split("ew_token=").last().unwrap_or("").split(';').collect::<Vec<_>>()[0].to_string());
@@ -117,7 +117,7 @@ pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
 
 pub fn logout(req: HttpRequest) -> HttpResponse {
     let token = get_login_token(&req);
-    if !token.is_none() {
+    if token.is_some() {
         userdata::webui_logout(&token.unwrap());
     }
     let resp = object!{
@@ -133,9 +133,9 @@ pub fn logout(req: HttpRequest) -> HttpResponse {
 pub fn main(req: HttpRequest) -> HttpResponse {
     if req.path() == "/" {
         let token = get_login_token(&req);
-        if !token.is_none() {
+        if token.is_some() {
             let data = userdata::webui_get_user(&token.unwrap());
-            if !data.is_none() {
+            if data.is_some() {
                 return HttpResponse::Found()
                     .insert_header(("Location", "/home/"))
                     .body("");

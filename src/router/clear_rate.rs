@@ -143,7 +143,7 @@ fn get_json() -> JsonValue {
     let mut ids = array![];
     for (_i, id) in lives.members().enumerate() {
         let info = DATABASE.get_live_data(id.as_i64().unwrap());
-        if !info.is_ok() {
+        if info.is_err() {
             continue;
         }
         let info = info.unwrap();

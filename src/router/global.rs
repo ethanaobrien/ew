@@ -43,31 +43,31 @@ pub fn get_login(headers: &HeaderMap, body: &str) -> String {
     let blank_header = HeaderValue::from_static("");
     
     let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let decoded = general_purpose::STANDARD.decode(login).unwrap_or(vec![]);
-    match get_uuid(&String::from_utf8_lossy(&decoded).to_string()) {
+    let decoded = general_purpose::STANDARD.decode(login).unwrap_or_default();
+    match get_uuid(String::from_utf8_lossy(&decoded).as_ref()) {
         Some(token) => {
-            return token;
+            token
         },
         None => {
             let rv = gree::get_uuid(headers, body);
             assert!(rv != String::new());
-            return rv;
+            rv
         },
-    };
+    }
 }
 
 pub fn timestamp() -> u64 {
     let now = SystemTime::now();
 
     let unix_timestamp = now.duration_since(UNIX_EPOCH).unwrap();
-    return unix_timestamp.as_secs();
+    unix_timestamp.as_secs()
 }
 
 pub fn timestamp_msec() -> u32 {
     let now = SystemTime::now();
 
     let unix_timestamp = now.duration_since(UNIX_EPOCH).unwrap();
-    return unix_timestamp.subsec_nanos();
+    unix_timestamp.subsec_nanos()
 }
 
 pub fn timestamp_since_midnight() -> u64 {
@@ -76,8 +76,8 @@ pub fn timestamp_since_midnight() -> u64 {
 
     let midnight = unix_timestamp.as_secs() % (24 * 60 * 60);
 
-    let rv = unix_timestamp.as_secs() - midnight;
-    rv
+    
+    unix_timestamp.as_secs() - midnight
 }
 
 fn init_time(server_data: &mut JsonValue, token: &str) {
@@ -91,7 +91,7 @@ fn init_time(server_data: &mut JsonValue, token: &str) {
         edited = true;
     }
     if edited {
-        userdata::save_server_data(&token, server_data.clone());
+        userdata::save_server_data(token, server_data.clone());
     }
 }
 
@@ -156,7 +156,7 @@ pub fn get_card(id: i64, user: &JsonValue) -> JsonValue {
             return data.clone();
         }
     }
-    return object!{};
+    object!{}
 }
 
 fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
@@ -168,13 +168,13 @@ fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
         }
         rv.push(to_push).unwrap();
     }
-    return rv;
+    rv
 }
 
 fn get_clear_count(user: &JsonValue, level: i32) -> i64 {
     let mut rv = 0;
     for (_i, current) in user["live_list"].members().enumerate() {
-        if current["level"].to_string() == level.to_string() {
+        if current["level"] == level {
             rv += 1;
         }
     }

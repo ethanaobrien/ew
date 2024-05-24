@@ -74,7 +74,7 @@ fn acc_exists(uid: i64) -> bool {
     DATABASE.lock_and_select("SELECT user_id FROM userdata WHERE user_id=?1", params!(uid)).is_ok()
 }
 fn get_key(auth_key: &str) -> i64 {
-    let uid = get_uid(&auth_key);
+    let uid = get_uid(auth_key);
     let key = if uid == 0 {
         generate_uid()
     } else {
@@ -82,7 +82,7 @@ fn get_key(auth_key: &str) -> i64 {
     };
     
     if !acc_exists(key) {
-        create_acc(key, &auth_key);
+        create_acc(key, auth_key);
     }
     
     key
@@ -160,7 +160,7 @@ fn create_acc(uid: i64, login: &str) {
 
 fn get_uid(token: &str) -> i64 {
     let data = DATABASE.lock_and_select("SELECT user_id FROM tokens WHERE token = ?1;", params!(token));
-    if !data.is_ok() {
+    if data.is_err() {
         return 0;
     }
     let data = data.unwrap();
@@ -170,7 +170,7 @@ fn get_uid(token: &str) -> i64 {
 // Needed by gree
 pub fn get_login_token(uid: i64) -> String {
     let data = DATABASE.lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid));
-    if !data.is_ok() {
+    if data.is_err() {
         return String::new();
     }
     data.unwrap()
@@ -207,7 +207,7 @@ fn cleanup_account(user: &mut JsonValue) {
 }
 
 fn get_data(auth_key: &str, row: &str) -> JsonValue {
-    let key = get_key(&auth_key);
+    let key = get_key(auth_key);
     
     let result = DATABASE.lock_and_select(&format!("SELECT {} FROM {} WHERE user_id=?1", row, row), params!(key));
     
@@ -219,14 +219,14 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
     cleanup_account(&mut user);
     
     items::lp_modification(&mut user, 0, false);
-    return user;
+    user
 }
 
 pub fn get_acc_home(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userhome");
     user["home"]["pending_friend_count"] = get_acc_friends(auth_key)["pending_user_id_list"].len().into();
     
-    return user;
+    user
 }
 pub fn get_acc_missions(auth_key: &str) -> JsonValue {
     get_data(auth_key, "missions")
@@ -258,13 +258,13 @@ pub fn get_acc_eventlogin(auth_key: &str) -> JsonValue {
 }
 
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
-    let key = get_key(&auth_key);
+    let key = get_key(auth_key);
     
     DATABASE.lock_and_exec(&format!("UPDATE {} SET {}=?1 WHERE user_id=?2", row, row), params!(json::stringify(data), key));
 }
 
 pub fn save_acc(auth_key: &str, data: JsonValue) {
-    DATABASE.lock_and_exec("UPDATE userdata SET friend_request_disabled=?1 WHERE user_id=?2", params!(data["user"]["friend_request_disabled"].as_i32().unwrap(), get_key(&auth_key)));
+    DATABASE.lock_and_exec("UPDATE userdata SET friend_request_disabled=?1 WHERE user_id=?2", params!(data["user"]["friend_request_disabled"].as_i32().unwrap(), get_key(auth_key)));
     save_data(auth_key, "userdata", data);
 }
 pub fn save_acc_home(auth_key: &str, data: JsonValue) {
@@ -307,15 +307,15 @@ fn hash_password(password: &str) -> String {
     let hashed_password = hasher.finalize();
 
     let salt_hash = [&salt[..], &hashed_password[..]].concat();
-    general_purpose::STANDARD.encode(&salt_hash)
+    general_purpose::STANDARD.encode(salt_hash)
 }
 
 fn verify_password(password: &str, salted_hash: &str) -> bool {
-    if password == "" || salted_hash == "" {
+    if password.is_empty() || salted_hash.is_empty() {
         return false;
     }
     let bytes = general_purpose::STANDARD.decode(salted_hash);
-    if !bytes.is_ok() {
+    if bytes.is_err() {
         return password == salted_hash;
     }
     let bytes = bytes.unwrap();
@@ -335,7 +335,7 @@ fn verify_password(password: &str, salted_hash: &str) -> bool {
 
 pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
     let data = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token));
-    if !data.is_ok() {
+    if data.is_err() {
         return object!{success: false};
     }
     if verify_password(password, &data.unwrap()) {
@@ -371,7 +371,7 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
     let result = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
     let data = json::parse(&result.unwrap()).unwrap();
     
-    return object!{
+    object!{
         user_name: data["user"]["name"].clone(),
         user_rank: items::get_user_rank_data(data["user"]["exp"].as_i64().unwrap())["rank"].clone() //todo
     }
@@ -414,12 +414,12 @@ pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool, key: &st
     let uid = get_uid(&login_token);
     let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
     let mut friends = json::parse(&friends.unwrap()).unwrap();
-    let index = friends[key].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
-    if !index.is_none() {
+    let index = friends[key].members().position(|r| *r.to_string() == requestor.to_string());
+    if index.is_some() {
         friends[key].array_remove(index.unwrap());
     }
-    let index = friends["request_user_id_list"].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
-    if !index.is_none() {
+    let index = friends["request_user_id_list"].members().position(|r| *r.to_string() == requestor.to_string());
+    if index.is_some() {
         friends["request_user_id_list"].array_remove(index.unwrap());
     }
     if accepted && !friends["friend_user_id_list"].contains(requestor) && friends["friend_user_id_list"].len() < crate::router::friend::FRIEND_LIMIT {
@@ -436,7 +436,7 @@ pub fn friend_request_disabled(uid: i64) -> bool {
     let uid = get_uid(&login_token);
     let user = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
     let user = json::parse(&user.unwrap()).unwrap();
-    user["user"]["friend_request_disabled"].to_string() == "1"
+    user["user"]["friend_request_disabled"] == "1"
 }
 
 pub fn friend_remove(uid: i64, requestor: i64) {
@@ -447,8 +447,8 @@ pub fn friend_remove(uid: i64, requestor: i64) {
     let uid = get_uid(&login_token);
     let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
     let mut friends = json::parse(&friends.unwrap()).unwrap();
-    let index = friends["friend_user_id_list"].members().into_iter().position(|r| *r.to_string() == requestor.to_string());
-    if !index.is_none() {
+    let index = friends["friend_user_id_list"].members().position(|r| *r.to_string() == requestor.to_string());
+    if index.is_some() {
         friends["friend_user_id_list"].array_remove(index.unwrap());
     }
     DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
@@ -479,9 +479,9 @@ fn create_webui_token() -> String {
 
 pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
     create_webui_store();
-    let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or(String::new());
+    let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or_default();
     if !verify_password(password, &pass) {
-        if acc_exists(uid) && pass == "" {
+        if acc_exists(uid) && pass.is_empty() {
             return Err(String::from("Migration token not set. Set token in game settings."));
         }
         return Err(String::from("User/password don't match"));
@@ -516,22 +516,22 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
 }
 
 fn webui_login_token(token: &str) -> Option<String> {
-    let uid = DATABASE.lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).unwrap_or(String::new());
-    if uid == String::new() || token == "" {
+    let uid = DATABASE.lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).unwrap_or_default();
+    if uid == String::new() || token.is_empty() {
         return None;
     }
     let uid = uid.parse::<i64>().unwrap_or(0);
     if uid == 0 {
         return None;
     }
-    let last_login = DATABASE.lock_and_select("SELECT last_login FROM webui WHERE user_id=?1", params!(uid)).unwrap_or(String::new()).parse::<i64>().unwrap_or(0);
+    let last_login = DATABASE.lock_and_select("SELECT last_login FROM webui WHERE user_id=?1", params!(uid)).unwrap_or_default().parse::<i64>().unwrap_or(0);
     let limit = 24 * 60 * 60; //1 day
     //Expired token
     if (global::timestamp() as i64) > last_login + limit {
         DATABASE.lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(uid));
         return None;
     }
-    let login_token = DATABASE.lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid)).unwrap_or(String::new());
+    let login_token = DATABASE.lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid)).unwrap_or_default();
     if login_token == String::new() {
         return None;
     }
@@ -541,11 +541,11 @@ fn webui_login_token(token: &str) -> Option<String> {
 pub fn webui_get_user(token: &str) -> Option<JsonValue> {
     let login_token = webui_login_token(token)?;
     
-    return Some(object!{
+    Some(object!{
         userdata: get_acc(&login_token),
         loginbonus: get_acc_loginbonus(&login_token),
         time: get_server_data(&login_token)["server_time"].clone()
-    });
+    })
 }
 
 pub fn webui_start_loginbonus(bonus_id: i64, token: &str) -> JsonValue {
@@ -566,10 +566,10 @@ pub fn webui_start_loginbonus(bonus_id: i64, token: &str) -> JsonValue {
     }
     save_acc_loginbonus(&login_token, bonuses);
     
-    return object!{
+    object!{
         result: "OK",
         id: bonus_id
-    };
+    }
 }
 
 pub fn set_server_time(time: i64, token: &str) -> JsonValue {
@@ -592,9 +592,9 @@ pub fn set_server_time(time: i64, token: &str) -> JsonValue {
     server_data["server_time"] = time.into();
     save_server_data(&login_token, server_data);
     
-    return object!{
+    object!{
         result: "OK"
-    };
+    }
 }
 
 pub fn webui_logout(token: &str) {

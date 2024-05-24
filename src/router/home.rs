@@ -11,7 +11,7 @@ pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
     let mut user = userdata::get_acc_home(&key);
     
     for (_i, data) in user["home"]["preset_setting"].members_mut().enumerate() {
-        if data["slot"].to_string() == body["slot"].to_string() {
+        if data["slot"] == body["slot"] {
             *data = body.clone();
         }
     }
@@ -28,7 +28,7 @@ pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
 fn check_gifts(user: &mut JsonValue) {
     let mut to_remove = array![];
     for (j, data) in user["home"]["gift_list"].members().enumerate() {
-        if data["is_receive"].to_string() == "1" || data["expire_date_time"].as_u64().unwrap() < global::timestamp() {
+        if data["is_receive"] == "1" || data["expire_date_time"].as_u64().unwrap() < global::timestamp() {
             to_remove.push(j).unwrap();
         }
     }

@@ -6,7 +6,7 @@ use crate::encryption;
 
 fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_multiplier: i64, evolve: bool) -> JsonValue {
     for (i, data) in user["card_list"].members().enumerate() {
-        if data["id"].to_string() == body["id"].to_string() {
+        if data["id"] == body["id"] {
             let materials = &body["material_item_list"];
             let mut card = data.clone();
             let mut money: i64 = 0;
@@ -32,7 +32,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
             return card;
         }
     }
-    return object!{};
+    object!{}
 }
 
 pub fn reinforce(req: HttpRequest, body: String) -> HttpResponse {
