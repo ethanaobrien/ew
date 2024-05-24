@@ -1,19 +1,14 @@
-use json::{object, array};
+use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn exchange(req: HttpRequest) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {"exchange_list":[]}
-    };
-    global::send(resp, req)
+pub fn exchange(req: HttpRequest) -> Option<JsonValue> {
+    Some(object!{"exchange_list":[]})
 }
 
-pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
+pub fn exchange_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -36,18 +31,13 @@ pub fn exchange_post(req: HttpRequest, body: String) -> HttpResponse {
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, missions);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "exchange": body,
-            "updated_value_list": {
-                "card_list": user["card_list"].clone(),
-                "item_list": user["item_list"].clone(),
-                "point_list": user["point_list"].clone()
-            },
-            "clear_mission_ids": cleared_missions
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "exchange": body,
+        "updated_value_list": {
+            "card_list": user["card_list"].clone(),
+            "item_list": user["item_list"].clone(),
+            "point_list": user["point_list"].clone()
+        },
+        "clear_mission_ids": cleared_missions
+    })
 }

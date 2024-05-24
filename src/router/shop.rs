@@ -1,24 +1,19 @@
-use json::object;
+use json::{object, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{userdata, global, items, databases};
 use crate::encryption;
 
-pub fn shop(req: HttpRequest) -> HttpResponse {
+pub fn shop(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc(&key);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "shop_list": user["shop_list"].clone()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "shop_list": user["shop_list"].clone()
+    })
 }
 
-pub fn buy(req: HttpRequest, body: String) -> HttpResponse {
+pub fn buy(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -32,17 +27,12 @@ pub fn buy(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "gem": user["gem"].clone(),
-            "shop_list": user["shop_list"].clone(),
-            "gift_list": user_home["home"]["gift_list"].clone(),
-            "updated_value_list": {
-                "stamina": user["stamina"].clone()
-            }
+    Some(object!{
+        "gem": user["gem"].clone(),
+        "shop_list": user["shop_list"].clone(),
+        "gift_list": user_home["home"]["gift_list"].clone(),
+        "updated_value_list": {
+            "stamina": user["stamina"].clone()
         }
-    };
-    global::send(resp, req)
+    })
 }

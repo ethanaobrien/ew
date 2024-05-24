@@ -5,7 +5,7 @@ use rand::Rng;
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
+pub fn tutorial(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let id = body["master_character_id"].to_string();
@@ -20,23 +20,18 @@ pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
     }
     lotteryid += user;
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "lottery_list": [
-                {
-                    "master_lottery_id": lotteryid,
-                    "master_lottery_price_number": 1,
-                    "count": 0,
-                    "daily_count": 0,
-                    "last_count_date": ""
-                }
-            ],
-            "item_list": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "lottery_list": [
+            {
+                "master_lottery_id": lotteryid,
+                "master_lottery_price_number": 1,
+                "count": 0,
+                "daily_count": 0,
+                "last_count_date": ""
+            }
+        ],
+        "item_list": []
+    })
 }
 
 fn get_card_master_id(lottery_id: String, lottery_number: String) -> Option<i64> {
@@ -98,18 +93,13 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     rv
 }
 
-pub fn lottery(req: HttpRequest) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "lottery_list": []
-        }
-    };
-    global::send(resp, req)
+pub fn lottery(req: HttpRequest) -> Option<JsonValue> {
+    Some(object!{
+        "lottery_list": []
+    })
 }
 
-pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
+pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     println!("lottery: {}", body);
@@ -179,19 +169,14 @@ pub fn lottery_post(req: HttpRequest, body: String) -> HttpResponse {
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, missions);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "lottery_item_list": lottery_list,
-            "updated_value_list": {
-                "card_list": new_cards,
-                "item_list": user["item_list"].clone()
-            },
-            "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": cleared_missions,
-            "draw_count_list": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "lottery_item_list": lottery_list,
+        "updated_value_list": {
+            "card_list": new_cards,
+            "item_list": user["item_list"].clone()
+        },
+        "gift_list": user2["home"]["gift_list"].clone(),
+        "clear_mission_ids": cleared_missions,
+        "draw_count_list": []
+    })
 }

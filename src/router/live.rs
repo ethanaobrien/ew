@@ -7,33 +7,23 @@ use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 use crate::router::clear_rate::live_completed;
 
-pub fn retire(req: HttpRequest, body: String) -> HttpResponse {
+pub fn retire(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
     }
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "stamina": {},
-            "item_list": [],
-            "event_point_list": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "stamina": {},
+        "item_list": [],
+        "event_point_list": []
+    })
 }
 
-pub fn reward(req: HttpRequest, _body: String) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "ensured_list": [],
-            "random_list": []
-        }
-    };
-    global::send(resp, req)
+pub fn reward(req: HttpRequest, _body: String) -> Option<JsonValue> {
+    Some(object!{
+        "ensured_list": [],
+        "random_list": []
+    })
 }
 
 fn random_number(lowest: usize, highest: usize) -> usize {
@@ -45,7 +35,7 @@ fn random_number(lowest: usize, highest: usize) -> usize {
     rand::thread_rng().gen_range(lowest..highest + 1)
 }
 
-pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
+pub fn guest(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
@@ -169,49 +159,29 @@ pub fn guest(req: HttpRequest, body: String) -> HttpResponse {
         }
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "guest_list": guest_list
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "guest_list": guest_list
+    })
 }
 
-pub fn mission(req: HttpRequest, _body: String) -> HttpResponse {
+pub fn mission(req: HttpRequest, _body: String) -> Option<JsonValue> {
     //todo
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "score_ranking": "",
-            "combo_ranking": "",
-            "clear_count_ranking": ""
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "score_ranking": "",
+        "combo_ranking": "",
+        "clear_count_ranking": ""
+    })
 }
 
-pub fn start(req: HttpRequest, _body: String) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+pub fn start(req: HttpRequest, _body: String) -> Option<JsonValue> {
+    Some(array![])
 }
 
-pub fn event_start(req: HttpRequest, _body: String) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+pub fn event_start(req: HttpRequest, _body: String) -> Option<JsonValue> {
+    Some(array![])
 }
 
-pub fn continuee(req: HttpRequest, body: String) -> HttpResponse {
+pub fn continuee(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
     
@@ -219,12 +189,7 @@ pub fn continuee(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "gem": user["gem"].clone()
-    };
-    global::send(resp, req)
+    Some(user["gem"].clone())
 }
 
 pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> JsonValue {
@@ -558,40 +523,34 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
     userdata::save_acc_missions(&key, user_missions);
     
     object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "gem": user["gem"].clone(),
-            "high_score": live["high_score"].clone(),
-            "item_list": user["item_list"].clone(),
-            "point_list": user["point_list"].clone(),
-            "live": live,
-            "clear_master_live_mission_ids": missions,
-            "user": user["user"].clone(),
-            "stamina": user["stamina"].clone(),
-            "character_list": characters,
-            "reward_list": reward_list,
-            "gift_list": user2["home"]["gift_list"].clone(),
-            "clear_mission_ids": cleared_missions,
-            "event_point_reward_list": [],
-            "ranking_change": [],
-            "event_member": [],
-            "event_ranking_data": []
-        }
+        "gem": user["gem"].clone(),
+        "high_score": live["high_score"].clone(),
+        "item_list": user["item_list"].clone(),
+        "point_list": user["point_list"].clone(),
+        "live": live,
+        "clear_master_live_mission_ids": missions,
+        "user": user["user"].clone(),
+        "stamina": user["stamina"].clone(),
+        "character_list": characters,
+        "reward_list": reward_list,
+        "gift_list": user2["home"]["gift_list"].clone(),
+        "clear_mission_ids": cleared_missions,
+        "event_point_reward_list": [],
+        "ranking_change": [],
+        "event_member": [],
+        "event_ranking_data": []
     }
 }
 
-pub fn end(req: HttpRequest, body: String) -> HttpResponse {
-    let resp = live_end(&req, &body, false);
-    global::send(resp, req)
+pub fn end(req: HttpRequest, body: String) -> Option<JsonValue> {
+    Some(live_end(&req, &body, false))
 }
 
-pub fn skip(req: HttpRequest, body: String) -> HttpResponse {
-    let resp = live_end(&req, &body, true);
-    global::send(resp, req)
+pub fn skip(req: HttpRequest, body: String) -> Option<JsonValue> {
+    Some(live_end(&req, &body, true))
 }
 
-pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
+pub fn event_end(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut resp = live_end(&req, &body, false);
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -637,5 +596,5 @@ pub fn event_end(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc_event(&key, event);
     
-    global::send(resp, req)
+    Some(resp)
 }

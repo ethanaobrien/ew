@@ -3,18 +3,13 @@ use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{global, userdata, items, databases};
 
-pub fn dummy(req: HttpRequest, body: String) -> HttpResponse {
+pub fn dummy(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let user = userdata::get_acc(&key);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "user_id": user["user"]["id"].clone()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "user_id": user["user"]["id"].clone()
+    })
 }
 
 pub fn get_login_bonus_info(id: i64) -> JsonValue {
@@ -52,7 +47,7 @@ fn do_bonus(user_home: &mut JsonValue, bonuses: &mut JsonValue) -> JsonValue {
     to_send
 }
 
-pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
+pub fn bonus(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut user_home = userdata::get_acc_home(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
@@ -72,19 +67,14 @@ pub fn bonus(req: HttpRequest, body: String) -> HttpResponse {
     userdata::save_acc_loginbonus(&key, bonuses.clone());
     userdata::save_acc_home(&key, user_home.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "login_bonus_list": to_send,
-            "start_time": bonuses["start_time"].clone(),
-            "clear_mission_ids": cleared_missions
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "login_bonus_list": to_send,
+        "start_time": bonuses["start_time"].clone(),
+        "clear_mission_ids": cleared_missions
+    })
 }
 
-pub fn bonus_event(req: HttpRequest, body: String) -> HttpResponse {
+pub fn bonus_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut user_home = userdata::get_acc_home(&key);
     
@@ -97,14 +87,9 @@ pub fn bonus_event(req: HttpRequest, body: String) -> HttpResponse {
     userdata::save_acc_eventlogin(&key, bonuses.clone());
     userdata::save_acc_home(&key, user_home.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "login_bonus_list": to_send,
-            "start_time": bonuses["start_time"].clone(),
-            "clear_mission_ids": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "login_bonus_list": to_send,
+        "start_time": bonuses["start_time"].clone(),
+        "clear_mission_ids": []
+    })
 }

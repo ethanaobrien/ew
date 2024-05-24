@@ -1,21 +1,16 @@
-use json::{array, object};
+use json::{array, object, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{global, userdata, items};
 use crate::encryption;
 
-pub fn events(req: HttpRequest) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "serial_code_list": []
-        }
-    };
-    global::send(resp, req)
+pub fn events(req: HttpRequest) -> Option<JsonValue> {
+    Some(object!{
+        "serial_code_list": []
+    })
 }
 
-pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
+pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc_home(&key);
@@ -190,30 +185,20 @@ pub fn serial_code(req: HttpRequest, body: String) -> HttpResponse {
             items::gift_item_basic(15540001, 500, 3, "Okay...............", &mut user),
         ];
     } else {
-        let resp = object!{
-            "code": 0,
-            "server_time": global::timestamp(),
-            "data": {
-                "result_code": 3
-            }
-        };
-        return global::send(resp, req);
+        return Some(object!{
+            "result_code": 3
+        });
     }
     
     if body["receive_flg"].as_i32().unwrap_or(1) == 1 {
         userdata::save_acc_home(&key, user.clone());
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "serial_code_event": {"id":42,"name":"Serial Code Reward","unique_limit_count":0,"min_user_rank":0,"max_user_rank":0,"end_date":null},
-            "reward_list": itemz,
-            "result_code": 0,
-            "gift_list": user["gift_list"].clone(),
-            "excluded_gift_list": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "serial_code_event": {"id":42,"name":"Serial Code Reward","unique_limit_count":0,"min_user_rank":0,"max_user_rank":0,"end_date":null},
+        "reward_list": itemz,
+        "result_code": 0,
+        "gift_list": user["gift_list"].clone(),
+        "excluded_gift_list": []
+    })
 }

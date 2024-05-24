@@ -1,4 +1,4 @@
-use json::{object, array};
+use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{userdata, global};
@@ -6,7 +6,7 @@ use crate::encryption;
 
 pub const FRIEND_LIMIT: usize = 40;
 
-pub fn friend(req: HttpRequest, body: String) -> HttpResponse {
+pub fn friend(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let friends = userdata::get_acc_friends(&key);
@@ -27,29 +27,19 @@ pub fn friend(req: HttpRequest, body: String) -> HttpResponse {
         rv.push(global::get_user(uid.as_i64().unwrap(), &friends, false)).unwrap();
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "friend_list": rv
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "friend_list": rv
+    })
 }
 
-pub fn ids(req: HttpRequest) -> HttpResponse {
+pub fn ids(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let friends = userdata::get_acc_friends(&key);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": friends
-    };
-    global::send(resp, req)
+    Some(friends)
 }
 
-pub fn recommend(req: HttpRequest, body: String) -> HttpResponse {
+pub fn recommend(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
@@ -69,17 +59,12 @@ pub fn recommend(req: HttpRequest, body: String) -> HttpResponse {
         rv.push(user).unwrap();
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            friend_list: rv
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        friend_list: rv
+    })
 }
 
-pub fn search(req: HttpRequest, body: String) -> HttpResponse {
+pub fn search(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let friends = userdata::get_acc_friends(&key);
@@ -87,15 +72,10 @@ pub fn search(req: HttpRequest, body: String) -> HttpResponse {
     let uid = body["user_id"].as_i64().unwrap();
     let user = global::get_user(uid, &friends, false);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": user
-    };
-    global::send(resp, req)
+    Some(user)
 }
 
-pub fn request(req: HttpRequest, body: String) -> HttpResponse {
+pub fn request(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
@@ -110,15 +90,10 @@ pub fn request(req: HttpRequest, body: String) -> HttpResponse {
         userdata::friend_request(uid, user_id);
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+    Some(array![])
 }
 
-pub fn approve(req: HttpRequest, body: String) -> HttpResponse {
+pub fn approve(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
@@ -136,15 +111,10 @@ pub fn approve(req: HttpRequest, body: String) -> HttpResponse {
         userdata::save_acc_friends(&key, friends);
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+    Some(array![])
 }
 
-pub fn cancel(req: HttpRequest, body: String) -> HttpResponse {
+pub fn cancel(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
@@ -158,15 +128,10 @@ pub fn cancel(req: HttpRequest, body: String) -> HttpResponse {
     userdata::friend_request_approve(uid, user_id, false, "pending_user_id_list");
     userdata::save_acc_friends(&key, friends);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+    Some(array![])
 }
 
-pub fn delete(req: HttpRequest, body: String) -> HttpResponse {
+pub fn delete(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
@@ -180,10 +145,5 @@ pub fn delete(req: HttpRequest, body: String) -> HttpResponse {
     userdata::friend_remove(uid, user_id);
     userdata::save_acc_friends(&key, friends);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+    Some(array![])
 }

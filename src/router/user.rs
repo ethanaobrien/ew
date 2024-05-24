@@ -5,7 +5,7 @@ use crate::encryption;
 use crate::router::{userdata, global, items};
 use crate::include_file;
 
-pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
+pub fn deck(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -28,36 +28,26 @@ pub fn deck(req: HttpRequest, body: String) -> HttpResponse {
     }
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "deck": {
-                "slot": body["slot"].clone(),
-                "leader_role": 0,
-                "main_card_ids": body["main_card_ids"].clone()
-            },
-            "clear_mission_ids": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "deck": {
+            "slot": body["slot"].clone(),
+            "leader_role": 0,
+            "main_card_ids": body["main_card_ids"].clone()
+        },
+        "clear_mission_ids": []
+    })
 }
 
-pub fn user(req: HttpRequest) -> HttpResponse {
+pub fn user(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc(&key);
     
     user["lottery_list"] = array![];
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": user
-    };
-    global::send(resp, req)
+    Some(user)
 }
 
-pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
+pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -100,24 +90,19 @@ pub fn gift(req: HttpRequest, body: String) -> HttpResponse {
     userdata::save_acc(&key, userr.clone());
     let userr = userdata::get_acc(&key);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "failed_gift_ids": failed,
-            "updated_value_list": {
-                "gem": userr["gem"].clone(),
-                "item_list": userr["item_list"].clone(),
-                "point_list": userr["point_list"].clone()
-            },
-            "clear_mission_ids": cleared_missions,
-            "reward_list": rewards
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "failed_gift_ids": failed,
+        "updated_value_list": {
+            "gem": userr["gem"].clone(),
+            "item_list": userr["item_list"].clone(),
+            "point_list": userr["point_list"].clone()
+        },
+        "clear_mission_ids": cleared_missions,
+        "reward_list": rewards
+    })
 }
 
-pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
+pub fn user_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -160,18 +145,13 @@ pub fn user_post(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "user": user["user"].clone(),
-            "clear_mission_ids": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "user": user["user"].clone(),
+        "clear_mission_ids": []
+    })
 }
 
-pub fn announcement(req: HttpRequest) -> HttpResponse {
+pub fn announcement(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     
     let mut user = userdata::get_acc_home(&key);
@@ -180,14 +160,9 @@ pub fn announcement(req: HttpRequest) -> HttpResponse {
     
     userdata::save_acc_home(&key, user);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            new_announcement_flag: 0
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        new_announcement_flag: 0
+    })
 }
 
 pub fn uid_to_code(uid: String) -> String {
@@ -221,22 +196,17 @@ pub fn code_to_uid(code: String) -> String {
         .replace('M', "0")
 }
 
-pub fn get_migration_code(req: HttpRequest, body: String) -> HttpResponse {
+pub fn get_migration_code(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let code = uid_to_code(body["user_id"].to_string());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "migrationCode": code
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "migrationCode": code
+    })
 }
 
-pub fn register_password(req: HttpRequest, body: String) -> HttpResponse {
+pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -245,15 +215,10 @@ pub fn register_password(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc_transfer(&code, &body["pass"].to_string());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+    Some(array![])
 }
 
-pub fn verify_migration_code(req: HttpRequest, body: String) -> HttpResponse {
+pub fn verify_migration_code(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
@@ -261,29 +226,19 @@ pub fn verify_migration_code(req: HttpRequest, body: String) -> HttpResponse {
     let user = userdata::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || uid == 0 {
-        let resp = object!{
-            "code": 2,
-            "server_time": global::timestamp(),
-            "message": ""
-        };
-        return global::send(resp, req);
+        return None;
     }
     
     let data_user = userdata::get_acc(&user["login_token"].to_string());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "user_id": uid,
-            "uuid": user["login_token"].to_string(),
-            "charge": data_user["gem"]["charge"].clone(),
-            "free": data_user["gem"]["free"].clone()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "user_id": uid,
+        "uuid": user["login_token"].to_string(),
+        "charge": data_user["gem"]["charge"].clone(),
+        "free": data_user["gem"]["free"].clone()
+    })
 }
-pub fn request_migration_code(req: HttpRequest, body: String) -> HttpResponse {
+pub fn request_migration_code(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
@@ -291,37 +246,22 @@ pub fn request_migration_code(req: HttpRequest, body: String) -> HttpResponse {
     let user = userdata::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || uid == 0 {
-        let resp = object!{
-            "code": 2,
-            "server_time": global::timestamp(),
-            "message": ""
-        };
-        return global::send(resp, req);
+        return None;
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "twxuid": user["login_token"].to_string()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "twxuid": user["login_token"].to_string()
+    })
 }
-pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
+pub fn migration(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::get_name_and_rank(body["user_id"].to_string().parse::<i64>().unwrap());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": user
-    };
-    global::send(resp, req)
+    Some(user)
 }
 
-pub fn detail(req: HttpRequest, body: String) -> HttpResponse {
+pub fn detail(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let friends = userdata::get_acc_friends(&key);
@@ -332,17 +272,12 @@ pub fn detail(req: HttpRequest, body: String) -> HttpResponse {
         let user = global::get_user(uid, &friends, true);
         user_detail_list.push(user).unwrap();
     }
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            user_detail_list: user_detail_list
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        user_detail_list: user_detail_list
+    })
 }
 
-pub fn sif(req: HttpRequest) -> HttpResponse {
+pub fn sif(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc(&key);
     let mut cards = userdata::get_acc_sif(&key);
@@ -352,46 +287,32 @@ pub fn sif(req: HttpRequest) -> HttpResponse {
         cards = json::parse(&include_file!("src/router/userdata/full_sif.json")).unwrap();
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            cards: cards
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        cards: cards
+    })
 }
 
-pub fn sifas_migrate(req: HttpRequest, _body: String) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "ss_migrate_status": 1,
-            "user": null,
-            "gift_list": null,
-            "lock_remain_time": null
-        }
-    };
-    global::send(resp, req)
+pub fn sifas_migrate(req: HttpRequest, _body: String) -> Option<JsonValue> {
+    Some(object!{
+        "ss_migrate_status": 1,
+        "user": null,
+        "gift_list": null,
+        "lock_remain_time": null
+    })
 }
 
-pub fn sif_migrate(req: HttpRequest, body: String) -> HttpResponse {
+pub fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
     user["user"]["sif_user_id"] = 111111111.into();
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "sif_migrate_status": 0,
-            "user": user["user"].clone(),
-            "master_title_ids": user["master_title_ids"].clone()
-        }
-    };
+    Some(object!{
+        "sif_migrate_status": 0,
+        "user": user["user"].clone(),
+        "master_title_ids": user["master_title_ids"].clone()
+    })
     
     
     /*
@@ -404,23 +325,17 @@ pub fn sif_migrate(req: HttpRequest, body: String) -> HttpResponse {
         }
     };
     */
-    global::send(resp, req)
 }
 
-pub fn getregisteredplatformlist(req: HttpRequest, _body: String) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "google": 0,
-            "apple": 0,
-            "twitter": 0
-        }
-    };
-    global::send(resp, req)
+pub fn getregisteredplatformlist(req: HttpRequest, _body: String) -> Option<JsonValue> {
+    Some(object!{
+        "google": 0,
+        "apple": 0,
+        "twitter": 0
+    })
 }
 
-pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
+pub fn initialize(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -460,7 +375,7 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
         cardstoreward = array![40010001, 40020001, 40030001, 40040001, 40050001, 40060001, 40070001, 40080001, 40090001]; //liella
         masterid += 9 + 9 + 12; //nijigasaki
     } else {
-        return global::error_resp(req);
+        return None;
     }
     masterid += userr;
     
@@ -482,10 +397,5 @@ pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     userdata::save_acc_home(&key, user2);
     userdata::save_acc_missions(&key, missions);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": user["user"].clone()
-    };
-    global::send(resp, req)
+    Some(user["user"].clone())
 }

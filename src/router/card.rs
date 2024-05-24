@@ -35,7 +35,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
     object!{}
 }
 
-pub fn reinforce(req: HttpRequest, body: String) -> HttpResponse {
+pub fn reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -44,20 +44,15 @@ pub fn reinforce(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            card: card,
-            item_list: user["item_list"].clone(),
-            point_list: user["point_list"].clone(),
-            clear_mission_ids: []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        card: card,
+        item_list: user["item_list"].clone(),
+        point_list: user["point_list"].clone(),
+        clear_mission_ids: []
+    })
 }
 
-pub fn skill_reinforce(req: HttpRequest, body: String) -> HttpResponse {
+pub fn skill_reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -66,20 +61,15 @@ pub fn skill_reinforce(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            card: card,
-            item_list: user["item_list"].clone(),
-            point_list: user["point_list"].clone(),
-            clear_mission_ids: []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        card: card,
+        item_list: user["item_list"].clone(),
+        point_list: user["point_list"].clone(),
+        clear_mission_ids: []
+    })
 }
 
-pub fn evolve(req: HttpRequest, body: String) -> HttpResponse {
+pub fn evolve(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -88,15 +78,10 @@ pub fn evolve(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            card: card,
-            item_list: user["item_list"].clone(),
-            point_list: user["point_list"].clone(),
-            clear_mission_ids: []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        card: card,
+        item_list: user["item_list"].clone(),
+        point_list: user["point_list"].clone(),
+        clear_mission_ids: []
+    })
 }

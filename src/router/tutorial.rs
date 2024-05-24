@@ -1,10 +1,10 @@
-use json::object;
+use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{userdata, global};
 use crate::encryption;
 
-pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
+pub fn tutorial(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -15,10 +15,5 @@ pub fn tutorial(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+    Some(array![])
 }

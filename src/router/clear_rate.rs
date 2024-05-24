@@ -201,16 +201,11 @@ fn get_clearrate_json() -> JsonValue {
     }
 }
 
-pub fn clearrate(req: HttpRequest) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": get_clearrate_json()
-    };
-    global::send(resp, req)
+pub fn clearrate(req: HttpRequest) -> Option<JsonValue> {
+    Some(get_clearrate_json())
 }
 
-pub fn ranking(req: HttpRequest, body: String) -> HttpResponse {
+pub fn ranking(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
     
@@ -232,12 +227,7 @@ pub fn ranking(req: HttpRequest, body: String) -> HttpResponse {
         }).unwrap();
     }
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "ranking_list": rank
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "ranking_list": rank
+    })
 }

@@ -1,26 +1,16 @@
-use json::object;
+use json::{object, array, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::global;
 
 //todo
-pub fn reward(req: HttpRequest) -> HttpResponse {
+pub fn reward(req: HttpRequest) -> Option<JsonValue> {
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "reward_list": []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "reward_list": []
+    })
 }
 
-pub fn reward_post(req: HttpRequest, _body: String) -> HttpResponse {
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+pub fn reward_post(req: HttpRequest, _body: String) -> Option<JsonValue> {
+    Some(array![])
 }

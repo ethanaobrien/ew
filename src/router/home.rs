@@ -5,7 +5,7 @@ use lazy_static::lazy_static;
 use crate::router::{global, userdata, items};
 use crate::encryption;
 
-pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
+pub fn preset(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc_home(&key);
@@ -17,12 +17,7 @@ pub fn preset(req: HttpRequest, body: String) -> HttpResponse {
     }
     userdata::save_acc_home(&key, user);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": []
-    };
-    global::send(resp, req)
+    Some(array![])
 }
 
 fn check_gifts(user: &mut JsonValue) {
@@ -37,35 +32,25 @@ fn check_gifts(user: &mut JsonValue) {
     }
 }
 
-pub fn gift_get(req: HttpRequest) -> HttpResponse {
+pub fn gift_get(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc_home(&key);
     check_gifts(&mut user);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "gift_list": user["home"]["gift_list"].clone()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "gift_list": user["home"]["gift_list"].clone()
+    })
 }
 
-pub fn preset_get(req: HttpRequest) -> HttpResponse {
+pub fn preset_get(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc(&key);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "master_preset_background_ids": [1,2,3,4,5],
-            "master_preset_foreground_ids": [1,2,3],
-            "card_list": user["card_list"].clone()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "master_preset_background_ids": [1,2,3,4,5],
+        "master_preset_foreground_ids": [1,2,3],
+        "card_list": user["card_list"].clone()
+    })
 }
 
 
@@ -94,7 +79,7 @@ lazy_static! {
     };
 }
 
-pub fn home(req: HttpRequest) -> HttpResponse {
+pub fn home(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc_home(&key);
     
@@ -127,10 +112,5 @@ pub fn home(req: HttpRequest) -> HttpResponse {
     user["home"]["clear_mission_count"] = clear_ct.into();
     user["home"]["not_cleared_daily_mission_count"] = (6 - daily_ct).into();
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": user
-    };
-    global::send(resp, req)
+    Some(user)
 }

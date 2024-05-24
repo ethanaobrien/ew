@@ -11,34 +11,28 @@ use actix_web::{
     HttpRequest,
     web,
     dev::Service,
-    http::header::ContentType
+    http::header::ContentType,
+    http::header::HeaderValue
 };
+use crate::router::global;
+use json::JsonValue;
 
-fn unhandled(req: HttpRequest, body: String) -> HttpResponse {
-    if !req.path().starts_with("/api") {
-        return router::webui::main(req);
-    }
+fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap_or(body));
     }
     println!("Unhandled request: {}", req.path());
-    let resp = object!{
-        "code": 2,
-        "server_time": router::global::timestamp(),
-        "data": ""
-    };
-    router::global::send(resp, req)
+    None
 }
 
-async fn request(req: HttpRequest, body: String) -> HttpResponse {
-    if req.method() == "POST" {
+fn api_req(req: HttpRequest, body: String) -> HttpResponse {
+    if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
+        return router::webui::main(req);
+    }
+    let blank_header = HeaderValue::from_static("");
+    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
+    let resp: Option<JsonValue> = if req.method() == "POST" {
         match req.path() {
-            "/v1.0/auth/initialize" => router::gree::initialize(req, body),
-            "/v1.0/moderate/filtering/commit" => router::gree::moderate_commit(req, body),
-            "/v1.0/auth/authorize" => router::gree::authorize(req, body),
-            "/v1.0/migration/code/verify" => router::gree::migration_verify(req, body),
-            "/v1.0/migration/password/register" => router::gree::migration_password_register(req, body),
-            "/v1.0/migration" => router::gree::migration(req, body),
             "/api/debug/error" => router::debug::error(req, body),
             "/api/start" => router::start::start(req, body),
             "/api/start/assetHash" => router::start::asset_hash(req, body),
@@ -68,7 +62,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/event_star_live/change_target_music" => router::event::change_target_music(req, body),
             "/api/event_star_live/start" => router::live::event_start(req, body),
             "/api/event_star_live/end" => router::live::event_end(req, body),
-//            "/api/event_star_live/skip" => router::live::event_skip(req, body),
+            //            "/api/event_star_live/skip" => router::live::event_skip(req, body),
             "/api/live/start" => router::live::start(req, body),
             "/api/live/end" => router::live::end(req, body),
             "/api/live/skip" => router::live::skip(req, body),
@@ -93,10 +87,6 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/card/skill/reinforce" => router::card::skill_reinforce(req, body),
             "/api/card/evolve" => router::card::evolve(req, body),
             "/api/shop/buy" => router::shop::buy(req, body),
-            "/api/webui/login" => router::webui::login(req, body),
-            "/api/webui/startLoginbonus" => router::webui::start_loginbonus(req, body),
-            "/api/webui/import" => router::webui::import(req, body),
-            "/api/webui/set_time" => router::webui::set_time(req, body),
             "/api/user/getregisteredplatformlist" => router::user::getregisteredplatformlist(req, body),
             "/api/user/sif/migrate" => router::user::sif_migrate(req, body),
             "/api/user/ss/migrate" => router::user::sifas_migrate(req, body),
@@ -106,13 +96,6 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
         }
     } else {
         match req.path() {
-            "/v1.0/auth/x_uid" => router::gree::uid(req),
-            "/v1.0/payment/productlist" => router::gree::payment(req),
-            "/v1.0/payment/subscription/productlist" => router::gree::payment(req),
-            "/v1.0/payment/ticket/status" => router::gree::payment_ticket(req),
-            "/v1.0/moderate/keywordlist" => router::gree::moderate_keyword(req),
-            "/v1.0/migration/code" => router::gree::migration_code(req),
-            "/v1.0/payment/balance" => router::gree::balance(req),
             "/api/user" => router::user::user(req),
             "/api/gift" => router::home::gift_get(req),
             "/api/purchase" => router::purchase::purchase(req),
@@ -125,13 +108,57 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/notice/reward" => router::notice::reward(req),
             "/api/serial_code/events" => router::serial_code::events(req),
             "/api/album/sif" => router::user::sif(req),
-            "/web/announcement" => router::web::announcement(req),
             "/api/home/announcement" => router::user::announcement(req),
             "/api/shop" => router::shop::shop(req),
-            "/api/webui/userInfo" => router::webui::user(req),
-            "/webui/logout" => router::webui::logout(req),
             "/api/exchange" => router::exchange::exchange(req),
             _ => unhandled(req, body)
+        }
+    };
+    if resp.is_some() {
+        let rv = object!{
+            "code": 0,
+            "server_time": global::timestamp(),
+            "data": resp.unwrap()
+        };
+        return global::send(rv, uid);
+    } else {
+        let rv = object!{
+            "code": 2,//Idontnermemrmemremremermrme
+            "server_time": global::timestamp(),
+            "data": ""
+        };
+        return global::send(rv, uid);
+    }
+}
+
+async fn request(req: HttpRequest, body: String) -> HttpResponse {
+    if req.method() == "POST" {
+        match req.path() {
+            "/v1.0/auth/initialize" => router::gree::initialize(req, body),
+            "/v1.0/moderate/filtering/commit" => router::gree::moderate_commit(req, body),
+            "/v1.0/auth/authorize" => router::gree::authorize(req, body),
+            "/v1.0/migration/code/verify" => router::gree::migration_verify(req, body),
+            "/v1.0/migration/password/register" => router::gree::migration_password_register(req, body),
+            "/v1.0/migration" => router::gree::migration(req, body),
+            "/api/webui/login" => router::webui::login(req, body),
+            "/api/webui/startLoginbonus" => router::webui::start_loginbonus(req, body),
+            "/api/webui/import" => router::webui::import(req, body),
+            "/api/webui/set_time" => router::webui::set_time(req, body),
+            _ => api_req(req, body)
+        }
+    } else {
+        match req.path() {
+            "/v1.0/auth/x_uid" => router::gree::uid(req),
+            "/v1.0/payment/productlist" => router::gree::payment(req),
+            "/v1.0/payment/subscription/productlist" => router::gree::payment(req),
+            "/v1.0/payment/ticket/status" => router::gree::payment_ticket(req),
+            "/v1.0/moderate/keywordlist" => router::gree::moderate_keyword(req),
+            "/v1.0/migration/code" => router::gree::migration_code(req),
+            "/v1.0/payment/balance" => router::gree::balance(req),
+            "/web/announcement" => router::web::announcement(req),
+            "/api/webui/userInfo" => router::webui::user(req),
+            "/webui/logout" => router::webui::logout(req),
+            _ => api_req(req, body)
         }
     }
 }

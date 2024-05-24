@@ -1,24 +1,19 @@
-use json::{array, object};
+use json::{array, object, JsonValue};
 use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn mission(req: HttpRequest) -> HttpResponse {
+pub fn mission(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
     let missions = userdata::get_acc_missions(&key);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "mission_list": missions
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "mission_list": missions
+    })
 }
 
-pub fn clear(req: HttpRequest, body: String) -> HttpResponse {
+pub fn clear(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     
     let mut missions = userdata::get_acc_missions(&key);
@@ -30,17 +25,12 @@ pub fn clear(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc_missions(&key, missions);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "clear_mission_ids": body["master_mission_ids"].clone()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "clear_mission_ids": body["master_mission_ids"].clone()
+    })
 }
 
-pub fn receive(req: HttpRequest, body: String) -> HttpResponse {
+pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -79,18 +69,13 @@ pub fn receive(req: HttpRequest, body: String) -> HttpResponse {
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, missions.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "reward_list": rewards,
-            "updated_value_list": {
-                "gem": user["gem"].clone(),
-                "item_list": user["item_list"].clone(),
-                "point_list": user["point_list"].clone()
-            },
-            "mission_list": missions
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "reward_list": rewards,
+        "updated_value_list": {
+            "gem": user["gem"].clone(),
+            "item_list": user["item_list"].clone(),
+            "point_list": user["point_list"].clone()
+        },
+        "mission_list": missions
+    })
 }

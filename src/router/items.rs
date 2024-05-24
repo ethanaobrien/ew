@@ -422,7 +422,7 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     rv
 }
 
-pub fn use_item_req(req: HttpRequest, body: String) -> HttpResponse {
+pub fn use_item_req(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -439,13 +439,8 @@ pub fn use_item_req(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            item_list: user["item_list"].clone(),
-            stamina: user["stamina"].clone()
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        item_list: user["item_list"].clone(),
+        stamina: user["stamina"].clone()
+    })
 }

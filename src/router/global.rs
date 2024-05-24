@@ -95,9 +95,7 @@ fn init_time(server_data: &mut JsonValue, token: &str) {
     }
 }
 
-fn set_time(data: &mut JsonValue, req: HttpRequest) {
-    let blank_header = HeaderValue::from_static("");
-    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
+fn set_time(data: &mut JsonValue, uid: i64) {
     if uid == 0 {
         return;
     }
@@ -115,18 +113,14 @@ fn set_time(data: &mut JsonValue, req: HttpRequest) {
     data["server_time"] = (server_time + time_since_set).into();
 }
 
-pub fn send(mut data: JsonValue, req: HttpRequest) -> HttpResponse {
+pub fn send(mut data: JsonValue, uid: i64) -> HttpResponse {
     //println!("{}", json::stringify(data.clone()));
-    set_time(&mut data, req);
+    set_time(&mut data, uid);
     
     let encrypted = encryption::encrypt_packet(&json::stringify(data)).unwrap();
     let resp = encrypted.into_bytes();
 
     HttpResponse::Ok().body(resp)
-}
-
-pub fn error_resp(req: HttpRequest) -> HttpResponse {
-    send(object!{}, req)
 }
 
 pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) -> bool {

@@ -27,20 +27,15 @@ fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
     hash.to_string()
 }
 
-pub fn asset_hash(req: HttpRequest, body: String) -> HttpResponse {
+pub fn asset_hash(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "asset_hash": get_asset_hash(&req, &body)
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "asset_hash": get_asset_hash(&req, &body)
+    })
 }
 
-pub fn start(req: HttpRequest, body: String) -> HttpResponse {
+pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -51,13 +46,8 @@ pub fn start(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc(&key, user);
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "asset_hash": get_asset_hash(&req, &body),
-            "token": hex::encode("Hello") //what is this?
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        "asset_hash": get_asset_hash(&req, &body),
+        "token": hex::encode("Hello") //what is this?
+    })
 }

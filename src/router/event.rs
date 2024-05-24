@@ -3,7 +3,7 @@ use actix_web::{HttpResponse, HttpRequest};
 
 use crate::router::{userdata, global};
 
-pub fn event(req: HttpRequest, body: String) -> HttpResponse {
+pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut event = userdata::get_acc_event(&key);
     
@@ -11,12 +11,7 @@ pub fn event(req: HttpRequest, body: String) -> HttpResponse {
     
     userdata::save_acc_event(&key, event.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": event["event_data"].clone()
-    };
-    global::send(resp, req)
+    Some(event["event_data"].clone())
 }
 
 fn switch_music(event: &mut JsonValue, music_id: i32, target_score: i64, index: i32) {
@@ -44,36 +39,26 @@ fn init_star_event(event: &mut JsonValue) {
     switch_music(event, 2160, 21991, 5);
 }
 
-pub fn star_event(req: HttpRequest, body: String) -> HttpResponse {
+pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut event = userdata::get_acc_event(&key);
     init_star_event(&mut event);
     
     userdata::save_acc_event(&key, event.clone());
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            star_event: event["event_data"]["star_event"].clone(),
-            gift_list: [],
-            reward_list: []
-        }
-    };
-    global::send(resp, req)
+    Some(object!{
+        star_event: event["event_data"]["star_event"].clone(),
+        gift_list: [],
+        reward_list: []
+    })
 }
 
 //todo - randomize
-pub fn change_target_music(req: HttpRequest, body: String) -> HttpResponse {
+pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let event = userdata::get_acc_event(&key);
     
     //event["star_event"]["music_change_count"] += 1;
     
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": event["event_data"]["star_event"].clone()
-    };
-    global::send(resp, req)
+    Some(event["event_data"]["star_event"].clone())
 }
