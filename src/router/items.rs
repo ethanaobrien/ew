@@ -77,6 +77,16 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool
     false
 }
 
+pub fn use_item(item: &JsonValue, multiplier: i64, user: &mut JsonValue) {
+    if item["consumeType"].as_i32().unwrap() == 1 {
+        remove_gems(user, item["amount"].as_i64().unwrap());
+    } else if item["consumeType"] == 4 {
+        use_itemm(item["value"].as_i64().unwrap(), item["amount"].as_i64().unwrap() * multiplier, user);
+    } else {
+        println!("Unknown consume type {}", item["consumeType"]);
+    }
+}
+
 pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     if data.is_empty() {
         return false;
@@ -141,7 +151,7 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missi
     false
 }
 
-pub fn use_item(master_item_id: i64, amount: i64, user: &mut JsonValue) {
+pub fn use_itemm(master_item_id: i64, amount: i64, user: &mut JsonValue) {
     for (_j, data) in user["item_list"].members_mut().enumerate() {
         if data["master_item_id"].as_i64().unwrap() == master_item_id {
             if data["amount"].as_i64().unwrap() >= amount {
@@ -435,7 +445,11 @@ pub fn use_item_req(req: HttpRequest, body: String) -> Option<JsonValue> {
     } else {
         println!("Use item not implemented for effect type {}", item["effectType"]);
     }
-    use_item(body["id"].as_i64().unwrap(), amount, &mut user);
+    use_item(&object!{
+        value: body["id"].as_i64().unwrap(),
+        amount: 1,
+        consumeType: 4
+    }, amount, &mut user);
     
     userdata::save_acc(&key, user.clone());
     

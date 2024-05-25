@@ -17,11 +17,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     let item = &databases::EXCHANGE_LIST[body["master_exchange_item_id"].to_string()];
     
-    if item["consumeType"].as_i32().unwrap() == 4 {
-        items::use_item(item["value"].as_i64().unwrap(), item["amount"].as_i64().unwrap() * body["count"].as_i64().unwrap(), &mut user);
-    } else {
-        println!("Unknown consume type {}", item["consumeType"]);
-    }
+    items::use_item(item, body["count"].as_i64().unwrap(), &mut user);
     
     let mut gift = databases::EXCHANGE_REWARD[item["masterExchangeItemRewardId"].to_string()].clone();
     gift["reward_type"] = gift["type"].clone();

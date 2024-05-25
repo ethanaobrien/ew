@@ -111,11 +111,11 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let lottery_id = body["master_lottery_id"].as_i64().unwrap();
     let price = databases::PRICE[lottery_id.to_string()][body["master_lottery_price_number"].to_string()].clone();
     
-    if price["consumeType"].as_i32().unwrap() == 1 {
-        items::remove_gems(&mut user, price["price"].as_i64().unwrap());
-    } else if price["consumeType"].as_i32().unwrap() == 4 {
-        items::use_item(price["masterItemId"].as_i64().unwrap(), price["price"].as_i64().unwrap(), &mut user);
-    }
+    items::use_item(&object!{
+        value: price["masterItemId"].clone(),
+        amount: price["price"].clone(),
+        consumeType: price["consumeType"].clone()
+    }, 1, &mut user);
     
     let cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
     

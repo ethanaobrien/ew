@@ -441,7 +441,11 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
     let live;
     
     if skipped {
-        items::use_item(21000001, body["live_boost"].as_i64().unwrap(), &mut user);
+        items::use_item(&object!{
+            value: 21000001,
+            amount: 1,
+            consumeType: 4
+        }, body["live_boost"].as_i64().unwrap(), &mut user);
         live = update_live_data(&mut user, &object!{
             master_live_id: body["master_live_id"].clone(),
             level: 0,

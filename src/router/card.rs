@@ -12,7 +12,11 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
             let mut money: i64 = 0;
             
             for (_j, data2) in materials.members().enumerate() {
-                items::use_item(data2["master_item_id"].as_i64().unwrap(), data2["amount"].as_i64().unwrap(), user);
+                items::use_item(&object!{
+                    value: data2["master_item_id"].as_i64().unwrap(),
+                    amount: 1,
+                    consumeType: 4
+                }, data2["amount"].as_i64().unwrap(), user);
                 let item = &databases::ITEM_INFO[data2["master_item_id"].to_string()];
                 if evolve {
                     card["evolve"] = array![{type: 2,count: 1}];
