@@ -10,8 +10,8 @@ use uuid::Uuid;
 use crate::encryption;
 use crate::router::{userdata, gree};
 
-pub const ASSET_VERSION:          &str = "cb87bc1468c8631a262ff65b2960470b";
-pub const ASSET_HASH_ANDROID:     &str = "8d1a9a5ce285c76b5afa2b5bdf154b9d";
+pub const ASSET_VERSION:          &str = "5260ff15dff8ba0c00ad91400f515f55";
+pub const ASSET_HASH_ANDROID:     &str = "f4bb8ed86ad946ee737be6daab663fd8";
 pub const ASSET_HASH_IOS:         &str = "466d4616d14a8d8a842de06426e084c2";
 
 pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
