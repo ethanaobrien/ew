@@ -300,6 +300,7 @@ pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue, rv: 
 pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: bool, claimed: bool, advance: i64, missions: &mut JsonValue) -> Option<i64> {
     for (_i, mission) in missions.members_mut().enumerate() {
         if mission["master_mission_id"].as_i64().unwrap() == master_mission_id {
+            let was_completed = mission["status"] == 2;
             mission["status"] = if claimed { 3 } else if completed { 2 } else { 1 }.into();
             if expire != 0 {
                 mission["expire_date_time"] = expire.into();
@@ -312,7 +313,7 @@ pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: boo
                 mission["progress"] = (mission["progress"].as_i64().unwrap() + advance).into();
             }
             
-            if completed && !claimed {
+            if completed && !claimed && !was_completed {
                 return Some(master_mission_id);
             }
             return None;
