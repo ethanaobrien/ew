@@ -141,7 +141,7 @@ fn get_json() -> JsonValue {
     let lives = DATABASE.lock_and_select_all("SELECT live_id FROM lives", params!()).unwrap();
     let mut rates = array![];
     let mut ids = array![];
-    for (_i, id) in lives.members().enumerate() {
+    for id in lives.members() {
         let info = DATABASE.get_live_data(id.as_i64().unwrap());
         if info.is_err() {
             continue;

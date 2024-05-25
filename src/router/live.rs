@@ -101,7 +101,7 @@ pub fn guest(req: HttpRequest, body: String) -> Option<JsonValue> {
                 random.array_remove(index.unwrap());
             }
             
-            for (_i, uid) in random.members().enumerate() {
+            for uid in random.members() {
                 let guest = global::get_user(uid.as_i64().unwrap(), &friends, false);
                 if guest["user"]["friend_request_disabled"] == 1 || guest.is_empty() {
                     continue;
@@ -208,7 +208,7 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> Js
     };
     
     let mut has = false;
-    for (_i, current) in user["live_list"].members_mut().enumerate() {
+    for current in user["live_list"].members_mut() {
         if current["master_live_id"] == rv["master_live_id"] && (current["level"] == rv["level"] || data["level"].as_i32().unwrap() == 0) {
             has = true;
             if add {
@@ -249,9 +249,9 @@ pub fn update_live_mission_data(user: &mut JsonValue, data: &JsonValue) {
         "clear_master_live_mission_ids": data["clear_master_live_mission_ids"].clone()
     };
     
-    for (_i, current) in user["live_mission_list"].members_mut().enumerate() {
+    for current in user["live_mission_list"].members_mut() {
         if current["master_live_id"] == rv["master_live_id"] {
-            for (_i, id) in data["clear_master_live_mission_ids"].members().enumerate() {
+            for id in data["clear_master_live_mission_ids"].members() {
                 if !current["clear_master_live_mission_ids"].contains(id.as_i32().unwrap()) {
                     current["clear_master_live_mission_ids"].push(id.as_i32().unwrap()).unwrap();
                 }
@@ -267,7 +267,7 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
     let mut out = array![];
     let combo_info = &databases::MISSION_COMBO_DATA[live_info["masterMusicId"].to_string()];
     
-    for (_i, data) in databases::MISSION_DATA.members().enumerate() {
+    for data in databases::MISSION_DATA.members() {
         match data["type"].as_i32()? {
             1 => {
                 if live_info[&format!("score{}", data["value"])].as_i64()? <= score {
@@ -298,9 +298,9 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
         }
     }
     let mut rv = array![];
-    for (_i, current) in user["live_mission_list"].members().enumerate() {
+    for current in user["live_mission_list"].members() {
         if current["master_live_id"] == live_id {
-            for (_i, id) in out.members().enumerate() {
+            for id in out.members() {
                 if !current["clear_master_live_mission_ids"].contains(id.as_i32().unwrap()) {
                     rv.push(id.as_i32().unwrap()).unwrap();
                 }
@@ -313,7 +313,7 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
 
 fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, user_missions: &mut JsonValue, cleared_missions: &mut JsonValue, multiplier: i64) -> JsonValue {
     let mut rv = array![];
-    for (_i, data) in databases::MISSION_DATA.members().enumerate() {
+    for data in databases::MISSION_DATA.members() {
         if !missions.contains(data["id"].as_i32().unwrap()) {
             continue;
         }
@@ -361,7 +361,7 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
     let mut has_i = array![];
     let characters_in_deck = user["deck_list"][(deck_id - 1) as usize]["main_card_ids"].clone();
     let mut i = 0;
-    for (_i, data) in user["card_list"].members().enumerate() {
+    for data in user["card_list"].members() {
         if !characters_in_deck.contains(data["id"].as_i64().unwrap()) && !characters_in_deck.contains(data["master_card_id"].as_i64().unwrap())  {
             continue;
         }
@@ -432,31 +432,30 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
     rv
 }
 
-fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
+fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     let key = global::get_login(req.headers(), body);
     let body = json::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
-    let live;
-    
-    if skipped {
+
+    let live = if skipped {
         items::use_item(&object!{
             value: 21000001,
             amount: 1,
             consumeType: 4
         }, body["live_boost"].as_i64().unwrap(), &mut user);
-        live = update_live_data(&mut user, &object!{
+        update_live_data(&mut user, &object!{
             master_live_id: body["master_live_id"].clone(),
             level: 0,
             live_score: {
                 score: 1,
                 max_combo: 1
             }
-        }, false);
+        }, false)
     } else {
-        live = update_live_data(&mut user, &body, true);
-    }
+        update_live_data(&mut user, &body, true)
+    };
     
     //1273009, 1273010, 1273011, 1273012
     let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, 1, &mut user_missions);
@@ -464,7 +463,7 @@ fn live_end(req: &HttpRequest, body: &String, skipped: bool) -> JsonValue {
         let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
         if (1..=4).contains(&id) {
             let to_push = items::completed_daily_mission(1273009 + id - 1, &mut user_missions);
-            for (_i, data) in to_push.members().enumerate() {
+            for data in to_push.members() {
                 cleared_missions.push(data.as_i32().unwrap()).unwrap();
             }
         }
@@ -563,7 +562,7 @@ pub fn event_end(req: HttpRequest, body: String) -> Option<JsonValue> {
     let live_id = databases::LIVE_LIST[body["master_live_id"].to_string()]["masterMusicId"].as_i64().unwrap();
     
     let mut all_clear = 1;
-    for (_i, data) in event["event_data"]["star_event"]["star_music_list"].members_mut().enumerate() {
+    for data in event["event_data"]["star_event"]["star_music_list"].members_mut() {
         if data["master_music_id"].as_i64().unwrap() == live_id {
             data["is_cleared"] = 1.into();
         }

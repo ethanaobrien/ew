@@ -20,7 +20,7 @@ pub fn deck(req: HttpRequest, body: String) -> Option<JsonValue> {
         }
     }
     
-    for (_i, data) in user["deck_list"].members_mut().enumerate() {
+    for data in user["deck_list"].members_mut() {
         if data["slot"].as_i32().unwrap() == body["slot"].as_i32().unwrap() {
             data["main_card_ids"] = body["main_card_ids"].clone();
             break;
@@ -59,7 +59,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut rewards = array![];
     let mut failed = array![];
     
-    for (_i, gift_id) in body["gift_ids"].members().enumerate() {
+    for gift_id in body["gift_ids"].members() {
         let mut to_remove = 0;
         for (j, data) in user["home"]["gift_list"].members_mut().enumerate() {
             if data["id"] != *gift_id {
@@ -267,7 +267,7 @@ pub fn detail(req: HttpRequest, body: String) -> Option<JsonValue> {
     let friends = userdata::get_acc_friends(&key);
     
     let mut user_detail_list = array![];
-    for (_i, data) in body["user_ids"].members().enumerate() {
+    for data in body["user_ids"].members() {
         let uid = data.as_i64().unwrap();
         let user = global::get_user(uid, &friends, true);
         user_detail_list.push(user).unwrap();

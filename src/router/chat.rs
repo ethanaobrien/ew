@@ -19,7 +19,7 @@ pub fn home(req: HttpRequest, body: String) -> Option<JsonValue> {
     let chats = userdata::get_acc_chats(&key);
     
     let mut rooms = array![];
-    for (_i, data) in chats.members().enumerate() {
+    for data in chats.members() {
         rooms.push(databases::CHATS[data["chat_id"].to_string()][data["room_id"].to_string()]["id"].clone()).unwrap();
     }
     
@@ -41,7 +41,7 @@ pub fn end(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut missions = userdata::get_acc_missions(&key);
     let mut chats = userdata::get_acc_chats(&key);
     
-    for (_i, data) in chats.members_mut().enumerate() {
+    for data in chats.members_mut() {
         if body["chapter_id"].as_i64().unwrap() == data["chapter_id"].as_i64().unwrap() {
             if data["is_read"].as_i32().unwrap() != 1 {
                 items::advance_mission(1169001, 1, 50, &mut missions);

@@ -219,15 +219,14 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
     
     let user = userdata::get_acc_transfer(uid, &body["migration_code"].to_string(), &password);
     
-    let resp;
-    if !user["success"].as_bool().unwrap() || uid == 0 {
-        resp = object!{
+    let resp = if !user["success"].as_bool().unwrap() || uid == 0 {
+        object!{
             result: "ERR",
             messsage: "User Not Found"
-        };
+        }
     } else {
         let data_user = userdata::get_acc(&user["login_token"].to_string());
-        resp = object!{
+        object!{
             result: "OK",
             src_uuid: user["login_token"].clone(),
             src_x_uid: uid.to_string(),
@@ -235,8 +234,8 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
             balance_charge_gem: data_user["gem"]["charge"].to_string(),
             balance_free_gem: data_user["gem"]["free"].to_string(),
             balance_total_gem: data_user["gem"]["total"].to_string()
-        };
-    }
+        }
+    };
     
     send(req, resp)
 }

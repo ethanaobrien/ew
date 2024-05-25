@@ -126,7 +126,7 @@ pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) -> bool {
     if crate::router::login::get_login_bonus_info(id).is_empty() {
         return false;
     }
-    for (_j, dataa) in bonus["bonus_list"].members().enumerate() {
+    for dataa in bonus["bonus_list"].members() {
         if dataa["master_login_bonus_id"].as_i64().unwrap() == id {
             return false;
         }
@@ -144,7 +144,7 @@ pub fn get_card(id: i64, user: &JsonValue) -> JsonValue {
         return object!{};
     }
     
-    for (_i, data) in user["card_list"].members().enumerate() {
+    for data in user["card_list"].members() {
         if data["master_card_id"].as_i64().unwrap_or(0) == id {
             return data.clone();
         }
@@ -154,7 +154,7 @@ pub fn get_card(id: i64, user: &JsonValue) -> JsonValue {
 
 fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
     let mut rv = array![];
-    for (_i, data) in arr.members().enumerate() {
+    for data in arr.members() {
         let to_push = get_card(data.as_i64().unwrap_or(0), user);
         if to_push.is_empty() {
             continue;
@@ -166,7 +166,7 @@ fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
 
 fn get_clear_count(user: &JsonValue, level: i32) -> i64 {
     let mut rv = 0;
-    for (_i, current) in user["live_list"].members().enumerate() {
+    for current in user["live_list"].members() {
         if current["level"] == level {
             rv += 1;
         }
@@ -176,7 +176,7 @@ fn get_clear_count(user: &JsonValue, level: i32) -> i64 {
 
 fn get_full_combo_count(user: &JsonValue, level: i32) -> i64 {
     let mut rv = 0;
-    for (_i, current) in user["live_mission_list"].members().enumerate() {
+    for current in user["live_mission_list"].members() {
         if current["clear_master_live_mission_ids"].contains(20 + level) {
             rv += 1;
         }
@@ -186,7 +186,7 @@ fn get_full_combo_count(user: &JsonValue, level: i32) -> i64 {
 
 fn get_perfect_count(user: &JsonValue, level: i32) -> i64 {
     let mut rv = 0;
-    for (_i, current) in user["live_mission_list"].members().enumerate() {
+    for current in user["live_mission_list"].members() {
         if current["clear_master_live_mission_ids"].contains(40 + level) {
             rv += 1;
         }

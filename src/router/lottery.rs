@@ -68,7 +68,7 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     let mut promised = false;
     
     if count > 1 {
-        for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
+        for item in databases::RARITY[id.to_string()].members() {
             if item["ensured"].as_i32().unwrap() == 1 {
                 get_random_card(item, &mut rv, &mut rng);
                 promised = true;
@@ -82,7 +82,7 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     for _i in 0..count {
         let random_number: i64 = rng.gen_range(1..total_ratio + 1);
         let mut cumulative_ratio = 0;
-        for (_i, item) in databases::RARITY[id.to_string()].members().enumerate() {
+        for item in databases::RARITY[id.to_string()].members() {
             cumulative_ratio += item["ratio"].as_i64().unwrap();
             if random_number <= cumulative_ratio {
                 get_random_card(item, &mut rv, &mut rng);
@@ -125,7 +125,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut lottery_list = array![];
     
     if lottery_type == 1 {
-        for (_i, data) in cardstogive.members().enumerate() {
+        for data in cardstogive.members() {
             let mut is_new = true;
             if !items::give_character(data["master_card_id"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions) {
                 is_new = false;
@@ -154,7 +154,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
         }
         items::give_gift_basic(3, 15540034, 10, &mut user, &mut missions, &mut cleared_missions);
     } else if lottery_type == 2 {
-        for (_i, data) in cardstogive.members().enumerate() {
+        for data in cardstogive.members() {
             let info = get_card(data["master_lottery_item_id"].to_string(), data["master_lottery_item_number"].to_string());
             items::give_gift_basic(info["type"].as_i32().unwrap(), info["value"].as_i64().unwrap(), info["amount"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions);
             let to_push = object!{

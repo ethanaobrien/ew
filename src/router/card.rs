@@ -11,7 +11,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
             let mut card = data.clone();
             let mut money: i64 = 0;
             
-            for (_j, data2) in materials.members().enumerate() {
+            for data2 in materials.members() {
                 items::use_item(&object!{
                     value: data2["master_item_id"].as_i64().unwrap(),
                     amount: 1,
@@ -28,7 +28,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
             }
             
             user["card_list"][i] = card.clone();
-            for (_i, data) in user["point_list"].members_mut().enumerate() {
+            for data in user["point_list"].members_mut() {
                 if data["type"].as_i32().unwrap() == 1 {
                     data["amount"] = (data["amount"].as_i64().unwrap() - money).into();
                 }

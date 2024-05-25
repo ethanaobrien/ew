@@ -23,7 +23,7 @@ pub fn friend(req: HttpRequest, body: String) -> Option<JsonValue> {
         array![]
     };
     
-    for (_i, uid) in rv_data.members().enumerate() {
+    for uid in rv_data.members() {
         rv.push(global::get_user(uid.as_i64().unwrap(), &friends, false)).unwrap();
     }
     
@@ -51,7 +51,7 @@ pub fn recommend(req: HttpRequest, body: String) -> Option<JsonValue> {
     }
     
     let mut rv = array![];
-    for (_i, uid) in random.members().enumerate() {
+    for uid in random.members() {
         let user = global::get_user(uid.as_i64().unwrap(), &friends, false);
         if user["user"]["friend_request_disabled"] == 1 || user.is_empty() {
             continue;

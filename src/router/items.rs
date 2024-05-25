@@ -33,7 +33,7 @@ const LIMIT_PRIMOGEMS: i64 = 1000000;
 
 pub fn give_shop(master_item_id: i64, count: i64, user: &mut JsonValue) -> bool {
     let mut has = false;
-    for (_j, dataa) in user["shop_list"].members_mut().enumerate() {
+    for dataa in user["shop_list"].members_mut() {
         if dataa["master_shop_item_id"].as_i64().unwrap() == master_item_id {
             has = true;
             let new_amount = dataa["count"].as_i64().unwrap() + count;
@@ -55,7 +55,7 @@ pub fn give_shop(master_item_id: i64, count: i64, user: &mut JsonValue) -> bool 
 
 pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
     let mut has = false;
-    for (_j, dataa) in user["item_list"].members_mut().enumerate() {
+    for dataa in user["item_list"].members_mut() {
         if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
             has = true;
             let new_amount = dataa["amount"].as_i64().unwrap() + amount;
@@ -124,14 +124,14 @@ pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue, m
 pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     if master_item_id == 1 {
         let cleared = advance_variable_mission(1121001, 1121019, amount, missions);
-        for (_i, data) in cleared.members().enumerate() {
+        for data in cleared.members() {
             if !clear_missions.contains(data.as_i64().unwrap()) {
                 clear_missions.push(data.clone()).unwrap();
             }
         }
     }
     let mut has = false;
-    for (_j, data) in user["point_list"].members_mut().enumerate() {
+    for data in user["point_list"].members_mut() {
         if data["type"].as_i64().unwrap() == master_item_id {
             has = true;
             let new_amount = data["amount"].as_i64().unwrap() + amount;
@@ -152,7 +152,7 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missi
 }
 
 pub fn use_itemm(master_item_id: i64, amount: i64, user: &mut JsonValue) {
-    for (_j, data) in user["item_list"].members_mut().enumerate() {
+    for data in user["item_list"].members_mut() {
         if data["master_item_id"].as_i64().unwrap() == master_item_id {
             if data["amount"].as_i64().unwrap() >= amount {
                 data["amount"] = (data["amount"].as_i64().unwrap() - amount).into();
@@ -243,14 +243,14 @@ pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
 // true - added
 // false - already has
 pub fn give_character(id: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
-    for (_i, data) in user["card_list"].members().enumerate() {
+    for data in user["card_list"].members() {
         if data["master_card_id"] == id || data["id"] == id {
             give_item(19100001, 50, user);
             return false;
         }
     }
     let cleared = advance_variable_mission(1112001, 1112033, 1, missions);
-    for (_i, data) in cleared.members().enumerate() {
+    for data in cleared.members() {
         if !clear_missions.contains(data.as_i64().unwrap()) {
             clear_missions.push(data.clone()).unwrap();
         }
@@ -291,14 +291,14 @@ pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue, rv: 
         }
         let to_advance = new_rank["rank"].as_i64().unwrap() - status["progress"].as_i64().unwrap();
         let rvv = advance_variable_mission(1101001, 1101030, to_advance, mission);
-        for (_i, id) in rvv.members().enumerate() {
+        for id in rvv.members() {
             rv.push(id.as_i64().unwrap()).unwrap();
         }
     }
 }
 
 pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: bool, claimed: bool, advance: i64, missions: &mut JsonValue) -> Option<i64> {
-    for (_i, mission) in missions.members_mut().enumerate() {
+    for mission in missions.members_mut() {
         if mission["master_mission_id"].as_i64().unwrap() == master_mission_id {
             let was_completed = mission["status"] == 2;
             mission["status"] = if claimed { 3 } else if completed { 2 } else { 1 }.into();
@@ -324,17 +324,17 @@ pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: boo
 
 pub fn update_mission_status_multi(master_mission_id: JsonValue, expire: u64, completed: bool, claimed: bool, advance: i64, missions: &mut JsonValue) -> JsonValue {
     let mut rv = array![];
-    for (_i, mission) in master_mission_id.members().enumerate() {
+    for mission in master_mission_id.members() {
         let val = update_mission_status(mission.as_i64().unwrap(), expire, completed, claimed, advance, missions);
-        if val.is_some() {
-            rv.push(val.unwrap()).unwrap();
+        if let Some(val2) = val {
+            rv.push(val2).unwrap();
         }
     }
     rv
 }
 
 pub fn get_mission_status(id: i64, missions: &JsonValue) -> JsonValue {
-    for (_i, mission) in missions.members().enumerate() {
+    for mission in missions.members() {
         if mission["master_mission_id"].as_i64().unwrap() == id {
             return mission.clone();
         }
@@ -343,7 +343,7 @@ pub fn get_mission_status(id: i64, missions: &JsonValue) -> JsonValue {
 }
 
 pub fn change_mission_id(old: i64, new: i64, missions: &mut JsonValue) {
-    for (_i, mission) in missions.members_mut().enumerate() {
+    for mission in missions.members_mut() {
         if mission["master_mission_id"].as_i64().unwrap() == old {
             mission["master_mission_id"] = new.into();
             return;

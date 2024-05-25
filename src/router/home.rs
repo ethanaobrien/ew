@@ -10,7 +10,7 @@ pub fn preset(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc_home(&key);
     
-    for (_i, data) in user["home"]["preset_setting"].members_mut().enumerate() {
+    for data in user["home"]["preset_setting"].members_mut() {
         if data["slot"] == body["slot"] {
             *data = body.clone();
         }
@@ -97,7 +97,7 @@ pub fn home(req: HttpRequest) -> Option<JsonValue> {
     
     let mut clear_ct = 0;
     let mut daily_ct = 0;
-    for (_i, mission) in user_missions.members().enumerate() {
+    for mission in user_missions.members() {
         if mission["status"].as_i32().unwrap() != 2 {
             continue;
         }

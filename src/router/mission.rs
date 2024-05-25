@@ -19,7 +19,7 @@ pub fn clear(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut missions = userdata::get_acc_missions(&key);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
-    for (_i, id) in body["master_mission_ids"].members().enumerate() {
+    for id in body["master_mission_ids"].members() {
         items::update_mission_status(id.as_i64().unwrap(), 0, true, true, 1, &mut missions);
     }
     
@@ -38,7 +38,7 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut user = userdata::get_acc(&key);
     let mut rewards = array![];
     
-    for (_i, mission) in body["master_mission_ids"].members().enumerate() {
+    for mission in body["master_mission_ids"].members() {
         let mission_info = databases::MISSION_LIST[mission.to_string()].clone();
         let mut gift = databases::MISSION_REWARD[mission_info["masterMissionRewardId"].to_string()].clone();
         gift["reward_type"] = gift["type"].clone();
@@ -48,7 +48,7 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
         
         let variable_missions = array![[1153001, 1153019], [1105001, 1105017], [1101001, 1101030], [1121001, 1121019], [1112001, 1112033]];
         let mut variable = false;
-        for (_i, id) in variable_missions.members().enumerate() {
+        for id in variable_missions.members() {
             if mission.as_i64().unwrap() >= id[0].as_i64().unwrap() && mission.as_i64().unwrap() < id[1].as_i64().unwrap() {
                 items::change_mission_id(mission.as_i64().unwrap(), mission.as_i64().unwrap() + 1, &mut missions);
                 items::advance_variable_mission(id[0].as_i64().unwrap(), id[1].as_i64().unwrap(), 0, &mut missions);
