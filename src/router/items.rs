@@ -413,10 +413,11 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     if id == 1253003 {
         rv = advance_variable_mission(1153001, 1153019, 1, missions);
     }
-    let mission = get_mission_status(1224003, missions);
+    let mut mission = get_mission_status(1224003, missions);
     let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);
     if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() {
         update_mission_status_multi(all_daily_missions, next_reset, false, false, 0, missions);
+        mission = get_mission_status(1224003, missions);
     }
     
     if mission["progress"].as_i32().unwrap() == 4 {
