@@ -111,6 +111,9 @@ pub fn home(req: HttpRequest) -> Option<JsonValue> {
     }
     user["home"]["clear_mission_count"] = clear_ct.into();
     user["home"]["not_cleared_daily_mission_count"] = (6 - daily_ct).into();
+
+    //todo
+    user["home"]["beginner_mission_complete"] = 1.into();
     
     Some(user)
 }
