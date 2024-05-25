@@ -103,7 +103,7 @@ pub fn guest(req: HttpRequest, body: String) -> Option<JsonValue> {
             
             for (_i, uid) in random.members().enumerate() {
                 let guest = global::get_user(uid.as_i64().unwrap(), &friends, false);
-                if guest["user"]["friend_request_disabled"] == "1" || guest.is_empty() {
+                if guest["user"]["friend_request_disabled"] == 1 || guest.is_empty() {
                     continue;
                 }
                 guest_list.push(guest).unwrap();

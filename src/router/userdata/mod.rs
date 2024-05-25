@@ -436,7 +436,7 @@ pub fn friend_request_disabled(uid: i64) -> bool {
     let uid = get_uid(&login_token);
     let user = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
     let user = json::parse(&user.unwrap()).unwrap();
-    user["user"]["friend_request_disabled"] == "1"
+    user["user"]["friend_request_disabled"] == 1
 }
 
 pub fn friend_remove(uid: i64, requestor: i64) {

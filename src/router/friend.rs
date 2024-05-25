@@ -53,7 +53,7 @@ pub fn recommend(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut rv = array![];
     for (_i, uid) in random.members().enumerate() {
         let user = global::get_user(uid.as_i64().unwrap(), &friends, false);
-        if user["user"]["friend_request_disabled"] == "1" || user.is_empty() {
+        if user["user"]["friend_request_disabled"] == 1 || user.is_empty() {
             continue;
         }
         rv.push(user).unwrap();
@@ -103,11 +103,11 @@ pub fn approve(req: HttpRequest, body: String) -> Option<JsonValue> {
     let index = friends["pending_user_id_list"].members().position(|r| *r.to_string() == uid.to_string());
     if index.is_some() {
         friends["pending_user_id_list"].array_remove(index.unwrap());
-        if body["approve"] == "1" && ! friends["friend_user_id_list"].contains(uid) && friends["friend_user_id_list"].len() < FRIEND_LIMIT {
+        if body["approve"] == 1 && ! friends["friend_user_id_list"].contains(uid) && friends["friend_user_id_list"].len() < FRIEND_LIMIT {
             friends["friend_user_id_list"].push(uid).unwrap();
         }
         
-        userdata::friend_request_approve(uid, user_id, body["approve"] == "1", "request_user_id_list");
+        userdata::friend_request_approve(uid, user_id, body["approve"] == 1, "request_user_id_list");
         userdata::save_acc_friends(&key, friends);
     }
     

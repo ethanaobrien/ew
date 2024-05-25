@@ -127,7 +127,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     if lottery_type == 1 {
         for (_i, data) in cardstogive.members().enumerate() {
             let mut is_new = true;
-            if !items::give_character(data["master_card_id"].to_string(), &mut user, &mut missions, &mut cleared_missions) {
+            if !items::give_character(data["master_card_id"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions) {
                 is_new = false;
             }
             if is_new {

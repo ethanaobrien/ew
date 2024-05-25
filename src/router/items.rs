@@ -81,19 +81,19 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValu
     if data.is_empty() {
         return false;
     }
-    if data["reward_type"] == "1" {
+    if data["reward_type"] == 1 {
         // basically primogems!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return !give_primogems(data["amount"].as_i64().unwrap(), user);
-    } else if data["reward_type"] == "2" {
+    } else if data["reward_type"] == 2 {
         //character
-        give_character(data["value"].to_string(), user, missions, clear_missions);
+        give_character(data["value"].as_i64().unwrap(), user, missions, clear_missions);
         return true;
-    } else if data["reward_type"] == "3" {
+    } else if data["reward_type"] == 3 {
         return !give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
-    } else if data["reward_type"] == "4" {
+    } else if data["reward_type"] == 4 {
         // basically moraa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return !give_points(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user, missions, clear_missions);
-    } else if data["reward_type"] == "8" {
+    } else if data["reward_type"] == 8 {
         // title
         let title = data["value"].as_i64().unwrap();
         if !user["master_title_ids"].contains(title) {
@@ -232,7 +232,7 @@ pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
 
 // true - added
 // false - already has
-pub fn give_character(id: String, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
+pub fn give_character(id: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     for (_i, data) in user["card_list"].members().enumerate() {
         if data["master_card_id"] == id || data["id"] == id {
             give_item(19100001, 50, user);
@@ -247,8 +247,8 @@ pub fn give_character(id: String, user: &mut JsonValue, missions: &mut JsonValue
     }
     
     let to_push = object!{
-        "id": id.parse::<i32>().unwrap(),
-        "master_card_id": id.parse::<i32>().unwrap(),
+        "id": id,
+        "master_card_id": id,
         "exp": 0,
         "skill_exp": 0,
         "evolve": [],

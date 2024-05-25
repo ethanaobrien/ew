@@ -23,7 +23,7 @@ pub fn preset(req: HttpRequest, body: String) -> Option<JsonValue> {
 fn check_gifts(user: &mut JsonValue) {
     let mut to_remove = array![];
     for (j, data) in user["home"]["gift_list"].members().enumerate() {
-        if data["is_receive"] == "1" || data["expire_date_time"].as_u64().unwrap() < global::timestamp() {
+        if data["is_receive"] == 1 || data["expire_date_time"].as_u64().unwrap() < global::timestamp() {
             to_remove.push(j).unwrap();
         }
     }
