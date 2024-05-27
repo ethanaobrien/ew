@@ -1,0 +1,36 @@
+body {
+    background-color: #616161;
+}
+
+#home {
+  width: 90%;
+  margin: 50px auto;
+  background-color: #43A047;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Poppins", sans-serif;
+  padding: 20px 10px;
+}
+
+#logout {
+    border: none;
+    text-align: center;
+    text-decoration: underline;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    float: right;
+    background-color: yellow;
+    border-radius: 30px;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+#logout:hover {
+    background-color: red;
+}
+
+#error p {
+  color: orange;
+  grid-template-columns: auto auto auto;
+}
