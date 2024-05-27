@@ -5,17 +5,24 @@ import Request from '../Request.jsx'
 function Admin() {
     const [imp, setimp] = useState();
     const [exp, setexp] = useState();
-    const ids = [setimp, setexp];
     
-    const handleSubmit = async (id, event) => {
+    const handleSubmit = async (event) => {
         await Request(
             "/api/webui/admin",
             {
-                import: !!imp,
-                export: !!exp
+                import: !imp
             }
         );
-        ids[id](event.target.checked);
+        setimp(!imp);
+    };
+    const handleSubmit2 = async (event) => {
+        await Request(
+            "/api/webui/admin",
+            {
+                export: !exp
+            }
+        );
+        setexp(!exp);
     };
     
     if (imp === undefined) {
@@ -34,9 +41,9 @@ function Admin() {
         <div id="home">
             <h1>Admin</h1>
             <div>
-            <input type="checkbox" id="import" name="import" checked={!!imp} onClick={(i)=>handleSubmit(0, i)} />
+            <input type="checkbox" id="import" name="import" checked={!!imp} onClick={(i)=>handleSubmit(i)} />
             <label for="import">Allow account imports</label><br/><br/>
-            <input type="checkbox" id="exp" name="exp" checked={!!exp} onClick={(i)=>handleSubmit(1, i)} />
+            <input type="checkbox" id="exp" name="exp" checked={!!exp} onClick={(i)=>handleSubmit2(i)} />
             <label for="exp">Allow account exports</label>
             </div>
         </div>
