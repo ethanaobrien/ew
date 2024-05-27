@@ -75,7 +75,7 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
-    if get_config()["import"].as_bool().unwrap() == false {
+    if !get_config()["import"].as_bool().unwrap() {
         return error("Importing accounts is disabled on this server.");
     }
     let body = json::parse(&body).unwrap();
@@ -222,7 +222,7 @@ pub fn admin_post(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn export(req: HttpRequest) -> HttpResponse {
-    if get_config()["export"].as_bool().unwrap() == false {
+    if !get_config()["export"].as_bool().unwrap() {
         return error("Exporting accounts is disabled on this server.");
     }
     let token = get_login_token(&req);
