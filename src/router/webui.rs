@@ -215,6 +215,21 @@ pub fn admin_post(req: HttpRequest, body: String) -> HttpResponse {
         result: "OK"
     };
     HttpResponse::Ok()
-    .insert_header(ContentType::json())
-    .body(json::stringify(resp))
+        .insert_header(ContentType::json())
+        .body(json::stringify(resp))
 }
+
+pub fn export(req: HttpRequest) -> HttpResponse {
+    let token = get_login_token(&req);
+    if token.is_none() {
+        return error("Not logged in");
+    }
+    let resp = object!{
+        result: "OK",
+        data: userdata::export_user(&token.unwrap()).unwrap()
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(json::stringify(resp))
+}
+

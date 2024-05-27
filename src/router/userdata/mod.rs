@@ -600,3 +600,14 @@ pub fn set_server_time(time: i64, token: &str) -> JsonValue {
 pub fn webui_logout(token: &str) {
     DATABASE.lock_and_exec("DELETE FROM webui WHERE token=?1", params!(token));
 }
+
+pub fn export_user(token: &str) -> Option<JsonValue> {
+    let login_token = webui_login_token(token)?;
+
+    Some(object!{
+         userdata: json::stringify(get_acc(&login_token)),
+         userhome: json::stringify(get_acc_home(&login_token)),
+         missions: json::stringify(get_acc_missions(&login_token)),
+         sifcards: json::stringify(get_acc_sif(&login_token))
+    })
+}

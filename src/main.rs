@@ -160,6 +160,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/userInfo" => router::webui::user(req),
             "/webui/logout" => router::webui::logout(req),
             "/api/webui/admin" => router::webui::admin(req),
+            "/api/webui/export" => router::webui::export(req),
             _ => api_req(req, body)
         }
     }

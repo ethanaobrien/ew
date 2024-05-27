@@ -70,6 +70,25 @@ function Home() {
     const logout = () => {
         window.location.href = "/webui/logout";
     }
+    const downloadFile = (contents, name) => {
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob([contents], {type: "application/json"}));
+        a.download = name;
+        a.click();
+    }
+    const expor = async (e) => {
+        e.preventDefault();
+        let resp = await Request("/api/webui/export");
+        if (resp.result !== "OK") {
+            error[1](resp.message);
+            return;
+        }
+        downloadFile(resp.data.userdata, "userdata.json");
+        downloadFile(resp.data.userhome, "userhome.json");
+        downloadFile(resp.data.missions, "missions.json");
+        downloadFile(resp.data.sifcards, "sifcards.json");
+
+    }
     const handleSubmit = async (event) => {
         event.preventDefault();
         let time = Math.round(new Date(inputValue.trim()).getTime() / 1000);
@@ -135,6 +154,7 @@ function Home() {
   
     return (
         <div id="home">
+            <button id="logout" onClick={expor}>Export account</button><br/><br/><br/>
             <button id="logout" onClick={logout}>Logout</button>
             <h1>Home</h1>
             
