@@ -13,10 +13,18 @@ use crate::include_file;
 use crate::router::{userdata, items};
 
 fn get_config() -> JsonValue {
+    let def = object!{
+        import: true,
+        export: true
+    };
     let contents = fs::read_to_string("config.json").unwrap_or(String::from("aaaaaaaaaaaaaaaaa"));
-    json::parse(&contents).unwrap_or(object!{
-        import: true
-    })
+    let mut rv = json::parse(&contents).unwrap_or(def.clone());
+    for val in def.entries() {
+        if rv[val.0] == JsonValue::Null {
+            rv[val.0] = val.1.clone();
+        }
+    }
+    rv
 }
 fn save_config(val: String) {
     let mut current = get_config();
@@ -68,13 +76,7 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
 
 pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
     if get_config()["import"].as_bool().unwrap() == false {
-        let resp = object!{
-            result: "Err",
-            message: "Importing accounts is disabled on this server."
-        };
-        return HttpResponse::Ok()
-            .insert_header(ContentType::json())
-            .body(json::stringify(resp));
+        return error("Importing accounts is disabled on this server.");
     }
     let body = json::parse(&body).unwrap();
     
@@ -220,6 +222,9 @@ pub fn admin_post(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn export(req: HttpRequest) -> HttpResponse {
+    if get_config()["export"].as_bool().unwrap() == false {
+        return error("Exporting accounts is disabled on this server.");
+    }
     let token = get_login_token(&req);
     if token.is_none() {
         return error("Not logged in");
