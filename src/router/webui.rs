@@ -4,10 +4,29 @@ use actix_web::{
     http::header::HeaderValue,
     http::header::ContentType
 };
-use json::object;
+use json::{JsonValue, object};
+use std::fs;
+use std::fs::File;
+use std::io::Write;
 
 use crate::include_file;
 use crate::router::{userdata, items};
+
+fn get_config() -> JsonValue {
+    let contents = fs::read_to_string("config.json").unwrap_or(String::from("aaaaaaaaaaaaaaaaa"));
+    json::parse(&contents).unwrap_or(object!{
+        import: true
+    })
+}
+fn save_config(val: String) {
+    let mut current = get_config();
+    let new = json::parse(&val).unwrap();
+    for vall in new.entries() {
+        current[vall.0] = vall.1.clone();
+    }
+    let mut f = File::create("config.json").unwrap();
+    f.write_all(json::stringify(current).as_bytes()).unwrap();
+}
 
 fn get_login_token(req: &HttpRequest) -> Option<String> {
     let blank_header = HeaderValue::from_static("");
@@ -48,6 +67,15 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
+    if get_config()["import"].as_bool().unwrap() == false {
+        let resp = object!{
+            result: "Err",
+            message: "Importing accounts is disabled on this server."
+        };
+        return HttpResponse::Ok()
+            .insert_header(ContentType::json())
+            .body(json::stringify(resp));
+    }
     let body = json::parse(&body).unwrap();
     
     let result = userdata::webui_import_user(body);
@@ -142,7 +170,7 @@ pub fn main(req: HttpRequest) -> HttpResponse {
             }
         }
     }
-    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" {
+    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" && req.path() != "/admin/" {
         return HttpResponse::Found()
             .insert_header(("Location", "/"))
             .body("");
@@ -150,4 +178,43 @@ pub fn main(req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType::html())
         .body(include_file!("webui/dist/index.html"))
+}
+
+
+macro_rules! check_admin {
+    ( $s:expr ) => {
+        {
+            if $s.peer_addr().unwrap().ip().to_string() != "127.0.0.1" {
+                let resp = object!{
+                    result: "ERR",
+                    message: "Must be on localhost address to access admin panel."
+                };
+                return HttpResponse::Ok()
+                    .insert_header(ContentType::json())
+                    .body(json::stringify(resp))
+            }
+        }
+    };
+}
+
+pub fn admin(req: HttpRequest) -> HttpResponse {
+    check_admin!(req);
+    let resp = object!{
+        result: "OK",
+        data: get_config()
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(json::stringify(resp))
+}
+
+pub fn admin_post(req: HttpRequest, body: String) -> HttpResponse {
+    check_admin!(req);
+    save_config(body);
+    let resp = object!{
+        result: "OK"
+    };
+    HttpResponse::Ok()
+    .insert_header(ContentType::json())
+    .body(json::stringify(resp))
 }

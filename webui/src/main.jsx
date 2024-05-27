@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import Login from './login/Login.jsx'
 import Home from './home/Home.jsx'
 import Import from './import/Import.jsx'
+import Admin from './admin/Admin.jsx'
 
 let Elem;
 switch (window.location.pathname) {
@@ -15,12 +16,17 @@ switch (window.location.pathname) {
     case "/import/":
         Elem = Import;
         break;
+    case "/admin/":
+      Elem = Admin;
+      break;
     default:
         window.location.pathname = "/";
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Elem />
-  </React.StrictMode>,
-)
+if (Elem) {
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+      <Elem />
+    </React.StrictMode>,
+  )
+}

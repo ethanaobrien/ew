@@ -144,6 +144,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/startLoginbonus" => router::webui::start_loginbonus(req, body),
             "/api/webui/import" => router::webui::import(req, body),
             "/api/webui/set_time" => router::webui::set_time(req, body),
+            "/api/webui/admin" => router::webui::admin_post(req, body),
             _ => api_req(req, body)
         }
     } else {
@@ -158,6 +159,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/web/announcement" => router::web::announcement(req),
             "/api/webui/userInfo" => router::webui::user(req),
             "/webui/logout" => router::webui::logout(req),
+            "/api/webui/admin" => router::webui::admin(req),
             _ => api_req(req, body)
         }
     }
