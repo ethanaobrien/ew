@@ -8,7 +8,6 @@ function Admin() {
     const ids = [setimp, setexp];
     
     const handleSubmit = async (id, event) => {
-        ids[id](event.target.checked);
         await Request(
             "/api/webui/admin",
             {
@@ -16,6 +15,7 @@ function Admin() {
                 export: !!exp
             }
         );
+        ids[id](event.target.checked);
     };
     
     if (imp === undefined) {
