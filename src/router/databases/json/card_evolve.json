@@ -1,0 +1,26 @@
+[
+  {
+    "rarity": 1,
+    "evolveCount": 1,
+    "maxLevel": 60,
+    "price": 30000,
+    "hpAddValue": 1,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rarity": 2,
+    "evolveCount": 1,
+    "maxLevel": 80,
+    "price": 70000,
+    "hpAddValue": 1,
+    "masterReleaseLabelId": 1
+  },
+  {
+    "rarity": 3,
+    "evolveCount": 1,
+    "maxLevel": 100,
+    "price": 100000,
+    "hpAddValue": 1,
+    "masterReleaseLabelId": 1
+  }
+]

@@ -20,7 +20,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
                 let item = &databases::ITEM_INFO[data2["master_item_id"].to_string()];
                 if evolve {
                     card["evolve"] = array![{type: 2,count: 1}];
-                    money = money_multiplier;
+                    money = databases::EVOLVE_COST[items::get_rarity(card["master_card_id"].as_i64().unwrap()).to_string()].as_i64().unwrap();
                 } else {
                     card[exp_id] = (card[exp_id].as_i64().unwrap() + (item["effectValue"].as_i64().unwrap() * data2["amount"].as_i64().unwrap())).into();
                     money += item["effectValue"].as_i64().unwrap() * data2["amount"].as_i64().unwrap() * money_multiplier;
@@ -28,6 +28,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
             }
             
             user["card_list"][i] = card.clone();
+
             for data in user["point_list"].members_mut() {
                 if data["type"].as_i32().unwrap() == 1 {
                     data["amount"] = (data["amount"].as_i64().unwrap() - money).into();
@@ -78,7 +79,7 @@ pub fn evolve(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     
-    let card = do_reinforce(&mut user, &body, "", 30000, true);
+    let card = do_reinforce(&mut user, &body, "", 0, true);
     
     userdata::save_acc(&key, user.clone());
     

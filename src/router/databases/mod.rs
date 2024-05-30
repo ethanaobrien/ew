@@ -196,4 +196,12 @@ lazy_static! {
     pub static ref RANKS: JsonValue = {
         json::parse(&include_file!("src/router/databases/json/user_rank.json")).unwrap()
     };
+    pub static ref EVOLVE_COST: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(&include_file!("src/router/databases/json/card_evolve.json")).unwrap();
+        for data in items.members() {
+            info[data["rarity"].to_string()] = data["price"].clone();
+        }
+        info
+    };
 }
