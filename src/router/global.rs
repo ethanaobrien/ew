@@ -11,8 +11,8 @@ use crate::encryption;
 use crate::router::{userdata, gree};
 
 pub const ASSET_VERSION:          &str = "5260ff15dff8ba0c00ad91400f515f55";
-pub const ASSET_HASH_ANDROID:     &str = "f4bb8ed86ad946ee737be6daab663fd8";
-pub const ASSET_HASH_IOS:         &str = "466d4616d14a8d8a842de06426e084c2";
+pub const ASSET_HASH_ANDROID:     &str = "d210b28037885f3ef56b8f8aa45ac95b";
+pub const ASSET_HASH_IOS:         &str = "dd7175e4bcdab476f38c33c7f34b5e4d";
 
 pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
 pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";
