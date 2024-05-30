@@ -119,8 +119,10 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     let cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
     
-    let lottery_type = databases::LOTTERY[lottery_id.to_string()]["category"].as_i32().unwrap();
-    
+    let lottery = &databases::LOTTERY[lottery_id.to_string()];
+    let lottery_type = lottery["category"].as_i32().unwrap();
+    let exchange_id = lottery["exchangeMasterItemId"].as_i64().unwrap_or(0);
+
     let mut new_cards = array![];
     let mut lottery_list = array![];
     
@@ -152,7 +154,6 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
             }
             lottery_list.push(to_push).unwrap();
         }
-        items::give_gift_basic(3, 15540034, 10, &mut user, &mut missions, &mut cleared_missions);
     } else if lottery_type == 2 {
         for data in cardstogive.members() {
             let info = get_card(data["master_lottery_item_id"].to_string(), data["master_lottery_item_number"].to_string());
@@ -164,6 +165,10 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
             };
             lottery_list.push(to_push).unwrap();
         }
+    }
+
+    if exchange_id != 0 {
+        items::give_gift_basic(3, exchange_id, 10, &mut user, &mut missions, &mut cleared_missions);
     }
     
     userdata::save_acc(&key, user.clone());
