@@ -240,12 +240,23 @@ pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
     user["stamina"]["stamina"] = stamina.into();
 }
 
+pub fn get_rarity(id: i64) -> i32 {
+    databases::CARD_LIST[id.to_string()]["rarity"].as_i32().unwrap_or(0)
+}
+
 // true - added
 // false - already has
 pub fn give_character(id: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
+    let character_rarity = get_rarity(id);
+    if character_rarity == 0 {
+        println!("Attempted to give user undefined card!! Card id: {}", id);
+        return false;
+    }
+
     for data in user["card_list"].members() {
         if data["master_card_id"] == id || data["id"] == id {
-            give_item(19100001, 50, user);
+            let amount = if character_rarity == 1 { 20 } else if character_rarity == 2 { 50 } else if character_rarity == 3 { 500 } else { 0 };
+            give_item(19100001, amount, user);
             return false;
         }
     }

@@ -150,7 +150,12 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
             };
             if !is_new {
                 //given by global::give_character call
-                to_push["exchange_item"] = object!{"master_item_id": 19100001, "amount": 50};
+                let character_rarity = items::get_rarity(data["master_card_id"].as_i64().unwrap());
+                let amount = if character_rarity == 1 { 20 } else if character_rarity == 2 { 50 } else if character_rarity == 3 { 500 } else { 0 };
+                to_push["exchange_item"] = object!{
+                    master_item_id: 19100001,
+                    amount: amount
+                };
             }
             lottery_list.push(to_push).unwrap();
         }
