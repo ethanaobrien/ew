@@ -3,6 +3,21 @@ import './Home.css'
 import Request from '../Request.jsx'
 let bonusItems = [];
 
+function getMigrationID(uid) {
+    return uid.toString()
+    .replaceAll('1', "A")
+    .replaceAll('2', "G")
+    .replaceAll('3', "W")
+    .replaceAll('4', "Q")
+    .replaceAll('5', "Y")
+    .replaceAll('6', "6")
+    .replaceAll('7', "I")
+    .replaceAll('8', "P")
+    .replaceAll('9', "U")
+    .replaceAll('0', "M")
+    + "7";
+}
+
 function Bonus() {
     const [inputValue, setInputValue] = useState('');
     const error = useState("");
@@ -144,6 +159,7 @@ function Home() {
             userdata(
                 <div>
                     <p>User id: { user.user.id } </p>
+                    <p>Migration id: { getMigrationID(user.user.id) } </p>
                     <p>Rank: { user.user.rank } ({ user.user.exp } exp)</p>
                     <p>Last Login: { (new Date(user.user.last_login_time * 1000)).toString() } </p>
                     <Bonus />
