@@ -418,7 +418,7 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     let all_daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
     
     let mission = get_mission_status(id, missions);
-    if mission["expire_date_time"].as_u64().unwrap() >= global::timestamp() && mission["status"].as_i32().unwrap() > 1 {
+    if mission["expire_date_time"].as_u64().unwrap_or(0) >= global::timestamp() && mission["status"].as_i32().unwrap() > 1 {
         return array![];
     }
     let mut rv = array![];
@@ -427,12 +427,12 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     }
     let mut mission = get_mission_status(1224003, missions);
     let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);
-    if mission["expire_date_time"].as_u64().unwrap() < global::timestamp() {
+    if mission["expire_date_time"].as_u64().unwrap_or(0) < global::timestamp() {
         update_mission_status_multi(all_daily_missions, next_reset, false, false, 0, missions);
         mission = get_mission_status(1224003, missions);
     }
     
-    if mission["progress"].as_i32().unwrap() == 4 {
+    if mission["progress"].as_i32().unwrap_or(0) == 4 {
         if update_mission_status(1224003, 0, true, false, 1, missions).is_some() {
             rv.push(1224003).unwrap();
         }
