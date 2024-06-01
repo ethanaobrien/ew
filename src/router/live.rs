@@ -380,9 +380,9 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
             }
         }
         
-        let mut index = characters_in_deck.members().position(|r| r == data["id"]);
+        let mut index = characters_in_deck.members().position(|r| *r == data["id"]);
         if index.is_none() {
-            index = characters_in_deck.members().position(|r| r == data["master_card_id"]);
+            index = characters_in_deck.members().position(|r| *r == data["master_card_id"]);
         }
         let exp = BOND_WEIGHT[index.unwrap_or(10)].as_i32().unwrap_or(0) * (lp_used / 10);
         let additional_exp;
