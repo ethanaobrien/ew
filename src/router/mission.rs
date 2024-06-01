@@ -68,7 +68,7 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, missions.clone());
-    
+
     Some(object!{
         "reward_list": rewards,
         "updated_value_list": {

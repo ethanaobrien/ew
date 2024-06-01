@@ -26,6 +26,7 @@ fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
 }
 
 fn api_req(req: HttpRequest, body: String) -> HttpResponse {
+    let headers = req.headers().clone();
     if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
         return router::webui::main(req);
     }
@@ -120,14 +121,14 @@ fn api_req(req: HttpRequest, body: String) -> HttpResponse {
             "server_time": global::timestamp(),
             "data": resp.unwrap()
         };
-        global::send(rv, uid)
+        global::send(rv, uid, &headers)
     } else {
         let rv = object!{
             "code": 2,//Idontnermemrmemremremermrme
             "server_time": global::timestamp(),
             "data": ""
         };
-        global::send(rv, uid)
+        global::send(rv, uid, &headers)
     }
 }
 

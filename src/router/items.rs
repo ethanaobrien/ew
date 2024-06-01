@@ -1,6 +1,6 @@
 use json::{array, object, JsonValue};
 use rand::Rng;
-use actix_web::{HttpRequest};
+use actix_web::{HttpRequest, http::header::{HeaderMap, HeaderValue}};
 use crate::encryption;
 
 use crate::router::{userdata, global, databases};
@@ -22,6 +22,34 @@ pub fn remove_gems(user: &mut JsonValue, amount: i64) {
     user["gem"]["free"] = free.into();
     user["gem"]["charge"] = paid.into();
     user["gem"]["total"] = (free + paid).into();
+}
+
+pub fn get_region(headers: &HeaderMap) -> bool {
+    let blank_header = HeaderValue::from_static("");
+    let asset_version = headers.get("aoharu-asset-version").unwrap_or(&blank_header).to_str().unwrap_or("");
+    asset_version == global::ASSET_VERSION_JP
+}
+
+pub fn check_for_region(user: &mut JsonValue, headers: &HeaderMap) {
+    let items = if user["data"]["updated_value_list"]["item_list"].is_empty() {user["data"]["item_list"].clone()} else {user["data"]["updated_value_list"]["item_list"].clone()};
+    let is_jp = get_region(headers);
+    if !is_jp || items.is_empty() {
+        return;
+    }
+    let mut id = 0;
+    for (i, data) in items.members().enumerate() {
+        if data["master_item_id"] == 15570008 {
+            id = i + 1;
+            break;
+        }
+    }
+    if id > 0 {
+        if user["data"]["updated_value_list"]["item_list"].is_empty() {
+            user["data"]["item_list"].array_remove(id - 1);
+        } else {
+            user["data"]["updated_value_list"]["item_list"].array_remove(id - 1);
+        }
+    }
 }
 
 // true - limit reached

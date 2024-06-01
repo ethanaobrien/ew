@@ -178,7 +178,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, missions);
-    
+
     Some(object!{
         "lottery_item_list": lottery_list,
         "updated_value_list": {

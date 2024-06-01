@@ -8,7 +8,7 @@ use base64::{Engine as _, engine::general_purpose};
 use uuid::Uuid;
 
 use crate::encryption;
-use crate::router::{userdata, gree};
+use crate::router::{userdata, gree, items};
 
 pub const ASSET_VERSION:          &str = "5260ff15dff8ba0c00ad91400f515f55";
 pub const ASSET_HASH_ANDROID:     &str = "d210b28037885f3ef56b8f8aa45ac95b";
@@ -112,9 +112,13 @@ fn set_time(data: &mut JsonValue, uid: i64) {
     data["server_time"] = (server_time + time_since_set).into();
 }
 
-pub fn send(mut data: JsonValue, uid: i64) -> HttpResponse {
+pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse {
     //println!("{}", json::stringify(data.clone()));
     set_time(&mut data, uid);
+
+    if !data["data"]["item_list"].is_empty() || !data["data"]["updated_value_list"]["item_list"].is_empty() {
+        items::check_for_region(&mut data, headers);
+    }
     
     let encrypted = encryption::encrypt_packet(&json::stringify(data)).unwrap();
     let resp = encrypted.into_bytes();

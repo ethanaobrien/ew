@@ -26,7 +26,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, missions);
-    
+
     Some(object!{
         "exchange": body,
         "updated_value_list": {

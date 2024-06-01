@@ -89,7 +89,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_home(&key, user);
     userdata::save_acc(&key, userr.clone());
     let userr = userdata::get_acc(&key);
-    
+
     Some(object!{
         "failed_gift_ids": failed,
         "updated_value_list": {
