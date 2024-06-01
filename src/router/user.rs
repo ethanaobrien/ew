@@ -95,7 +95,8 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
         "updated_value_list": {
             "gem": userr["gem"].clone(),
             "item_list": userr["item_list"].clone(),
-            "point_list": userr["point_list"].clone()
+            "point_list": userr["point_list"].clone(),
+            "card_list": userr["card_list"].clone()
         },
         "clear_mission_ids": cleared_missions,
         "reward_list": rewards
