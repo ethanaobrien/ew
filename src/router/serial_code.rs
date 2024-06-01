@@ -17,7 +17,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     let mut itemz = array![];
     if body["input_code"] == "SIF2REVIVALREAL!" {
-        itemz.push(items::gift_item_basic(1, 100000, 4, "Another game died... This makes me sad :(", &mut user)).ok()?;
+        itemz.push(items::gift_item_basic(1, 10000000, 4, "Another game died... This makes me sad :(", &mut user)).ok()?;
     } else if body["input_code"] == "pweasegivegems11" {
         itemz.push(items::gift_item_basic(1, 6000, 1, "Only because you asked...", &mut user)).ok()?;
     } else if body["input_code"] == "sleepysleepyslep" {

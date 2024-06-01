@@ -187,11 +187,11 @@ async fn main() -> std::io::Result<()> {
             println!("Request: {}", req.path());
             srv.call(req)
         })
+        .app_data(web::PayloadConfig::default().limit(1024 * 1024 * 25))
         .service(css)
         .service(js)
-        .default_service(web::route().to(request)))
-        .bind(("0.0.0.0", 8080))?
-        .run();
+        .default_service(web::route().to(request))
+    ).bind(("0.0.0.0", 8080))?.run();
     println!("Server started: http://127.0.0.1:{}", 8080);
     rv.await
 }
