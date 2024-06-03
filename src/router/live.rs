@@ -435,15 +435,17 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
         }).unwrap();
         i += 1;
     }
-    for data in rv.members() {
-        for chat in CHATS.members() {
-            if chat.as_i64().unwrap() > data["exp"].as_i64().unwrap() {
-                break;
-            }
-            if crate::router::chat::add_chat(data["master_character_id"].as_i64().unwrap(), 1, chats) {
-                let mission_id = 1958000 + (get_master_id(data["master_character_id"].as_i64().unwrap()) * CHATS.len() as i64);
-                items::update_mission_status(mission_id, 0, true, true, 1, missions);
-                completed_missions.push(mission_id).unwrap();
+    if user["tutorial_step"].as_i32().unwrap() >= 130 {
+        for data in rv.members() {
+            for chat in CHATS.members() {
+                if chat.as_i64().unwrap() > data["exp"].as_i64().unwrap() {
+                    break;
+                }
+                if crate::router::chat::add_chat(data["master_character_id"].as_i64().unwrap(), 1, chats) {
+                    let mission_id = 1958000 + (get_master_id(data["master_character_id"].as_i64().unwrap()) * CHATS.len() as i64);
+                    items::update_mission_status(mission_id, 0, true, true, 1, missions);
+                    completed_missions.push(mission_id).unwrap();
+                }
             }
         }
     }
