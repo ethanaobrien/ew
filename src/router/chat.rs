@@ -4,7 +4,12 @@ use actix_web::{HttpRequest};
 use crate::router::{global, items, userdata, databases};
 use crate::encryption;
 
-pub fn add_chat(id: i64, num: i64, chats: &mut JsonValue) {
+pub fn add_chat(id: i64, num: i64, chats: &mut JsonValue) -> bool {
+    for data in chats.members() {
+        if data["chat_id"] == id && data["room_id"] == num {
+            return false;
+        }
+    }
     chats.push(object!{
         chat_id: id,
         room_id: num,
@@ -12,6 +17,7 @@ pub fn add_chat(id: i64, num: i64, chats: &mut JsonValue) {
         is_read: 0,
         created_at: global::timestamp()
     }).unwrap();
+    true
 }
 
 pub fn home(req: HttpRequest, body: String) -> Option<JsonValue> {

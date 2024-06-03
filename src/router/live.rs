@@ -333,8 +333,7 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, user_mission
     }
     rv
 }
-
-fn get_master_id(id: i64) -> i64 {
+fn get_master_num(id: i64) -> i64 {
     let id = id.to_string();
     let mut masterid = 0;
     if id.starts_with('2') {
@@ -344,18 +343,25 @@ fn get_master_id(id: i64) -> i64 {
     } else if id.starts_with('4') {
         masterid += 9 + 9 + 12;
     }
-    masterid + id.char_indices().last().unwrap().1.to_string().parse::<i64>().unwrap()
+    masterid
+}
+
+fn get_master_id(id: i64) -> i64 {
+    get_master_num(id) + id.to_string().char_indices().last().unwrap().1.to_string().parse::<i64>().unwrap()
 }
 
 const MAX_BOND: i64 = 500000;
 
 lazy_static! {
-    pub static ref BOND_WEIGHT: JsonValue = {
+    static ref BOND_WEIGHT: JsonValue = {
         array![1, 1, 2, 2, 5, 2, 2, 1, 1]
+    };
+    static ref CHATS: JsonValue = {
+        array![1, 1000, 2000, 3500, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12500, 13000, 13500, 15000]
     };
 }
 
-fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue) -> JsonValue {
+fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue, chats: &mut JsonValue) -> JsonValue {
     let mut rv = array![];
     let mut has = array![];
     let mut has_i = array![];
@@ -429,6 +435,18 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
         }).unwrap();
         i += 1;
     }
+    for data in rv.members() {
+        for chat in CHATS.members() {
+            if chat.as_i64().unwrap() > data["exp"].as_i64().unwrap() {
+                break;
+            }
+            if crate::router::chat::add_chat(data["master_character_id"].as_i64().unwrap(), 1, chats) {
+                let mission_id = 1958000 + (get_master_id(data["master_character_id"].as_i64().unwrap()) * CHATS.len() as i64);
+                items::update_mission_status(mission_id, 0, true, true, 1, missions);
+                completed_missions.push(mission_id).unwrap();
+            }
+        }
+    }
     rv
 }
 
@@ -438,6 +456,7 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
+    let mut chats = userdata::get_acc_chats(&key);
 
     let live = if skipped {
         items::use_item(&object!{
@@ -520,10 +539,11 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     
     items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
     
-    let characters = get_live_character_list(lp_used, body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()), &user, &mut user_missions, &mut cleared_missions);
+    let characters = get_live_character_list(lp_used, body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()), &user, &mut user_missions, &mut cleared_missions, &mut chats);
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, user_missions);
+    userdata::save_acc_chats(&key, chats);
     
     object!{
         "gem": user["gem"].clone(),
