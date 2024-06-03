@@ -112,6 +112,7 @@ fn api_req(req: HttpRequest, body: String) -> HttpResponse {
             "/api/home/announcement" => router::user::announcement(req),
             "/api/shop" => router::shop::shop(req),
             "/api/exchange" => router::exchange::exchange(req),
+            "/api/location" => router::location::location(req),
             _ => unhandled(req, body)
         }
     };

@@ -25,3 +25,4 @@ pub mod clear_rate;
 pub mod exchange;
 pub mod items;
 pub mod databases;
+pub mod location;
