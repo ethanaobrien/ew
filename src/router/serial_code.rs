@@ -176,6 +176,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
         itemz.push(items::gift_item_basic(30010005, 500, 3, "Okay...............", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(30010001, 500, 3, "Okay...............", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(15540001, 500, 3, "Okay...............", &mut user)).ok()?;
+        itemz.push(items::gift_item_basic(30030010, 500, 3, "Okay...............", &mut user)).ok()?;
     } else {
         return Some(object!{
             "result_code": 3
