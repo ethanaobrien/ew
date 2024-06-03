@@ -63,6 +63,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
         itemz.push(items::gift_item_basic(40060010, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(40080011, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(40090011, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;
+        itemz.push(items::gift_item_basic(30030010, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;
     } else if body["input_code"] == "HuTao" {
         itemz.push(items::gift_item_basic(15500001, 500, 3, "Okay...............", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(15500002, 500, 3, "Okay...............", &mut user)).ok()?;
@@ -176,7 +177,6 @@ pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
         itemz.push(items::gift_item_basic(30010005, 500, 3, "Okay...............", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(30010001, 500, 3, "Okay...............", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(15540001, 500, 3, "Okay...............", &mut user)).ok()?;
-        itemz.push(items::gift_item_basic(30030010, 500, 3, "Okay...............", &mut user)).ok()?;
     } else {
         return Some(object!{
             "result_code": 3
