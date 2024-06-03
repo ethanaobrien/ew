@@ -4,6 +4,14 @@ use lazy_static::lazy_static;
 use crate::include_file;
 
 lazy_static! {
+    pub static ref STORY: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(&include_file!("src/router/databases/json/story_part.json")).unwrap();
+        for data in items.members() {
+            info[data["id"].to_string()] = data.clone();
+        }
+        info
+    };
     pub static ref LOGIN_REWARDS: JsonValue = {
         let mut info = object!{};
         let items = json::parse(&include_file!("src/router/databases/json/login_bonus_reward.json")).unwrap();

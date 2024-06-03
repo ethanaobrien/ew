@@ -68,6 +68,11 @@ fn setup_tables(conn: &SQLite) {
         user_id          BIGINT NOT NULL PRIMARY KEY,
         server_data      TEXT NOT NULL
     )");
+    conn.create_store_v2("CREATE TABLE IF NOT EXISTS webui (
+        user_id      BIGINT NOT NULL PRIMARY KEY,
+        token        TEXT NOT NULL,
+        last_login   BIGINT NOT NULL
+    )");
 }
 
 fn acc_exists(uid: i64) -> bool {
@@ -461,14 +466,6 @@ pub fn get_random_uids(count: i32) -> JsonValue {
     DATABASE.lock_and_select_all(&format!("SELECT user_id FROM userdata WHERE friend_request_disabled=?1 ORDER BY RANDOM() LIMIT {}", count), params!(0)).unwrap()
 }
 
-fn create_webui_store() {
-    DATABASE.create_store_v2("CREATE TABLE IF NOT EXISTS webui (
-        user_id      BIGINT NOT NULL PRIMARY KEY,
-        token        TEXT NOT NULL,
-        last_login   BIGINT NOT NULL
-    )");
-}
-
 fn create_webui_token() -> String {
     let token = global::create_token();
     if DATABASE.lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).is_ok() {
@@ -478,7 +475,6 @@ fn create_webui_token() -> String {
 }
 
 pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
-    create_webui_store();
     let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or_default();
     if !verify_password(password, &pass) {
         if acc_exists(uid) && pass.is_empty() {
