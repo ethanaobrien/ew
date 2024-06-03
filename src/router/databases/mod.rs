@@ -120,18 +120,39 @@ lazy_static! {
     pub static ref CARDS: JsonValue = {
         let mut cardz = object!{};
         let items = json::parse(&include_file!("src/router/databases/json/lottery_item.json")).unwrap();
+        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_item.json")).unwrap();
         for data in items.members() {
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = object!{};
             }
             cardz[data["id"].to_string()][data["number"].to_string()] = data.clone();
         }
+        for data in items_global.members() {
+            if cardz[data["id"].to_string()].is_null() {
+                cardz[data["id"].to_string()] = object!{};
+            }
+            if cardz[data["id"].to_string()][data["number"].to_string()].is_null() {
+                cardz[data["id"].to_string()][data["number"].to_string()] = data.clone();
+            }
+        }
         cardz
     };
     pub static ref POOL: JsonValue = {
         let mut cardz = object!{};
+        let mut i2 = array![];
         let items = json::parse(&include_file!("src/router/databases/json/lottery_item.json")).unwrap();
+        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_item.json")).unwrap();
         for data in items.members() {
+            if cardz[data["id"].to_string()].is_null() {
+                cardz[data["id"].to_string()] = array![];
+                i2.push(data["id"].to_string()).unwrap();
+            }
+            cardz[data["id"].to_string()].push(data["number"].clone()).unwrap();
+        }
+        for data in items_global.members() {
+            if i2.contains(data["id"].to_string()) {
+                continue;
+            }
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = array![];
             }
@@ -141,8 +162,20 @@ lazy_static! {
     };
     pub static ref RARITY: JsonValue = {
         let mut cardz = object!{};
+        let mut i2 = array![];
         let items = json::parse(&include_file!("src/router/databases/json/lottery_rarity.json")).unwrap();
+        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_rarity.json")).unwrap();
         for data in items.members() {
+            if cardz[data["id"].to_string()].is_null() {
+                cardz[data["id"].to_string()] = array![];
+                i2.push(data["id"].to_string()).unwrap();
+            }
+            cardz[data["id"].to_string()].push(data.clone()).unwrap();
+        }
+        for data in items_global.members() {
+            if i2.contains(data["id"].to_string()) {
+                continue;
+            }
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = array![];
             }
@@ -153,19 +186,34 @@ lazy_static! {
     pub static ref LOTTERY: JsonValue = {
         let mut cardz = object!{};
         let items = json::parse(&include_file!("src/router/databases/json/lottery.json")).unwrap();
+        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery.json")).unwrap();
         for data in items.members() {
             cardz[data["id"].to_string()] = data.clone();
+        }
+        for data in items_global.members() {
+            if cardz[data["id"].to_string()].is_null() {
+                cardz[data["id"].to_string()] = data.clone();
+            }
         }
         cardz
     };
     pub static ref PRICE: JsonValue = {
         let mut cardz = object!{};
         let items = json::parse(&include_file!("src/router/databases/json/lottery_price.json")).unwrap();
+        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery.json")).unwrap();
         for data in items.members() {
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = object!{};
             }
             cardz[data["id"].to_string()][data["number"].to_string()] = data.clone();
+        }
+        for data in items_global.members() {
+            if cardz[data["id"].to_string()].is_null() {
+                cardz[data["id"].to_string()] = object!{};
+            }
+            if cardz[data["id"].to_string()][data["number"].to_string()].is_null() {
+                cardz[data["id"].to_string()][data["number"].to_string()] = data.clone();
+            }
         }
         cardz
     };
