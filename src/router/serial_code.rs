@@ -25,7 +25,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
     } else if body["input_code"] == "ilikeganyu!!!!!!" {
         itemz.push(items::gift_item_basic(16005003, 100, 3, "I need more primogems", &mut user)).ok()?;
     } else if body["input_code"] == "serial_code" {
-        itemz.push(items::gift_item_basic(17001003, 100, 3, "nyaa~", &mut user)).ok()?;
+        itemz.push(items::gift_item_basic(17001003, 100, 3, "nyaa~", &mut user)).ok()?;
     } else if body["input_code"] == "ganuy" {
         itemz.push(items::gift_item_basic(40010015, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(30010015, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;
@@ -41,6 +41,7 @@ pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
         itemz.push(items::gift_item_basic(10020018, 1, 2, "meow", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(10010014, 1, 2, "meow", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(10010015, 1, 2, "meow", &mut user)).ok()?;
+        itemz.push(items::gift_item_basic(10070015, 1, 2, "assssssssssssddddd", &mut user)).ok()?;
     } else if body["input_code"] == "meow" {
         itemz.push(items::gift_item_basic(10010020, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;
         itemz.push(items::gift_item_basic(10040016, 1, 2, "I need more primogem!!!!!!", &mut user)).ok()?;

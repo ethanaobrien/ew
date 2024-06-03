@@ -20,6 +20,15 @@ pub fn add_chat(id: i64, num: i64, chats: &mut JsonValue) -> bool {
     true
 }
 
+pub fn add_chat_from_chapter_id(chapter_id: i64, chats: &mut JsonValue) -> bool {
+    let chapter = &databases::CHAPTERS_MASTER[chapter_id.to_string()];
+    if chapter.is_empty() {
+        println!("Attempted to give unknown chapter id {}", chapter_id);
+        return false;
+    }
+    add_chat(chapter["masterChatId"].as_i64().unwrap(), chapter["roomId"].as_i64().unwrap(), chats)
+}
+
 pub fn home(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let chats = userdata::get_acc_chats(&key);

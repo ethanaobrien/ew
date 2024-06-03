@@ -106,6 +106,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);
     let mut missions = userdata::get_acc_missions(&key);
+    let mut chats = userdata::get_acc_chats(&key);
     let mut cleared_missions = array![];
     
     let lottery_id = body["master_lottery_id"].as_i64().unwrap();
@@ -129,7 +130,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     if lottery_type == 1 {
         for data in cardstogive.members() {
             let mut is_new = true;
-            if !items::give_character(data["master_card_id"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions) {
+            if !items::give_character(data["master_card_id"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions, &mut chats) {
                 is_new = false;
             }
             if is_new {
@@ -162,7 +163,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     } else if lottery_type == 2 {
         for data in cardstogive.members() {
             let info = get_card(data["master_lottery_item_id"].to_string(), data["master_lottery_item_number"].to_string());
-            items::give_gift_basic(info["type"].as_i32().unwrap(), info["value"].as_i64().unwrap(), info["amount"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions);
+            items::give_gift_basic(info["type"].as_i32().unwrap(), info["value"].as_i64().unwrap(), info["amount"].as_i64().unwrap(), &mut user, &mut missions, &mut cleared_missions, &mut chats);
             let to_push = object!{
                 "master_lottery_item_id": data["master_lottery_item_id"].clone(),
                 "master_lottery_item_number": data["master_lottery_item_number"].clone(),
@@ -173,10 +174,11 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     }
 
     if exchange_id != 0 {
-        items::give_gift_basic(3, exchange_id, 10, &mut user, &mut missions, &mut cleared_missions);
+        items::give_gift_basic(3, exchange_id, 10, &mut user, &mut missions, &mut cleared_missions, &mut chats);
     }
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions);
 
     Some(object!{

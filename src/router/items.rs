@@ -115,7 +115,7 @@ pub fn use_item(item: &JsonValue, multiplier: i64, user: &mut JsonValue) {
     }
 }
 
-pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
+pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue, chats: &mut JsonValue) -> bool {
     if data.is_empty() {
         return false;
     }
@@ -124,7 +124,7 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValu
         return !give_primogems(data["amount"].as_i64().unwrap(), user);
     } else if data["reward_type"] == 2 {
         //character
-        give_character(data["value"].as_i64().unwrap(), user, missions, clear_missions);
+        give_character(data["value"].as_i64().unwrap(), user, missions, clear_missions, chats);
         return true;
     } else if data["reward_type"] == 3 {
         return !give_item(data["value"].as_i64().unwrap(), data["amount"].as_i64().unwrap(), user);
@@ -142,12 +142,12 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValu
     println!("Redeeming reward not implemented for reward type {}", data["reward_type"]);
     false
 }
-pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
+pub fn give_gift_basic(ty_pe: i32, id: i64, amount: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue, chats: &mut JsonValue) -> bool {
     give_gift(&object!{
         reward_type: ty_pe,
         amount: amount,
         value: id
-    }, user, missions, clear_missions)
+    }, user, missions, clear_missions, chats)
 }
 pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
     if master_item_id == 1 {
@@ -201,7 +201,6 @@ pub fn give_primogems(amount: i64, user: &mut JsonValue) -> bool {
     user["gem"]["free"] = new_amount.into();
     false
 }
-
 pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) -> JsonValue {
     let to_push = object!{
         id: item["id"].clone(),
@@ -274,11 +273,23 @@ pub fn get_rarity(id: i64) -> i32 {
 
 // true - added
 // false - already has
-pub fn give_character(id: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue) -> bool {
+pub fn give_character(id: i64, user: &mut JsonValue, missions: &mut JsonValue, clear_missions: &mut JsonValue, chats: &mut JsonValue) -> bool {
     let character_rarity = get_rarity(id);
     if character_rarity == 0 {
         println!("Attempted to give user undefined card!! Card id: {}", id);
         return false;
+    }
+
+    if !databases::CHARACTER_CHATS[id.to_string()]["51"].is_empty() {
+        let chat = &databases::CHARACTER_CHATS[id.to_string()]["51"];
+        let mission_id = databases::MISSION_REWARD[chat[0].to_string()]["value"].as_i64().unwrap();
+
+        if crate::router::chat::add_chat_from_chapter_id(mission_id, chats) {
+            update_mission_status(chat[1].as_i64().unwrap(), 0, true, true, 1, missions);
+            if !clear_missions.contains(chat[1].as_i64().unwrap()) {
+                clear_missions.push(chat[1].clone()).unwrap();
+            }
+        }
     }
 
     for data in user["card_list"].members() {

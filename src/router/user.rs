@@ -53,6 +53,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     let mut user = userdata::get_acc_home(&key);
     let mut userr = userdata::get_acc(&key);
+    let mut chats = userdata::get_acc_chats(&key);
     let mut missions = userdata::get_acc_missions(&key);
     
     let mut cleared_missions = array![];
@@ -65,7 +66,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
             if data["id"] != *gift_id {
                 continue;
             }
-            if !items::give_gift(data, &mut userr, &mut missions, &mut cleared_missions) {
+            if !items::give_gift(data, &mut userr, &mut missions, &mut cleared_missions, &mut chats) {
                 failed.push(gift_id.clone()).unwrap();
                 break;
             }
@@ -87,6 +88,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc_missions(&key, missions);
     userdata::save_acc_home(&key, user);
+    userdata::save_acc_chats(&key, chats);
     userdata::save_acc(&key, userr.clone());
     let userr = userdata::get_acc(&key);
 
@@ -385,7 +387,7 @@ pub fn initialize(req: HttpRequest, body: String) -> Option<JsonValue> {
     // User is rewarded with all base cards in the team they chose. This makes up their new deck_list
     
     for (i, data) in cardstoreward.members().enumerate() {
-        items::give_character(data.as_i64().unwrap(), &mut user, &mut missions, &mut array![]);
+        items::give_character(data.as_i64().unwrap(), &mut user, &mut missions, &mut array![], &mut array![]);
         if i < 10 {
             user["deck_list"][0]["main_card_ids"][i] = data.clone();
         }

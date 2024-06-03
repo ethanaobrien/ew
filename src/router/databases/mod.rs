@@ -42,6 +42,14 @@ lazy_static! {
         }
         chats
     };
+    pub static ref CHAPTERS_MASTER: JsonValue = {
+        let mut chats = object!{};
+        let items = json::parse(&include_file!("src/router/databases/json/chat_chapter.json")).unwrap();
+        for data in items.members() {
+            chats[data["chapterId"].to_string()] = data.clone();
+        }
+        chats
+    };
     pub static ref EXCHANGE_LIST: JsonValue = {
         let mut info = object!{};
         let items = json::parse(&include_file!("src/router/databases/json/exchange_item.json")).unwrap();
@@ -222,6 +230,20 @@ lazy_static! {
         let items = json::parse(&include_file!("src/router/databases/json/mission.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
+        }
+        info
+    };
+    pub static ref CHARACTER_CHATS: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(&include_file!("src/router/databases/json/mission.json")).unwrap();
+        for data in items.members() {
+            if data["conditionValues"].len() != 1 || (data["conditionType"] != 50 && data["conditionType"] != 51) {
+                continue;
+            }
+            if info[data["conditionValues"].to_string()].is_null() {
+                info[data["conditionValues"].to_string()] = object!{};
+            }
+            info[data["conditionValues"][0].to_string()][data["conditionType"].to_string()] = array![data["masterMissionRewardId"].clone(), data["id"].clone()];
         }
         info
     };

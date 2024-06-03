@@ -36,6 +36,7 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     let mut missions = userdata::get_acc_missions(&key);
     let mut user = userdata::get_acc(&key);
+    let mut chats = userdata::get_acc_chats(&key);
     let mut rewards = array![];
     
     for mission in body["master_mission_ids"].members() {
@@ -43,7 +44,7 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
         let mut gift = databases::MISSION_REWARD[mission_info["masterMissionRewardId"].to_string()].clone();
         gift["reward_type"] = gift["type"].clone();
         gift["amount"] = gift["amount"].as_i64().unwrap().into();
-        items::give_gift(&gift, &mut user, &mut missions, &mut array![]);
+        items::give_gift(&gift, &mut user, &mut missions, &mut array![], &mut chats);
         rewards.push(gift).unwrap();
         
         let variable_missions = array![[1153001, 1153019], [1105001, 1105017], [1101001, 1101030], [1121001, 1121019], [1112001, 1112033]];
@@ -67,6 +68,7 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
     }
     
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions.clone());
 
     Some(object!{
