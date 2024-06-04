@@ -282,12 +282,16 @@ pub fn detail(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn sif(req: HttpRequest) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), "");
-    let user = userdata::get_acc(&key);
+    let mut user = userdata::get_acc(&key);
     let mut cards = userdata::get_acc_sif(&key);
     
     // prevent duplicate data in the database
     if user["user"]["sif_user_id"].as_i64().unwrap() == 111111111 {
         cards = json::parse(&include_file!("src/router/userdata/full_sif.json")).unwrap();
+    }
+
+    if items::give_gift_basic(8, 4293000525, 1, &mut user, &mut array![], &mut array![], &mut array![]) || items::give_gift_basic(8, 4293000521, 1, &mut user, &mut array![], &mut array![], &mut array![]) {
+        userdata::save_acc(&key, user);
     }
     
     Some(object!{
@@ -308,6 +312,8 @@ pub fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
     user["user"]["sif_user_id"] = 111111111.into();
+    items::give_gift_basic(8, 4293000525, 1, &mut user, &mut array![], &mut array![], &mut array![]);
+    items::give_gift_basic(8, 4293000521, 1, &mut user, &mut array![], &mut array![], &mut array![]);
     
     userdata::save_acc(&key, user.clone());
     
@@ -316,7 +322,7 @@ pub fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
         "user": user["user"].clone(),
         "master_title_ids": user["master_title_ids"].clone()
     })
-    
+
     
     /*
     // Error response

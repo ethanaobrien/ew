@@ -63,7 +63,7 @@ fn api_req(req: HttpRequest, body: String) -> HttpResponse {
             "/api/event_star_live/change_target_music" => router::event::change_target_music(req, body),
             "/api/event_star_live/start" => router::live::event_start(req, body),
             "/api/event_star_live/end" => router::live::event_end(req, body),
-            //            "/api/event_star_live/skip" => router::live::event_skip(req, body),
+            //"/api/event_star_live/skip" => router::live::event_skip(req, body),
             "/api/live/start" => router::live::start(req, body),
             "/api/live/end" => router::live::end(req, body),
             "/api/live/skip" => router::live::skip(req, body),

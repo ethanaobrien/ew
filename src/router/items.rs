@@ -136,8 +136,9 @@ pub fn give_gift(data: &JsonValue, user: &mut JsonValue, missions: &mut JsonValu
         let title = data["value"].as_i64().unwrap();
         if !user["master_title_ids"].contains(title) {
             user["master_title_ids"].push(title).unwrap();
+            return true;
         }
-        return true;
+        return false;
     }
     println!("Redeeming reward not implemented for reward type {}", data["reward_type"]);
     false
