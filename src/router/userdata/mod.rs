@@ -296,6 +296,9 @@ pub fn save_server_data(auth_key: &str, data: JsonValue) {
 pub fn save_acc_chats(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "chats", data);
 }
+pub fn save_acc_sif(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "sifcards", data);
+}
 
 fn generate_salt() -> Vec<u8> {
     let mut rng = rand::thread_rng();

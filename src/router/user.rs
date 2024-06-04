@@ -1,5 +1,6 @@
 use json::{array, object, JsonValue};
 use actix_web::{HttpRequest};
+use sha1::{Sha1, Digest};
 
 use crate::encryption;
 use crate::router::{userdata, global, items};
@@ -286,7 +287,7 @@ pub fn sif(req: HttpRequest) -> Option<JsonValue> {
     let mut cards = userdata::get_acc_sif(&key);
     
     // prevent duplicate data in the database
-    if user["user"]["sif_user_id"].as_i64().unwrap() == 111111111 {
+    if user["user"]["sif_user_id"].as_i64().unwrap_or(0) == 111111111 {
         cards = json::parse(&include_file!("src/router/userdata/full_sif.json")).unwrap();
     }
 
@@ -308,13 +309,62 @@ pub fn sifas_migrate(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     })
 }
 
-pub fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
+fn _a_sha1(t: &str) -> String {
+    let mut hasher = Sha1::new();
+    hasher.update(t.as_bytes());
+    let result = hasher.finalize();
+    format!("{:X}", result)
+}
+
+fn generate_passcode_sha1(transfer_id: String, transfer_code: String) -> String {
+    let id_sha1 = _a_sha1(&transfer_id);
+    _a_sha1(&format!("{}{}", id_sha1, transfer_code))
+}
+
+async fn npps4_req(sha_id: String) -> Option<JsonValue> {
+    let client = reqwest::Client::new();
+    // TODO - ability to configure in admin webui?
+    let hostname = "http://127.0.0.1:51376";
+    let url = format!("{}/ewexport?sha1={}", hostname, sha_id);
+    println!("Polling NPPS4 at {}", hostname);
+    let response = client.get(url);
+    let response_body = response.send().await.ok()?.text().await.ok()?;
+    Some(json::parse(&response_body).ok()?)
+}
+
+fn clean_sif_data(current: &JsonValue) -> JsonValue {
+    let mut rv = array![];
+    for data in current.members() {
+        rv.push(object!{
+            master_card_id: data["id"].clone(),
+            evolve: if data["idolized"].as_bool().unwrap_or(false) { 1 } else { 0 },
+            sign_flag: if data["signed"].as_bool().unwrap_or(false) { 1 } else { 0 }
+        }).unwrap();
+    }
+    rv
+}
+
+pub async fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
-    user["user"]["sif_user_id"] = 111111111.into();
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+
+    let id = generate_passcode_sha1(body["sif_user_id"].to_string(), body["password"].to_string());
+    let user_info = npps4_req(id).await;
+    if user_info.is_none() {
+        return Some(object!{
+            sif_migrate_status: 38
+        });
+    }
+    let user_info = user_info.unwrap();
+
+    //TODO - give rewards? Titles?
+
+    user["user"]["sif_user_id"] = body["sif_user_id"].to_string().parse::<i32>().unwrap().into(); //sif2 client sends this as a string...
     items::give_gift_basic(8, 4293000525, 1, &mut user, &mut array![], &mut array![], &mut array![]);
     items::give_gift_basic(8, 4293000521, 1, &mut user, &mut array![], &mut array![], &mut array![]);
     
+    userdata::save_acc_sif(&key, clean_sif_data(&user_info["units"]));
     userdata::save_acc(&key, user.clone());
     
     Some(object!{
@@ -323,17 +373,6 @@ pub fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
         "master_title_ids": user["master_title_ids"].clone()
     })
 
-    
-    /*
-    // Error response
-    let resp = object!{
-        "code": 0,
-        "server_time": global::timestamp(),
-        "data": {
-            "sif_migrate_status": 38
-        }
-    };
-    */
 }
 
 pub fn getregisteredplatformlist(_req: HttpRequest, _body: String) -> Option<JsonValue> {

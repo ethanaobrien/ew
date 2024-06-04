@@ -25,7 +25,7 @@ fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
     None
 }
 
-fn api_req(req: HttpRequest, body: String) -> HttpResponse {
+async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
     let headers = req.headers().clone();
     if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
         return router::webui::main(req);
@@ -89,7 +89,7 @@ fn api_req(req: HttpRequest, body: String) -> HttpResponse {
             "/api/card/evolve" => router::card::evolve(req, body),
             "/api/shop/buy" => router::shop::buy(req, body),
             "/api/user/getregisteredplatformlist" => router::user::getregisteredplatformlist(req, body),
-            "/api/user/sif/migrate" => router::user::sif_migrate(req, body),
+            "/api/user/sif/migrate" => router::user::sif_migrate(req, body).await,
             "/api/user/ss/migrate" => router::user::sifas_migrate(req, body),
             "/api/exchange" => router::exchange::exchange_post(req, body),
             "/api/item/use" => router::items::use_item_req(req, body),
@@ -147,7 +147,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/import" => router::webui::import(req, body),
             "/api/webui/set_time" => router::webui::set_time(req, body),
             "/api/webui/admin" => router::webui::admin_post(req, body),
-            _ => api_req(req, body)
+            _ => api_req(req, body).await
         }
     } else {
         match req.path() {
@@ -163,7 +163,7 @@ async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/webui/logout" => router::webui::logout(req),
             "/api/webui/admin" => router::webui::admin(req),
             "/api/webui/export" => router::webui::export(req),
-            _ => api_req(req, body)
+            _ => api_req(req, body).await
         }
     }
 }
@@ -196,8 +196,6 @@ async fn main() -> std::io::Result<()> {
     println!("Server started: http://127.0.0.1:{}", 8080);
     rv.await
 }
-
-
 
 #[macro_export]
 macro_rules! include_file {
