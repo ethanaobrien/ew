@@ -189,7 +189,9 @@ pub fn continuee(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     
-    Some(user["gem"].clone())
+    Some(object!{
+        gem: user["gem"].clone()
+    })
 }
 
 pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> JsonValue {
