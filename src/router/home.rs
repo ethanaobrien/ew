@@ -112,6 +112,15 @@ pub fn home(req: HttpRequest) -> Option<JsonValue> {
     user["home"]["clear_mission_count"] = clear_ct.into();
     user["home"]["not_cleared_daily_mission_count"] = (6 - daily_ct).into();
 
+    let mut chat_count = 0;
+    let chats = userdata::get_acc_chats(&key);
+    for data in chats.members() {
+        if data["is_read"] == 0 {
+            chat_count += 1;
+        }
+    }
+    user["home"]["unread_chat_count"] = chat_count.into();
+
     //todo
     user["home"]["beginner_mission_complete"] = 1.into();
     
