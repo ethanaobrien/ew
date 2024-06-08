@@ -121,7 +121,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut count = price["count"].as_usize().unwrap();
 
     // This is a temporary easter egg, not meant to stay
-    if body["master_lottery_price_number"] == 4110044 {
+    if lottery_id == 4110044 {
         count = 30;
     }
     
