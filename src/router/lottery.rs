@@ -117,8 +117,15 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
         amount: price["price"].clone(),
         consumeType: price["consumeType"].clone()
     }, 1, &mut user);
+
+    let mut count = price["count"].as_usize().unwrap();
+
+    // This is a temporary easter egg, not meant to stay
+    if body["master_lottery_price_number"] == 4110044 {
+        count = 30;
+    }
     
-    let cardstogive = get_random_cards(lottery_id, price["count"].as_usize().unwrap());
+    let cardstogive = get_random_cards(lottery_id, count);
     
     let lottery = &databases::LOTTERY[lottery_id.to_string()];
     let lottery_type = lottery["category"].as_i32().unwrap();
