@@ -282,7 +282,7 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
                 }
             },
             3 => {
-                if full_combo && combo_info["valueList"][3].as_i64()? <= combo && data["level"].as_i64()? == level {
+                if full_combo && data["level"].as_i64()? == level {
                     out.push(data["id"].as_i32()?).ok()?;
                 }
             },
@@ -495,12 +495,14 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     let missions;
     if skipped {
         live_completed(body["master_live_id"].as_i64().unwrap(), live["level"].as_i32().unwrap(), false, live["high_score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
+
         missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap(), false, false).unwrap_or(array![]);
     } else {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
-        let is_full_combo = (body["live_score"]["good"].as_i32().unwrap_or(0) + body["live_score"]["bad"].as_i32().unwrap_or(0) + body["live_score"]["miss"].as_i32().unwrap_or(0)) == 0;
 
-        let is_perfect = is_full_combo && body["live_score"]["great"].as_i32().unwrap_or(0) == 0;
+        let is_full_combo = (body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
+
+        let is_perfect = is_full_combo && body["live_score"]["great"].as_i32().unwrap_or(1) == 0;
 
         missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap_or(0), body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
     
