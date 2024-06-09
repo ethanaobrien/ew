@@ -194,6 +194,16 @@ pub fn continuee(req: HttpRequest, body: String) -> Option<JsonValue> {
     })
 }
 
+fn get_clear_count(id: i64, user: &JsonValue) -> i64 {
+    let mut rv = 0;
+    for current in user["live_list"].members() {
+        if current["master_live_id"] == id {
+            rv += current["clear_count"].as_i64().unwrap();
+        }
+    }
+    rv
+}
+
 pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> JsonValue {
     if user["tutorial_step"].as_i32().unwrap() < 130 {
         return JsonValue::Null;
@@ -479,6 +489,7 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     } else {
         update_live_data(&mut user, &body, true)
     };
+    let clear_count = get_clear_count(body["master_live_id"].as_i64().unwrap(), &user);
     
     //1273009, 1273010, 1273011, 1273012
     let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, 1, &mut user_missions);
@@ -496,7 +507,7 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     if skipped {
         live_completed(body["master_live_id"].as_i64().unwrap(), live["level"].as_i32().unwrap(), false, live["high_score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
 
-        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap(), live["level"].as_i64().unwrap(), false, false).unwrap_or(array![]);
+        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), clear_count, live["level"].as_i64().unwrap(), false, false).unwrap_or(array![]);
     } else {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
 
@@ -504,7 +515,7 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
 
         let is_perfect = is_full_combo && body["live_score"]["great"].as_i32().unwrap_or(1) == 0;
 
-        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), live["clear_count"].as_i64().unwrap_or(0), body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
+        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), clear_count, body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
     
         if is_full_combo {
             if items::advance_mission(1176001, 1, 1, &mut user_missions).is_some() {
