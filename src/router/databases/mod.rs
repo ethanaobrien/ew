@@ -216,7 +216,7 @@ lazy_static! {
     pub static ref PRICE: JsonValue = {
         let mut cardz = object!{};
         let items = json::parse(&include_file!("src/router/databases/json/lottery_price.json")).unwrap();
-        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery.json")).unwrap();
+        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_price.json")).unwrap();
         for data in items.members() {
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = object!{};
