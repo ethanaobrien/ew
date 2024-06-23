@@ -7,8 +7,10 @@ use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 use crate::router::clear_rate::live_completed;
 
-pub fn retire(_req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn retire(req: HttpRequest, body: String) -> Option<JsonValue> {
+    let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    live_retire(&key, &body);
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
     }
@@ -175,10 +177,9 @@ pub fn mission(_req: HttpRequest, _body: String) -> Option<JsonValue> {
 
 fn check_for_stale_data(server_data: &mut JsonValue, live_id: i64) {
     let mut expired = array![];
-    // The user has 24 hours to complete a live
-    let expired_time = global::timestamp() + (24 * 60 * 60);
+    let curr_time = global::timestamp();
     for (i, live) in server_data["last_live_started"].members().enumerate() {
-        if live["expire_date_time"].as_u64().unwrap() > expired_time || live["master_live_id"] == live_id {
+        if live["expire_date_time"].as_u64().unwrap() < curr_time || live["master_live_id"] == live_id {
             expired.push(i).unwrap();
         }
     }
@@ -200,6 +201,12 @@ fn get_end_live_deck_id(login_token: &str, body: &JsonValue) -> Option<i32> {
     Some(rv)
 }
 
+fn live_retire(login_token: &str, body: &JsonValue) {
+    let mut server_data = userdata::get_server_data(login_token);
+    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
+    userdata::save_server_data(login_token, server_data);
+}
+
 fn start_live(login_token: &str, body: &JsonValue) {
     let mut server_data = userdata::get_server_data(login_token);
     if server_data["last_live_started"].is_null() {
@@ -207,6 +214,7 @@ fn start_live(login_token: &str, body: &JsonValue) {
     }
     check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
     let mut to_save = body.clone();
+    // The user has 24 hours to complete a live
     to_save["expire_date_time"] = (global::timestamp() + (24 * 60 * 60)).into();
     server_data["last_live_started"].push(to_save).unwrap();
 
