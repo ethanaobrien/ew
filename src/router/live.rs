@@ -540,7 +540,6 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     } else {
         update_live_data(&mut user, &body, true)
     };
-    let clear_count = get_clear_count(body["master_live_id"].as_i64().unwrap(), &user);
     
     //1273009, 1273010, 1273011, 1273012
     let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, 1, &mut user_missions);
@@ -557,10 +556,12 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     let missions;
     if skipped {
         live_completed(body["master_live_id"].as_i64().unwrap(), live["level"].as_i32().unwrap(), false, live["high_score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
+        let clear_count = get_clear_count(body["master_live_id"].as_i64().unwrap(), &user);
 
         missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), clear_count, live["level"].as_i64().unwrap(), false, false).unwrap_or(array![]);
     } else {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
+        let clear_count = get_clear_count(body["master_live_id"].as_i64().unwrap(), &user);
 
         let is_full_combo = (body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
 
