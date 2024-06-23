@@ -173,7 +173,50 @@ pub fn mission(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     })
 }
 
-pub fn start(_req: HttpRequest, _body: String) -> Option<JsonValue> {
+fn check_for_stale_data(server_data: &mut JsonValue, live_id: i64) {
+    let mut expired = array![];
+    // The user has 24 hours to complete a live
+    let expired_time = global::timestamp() + (24 * 60 * 60);
+    for (i, live) in server_data["last_live_started"].members().enumerate() {
+        if live["expire_date_time"].as_u64().unwrap() > expired_time || live["master_live_id"] == live_id {
+            expired.push(i).unwrap();
+        }
+    }
+    for i in expired.members() {
+        server_data["last_live_started"].array_remove(i.as_usize().unwrap());
+    }
+}
+
+fn get_end_live_deck_id(login_token: &str, body: &JsonValue) -> Option<i32> {
+    let mut server_data = userdata::get_server_data(login_token);
+    if server_data["last_live_started"].is_null() {
+        server_data["last_live_started"] = array![];
+    }
+    let index = server_data["last_live_started"].members().position(|r| r["master_live_id"] == body["master_live_id"])?;
+    let rv = server_data["last_live_started"][index]["deck_slot"].as_i32()?;
+
+    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
+    userdata::save_server_data(login_token, server_data);
+    Some(rv)
+}
+
+fn start_live(login_token: &str, body: &JsonValue) {
+    let mut server_data = userdata::get_server_data(login_token);
+    if server_data["last_live_started"].is_null() {
+        server_data["last_live_started"] = array![];
+    }
+    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
+    let mut to_save = body.clone();
+    to_save["expire_date_time"] = (global::timestamp() + (24 * 60 * 60)).into();
+    server_data["last_live_started"].push(to_save).unwrap();
+
+    userdata::save_server_data(login_token, server_data);
+}
+
+pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    start_live(&key, &body);
     Some(array![])
 }
 
@@ -558,7 +601,8 @@ fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     
     items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
     
-    let characters = get_live_character_list(lp_used, body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()), &user, &mut user_missions, &mut cleared_missions, &mut chats);
+    let deck_slot = get_end_live_deck_id(&key, &body).unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap());
+    let characters = get_live_character_list(lp_used, deck_slot, &user, &mut user_missions, &mut cleared_missions, &mut chats);
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_missions(&key, user_missions);
