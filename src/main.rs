@@ -233,6 +233,7 @@ async fn main() -> std::io::Result<()> {
     ).bind(("0.0.0.0", port))?.run();
 
     println!("Server started: http://0.0.0.0:{}", port);
+    println!("Data path is set to {}", args.path);
     if args.https {
         println!("Note: gree is set to https mode. http requests will fail on jp clients.");
     }
