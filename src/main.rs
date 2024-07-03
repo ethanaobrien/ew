@@ -16,6 +16,8 @@ use actix_web::{
 };
 use crate::router::global;
 use json::JsonValue;
+use clap::Parser;
+use std::sync::atomic::Ordering;
 
 fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
     if body != String::new() {
@@ -181,22 +183,6 @@ async fn js(_req: HttpRequest) -> HttpResponse {
         .body(include_file!("webui/dist/index.js"))
 }
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    let rv = HttpServer::new(|| App::new()
-        .wrap_fn(|req, srv| {
-            println!("Request: {}", req.path());
-            srv.call(req)
-        })
-        .app_data(web::PayloadConfig::default().limit(1024 * 1024 * 25))
-        .service(css)
-        .service(js)
-        .default_service(web::route().to(request))
-    ).bind(("0.0.0.0", 8080))?.run();
-    println!("Server started: http://127.0.0.1:{}", 8080);
-    rv.await
-}
-
 #[macro_export]
 macro_rules! include_file {
     ( $s:expr ) => {
@@ -214,4 +200,41 @@ pub fn decode(bytes: &[u8]) -> Vec<u8> {
     let mut ret = Vec::new();
     dec.read_to_end(&mut ret).unwrap();
     ret
+}
+
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+pub struct Args {
+    #[arg(short, long, default_value_t = 8080, help = "Port to listen on")]
+    port: u16,
+
+    #[arg(long, default_value = "./", help = "Path to store database files")]
+    path: String,
+
+    #[arg(long, default_value_t = false, help = "Serve gree headers with https. WILL NOT ACCEPT HTTPS REQUESTS")]
+    https: bool
+}
+
+#[actix_web::main]
+async fn main() -> std::io::Result<()> {
+    let args = Args::parse();
+    let port = args.port;
+
+    router::gree::HTTPS.store(args.https, Ordering::Relaxed);
+    let rv = HttpServer::new(|| App::new()
+    .wrap_fn(|req, srv| {
+        println!("Request: {}", req.path());
+        srv.call(req)
+    })
+    .app_data(web::PayloadConfig::default().limit(1024 * 1024 * 25))
+    .service(css)
+    .service(js)
+    .default_service(web::route().to(request))
+    ).bind(("0.0.0.0", port))?.run();
+
+    println!("Server started: http://0.0.0.0:{}", port);
+    if args.https {
+        println!("Note: gree is set to https mode. http requests will fail on jp clients.");
+    }
+    rv.await
 }

@@ -1,13 +1,14 @@
 use actix_web::{HttpResponse, HttpRequest, http::header::{HeaderValue, ContentType, HeaderMap}};
 use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
-use std::env;
 use sha1::Sha1;
 use substring::Substring;
 use json::{object, JsonValue};
 use hmac::{Hmac, Mac};
 use rusqlite::params;
 use lazy_static::lazy_static;
+use std::sync::atomic::Ordering;
+use std::sync::atomic::AtomicBool;
 
 use openssl::pkey::PKey;
 use openssl::rsa::Rsa;
@@ -332,8 +333,12 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
     send(req, resp)
 }
 
-fn get_protocol() -> String {
-    if env::args().nth(1).unwrap_or_default() == *"https" {
+lazy_static!{
+    pub static ref HTTPS: AtomicBool = AtomicBool::new(false);
+}
+
+pub fn get_protocol() -> String {
+    if HTTPS.load(Ordering::SeqCst) == true {
         return String::from("https");
     }
     String::from("http")
