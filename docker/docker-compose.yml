@@ -1,0 +1,15 @@
+version: '3'
+services:
+  sif2-ew:
+    image: sif2-ew:latest
+    container_name: sif2-ew
+    build:
+      dockerfile: "./Dockerfile"
+    environment:
+      PORT: 8081
+      DIRECTORY: /data
+    ports:
+      - 8081:8081
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
