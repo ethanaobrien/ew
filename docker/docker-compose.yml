@@ -7,7 +7,8 @@ services:
       dockerfile: "./Dockerfile"
     environment:
       PORT: 8081
-      DIRECTORY: /data
+      DIRECTORY: /data/
+      HTTPS: false
     ports:
       - 8081:8081
     volumes:

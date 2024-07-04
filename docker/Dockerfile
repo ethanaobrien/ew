@@ -15,7 +15,7 @@ WORKDIR /ew/
 RUN . "$HOME/.cargo/env" && cargo build --release
 RUN mkdir /root/ew/ && cp target/release/ew /root/ew/ew
 
-RUN echo "#!/bin/bash\n\n /root/ew/ew --path \"\${DIRECTORY:-/data/}\" --port \"\${PORT:-8080}\"" > /root/ew/start.sh
+COPY ./start.sh /root/ew/start.sh
 
 RUN chmod +x /root/ew/start.sh
 
