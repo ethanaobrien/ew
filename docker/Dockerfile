@@ -1,4 +1,6 @@
-FROM docker.io/library/debian:latest
+FROM docker.io/library/debian:latest as builder
+
+# First - build
 
 RUN apt update && apt install -y curl npm libssl-dev perl git
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash
@@ -13,14 +15,15 @@ RUN npm i && npm run build
 WORKDIR /ew/
 
 RUN . "$HOME/.cargo/env" && cargo build --release
-RUN mkdir /root/ew/ && cp target/release/ew /root/ew/ew
 
+## Second - sort stuff idk
+
+FROM docker.io/library/debian:bookworm-slim
+
+RUN mkdir -p /root/ew/
+COPY --from=builder /ew/target/release/ew /root/ew/ew
 COPY ./start.sh /root/ew/start.sh
 
 RUN chmod +x /root/ew/start.sh
-
-WORKDIR /
-
-RUN rm -rf /ew/
 
 ENTRYPOINT ["/root/ew/start.sh"]
