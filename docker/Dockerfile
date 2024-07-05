@@ -22,7 +22,7 @@ FROM docker.io/library/debian:bookworm-slim
 
 RUN mkdir -p /root/ew/
 COPY --from=builder /ew/target/release/ew /root/ew/ew
-COPY ./start.sh /root/ew/start.sh
+COPY ./docker/start.sh /root/ew/start.sh
 
 RUN chmod +x /root/ew/start.sh
 
