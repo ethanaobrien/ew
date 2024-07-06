@@ -14,6 +14,7 @@ permissions:
   id-token: write # needed for signing the images with GitHub OIDC Token
 jobs:
   build:
+    if: github.repository == 'ethanaobrien/ew'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
