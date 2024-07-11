@@ -211,7 +211,10 @@ pub struct Args {
     path: String,
 
     #[arg(long, default_value_t = false, help = "Serve gree headers with https. WILL NOT ACCEPT HTTPS REQUESTS")]
-    https: bool
+    https: bool,
+
+    #[arg(long, default_value = "http://127.0.0.1:51376", help = "Address to NPPS4 server for sif account linking")]
+    npps4: String
 }
 
 pub fn get_args() -> Args {
@@ -236,6 +239,8 @@ async fn main() -> std::io::Result<()> {
 
     println!("Server started: http://0.0.0.0:{}", port);
     println!("Data path is set to {}", args.path);
+    println!("Sif1 transfer requests will attempt to contact NPPS4 at {}", host);
+
     if args.https {
         println!("Note: gree is set to https mode. http requests will fail on jp clients.");
     }

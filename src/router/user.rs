@@ -322,11 +322,16 @@ fn generate_passcode_sha1(transfer_id: String, transfer_code: String) -> String 
 }
 
 async fn npps4_req(sha_id: String) -> Option<JsonValue> {
+    let args = crate::get_args();
+
+    let mut host = args.npps4;
+    while host.ends_with("/") {
+        host.pop();
+    }
+    let url = format!("{}/ewexport?sha1={}", host, sha_id);
+    println!("Polling NPPS4 at {}", host);
+
     let client = reqwest::Client::new();
-    // TODO - ability to configure in admin webui?
-    let hostname = "http://127.0.0.1:51376";
-    let url = format!("{}/ewexport?sha1={}", hostname, sha_id);
-    println!("Polling NPPS4 at {}", hostname);
     let response = client.get(url);
     let response_body = response.send().await.ok()?.text().await.ok()?;
     Some(json::parse(&response_body).ok()?)
