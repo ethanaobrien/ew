@@ -172,7 +172,7 @@ pub fn main(req: HttpRequest) -> HttpResponse {
             }
         }
     }
-    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" && req.path() != "/admin/" {
+    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" && req.path() != "/admin/" && req.path() != "/help/" {
         return HttpResponse::Found()
             .insert_header(("Location", "/"))
             .body("");
@@ -238,3 +238,26 @@ pub fn export(req: HttpRequest) -> HttpResponse {
         .body(json::stringify(resp))
 }
 
+pub fn server_info(_req: HttpRequest) -> HttpResponse {
+    let args = crate::get_args();
+
+    let resp = object!{
+        result: "OK",
+        data: {
+            account_import: get_config()["import"].as_bool().unwrap(),
+            links: {
+                global: args.global_android,
+                japan: args.japan_android,
+                ios: {
+                    global: args.global_ios,
+                    japan: args.japan_ios
+                },
+                assets: args.assets_url
+            }
+        }
+    };
+    HttpResponse::Ok()
+    .insert_header(ContentType::json())
+    .body(json::stringify(resp))
+
+}

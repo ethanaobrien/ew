@@ -1,19 +1,19 @@
 import { useState, useParams, useEffect } from 'react'
 import './Help.css'
 import Request from '../Request.jsx'
+let init = false;
 
 function Help() {
     const [downloadUrl, setDownloadUrl] = useState(<div>Contact your server admin, asking for a patched apk. Examples can be found <a href="https://ethanthesleepy.one/public/lovelive/sif2/">here</a>.</div>);
     const [downloadUrliOSGL, setDownloadUrliOSGL] = useState("https://ethanthesleepy.one/public/lovelive/sif2/sif2-gl.ipa");
     const [downloadUrliOSJP, setDownloadUrliOSJP] = useState("https://ethanthesleepy.one/public/lovelive/sif2/sif2-jp.ipa");
 
-    const [assetUrl, setAssetUrl] = useState("http://sif2.sif.moe");
-    let init = false;
+    const [assetUrl, setAssetUrl] = useState("https://sif2.sif.moe");
     
     useEffect(() => {
-        if (init) return;
-        init = true;
         (async () => {
+            if (init) return;
+            init = true;
             let resp = await Request("/api/webui/serverInfo");
             if (resp.result !== "OK") {
                 return;
@@ -32,12 +32,16 @@ function Help() {
                     <div>Your server admin has a link to download! Download <a href={resp.data.links.japan}>Japan</a></div>
                 );
             }
+            if (resp.data.links.assets) {
+                setAssetUrl(resp.data.links.assets);
+            }
+
             if (!resp.data.links.ios) return;
             if (resp.data.links.ios.japan) {
                 setDownloadUrliOSJP(resp.data.links.ios.japan);
             }
             if (resp.data.links.ios.global) {
-                setDownloadUrliOSJP(resp.data.links.ios.global);
+                setDownloadUrliOSGL(resp.data.links.ios.global);
             }
 
         })();
@@ -53,7 +57,7 @@ function Help() {
             <p>{downloadUrl}</p>
 
             <h2>So I got the server running, how do I install the app? (iOS)</h2>
-            <p>Running on iOS is much simpler than Android, thanks to triangle on the discord. You first download an ipa file for <a href={downloadUrliOSGL}>global</a> or <a href={downloadUrliOSJP}>Japan</a>, and use <a href="https://sideloadly.io/">Sideloadly</a> (or your preferred application installer) to install the app. Then open settings, navigate to the app you just installed, and input the server url (Which is likely "{window.location.origin}", though this may not be the case). If you have any errors opening the app, make sure none of the urls in settings end with a slash (/).</p>
+            <p>Running on iOS is much simpler than Android, thanks to triangle on the discord. You first download an ipa file for <a href={downloadUrliOSGL}>global</a> or <a href={downloadUrliOSJP}>Japan</a>, and use <a href="https://sideloadly.io/">Sideloadly</a> (or your preferred application installer) to install the app. Then open settings, navigate to the app you just installed, and input the server url (Which is likely "{window.location.origin}", though this may not be the case), and the asset url, which is "{assetUrl}". If you have any errors opening the app, make sure none of the urls in settings end with a slash (/).</p>
 
             <h2>Help! I'm trying to open the app and it shows as "unavailable" (iOS)</h2>
             <p>Do not delete it, Just re-sideload the app. This is an Apple "security" feature.</p>

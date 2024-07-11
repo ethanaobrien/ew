@@ -41,7 +41,24 @@ pub struct Args {
     https: bool,
 
     #[arg(long, default_value = "http://127.0.0.1:51376", help = "Address to NPPS4 server for sif account linking")]
-    npps4: String
+    npps4: String,
+
+    //below options are for the "Help" page
+
+    #[arg(long, default_value = "", help = "Link to patched android global apk for this server.")]
+    global_android: String,
+
+    #[arg(long, default_value = "", help = "Link to patched android japan apk for this server.")]
+    japan_android: String,
+
+    #[arg(long, default_value = "", help = "Link to patched iOS global apk for this server.")]
+    global_ios: String,
+
+    #[arg(long, default_value = "", help = "Link to patched iOS japan apk for this server.")]
+    japan_ios: String,
+
+    #[arg(long, default_value = "", help = "Link to asset server.")]
+    assets_url: String
 }
 
 #[actix_web::main]
