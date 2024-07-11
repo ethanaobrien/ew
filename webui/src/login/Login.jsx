@@ -41,6 +41,11 @@ function Login() {
         window.location.href = "/import/";
     }
 
+    const help = (e) => {
+        e.preventDefault();
+        window.location.href = "/help/";
+    }
+
     const adminPanel = (e) => {
         e.preventDefault();
         window.location.href = "/admin/";
@@ -57,6 +62,7 @@ function Login() {
                 <input type="submit" value="Submit" onClick={handleSubmit}/>
                 <div id="sub_div">
                     <button onClick={import_user}>Import User</button><br/><br/>
+                    <button onClick={help}>Need help?</button><br/><br/>
                     <button hidden={!["127.0.0.1", "localhost"].includes(window.location.hostname)} onClick={adminPanel}>Admin panel</button>
                     { error[0] ? <p>Error: { error[0] } </p> : <p></p> }
                 </div>
