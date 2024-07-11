@@ -1,7 +1,6 @@
 use rusqlite::{Connection, params, ToSql};
 use std::sync::Mutex;
 use json::{JsonValue, array};
-use clap::Parser;
 use std::fs;
 
 use crate::router::clear_rate::Live;
@@ -13,7 +12,7 @@ pub struct SQLite {
 
 impl SQLite {
     pub fn new(path: &str, setup: fn(&SQLite)) -> SQLite {
-        let args = crate::Args::parse();
+        let args = crate::get_args();
         fs::create_dir_all(&args.path).unwrap();
         let conn = Connection::open(format!("{}/{}", args.path, path)).unwrap();
         conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();

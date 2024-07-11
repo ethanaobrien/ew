@@ -17,7 +17,6 @@ use actix_web::{
 use crate::router::global;
 use json::JsonValue;
 use clap::Parser;
-use std::sync::atomic::Ordering;
 
 fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
     if body != String::new() {
@@ -215,12 +214,15 @@ pub struct Args {
     https: bool
 }
 
+pub fn get_args() -> Args {
+    Args::parse()
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let args = Args::parse();
+    let args = get_args();
     let port = args.port;
 
-    router::gree::HTTPS.store(args.https, Ordering::Relaxed);
     let rv = HttpServer::new(|| App::new()
     .wrap_fn(|req, srv| {
         println!("Request: {}", req.path());

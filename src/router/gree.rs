@@ -7,8 +7,6 @@ use json::{object, JsonValue};
 use hmac::{Hmac, Mac};
 use rusqlite::params;
 use lazy_static::lazy_static;
-use std::sync::atomic::Ordering;
-use std::sync::atomic::AtomicBool;
 
 use openssl::pkey::PKey;
 use openssl::rsa::Rsa;
@@ -333,12 +331,9 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
     send(req, resp)
 }
 
-lazy_static!{
-    pub static ref HTTPS: AtomicBool = AtomicBool::new(false);
-}
-
 pub fn get_protocol() -> String {
-    if HTTPS.load(Ordering::SeqCst) == true {
+    let args = crate::get_args();
+    if args.https == true {
         return String::from("https");
     }
     String::from("http")
