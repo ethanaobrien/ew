@@ -17,7 +17,7 @@ fn get_config() -> JsonValue {
         import: true,
         export: true
     };
-    let contents = fs::read_to_string("config.json").unwrap_or(String::from("aaaaaaaaaaaaaaaaa"));
+    let contents = fs::read_to_string(crate::get_data_path("config.json")).unwrap_or(String::from("aaaaaaaaaaaaaaaaa"));
     let mut rv = json::parse(&contents).unwrap_or(def.clone());
     for val in def.entries() {
         if rv[val.0] == JsonValue::Null {
@@ -32,7 +32,7 @@ fn save_config(val: String) {
     for vall in new.entries() {
         current[vall.0] = vall.1.clone();
     }
-    let mut f = File::create("config.json").unwrap();
+    let mut f = File::create(crate::get_data_path("config.json")).unwrap();
     f.write_all(json::stringify(current).as_bytes()).unwrap();
 }
 

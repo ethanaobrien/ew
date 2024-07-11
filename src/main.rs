@@ -17,6 +17,7 @@ use actix_web::{
 use crate::router::global;
 use json::JsonValue;
 use clap::Parser;
+use std::fs;
 
 fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
     if body != String::new() {
@@ -221,6 +222,16 @@ pub fn get_args() -> Args {
     Args::parse()
 }
 
+pub fn get_data_path(file_name: &str) -> String {
+    let args = get_args();
+    let mut path = args.path;
+    while path.ends_with("/") {
+        path.pop();
+    }
+    fs::create_dir_all(&path).unwrap();
+    format!("{}/{}", path, file_name)
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let args = get_args();
@@ -239,7 +250,7 @@ async fn main() -> std::io::Result<()> {
 
     println!("Server started: http://0.0.0.0:{}", port);
     println!("Data path is set to {}", args.path);
-    println!("Sif1 transfer requests will attempt to contact NPPS4 at {}", host);
+    println!("Sif1 transfer requests will attempt to contact NPPS4 at {}", args.npps4);
 
     if args.https {
         println!("Note: gree is set to https mode. http requests will fail on jp clients.");
