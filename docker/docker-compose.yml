@@ -10,6 +10,13 @@ services:
       DIRECTORY: /data/
       HTTPS: false
       NPPS4_ADDRESS: "http://127.0.0.1:51376"
+
+      #Everything below is for the "Help" page
+      ANDROID_GLOBAL: "link.to/patched/android/global.apk"
+      ANDROID_JAPAN: "link.to/patched/android/japan.apk"
+      IOS_GLOBAL: "link.to/ios/global.ipa"
+      IOS_JAPAN: "link.to/ios/japan.ipa"
+      ASSET_URL: "link.to/client/assets/"
     ports:
       - 8081:8081
     volumes:
