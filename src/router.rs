@@ -78,6 +78,8 @@ async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
             "/api/live/ranking" => clear_rate::ranking(req, body),
             "/api/event" => event::event(req, body),
             "/api/event/star_event" => event::star_event(req, body),
+            "/api/event/set/member" => event::set_member(req, body),
+            "/api/event/ranking" => event::ranking(req, body),
             "/api/event_star_live/change_target_music" => event::change_target_music(req, body),
             "/api/event_star_live/start" => live::event_start(req, body),
             "/api/event_star_live/end" => live::event_end(req, body),

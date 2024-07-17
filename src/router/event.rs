@@ -55,11 +55,11 @@ fn init_star_event(event: &mut JsonValue) {
 pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut event = userdata::get_acc_event(&key);
-    
+
     init_star_event(&mut event);
-    
+
     userdata::save_acc_event(&key, event.clone());
-    
+
     Some(event["event_data"].clone())
 }
 
@@ -67,9 +67,9 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut event = userdata::get_acc_event(&key);
     init_star_event(&mut event);
-    
+
     userdata::save_acc_event(&key, event.clone());
-    
+
     Some(object!{
         star_event: event["event_data"]["star_event"].clone(),
         gift_list: [],
@@ -82,12 +82,36 @@ pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> 
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut event = userdata::get_acc_event(&key);
-    
+
     event["event_data"]["star_event"]["music_change_count"] = (event["event_data"]["star_event"]["music_change_count"].as_i32().unwrap() + 1).into();
 
     switch_music(&mut event, body["position"].as_i32().unwrap());
 
     userdata::save_acc_event(&key, event.clone());
-    
+
     Some(event["event_data"]["star_event"].clone())
+}
+
+pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let mut event = userdata::get_acc_event(&key);
+
+    event["event_data"]["member_ranking"] = object!{
+        master_character_id: body["master_character_id"].clone(),
+        rank: 0,
+        point: 0
+    };
+
+    userdata::save_acc_event(&key, event.clone());
+
+    Some(object!{
+        event_member: body.clone()
+    })
+}
+
+pub fn ranking(_req: HttpRequest, _body: String) -> Option<JsonValue> {
+    Some(object!{
+        ranking_detail_list: []
+    })
 }
