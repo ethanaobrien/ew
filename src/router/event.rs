@@ -1,7 +1,56 @@
 use json::{JsonValue, object};
-use actix_web::{HttpRequest};
+use actix_web::HttpRequest;
+use rand::Rng;
 
-use crate::router::{userdata, global};
+use crate::encryption;
+use crate::router::{userdata, global, databases};
+
+fn get_random_song() -> JsonValue {
+    let mut rng = rand::thread_rng();
+    let random_number = rng.gen_range(0..=databases::LIVES.len());
+    object!{
+        song: databases::LIVES[random_number]["masterMusicId"].clone(),
+        score: (databases::LIVES[random_number]["scoreC"].as_f64().unwrap() * 1.75).round() as i64
+    }
+}
+
+fn switch_music(event: &mut JsonValue, index: i32) {
+    if index > 5 || index < 1 {
+        return;
+    }
+
+    let mut i = 0;
+    for (j, live) in event["event_data"]["star_event"]["star_music_list"].members().enumerate() {
+        if live["position"] == index {
+            i = j;
+            break;
+        }
+    }
+    if i != 0 {
+        event["event_data"]["star_event"]["star_music_list"].array_remove(i);
+    }
+
+    let random_song = get_random_song();
+    let to_push = object!{
+        master_music_id: random_song["song"].clone(),
+        position: index,
+        is_cleared: 0,
+        goal_score: random_song["score"].clone()
+    };
+    event["event_data"]["star_event"]["star_music_list"].push(to_push).unwrap();
+}
+
+fn init_star_event(event: &mut JsonValue) {
+    if event["event_data"]["star_event"]["star_level"].as_i32().unwrap() != 0 {
+        return;
+    }
+    event["event_data"]["star_event"]["star_level"] = 1.into();
+    switch_music(event, 1);
+    switch_music(event, 2);
+    switch_music(event, 3);
+    switch_music(event, 4);
+    switch_music(event, 5);
+}
 
 pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
@@ -12,31 +61,6 @@ pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_event(&key, event.clone());
     
     Some(event["event_data"].clone())
-}
-
-fn switch_music(event: &mut JsonValue, music_id: i32, target_score: i64, index: i32) {
-    if index <= 4 {
-        //todo
-    }
-    let to_push = object!{
-        master_music_id: music_id,
-        position: event["event_data"]["star_event"]["star_music_list"].len(),
-        is_cleared: 0,
-        goal_score: target_score
-    };
-    event["event_data"]["star_event"]["star_music_list"].push(to_push).unwrap();
-}
-
-fn init_star_event(event: &mut JsonValue) {
-    if event["event_data"]["star_event"]["star_level"].as_i32().unwrap() != 0 {
-        return;
-    }
-    event["event_data"]["star_event"]["star_level"] = 1.into();
-    switch_music(event, 1014, 53407, 5);
-    switch_music(event, 2101, 34557, 5);
-    switch_music(event, 2120, 38222, 5);
-    switch_music(event, 2151, 46076, 5);
-    switch_music(event, 2160, 21991, 5);
 }
 
 pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
@@ -56,9 +80,14 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
 //todo - randomize
 pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let event = userdata::get_acc_event(&key);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let mut event = userdata::get_acc_event(&key);
     
-    //event["star_event"]["music_change_count"] += 1;
+    event["event_data"]["star_event"]["music_change_count"] = (event["event_data"]["star_event"]["music_change_count"].as_i32().unwrap() + 1).into();
+
+    switch_music(&mut event, body["position"].as_i32().unwrap());
+
+    userdata::save_acc_event(&key, event.clone());
     
     Some(event["event_data"]["star_event"].clone())
 }

@@ -82,6 +82,9 @@ lazy_static! {
         }
         info
     };
+    pub static ref LIVES: JsonValue = {
+        json::parse(&include_file!("src/router/databases/json/live.json")).unwrap()
+    };
     pub static ref MISSION_DATA: JsonValue = {
         json::parse(&include_file!("src/router/databases/json/live_mission.json")).unwrap()
     };
