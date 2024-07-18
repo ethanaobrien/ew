@@ -102,14 +102,16 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let mut event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
+    let body = &encryption::decrypt_packet(&body).unwrap();
+    let body: StarEventChangeTargetMusic = serde_json::from_str(body).unwrap();
+
+    let mut event = get_event_data(&key, body.master_event_id as i64);
 
     event["star_event"]["music_change_count"] = (event["star_event"]["music_change_count"].as_i32().unwrap() + 1).into();
 
-    switch_music(&mut event, body["position"].as_i32().unwrap());
+    switch_music(&mut event, body.position as i32);
 
-    save_event_data(&key, body["master_event_id"].as_i64().unwrap(), event.clone());
+    save_event_data(&key, body.master_event_id as i64, event.clone());
 
     Some(event["star_event"].clone())
 }
@@ -136,4 +138,14 @@ pub fn ranking(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(object!{
         ranking_detail_list: []
     })
+}
+
+// Start request structs
+
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
+struct StarEventChangeTargetMusic {
+    master_event_id: usize,
+    position: usize
 }
