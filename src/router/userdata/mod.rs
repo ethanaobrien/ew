@@ -136,7 +136,7 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
     ));
     DATABASE.lock_and_exec("INSERT INTO event (user_id, event) VALUES (?1, ?2)", params!(
         uid,
-        include_file!("src/router/userdata/new_user_event.json")
+        "{}"
     ));
     DATABASE.lock_and_exec("INSERT INTO eventloginbonus (user_id, eventloginbonus) VALUES (?1, ?2)", params!(
         uid,
@@ -254,7 +254,7 @@ pub fn get_acc_chats(auth_key: &str) -> JsonValue {
 pub fn get_acc_event(auth_key: &str) -> JsonValue {
     let event = get_data(auth_key, "event");
     if event.is_empty() {
-        return json::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
+        return object!{};
     }
     event
 }

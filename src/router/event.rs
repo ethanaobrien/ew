@@ -3,7 +3,34 @@ use actix_web::HttpRequest;
 use rand::Rng;
 
 use crate::encryption;
+use crate::include_file;
 use crate::router::{userdata, global, databases};
+
+fn get_event_data(key: &str, event_id: i64) -> JsonValue {
+    let mut event = userdata::get_acc_event(key);
+
+    if event[event_id.to_string()].is_empty() {
+        event[event_id.to_string()] = json::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
+        let mut ev = event[event_id.to_string()].clone();
+        init_star_event(&mut ev);
+        save_event_data(key, event_id, ev);
+        event = userdata::get_acc_event(key);
+    }
+    event[event_id.to_string()].clone()
+}
+
+fn save_event_data(key: &str, event_id: i64, data: JsonValue) {
+    let mut event = userdata::get_acc_event(key);
+
+    // Check for old version of event data
+    if !event["event_data"].is_empty() {
+        event = object!{};
+    }
+
+    event[event_id.to_string()] = data;
+
+    userdata::save_acc_event(key, event);
+}
 
 fn get_random_song() -> JsonValue {
     let mut rng = rand::thread_rng();
@@ -20,14 +47,14 @@ fn switch_music(event: &mut JsonValue, index: i32) {
     }
 
     let mut i = 0;
-    for (j, live) in event["event_data"]["star_event"]["star_music_list"].members().enumerate() {
+    for (j, live) in event["star_event"]["star_music_list"].members().enumerate() {
         if live["position"] == index {
             i = j;
             break;
         }
     }
     if i != 0 {
-        event["event_data"]["star_event"]["star_music_list"].array_remove(i);
+        event["star_event"]["star_music_list"].array_remove(i);
     }
 
     let random_song = get_random_song();
@@ -37,14 +64,14 @@ fn switch_music(event: &mut JsonValue, index: i32) {
         is_cleared: 0,
         goal_score: random_song["score"].clone()
     };
-    event["event_data"]["star_event"]["star_music_list"].push(to_push).unwrap();
+    event["star_event"]["star_music_list"].push(to_push).unwrap();
 }
 
 fn init_star_event(event: &mut JsonValue) {
-    if event["event_data"]["star_event"]["star_level"].as_i32().unwrap() != 0 {
+    if event["star_event"]["star_level"].as_i32().unwrap() != 0 {
         return;
     }
-    event["event_data"]["star_event"]["star_level"] = 1.into();
+    event["star_event"]["star_level"] = 1.into();
     switch_music(event, 1);
     switch_music(event, 2);
     switch_music(event, 3);
@@ -54,59 +81,54 @@ fn init_star_event(event: &mut JsonValue) {
 
 pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let mut event = userdata::get_acc_event(&key);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
 
-    init_star_event(&mut event);
-
-    userdata::save_acc_event(&key, event.clone());
-
-    Some(event["event_data"].clone())
+    Some(event)
 }
 
 pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let mut event = userdata::get_acc_event(&key);
-    init_star_event(&mut event);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
-    userdata::save_acc_event(&key, event.clone());
+    let event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
 
     Some(object!{
-        star_event: event["event_data"]["star_event"].clone(),
+        star_event: event["star_event"].clone(),
         gift_list: [],
         reward_list: []
     })
 }
 
-//todo - randomize
 pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let mut event = userdata::get_acc_event(&key);
+    let mut event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
 
-    event["event_data"]["star_event"]["music_change_count"] = (event["event_data"]["star_event"]["music_change_count"].as_i32().unwrap() + 1).into();
+    event["star_event"]["music_change_count"] = (event["star_event"]["music_change_count"].as_i32().unwrap() + 1).into();
 
     switch_music(&mut event, body["position"].as_i32().unwrap());
 
-    userdata::save_acc_event(&key, event.clone());
+    save_event_data(&key, body["master_event_id"].as_i64().unwrap(), event.clone());
 
-    Some(event["event_data"]["star_event"].clone())
+    Some(event["star_event"].clone())
 }
 
 pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let mut event = userdata::get_acc_event(&key);
+    let mut event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
 
-    event["event_data"]["member_ranking"] = object!{
+    event["member_ranking"] = object!{
         master_character_id: body["master_character_id"].clone(),
         rank: 0,
         point: 0
     };
 
-    userdata::save_acc_event(&key, event.clone());
+    save_event_data(&key, body["master_event_id"].as_i64().unwrap(), event.clone());
 
     Some(object!{
-        event_member: body.clone()
+        event_member: event["member_ranking"].clone()
     })
 }
 
