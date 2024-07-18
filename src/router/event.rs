@@ -6,7 +6,7 @@ use crate::encryption;
 use crate::include_file;
 use crate::router::{userdata, global, databases};
 
-fn get_event_data(key: &str, event_id: usize) -> JsonValue {
+fn get_event_data(key: &str, event_id: u32) -> JsonValue {
     let mut event = userdata::get_acc_event(key);
 
     if event[event_id.to_string()].is_empty() {
@@ -19,7 +19,7 @@ fn get_event_data(key: &str, event_id: usize) -> JsonValue {
     event[event_id.to_string()].clone()
 }
 
-fn save_event_data(key: &str, event_id: usize, data: JsonValue) {
+fn save_event_data(key: &str, event_id: u32, data: JsonValue) {
     let mut event = userdata::get_acc_event(key);
 
     // Check for old version of event data
@@ -94,7 +94,7 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
-    let event = get_event_data(&key, body["master_event_id"].as_usize().unwrap());
+    let event = get_event_data(&key, body["master_event_id"].as_u32().unwrap());
 
     Some(object!{
         star_event: event["star_event"].clone(),
@@ -154,17 +154,17 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 struct StarEventChangeTargetMusic {
-    master_event_id: usize,
-    position: usize
+    master_event_id: u32,
+    position: u32
 }
 
 #[derive(Serialize, Deserialize)]
 struct EventGet {
-    master_event_id: usize
+    master_event_id: u32
 }
 
 #[derive(Serialize, Deserialize)]
 struct EventSetMember {
-    master_event_id: usize,
-    master_character_id: usize
+    master_event_id: u32,
+    master_character_id: u32
 }
