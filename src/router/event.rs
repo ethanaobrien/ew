@@ -92,9 +92,11 @@ pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
-    let event = get_event_data(&key, body["master_event_id"].as_u32().unwrap());
+    let body = &encryption::decrypt_packet(&body).unwrap();
+    let body: StarEvent = serde_json::from_str(body).unwrap();
+
+    let event = get_event_data(&key, body.master_event_id);
 
     Some(object!{
         star_event: event["star_event"].clone(),
@@ -168,3 +170,21 @@ struct EventSetMember {
     master_event_id: u32,
     master_character_id: u32
 }
+
+#[derive(Serialize, Deserialize)]
+struct StarEvent {
+    master_event_id: u32
+}
+
+/*
+#[derive(Serialize, Deserialize)]
+struct EventRankingGet {
+    master_event_id: u32,
+    ranking_type: i32,
+    ranking_group_type: i32,
+    user_id: u64,
+    start_rank: u32,
+    count: u64,
+    group_id: u64
+}
+*/
