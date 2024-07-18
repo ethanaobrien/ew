@@ -6,7 +6,7 @@ use crate::encryption;
 use crate::include_file;
 use crate::router::{userdata, global, databases};
 
-fn get_event_data(key: &str, event_id: i64) -> JsonValue {
+fn get_event_data(key: &str, event_id: usize) -> JsonValue {
     let mut event = userdata::get_acc_event(key);
 
     if event[event_id.to_string()].is_empty() {
@@ -19,7 +19,7 @@ fn get_event_data(key: &str, event_id: i64) -> JsonValue {
     event[event_id.to_string()].clone()
 }
 
-fn save_event_data(key: &str, event_id: i64, data: JsonValue) {
+fn save_event_data(key: &str, event_id: usize, data: JsonValue) {
     let mut event = userdata::get_acc_event(key);
 
     // Check for old version of event data
@@ -81,8 +81,10 @@ fn init_star_event(event: &mut JsonValue) {
 
 pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
+    let body = &encryption::decrypt_packet(&body).unwrap();
+    let body: EventGet = serde_json::from_str(body).unwrap();
+
+    let event = get_event_data(&key, body.master_event_id);
 
     Some(event)
 }
@@ -91,7 +93,7 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
-    let event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
+    let event = get_event_data(&key, body["master_event_id"].as_usize().unwrap());
 
     Some(object!{
         star_event: event["star_event"].clone(),
@@ -105,13 +107,13 @@ pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> 
     let body = &encryption::decrypt_packet(&body).unwrap();
     let body: StarEventChangeTargetMusic = serde_json::from_str(body).unwrap();
 
-    let mut event = get_event_data(&key, body.master_event_id as i64);
+    let mut event = get_event_data(&key, body.master_event_id);
 
     event["star_event"]["music_change_count"] = (event["star_event"]["music_change_count"].as_i32().unwrap() + 1).into();
 
     switch_music(&mut event, body.position as i32);
 
-    save_event_data(&key, body.master_event_id as i64, event.clone());
+    save_event_data(&key, body.master_event_id, event.clone());
 
     Some(event["star_event"].clone())
 }
@@ -119,7 +121,7 @@ pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> 
 pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let mut event = get_event_data(&key, body["master_event_id"].as_i64().unwrap());
+    let mut event = get_event_data(&key, body["master_event_id"].as_usize().unwrap());
 
     event["member_ranking"] = object!{
         master_character_id: body["master_character_id"].clone(),
@@ -127,7 +129,7 @@ pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
         point: 0
     };
 
-    save_event_data(&key, body["master_event_id"].as_i64().unwrap(), event.clone());
+    save_event_data(&key, body["master_event_id"].as_usize().unwrap(), event.clone());
 
     Some(object!{
         event_member: event["member_ranking"].clone()
@@ -141,6 +143,7 @@ pub fn ranking(_req: HttpRequest, _body: String) -> Option<JsonValue> {
 }
 
 // Start request structs
+// These start with CJsonSendParam in the source
 
 use serde::{Deserialize, Serialize};
 
@@ -148,4 +151,9 @@ use serde::{Deserialize, Serialize};
 struct StarEventChangeTargetMusic {
     master_event_id: usize,
     position: usize
+}
+
+#[derive(Serialize, Deserialize)]
+struct EventGet {
+    master_event_id: usize
 }
