@@ -1,4 +1,4 @@
-use json::{JsonValue, object};
+use json::{JsonValue, object, array};
 use actix_web::HttpRequest;
 use rand::Rng;
 
@@ -6,15 +6,27 @@ use crate::encryption;
 use crate::include_file;
 use crate::router::{userdata, global, databases};
 
+// I believe(?) this is all?
+const STAR_EVENT_IDS: [u32; 3] = [127, 135, 139];
+
 fn get_event_data(key: &str, event_id: u32) -> JsonValue {
     let mut event = userdata::get_acc_event(key);
+    let is_star_event = STAR_EVENT_IDS.contains(&event_id);
+    println!("is_star_event: {}, {}", is_star_event, event_id);
 
     if event[event_id.to_string()].is_empty() {
         event[event_id.to_string()] = json::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
-        let mut ev = event[event_id.to_string()].clone();
-        init_star_event(&mut ev);
-        save_event_data(key, event_id, ev);
-        event = userdata::get_acc_event(key);
+        if is_star_event {
+            let mut ev = event[event_id.to_string()].clone();
+            init_star_event(&mut ev);
+            save_event_data(key, event_id, ev);
+            event = userdata::get_acc_event(key);
+        }
+    }
+
+    if is_star_event && event["star_last_reset"][event_id.to_string()].as_u64().unwrap_or(0) <= global::timestamp_since_midnight() {
+        event["star_last_reset"][event_id.to_string()] = (global::timestamp_since_midnight() + (24 * 60 * 60)).into();
+        event[event_id.to_string()]["star_event"]["star_event_bonus_daily_count"] = 0.into();
     }
     event[event_id.to_string()].clone()
 }
@@ -147,6 +159,94 @@ pub fn ranking(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     Some(object!{
         ranking_detail_list: []
     })
+}
+
+const POINTS_PER_LEVEL: i64 = 55;
+
+fn get_star_rank(points: i64) -> i64 {
+    ((points - (points % POINTS_PER_LEVEL)) / POINTS_PER_LEVEL) + 1
+}
+
+pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonValue> {
+    let key = global::get_login(req.headers(), &body);
+    let body_temp = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let event_id = if skipped {
+        body_temp["master_event_id"].as_u32().unwrap()
+    } else {
+        crate::router::live::get_end_live_event_id(&key, &body_temp)?
+    };
+
+    let mut resp = crate::router::live::live_end(&req, &body, skipped);
+    let key = global::get_login(req.headers(), &body);
+    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let mut event = get_event_data(&key, event_id);
+
+    let live_id = databases::LIVE_LIST[body["master_live_id"].to_string()]["masterMusicId"].as_i64().unwrap();
+    let raw_score = body["live_score"]["score"].as_u64().unwrap_or(resp["high_score"].as_u64().unwrap());
+
+    let bonus_event = event["star_event"]["star_event_bonus_daily_count"].as_u64().unwrap();
+    let bonus_play_times = event["star_event"]["star_event_play_times_bonus_count"].as_u64().unwrap();
+    let score = raw_score + (raw_score * bonus_event) + (raw_score * bonus_play_times);
+
+    let mut all_clear = 1;
+    let mut cleared = false;
+    for data in event["star_event"]["star_music_list"].members_mut() {
+        if data["master_music_id"] == live_id && score >= data["goal_score"].as_u64().unwrap() {
+            data["is_cleared"] = 1.into();
+            cleared = true;
+        }
+        if data["is_cleared"] == 0 {
+            all_clear = 0;
+        }
+    }
+
+    if cleared {
+        event["star_event"]["star_event_bonus_daily_count"] = (event["star_event"]["star_event_bonus_daily_count"].as_u32().unwrap() + 1).into();
+        event["star_event"]["star_event_bonus_count"] = (event["star_event"]["star_event_bonus_count"].as_u32().unwrap() + 1).into();
+        event["star_event"]["star_event_play_times_bonus_count"] = (event["star_event"]["star_event_play_times_bonus_count"].as_u32().unwrap() + 1).into();
+
+
+        event["point_ranking"]["point"] = (event["point_ranking"]["point"].as_i64().unwrap_or(0) + 31).into();
+        event["star_event"]["star_level"] = get_star_rank(event["point_ranking"]["point"].as_i64().unwrap()).into();
+    }
+
+    resp["star_event_bonus_list"] = object!{
+        "star_event_bonus": bonus_event,
+        "star_event_bonus_score": bonus_event * raw_score,
+        "star_play_times_bonus": bonus_play_times,
+        "star_play_times_bonus_score": bonus_play_times * raw_score,
+        "card_bonus": 0,
+        "card_bonus_score": 0
+    };
+
+    resp["event_point_list"] = array![];
+    resp["event_ranking_data"] = object! {
+        "event_point_rank": event["point_ranking"]["point"].clone(),
+        "next_reward_rank_point": 0,
+        "event_score_rank": 0,
+        "next_reward_rank_score": 0,
+        "next_reward_rank_level": 0
+    };
+
+
+    resp["is_star_all_clear"] = all_clear.into();
+    resp["star_level"] = event["star_event"]["star_level"].clone();
+    resp["music_data"] = event["star_event"]["star_music_list"].clone();
+    resp["total_score"] = score.into();
+    resp["star_event"] = event["star_event"].clone();
+
+    save_event_data(&key, event_id, event);
+
+    println!("{}", resp);
+    Some(resp)
+}
+
+pub fn event_end(req: HttpRequest, body: String) -> Option<JsonValue> {
+    event_live(req, body, false)
+}
+
+pub fn event_skip(req: HttpRequest, body: String) -> Option<JsonValue> {
+    event_live(req, body, true)
 }
 
 // Start request structs

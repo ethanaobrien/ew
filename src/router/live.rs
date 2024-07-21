@@ -201,6 +201,17 @@ fn get_end_live_deck_id(login_token: &str, body: &JsonValue) -> Option<i32> {
     Some(rv)
 }
 
+pub fn get_end_live_event_id(login_token: &str, body: &JsonValue) -> Option<u32> {
+    let server_data = userdata::get_server_data(login_token);
+    if server_data["last_live_started"].is_null() {
+        return None;
+    }
+    let index = server_data["last_live_started"].members().position(|r| r["master_live_id"] == body["master_live_id"])?;
+    let rv = server_data["last_live_started"][index]["master_event_id"].as_u32()?;
+
+    Some(rv)
+}
+
 fn live_retire(login_token: &str, body: &JsonValue) {
     let mut server_data = userdata::get_server_data(login_token);
     check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
@@ -228,8 +239,8 @@ pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
     Some(array![])
 }
 
-pub fn event_start(_req: HttpRequest, _body: String) -> Option<JsonValue> {
-    Some(array![])
+pub fn event_start(req: HttpRequest, body: String) -> Option<JsonValue> {
+    start(req, body)
 }
 
 pub fn continuee(req: HttpRequest, body: String) -> Option<JsonValue> {
@@ -515,7 +526,7 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
     rv
 }
 
-fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
+pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     let key = global::get_login(req.headers(), body);
     let body = json::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
@@ -643,53 +654,4 @@ pub fn end(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn skip(req: HttpRequest, body: String) -> Option<JsonValue> {
     Some(live_end(&req, &body, true))
-}
-
-pub fn event_end(req: HttpRequest, body: String) -> Option<JsonValue> {
-    let mut resp = live_end(&req, &body, false);
-    let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let mut event = userdata::get_acc_event(&key);
-    
-    let live_id = databases::LIVE_LIST[body["master_live_id"].to_string()]["masterMusicId"].as_i64().unwrap();
-    
-    let mut all_clear = 1;
-    for data in event["event_data"]["star_event"]["star_music_list"].members_mut() {
-        if data["master_music_id"].as_i64().unwrap() == live_id {
-            data["is_cleared"] = 1.into();
-        }
-        if !data["is_cleared"].as_i32().unwrap() == 0 {
-            all_clear = 0;
-        }
-    }
-    
-    resp["event_point_list"] = array![];
-    resp["event_ranking_data"] = object!{
-        "event_point_rank": event["event_data"]["point_ranking"]["point"].clone(),
-        "next_reward_rank_point": 0,
-        "event_score_rank": 0,
-        "next_reward_rank_score": 0,
-        "next_reward_rank_level": 0
-    };
-    resp["star_level"] = event["event_data"]["star_event"]["star_level"].clone();
-    resp["music_data"] = event["event_data"]["star_event"]["star_music_list"].clone();
-    resp["is_star_all_clear"] = all_clear.into();
-    resp["star_event_bonus_list"] = object!{
-        "star_event_bonus": 0,
-        "star_event_bonus_score": 0,
-        "star_play_times_bonus": 0,
-        "star_play_times_bonus_score": 0,
-        "card_bonus": 0,
-        "card_bonus_score": 0
-    };
-    resp["total_score"] = body["live_score"]["score"].clone();
-    resp["star_event"] = object!{
-        "star_event_bonus_daily_count": event["event_data"]["point_ranking"]["star_event_bonus_daily_count"].clone(),
-        "star_event_bonus_count": event["event_data"]["point_ranking"]["star_event_bonus_count"].clone(),
-        "star_event_play_times_bonus_count": event["event_data"]["point_ranking"]["star_event_play_times_bonus_count"].clone()
-    };
-    
-    userdata::save_acc_event(&key, event);
-    
-    Some(resp)
 }
