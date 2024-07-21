@@ -200,6 +200,14 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
         }
     }
 
+    if all_clear == 1 {
+        switch_music(&mut event, 1);
+        switch_music(&mut event, 2);
+        switch_music(&mut event, 3);
+        switch_music(&mut event, 4);
+        switch_music(&mut event, 5);
+    }
+
     if cleared {
         event["star_event"]["star_event_bonus_daily_count"] = (event["star_event"]["star_event_bonus_daily_count"].as_u32().unwrap() + 1).into();
         event["star_event"]["star_event_bonus_count"] = (event["star_event"]["star_event_bonus_count"].as_u32().unwrap() + 1).into();
@@ -227,7 +235,6 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
         "next_reward_rank_score": 0,
         "next_reward_rank_level": 0
     };
-
 
     resp["is_star_all_clear"] = all_clear.into();
     resp["star_level"] = event["star_event"]["star_level"].clone();
