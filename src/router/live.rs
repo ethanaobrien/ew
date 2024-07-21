@@ -621,7 +621,7 @@ pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     
     items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
     
-    let deck_slot = get_end_live_deck_id(&key, &body).unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap());
+    let deck_slot = get_end_live_deck_id(&key, &body).unwrap_or(body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()));
     let characters = get_live_character_list(lp_used, deck_slot, &user, &mut user_missions, &mut cleared_missions, &mut chats);
     
     userdata::save_acc(&key, user.clone());
