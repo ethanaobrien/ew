@@ -12,7 +12,7 @@ const STAR_EVENT_IDS: [u32; 3] = [127, 135, 139];
 fn get_event_data(key: &str, event_id: u32) -> JsonValue {
     let mut event = userdata::get_acc_event(key);
     let is_star_event = STAR_EVENT_IDS.contains(&event_id);
-    println!("is_star_event: {}, {}", is_star_event, event_id);
+    //println!("is_star_event: {}, {}", is_star_event, event_id);
 
     if event[event_id.to_string()].is_empty() {
         event[event_id.to_string()] = json::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
@@ -28,6 +28,11 @@ fn get_event_data(key: &str, event_id: u32) -> JsonValue {
         event["star_last_reset"][event_id.to_string()] = (global::timestamp_since_midnight() + (24 * 60 * 60)).into();
         event[event_id.to_string()]["star_event"]["star_event_bonus_daily_count"] = 0.into();
     }
+
+    if is_star_event {
+        event[event_id.to_string()]["star_event"]["is_star_event_update"] = 1.into();
+    }
+
     event[event_id.to_string()].clone()
 }
 
@@ -108,10 +113,37 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = &encryption::decrypt_packet(&body).unwrap();
     let body: StarEvent = serde_json::from_str(body).unwrap();
 
-    let event = get_event_data(&key, body.master_event_id);
+    let mut event = get_event_data(&key, body.master_event_id);
+
+    let mut star_event = event["star_event"].clone();
+    star_event["is_inherited_level_reward"] = 0.into();
+
+    let mut all_clear = 1;
+    for data in event["star_event"]["star_music_list"].members() {
+        if data["is_cleared"] == 0 {
+            all_clear = 0;
+        }
+    }
+    if all_clear == 1 {
+        switch_music(&mut event, 1);
+        switch_music(&mut event, 2);
+        switch_music(&mut event, 3);
+        switch_music(&mut event, 4);
+        switch_music(&mut event, 5);
+    }
+    let old = event["star_event"]["star_level"].as_i64().unwrap();
+    event["star_event"]["star_level"] = get_star_rank(event["point_ranking"]["point"].as_i64().unwrap()).into();
+
+    star_event["is_star_level_up"] = if old == event["star_event"]["star_level"] {
+        0
+    } else {
+        1
+    }.into();
+
+    save_event_data(&key, body.master_event_id, event.clone());
 
     Some(object!{
-        star_event: event["star_event"].clone(),
+        star_event: star_event,
         gift_list: [],
         reward_list: []
     })
@@ -200,22 +232,12 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
         }
     }
 
-    if all_clear == 1 {
-        switch_music(&mut event, 1);
-        switch_music(&mut event, 2);
-        switch_music(&mut event, 3);
-        switch_music(&mut event, 4);
-        switch_music(&mut event, 5);
-    }
-
     if cleared {
         event["star_event"]["star_event_bonus_daily_count"] = (event["star_event"]["star_event_bonus_daily_count"].as_u32().unwrap() + 1).into();
         event["star_event"]["star_event_bonus_count"] = (event["star_event"]["star_event_bonus_count"].as_u32().unwrap() + 1).into();
         event["star_event"]["star_event_play_times_bonus_count"] = (event["star_event"]["star_event_play_times_bonus_count"].as_u32().unwrap() + 1).into();
 
-
         event["point_ranking"]["point"] = (event["point_ranking"]["point"].as_i64().unwrap_or(0) + 31).into();
-        event["star_event"]["star_level"] = get_star_rank(event["point_ranking"]["point"].as_i64().unwrap()).into();
     }
 
     resp["star_event_bonus_list"] = object!{
