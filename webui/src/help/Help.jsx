@@ -72,7 +72,7 @@ function Help() {
             <p>Assuming you have just loaded this page on the server you use, then the answer is no, otherwise please contact your server admin.</p>
 
             <h2>Do events work?</h2>
-            <p>No, sadly events are the only thing not implemented, and it's not entirely on my road map either. If you want it to happen, feel free to contribute.</p>
+            <p>Most events do not, though most should not crash the game. Star events are partially implemented. You can get your rank up, and compete with other players in a ranking table, but no rewards are currently implemented.</p>
 
             <h2>But then, how do I get event URs?</h2>
             <p>There are serial codes for several things, one of which includes all the event URs. I don't remember what does what but it is recommended to look at the serial code file to get the latest codes.</p>
