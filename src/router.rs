@@ -26,6 +26,7 @@ pub mod exchange;
 pub mod items;
 pub mod databases;
 pub mod location;
+pub mod event_ranking;
 
 use actix_web::{
     HttpResponse,

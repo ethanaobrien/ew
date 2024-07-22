@@ -124,9 +124,15 @@ pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
             save_event_data(&key, body.master_event_id, event.clone());
         }
 
+
+        event["point_ranking"]["point"] = get_points(body.master_event_id, &user).into();
+        event["point_ranking"]["rank"] = get_rank(body.master_event_id, user["user"]["id"].as_u64().unwrap()).into();
+
         if leveled {
             save_event_data(&key, body.master_event_id, event.clone());
             event["star_event"]["is_star_event_update"] = 1.into();
+        } else {
+            save_event_data(&key, body.master_event_id, event.clone());
         }
     }
 
@@ -195,9 +201,38 @@ pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
     })
 }
 
-pub fn ranking(_req: HttpRequest, _body: String) -> Option<JsonValue> {
+fn get_rank(event: u32, user_id: u64) -> u32 {
+    let scores = crate::router::event_ranking::get_raw_info(event);
+
+    let mut i=1;
+    for score in scores.members() {
+        if score["user"] == user_id {
+            return i;
+        }
+        i += 1;
+    }
+    0
+}
+
+pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
+    let body = &encryption::decrypt_packet(&body).unwrap();
+    let body: EventRankingGet = serde_json::from_str(body).unwrap();
+    let scores = crate::router::event_ranking::get_scores_json()[body.master_event_id.to_string()].clone();
+    let mut rv = array![];
+    let mut i=1;
+    let start = if body.user_id == 0 { body.start_rank } else { get_rank(body.master_event_id, body.user_id) };
+    for score in scores.members() {
+        if i >= start && start + body.count >= i {
+            rv.push(score.clone()).unwrap();
+            i += 1;
+        }
+        if start + body.count >= i {
+            break;
+        }
+    }
+
     Some(object!{
-        ranking_detail_list: []
+        ranking_detail_list: rv
     })
 }
 
@@ -285,6 +320,8 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
         userdata::save_acc(&key, user.clone());
     }
 
+    crate::router::event_ranking::live_completed(event_id, user["user"]["id"].as_i64().unwrap(), get_points(event_id, &user), event["star_event"]["star_level"].as_i64().unwrap());
+
     resp["star_event_bonus_list"] = object!{
         "star_event_bonus": bonus_event,
         "star_event_bonus_score": bonus_event * raw_score,
@@ -299,7 +336,7 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
     resp["event_ranking_data"] = object! {
         "event_point_rank": event["point_ranking"]["point"].clone(),
         "next_reward_rank_point": 0,
-        "event_score_rank": 0,
+        "event_score_rank": get_rank(event_id, user["user"]["id"].as_u64().unwrap()),
         "next_reward_rank_score": 0,
         "next_reward_rank_level": 0
     };
@@ -351,7 +388,6 @@ struct StarEvent {
     master_event_id: u32
 }
 
-/*
 #[derive(Serialize, Deserialize)]
 struct EventRankingGet {
     master_event_id: u32,
@@ -359,7 +395,6 @@ struct EventRankingGet {
     ranking_group_type: i32,
     user_id: u64,
     start_rank: u32,
-    count: u64,
+    count: u32,
     group_id: u64
 }
-*/
