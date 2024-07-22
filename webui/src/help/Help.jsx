@@ -66,7 +66,7 @@ function Help() {
             <p>Works well enough. The server itself takes up not even 20mb of storage, and it's written in rust. I personally think it's pretty well written.</p>
 
             <h2>Could my computer/laptop run a server?</h2>
-            <p>Very very likely. If the platform is <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html">supported by rust</a>, then the answer is yes! It is recommended to manually compile the project until I get the time to setup GitHub actions. <a href="https://github.com/ethanaobrien/ew">ew github repo</a></p>
+            <p>Very very likely. If the platform is <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html">supported by rust</a>, then the answer is yes! It is recommended to manually compile the project until I get the time to setup actions. <a href="https://git.ethanthesleepy.one/ethanaobrien/ew">ew repo</a></p>
 
             <h2>Is the server down right now? I can't connect</h2>
             <p>Assuming you have just loaded this page on the server you use, then the answer is no, otherwise please contact your server admin.</p>
@@ -78,7 +78,7 @@ function Help() {
             <p>There are serial codes for several things, one of which includes all the event URs. I don't remember what does what but it is recommended to look at the serial code file to get the latest codes.</p>
 
             <h2>Why does the game crash when I do x?</h2>
-            <p>This likely means something on the server is broken. If you're self hosting, please open a GitHub issue. Otherwise, contact your server admin and ask them to report the issue.</p>
+            <p>This likely means something on the server is broken. If you're self hosting, please contact me via matrix. Otherwise, contact your server admin and ask them to report the issue.</p>
         </div>
     );
 }
