@@ -29,10 +29,6 @@ fn get_event_data(key: &str, event_id: u32) -> JsonValue {
         event[event_id.to_string()]["star_event"]["star_event_bonus_daily_count"] = 0.into();
     }
 
-    if is_star_event {
-        event[event_id.to_string()]["star_event"]["is_star_event_update"] = 1.into();
-    }
-
     event[event_id.to_string()].clone()
 }
 
@@ -102,13 +98,44 @@ pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = &encryption::decrypt_packet(&body).unwrap();
     let body: EventGet = serde_json::from_str(body).unwrap();
 
-    let event = get_event_data(&key, body.master_event_id);
+    let mut event = get_event_data(&key, body.master_event_id);
+
+    let is_star_event = STAR_EVENT_IDS.contains(&body.master_event_id);
+
+    if is_star_event {
+        let user = userdata::get_acc(&key);
+        let old = event["star_event"]["star_level"].as_i64().unwrap();
+        event["star_event"]["star_level"] = get_star_rank(get_points(body.master_event_id, &user)).into();
+        let leveled = old != event["star_event"]["star_level"].as_i64().unwrap();
+
+        let mut all_clear = 1;
+        for data in event["star_event"]["star_music_list"].members() {
+            if data["is_cleared"] == 0 {
+                all_clear = 0;
+            }
+        }
+        if all_clear == 1 {
+            event["star_event"]["star_music_list"] = array![];
+            switch_music(&mut event, 1);
+            switch_music(&mut event, 2);
+            switch_music(&mut event, 3);
+            switch_music(&mut event, 4);
+            switch_music(&mut event, 5);
+            save_event_data(&key, body.master_event_id, event.clone());
+        }
+
+        if leveled {
+            save_event_data(&key, body.master_event_id, event.clone());
+            event["star_event"]["is_star_event_update"] = 1.into();
+        }
+    }
 
     Some(event)
 }
 
 pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
+    let user = userdata::get_acc(&key);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
     let body: StarEvent = serde_json::from_str(body).unwrap();
@@ -118,27 +145,8 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let mut star_event = event["star_event"].clone();
     star_event["is_inherited_level_reward"] = 0.into();
 
-    let mut all_clear = 1;
-    for data in event["star_event"]["star_music_list"].members() {
-        if data["is_cleared"] == 0 {
-            all_clear = 0;
-        }
-    }
-    if all_clear == 1 {
-        switch_music(&mut event, 1);
-        switch_music(&mut event, 2);
-        switch_music(&mut event, 3);
-        switch_music(&mut event, 4);
-        switch_music(&mut event, 5);
-    }
-    let old = event["star_event"]["star_level"].as_i64().unwrap();
-    event["star_event"]["star_level"] = get_star_rank(event["point_ranking"]["point"].as_i64().unwrap()).into();
-
-    star_event["is_star_level_up"] = if old == event["star_event"]["star_level"] {
-        0
-    } else {
-        1
-    }.into();
+    event["star_event"]["star_level"] = get_star_rank(get_points(body.master_event_id, &user)).into();
+    star_event["is_star_level_up"] = 1.into();
 
     save_event_data(&key, body.master_event_id, event.clone());
 
@@ -193,10 +201,45 @@ pub fn ranking(_req: HttpRequest, _body: String) -> Option<JsonValue> {
     })
 }
 
-const POINTS_PER_LEVEL: i64 = 55;
+const POINTS_PER_LEVEL: i64 = 65;
 
 fn get_star_rank(points: i64) -> i64 {
     ((points - (points % POINTS_PER_LEVEL)) / POINTS_PER_LEVEL) + 1
+}
+
+const LIMIT_COINS: i64 = 2000000000;
+
+fn give_event_points(event_id: u32, amount: i64, user: &mut JsonValue) -> bool {
+    let mut has = false;
+    for data in user["event_point_list"].members_mut() {
+        if data["type"] == 1 {
+            has = true;
+            let new_amount = data["amount"].as_i64().unwrap() + amount;
+            if new_amount > LIMIT_COINS {
+                return true;
+            }
+            data["amount"] = new_amount.into();
+            break;
+        }
+    }
+    if !has {
+        user["event_point_list"].push(object!{
+            master_event_id: event_id,
+            type: 1,
+            amount: amount,
+            reward_status: []
+        }).unwrap();
+    }
+    false
+}
+
+fn get_points(event_id: u32, user: &JsonValue) -> i64 {
+    for data in user["event_point_list"].members() {
+        if data["type"] == 1 && data["master_event_id"] == event_id {
+            return data["amount"].as_i64().unwrap()
+        }
+    }
+    0
 }
 
 pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonValue> {
@@ -212,6 +255,7 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut event = get_event_data(&key, event_id);
+    let mut user = userdata::get_acc(&key);
 
     let live_id = databases::LIVE_LIST[body["master_live_id"].to_string()]["masterMusicId"].as_i64().unwrap();
     let raw_score = body["live_score"]["score"].as_u64().unwrap_or(resp["high_score"].as_u64().unwrap());
@@ -237,7 +281,8 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
         event["star_event"]["star_event_bonus_count"] = (event["star_event"]["star_event_bonus_count"].as_u32().unwrap() + 1).into();
         event["star_event"]["star_event_play_times_bonus_count"] = (event["star_event"]["star_event_play_times_bonus_count"].as_u32().unwrap() + 1).into();
 
-        event["point_ranking"]["point"] = (event["point_ranking"]["point"].as_i64().unwrap_or(0) + 31).into();
+        give_event_points(event_id, 31, &mut user);
+        userdata::save_acc(&key, user.clone());
     }
 
     resp["star_event_bonus_list"] = object!{
@@ -249,7 +294,8 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
         "card_bonus_score": 0
     };
 
-    resp["event_point_list"] = array![];
+
+    resp["event_point_list"] = user["event_point_list"].clone();
     resp["event_ranking_data"] = object! {
         "event_point_rank": event["point_ranking"]["point"].clone(),
         "next_reward_rank_point": 0,
@@ -266,7 +312,7 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
 
     save_event_data(&key, event_id, event);
 
-    println!("{}", resp);
+    //println!("{}", resp);
     Some(resp)
 }
 
