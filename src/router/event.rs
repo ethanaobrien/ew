@@ -59,15 +59,15 @@ fn switch_music(event: &mut JsonValue, index: i32) {
         return;
     }
 
-    let mut i = 0;
+    let mut i: i32 = -1;
     for (j, live) in event["star_event"]["star_music_list"].members().enumerate() {
         if live["position"] == index {
-            i = j;
+            i = j as i32;
             break;
         }
     }
-    if i != 0 {
-        event["star_event"]["star_music_list"].array_remove(i);
+    if i >= 0 {
+        event["star_event"]["star_music_list"].array_remove(i as usize);
     }
 
     let random_song = get_random_song();
