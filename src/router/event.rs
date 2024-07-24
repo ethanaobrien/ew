@@ -14,6 +14,11 @@ fn get_event_data(key: &str, event_id: u32) -> JsonValue {
     let is_star_event = STAR_EVENT_IDS.contains(&event_id);
     //println!("is_star_event: {}, {}", is_star_event, event_id);
 
+    // Broken event data.. Should no longer be possible.
+    if is_star_event && event[event_id.to_string()]["star_event"]["star_music_list"].len() > 5 {
+        event.remove(&event_id.to_string());
+    }
+
     if event[event_id.to_string()].is_empty() {
         event[event_id.to_string()] = json::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
         if is_star_event {
