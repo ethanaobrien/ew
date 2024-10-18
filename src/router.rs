@@ -62,7 +62,7 @@ async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
     } else if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
         return webui::main(req);
     }
-    if headers.get("a6573cbe").is_none() {
+    if headers.get("a6573cbe").is_none() && req.path().starts_with("/api") {
         if args.hidden {
             return not_found(&headers);
         } else {
@@ -178,6 +178,13 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
     let args = crate::get_args();
     if args.hidden && req.path().starts_with("/api/webui/") {
         return not_found(&req.headers());
+    }
+    if req.path().starts_with("/v1.0") && req.headers().get("Authorization").is_none() {
+        if args.hidden {
+            return gree::not_found();
+        } else {
+            return webui::main(req);
+        }
     }
     if req.method() == "POST" {
         match req.path() {

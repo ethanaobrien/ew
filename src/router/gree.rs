@@ -126,6 +126,20 @@ fn send(req: HttpRequest, resp: JsonValue) -> HttpResponse {
         .body(json::stringify(resp))
 }
 
+pub fn not_found() -> HttpResponse {
+    let resp = object!{
+        code: 10001,
+        message: "Not Found",
+        result: "NG"
+    };
+    HttpResponse::NotFound()
+        .insert_header(ContentType::json())
+        .insert_header(("Expires", "-1"))
+        .insert_header(("Pragma", "no-cache"))
+        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
+        .body(json::stringify(resp))
+}
+
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&body).unwrap();
     let token = create_acc(&body["token"].to_string());
