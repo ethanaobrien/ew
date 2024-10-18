@@ -79,14 +79,21 @@ pub fn timestamp_since_midnight() -> u64 {
     unix_timestamp.as_secs() - midnight
 }
 
-fn init_time(server_data: &mut JsonValue, token: &str) {
+fn init_time(data: &JsonValue, server_data: &mut JsonValue, token: &str, max_time: u64) {
     let mut edited = false;
+    let default_time = 1709272800;
+
+    if max_time > 10 && max_time < data["server_time"].as_u64().unwrap_or(0) && server_data["server_time"].as_u64().unwrap_or(0) < max_time {
+        server_data["server_time_set"] = timestamp().into();
+        edited = true;
+    }
+
     if server_data["server_time_set"].as_u64().is_none() {
         server_data["server_time_set"] = timestamp().into();
         edited = true;
     }
     if server_data["server_time"].as_u64().is_none() {
-        server_data["server_time"] = 1709272800.into();
+        server_data["server_time"] = default_time.into();
         edited = true;
     }
     if edited {
@@ -95,12 +102,16 @@ fn init_time(server_data: &mut JsonValue, token: &str) {
 }
 
 fn set_time(data: &mut JsonValue, uid: i64) {
+    let max_time = crate::get_args().max_time;
     if uid == 0 {
+        if max_time > 10 && max_time < data["server_time"].as_u64().unwrap_or(0) {
+            data["server_time"] = max_time.into();
+        }
         return;
     }
     let token = userdata::get_login_token(uid);
     let mut server_data = userdata::get_server_data(&token);
-    init_time(&mut server_data, &token);
+    init_time(data, &mut server_data, &token, max_time);
     
     let time_set = server_data["server_time_set"].as_u64().unwrap_or(timestamp());
     let server_time = server_data["server_time"].as_u64().unwrap_or(0);//1711741114
@@ -115,11 +126,6 @@ fn set_time(data: &mut JsonValue, uid: i64) {
 pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse {
     //println!("{}", json::stringify(data.clone()));
     set_time(&mut data, uid);
-
-    let args = crate::get_args();
-    if args.max_time > 10 && args.max_time < data["server_time"].as_u64().unwrap_or(0) {
-        data["server_time"] = args.max_time.into();
-    }
 
     if !data["data"]["item_list"].is_empty() || !data["data"]["updated_value_list"]["item_list"].is_empty() {
         items::check_for_region(&mut data, headers);
