@@ -5,6 +5,5 @@ python/
 *.db
 webui/node_modules/
 webui/dist/
-Cargo.lock
 config.json
 docker/data/
