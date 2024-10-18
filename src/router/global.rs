@@ -116,6 +116,11 @@ pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse 
     //println!("{}", json::stringify(data.clone()));
     set_time(&mut data, uid);
 
+    let args = crate::get_args();
+    if args.max_time > 10 && args.max_time < data["server_time"].as_u64().unwrap_or(0) {
+        data["server_time"] = args.max_time.into();
+    }
+
     if !data["data"]["item_list"].is_empty() || !data["data"]["updated_value_list"]["item_list"].is_empty() {
         items::check_for_region(&mut data, headers);
     }

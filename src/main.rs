@@ -58,7 +58,13 @@ pub struct Args {
     japan_ios: String,
 
     #[arg(long, default_value = "", help = "Link to asset server.")]
-    assets_url: String
+    assets_url: String,
+
+    #[arg(long, default_value_t = 0, help = "Max time returned by the server, in the JSON \"timestamp\" key.")]
+    max_time: u64,
+
+    #[arg(long, default_value_t = false, help = "Disable webui, act completely like the original server")]
+    hidden: bool
 }
 
 #[actix_web::main]

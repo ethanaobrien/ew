@@ -31,7 +31,8 @@ pub mod event_ranking;
 use actix_web::{
     HttpResponse,
     HttpRequest,
-    http::header::HeaderValue
+    http::header::HeaderValue,
+    http::header::HeaderMap
 };
 use json::{JsonValue, object};
 use crate::encryption;
@@ -44,9 +45,21 @@ fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
     None
 }
 
+fn not_found(headers: &HeaderMap) -> HttpResponse {
+    let rv = object!{
+        "code": 4,
+        "server_time": global::timestamp(),
+        "message": ""
+    };
+    return global::send(rv, 0, &headers)
+}
+
 async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
     let headers = req.headers().clone();
-    if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
+    let args = crate::get_args();
+    if args.hidden && (req.path().starts_with("/api/webui/") || !(req.path().starts_with("/api") || req.path().starts_with("/v1.0"))) {
+        return not_found(&headers);
+    } else if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
         return webui::main(req);
     }
     let blank_header = HeaderValue::from_static("");
@@ -146,15 +159,19 @@ async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
         global::send(rv, uid, &headers)
     } else {
         let rv = object!{
-            "code": 2,//Idontnermemrmemremremermrme
+            "code": 4,//Idontnermemrmemremremermrme   <-- I think I was not okay when I put this note because I dont remmebr doing it
             "server_time": global::timestamp(),
-            "data": ""
+            "message": ""
         };
         global::send(rv, uid, &headers)
     }
 }
 
 pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
+    let args = crate::get_args();
+    if args.hidden && req.path().starts_with("/api/webui/") {
+        return not_found(&req.headers());
+    }
     if req.method() == "POST" {
         match req.path() {
             "/v1.0/auth/initialize" => gree::initialize(req, body),
@@ -189,7 +206,3 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
         }
     }
 }
-
-
-
-
