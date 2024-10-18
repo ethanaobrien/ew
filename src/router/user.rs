@@ -109,7 +109,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
 pub fn user_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    
+
     let mut user = userdata::get_acc(&key);
     
     if !body["name"].is_null() {
@@ -148,7 +148,7 @@ pub fn user_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     }
     
     userdata::save_acc(&key, user.clone());
-    
+
     Some(object!{
         "user": user["user"].clone(),
         "clear_mission_ids": []

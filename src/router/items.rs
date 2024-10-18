@@ -106,7 +106,9 @@ pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool
 }
 
 pub fn use_item(item: &JsonValue, multiplier: i64, user: &mut JsonValue) {
-    if item["consumeType"] == 1 {
+    if item["consumeType"] == 0 {
+        // Is anything really ever free...?
+    } else if item["consumeType"] == 1 {
         remove_gems(user, item["amount"].as_i64().unwrap());
     } else if item["consumeType"] == 4 {
         use_itemm(item["value"].as_i64().unwrap(), item["amount"].as_i64().unwrap() * multiplier, user);
