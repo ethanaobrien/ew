@@ -62,6 +62,13 @@ async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
     } else if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
         return webui::main(req);
     }
+    if headers.get("a6573cbe").is_none() {
+        if args.hidden {
+            return not_found(&headers);
+        } else {
+            return webui::main(req);
+        }
+    }
     let blank_header = HeaderValue::from_static("");
     let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
     let resp: Option<JsonValue> = if req.method() == "POST" {
