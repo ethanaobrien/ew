@@ -4,7 +4,7 @@ import Request from '../Request.jsx'
 let init = false;
 
 function Help() {
-    const [downloadUrl, setDownloadUrl] = useState(<div>Contact your server admin, asking for a patched apk. Examples can be found <a href="https://ethanthesleepy.one/public/lovelive/sif2/">here</a>.</div>);
+    const [downloadUrl, setDownloadUrl] = useState(<div>Your server admin has no pre-patched apks to download. See the question below..</div>);
     const [downloadUrliOSGL, setDownloadUrliOSGL] = useState("https://ethanthesleepy.one/public/lovelive/sif2/sif2-gl.ipa");
     const [downloadUrliOSJP, setDownloadUrliOSJP] = useState("https://ethanthesleepy.one/public/lovelive/sif2/sif2-jp.ipa");
 
@@ -53,14 +53,17 @@ function Help() {
             <h2>What is "ew"? What is this server for?</h2>
             <p>"ew" is a private server, written in Rust, for the short lived game "Love Live! School idol festival 2 MIRACLE LIVE!", a Love Live! themed mobile rhythm game.</p>
 
-            <h2>So I got the server running, how do I install the app? (Android)</h2>
+            <h2>I'm just trying to play on this server, how do I install the app? (Android)</h2>
             <p>{downloadUrl}</p>
 
-            <h2>So I got the server running, how do I install the app? (iOS)</h2>
+            <h2>My server admin has no download URLs, how do I patch the apk? (Android)</h2>
+            <p>You can use <a href="https://arasfon.ru/sif2/patcher/">@arasfon's sif2 apk patcher</a>. Plug and the asset url, which is "{assetUrl}", into the "Assets URL" textbox, and then the server url (Which is likely "{window.location.origin}", though this may not be the case). Select your game version, set "header format" to "Lowercase", and press patch. Once that done, use <a href="https://github.com/patrickfav/uber-apk-signer">uber-apk-signer</a> to sign the apk. Then, get it onto your phone and install!</p>
+
+            <h2>How do I install the app? (iOS)</h2>
             <p>Running on iOS is much simpler than Android, thanks to triangle on the discord. You first download an ipa file for <a href={downloadUrliOSGL}>global</a> or <a href={downloadUrliOSJP}>Japan</a>, and use <a href="https://sideloadly.io/">Sideloadly</a> (or your preferred application installer) to install the app. Then open settings, navigate to the app you just installed, and input the server url (Which is likely "{window.location.origin}", though this may not be the case), and the asset url, which is "{assetUrl}". If you have any errors opening the app, make sure none of the urls in settings end with a slash (/).</p>
 
             <h2>Help! I'm trying to open the app and it shows as "unavailable" (iOS)</h2>
-            <p>Do not delete it, Just re-sideload the app. This is an Apple "security" feature.</p>
+            <p>Do not delete it, Just re-sideload the app. This is an Apple security feature.</p>
 
             <h2>How well does this work?</h2>
             <p>Works well enough. The server itself takes up not even 20mb of storage, and it's written in rust. I personally think it's pretty well written.</p>
