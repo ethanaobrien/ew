@@ -64,13 +64,22 @@ pub struct Args {
     max_time: u64,
 
     #[arg(long, default_value_t = false, help = "Disable webui, act completely like the original server")]
-    hidden: bool
+    hidden: bool,
+
+    #[arg(long, default_value_t = false, help = "Purge dead user accounts on startup")]
+    purge: bool
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let args = get_args();
     let port = args.port;
+
+    if args.purge {
+        println!("Purging accounts...");
+        let ct = crate::router::userdata::purge_accounts();
+        println!("Purged {} accounts", ct);
+    }
 
     let rv = HttpServer::new(|| App::new()
     .wrap_fn(|req, srv| {

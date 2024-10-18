@@ -70,6 +70,15 @@ fn verify_signature(signature: &[u8], message: &[u8], public_key: &[u8]) -> bool
 
     verifier.verify(signature).is_ok()
 }
+
+pub fn delete_uuid(user_id: i64) {
+    DATABASE.lock_and_exec("DELETE FROM users WHERE user_id=?1", params!(user_id));
+}
+
+pub fn vacuum_database() {
+    DATABASE.lock_and_exec("VACUUM", params!());
+}
+
 pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
     let body = encryption::decrypt_packet(body).unwrap();
     let blank_header = HeaderValue::from_static("");

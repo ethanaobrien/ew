@@ -6,19 +6,21 @@ services:
     build:
       dockerfile: "./Dockerfile"
     environment:
-      PORT: 8081
+      PORT: 8080
       DIRECTORY: /data/
       HTTPS: false
       NPPS4_ADDRESS: "http://127.0.0.1:51376"
+      MAXTIME: 1717045200 # A day before global EOS
+      HIDDEN: false # Will disable the webui
 
-      #Everything below is for the "Help" page
-      ANDROID_GLOBAL: "link.to/patched/android/global.apk"
-      ANDROID_JAPAN: "link.to/patched/android/japan.apk"
-      IOS_GLOBAL: "link.to/ios/global.ipa"
-      IOS_JAPAN: "link.to/ios/japan.ipa"
-      ASSET_URL: "link.to/client/assets/"
+      # Everything below is for the "Help" page
+      #ANDROID_GLOBAL: "link.to/patched/android/global.apk"
+      #ANDROID_JAPAN: "link.to/patched/android/japan.apk"
+      #IOS_GLOBAL: "link.to/ios/global.ipa"
+      #IOS_JAPAN: "link.to/ios/japan.ipa"
+      #ASSET_URL: "link.to/client/assets/"
     ports:
-      - 8081:8081
+      - 8080:8080
     volumes:
       - ./data:/data
     restart: unless-stopped

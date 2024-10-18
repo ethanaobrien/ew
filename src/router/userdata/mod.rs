@@ -610,3 +610,38 @@ pub fn export_user(token: &str) -> Option<JsonValue> {
          sifcards: json::stringify(get_acc_sif(&login_token))
     })
 }
+
+pub fn purge_accounts() -> usize {
+    // If the user has no cards, its safe to assume its a dead account (imo). In the (rare) event this function is ran after a user started and before the account has characters, the server should create them a new account, and let them start the tutorial over.
+    let dead_uids = DATABASE.lock_and_select_all("
+    SELECT user_id
+    FROM userdata
+    WHERE (userdata LIKE ?1 AND userdata LIKE ?2 AND friend_request_disabled=1)
+    OR (userdata LIKE ?3 AND friend_request_disabled=1)",
+    params!(
+        "%\"card_list\":[]%",
+        "%Tutorial in progress%",
+        "%tutorial_step\":60%" //For some reason, a majority of dead accounts in the tutorial are here....
+    )).unwrap();
+    for uid in dead_uids.members() {
+        let user_id = uid.as_i64().unwrap();
+        println!("Removing dead UID: {}", user_id);
+        crate::router::gree::delete_uuid(user_id);
+        DATABASE.lock_and_exec("DELETE FROM userdata WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM userhome WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM missions WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM loginbonus WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM sifcards WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM friends WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM chats WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM event WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM eventloginbonus WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM server_data WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM tokens WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(user_id.to_string())));
+    }
+    DATABASE.lock_and_exec("VACUUM", params!());
+    crate::router::gree::vacuum_database();
+    dead_uids.len()
+}
