@@ -173,7 +173,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
     if args.hidden && req.path().starts_with("/api/webui/") {
         return not_found(&headers);
     }
-    if headers.get("a6573cbe").is_none() && req.path().starts_with("/api") {
+    if headers.get("aoharu-asset-version").is_none() && req.path().starts_with("/api") {
         if args.hidden {
             return not_found(&headers);
         } else {
