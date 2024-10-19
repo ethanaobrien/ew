@@ -1,4 +1,4 @@
-use json::{JsonValue};
+use json::{JsonValue, object};
 use actix_web::{HttpRequest};
 
 use crate::encryption;
@@ -8,5 +8,5 @@ pub fn error(_req: HttpRequest, body: String) -> Option<JsonValue> {
     
     println!("client error: {}", body["code"]);
     
-    None
+    Some(object!{})
 }
