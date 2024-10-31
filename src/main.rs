@@ -3,6 +3,7 @@ mod router;
 mod sql;
 
 use actix_web::{
+    rt,
     App,
     HttpServer,
     get,
@@ -14,6 +15,9 @@ use actix_web::{
 };
 use clap::Parser;
 use std::fs;
+use std::sync::Mutex;
+use std::time::Duration;
+use lazy_static::lazy_static;
 
 #[get("/index.css")]
 async fn css(_req: HttpRequest) -> HttpResponse {
@@ -71,7 +75,7 @@ pub struct Args {
 }
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn run_server(in_thread: bool) -> std::io::Result<()> {
     let args = get_args();
     let port = args.port;
 
@@ -99,7 +103,29 @@ async fn main() -> std::io::Result<()> {
     if args.https {
         println!("Note: gree is set to https mode. http requests will fail on jp clients.");
     }
+
+    if in_thread {
+        set_running(true).await;
+        let handle = rv.handle();
+        rt::spawn(rv);
+        while get_running().await {
+            actix_web::rt::time::sleep(Duration::from_millis(100)).await;
+        }
+        handle.stop(false).await;
+        println!("Stopped");
+        return Ok(());
+    }
     rv.await
+}
+
+#[actix_web::main]
+async fn stop_server() {
+    set_running(false).await;
+    println!("Stopping");
+}
+
+fn main() -> std::io::Result<()> {
+    run_server(false)
 }
 
 pub fn get_args() -> Args {
@@ -133,4 +159,34 @@ pub fn decode(bytes: &[u8]) -> Vec<u8> {
     let mut ret = Vec::new();
     dec.read_to_end(&mut ret).unwrap();
     ret
+}
+
+lazy_static! {
+    static ref RUNNING: Mutex<bool> = Mutex::new(false);
+}
+
+async fn set_running(running: bool) {
+    loop {
+        match RUNNING.lock() {
+            Ok(mut result) => {
+                *result = running;
+                return;
+            }
+            Err(_) => {
+                actix_web::rt::time::sleep(Duration::from_millis(15)).await;
+            }
+        }
+    }
+}
+async fn get_running() -> bool {
+    loop {
+        match RUNNING.lock() {
+            Ok(result) => {
+                return *result;
+            }
+            Err(_) => {
+                actix_web::rt::time::sleep(Duration::from_millis(15)).await;
+            }
+        }
+    }
 }
