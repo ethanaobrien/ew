@@ -219,10 +219,10 @@ fn get_rank(event: u32, user_id: u64) -> u32 {
     0
 }
 
-pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
+pub async fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = &encryption::decrypt_packet(&body).unwrap();
     let body: EventRankingGet = serde_json::from_str(body).unwrap();
-    let scores = crate::router::event_ranking::get_scores_json()[body.master_event_id.to_string()].clone();
+    let scores = crate::router::event_ranking::get_scores_json().await[body.master_event_id.to_string()].clone();
     let mut rv = array![];
     let mut i=1;
     let start = if body.user_id == 0 { body.start_rank } else { get_rank(body.master_event_id, body.user_id) };

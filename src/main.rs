@@ -142,6 +142,7 @@ pub fn get_data_path(file_name: &str) -> String {
     format!("{}/{}", path, file_name)
 }
 
+// include_file macro: includes a file compressed at compile time, and decompresses it on reference. Decreases binary size
 #[macro_export]
 macro_rules! include_file {
     ( $s:expr ) => {
@@ -152,6 +153,7 @@ macro_rules! include_file {
         }
     };
 }
+
 pub fn decode(bytes: &[u8]) -> Vec<u8> {
     use std::io::{Cursor, Read};
 
@@ -161,32 +163,32 @@ pub fn decode(bytes: &[u8]) -> Vec<u8> {
     ret
 }
 
+#[macro_export]
+macro_rules! lock_onto_mutex {
+    ($mutex:expr) => {{
+        loop {
+            match $mutex.lock() {
+                Ok(value) => {
+                    break value;
+                }
+                Err(_) => {
+                    actix_web::rt::time::sleep(std::time::Duration::from_millis(15)).await;
+                }
+            }
+        }
+    }};
+}
+
 lazy_static! {
     static ref RUNNING: Mutex<bool> = Mutex::new(false);
 }
 
 async fn set_running(running: bool) {
-    loop {
-        match RUNNING.lock() {
-            Ok(mut result) => {
-                *result = running;
-                return;
-            }
-            Err(_) => {
-                actix_web::rt::time::sleep(Duration::from_millis(15)).await;
-            }
-        }
-    }
+    let mut result = lock_onto_mutex!(RUNNING);
+    *result = running;
 }
+
 async fn get_running() -> bool {
-    loop {
-        match RUNNING.lock() {
-            Ok(result) => {
-                return *result;
-            }
-            Err(_) => {
-                actix_web::rt::time::sleep(Duration::from_millis(15)).await;
-            }
-        }
-    }
+    let result = lock_onto_mutex!(RUNNING);
+    return *result;
 }

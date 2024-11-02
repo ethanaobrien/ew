@@ -2,7 +2,6 @@ use json::{object, array, JsonValue};
 use actix_web::{HttpRequest};
 use rusqlite::params;
 use std::sync::Mutex;
-use std::thread;
 use lazy_static::lazy_static;
 
 use crate::encryption;
@@ -167,42 +166,23 @@ fn get_json() -> JsonValue {
     }
 }
 
-fn get_clearrate_json() -> JsonValue {
-    loop {
-        match CACHED_DATA.lock() {
-            Ok(mut result) => {
-                if result.is_none() {
-                    result.replace(get_json());
-                }
-                let cache = result.as_ref().unwrap();
-                let rv = cache["cache"].clone();
-                if cache["last_updated"].as_u64().unwrap() + (60 * 60) < global::timestamp() {
-                    thread::spawn(|| {
-                        loop {
-                            match CACHED_DATA.lock() {
-                                Ok(mut result) => {
-                                    let new = get_json();
-                                    result.replace(new.clone());
-                                    break;
-                                }
-                                Err(_) => {
-                                    std::thread::sleep(std::time::Duration::from_millis(15));
-                                }
-                            }
-                        }
-                    });
-                }
-                return rv;
-            }
-            Err(_) => {
-                std::thread::sleep(std::time::Duration::from_millis(15));
-            }
-        }
+async fn get_clearrate_json() -> JsonValue {
+    let mut result = crate::lock_onto_mutex!(CACHED_DATA);
+    if result.is_none() {
+        result.replace(get_json());
     }
+    let cache = result.as_ref().unwrap();
+    let rv = cache["cache"].clone();
+    if cache["last_updated"].as_u64().unwrap() + (60 * 60) < global::timestamp() {
+        let mut result = crate::lock_onto_mutex!(CACHED_DATA);
+        let new = get_json();
+        result.replace(new.clone());
+    }
+    return rv;
 }
 
-pub fn clearrate(_req: HttpRequest) -> Option<JsonValue> {
-    Some(get_clearrate_json())
+pub async fn clearrate(_req: HttpRequest) -> Option<JsonValue> {
+    Some(get_clearrate_json().await)
 }
 
 pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
