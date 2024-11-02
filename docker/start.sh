@@ -13,4 +13,8 @@ maxTime="${MAXTIME:-0}"
 
 purge=$([ "$PURGE" = "true" ] && echo "--purge" || echo "")
 
-/root/ew/ew --path $directory --port $port --npps4 $npps4 $purge $hidden $https --global-android "$ANDROID_GLOBAL"  --japan-android "$ANDROID_JAPAN"  --global-ios "$IOS_GLOBAL"  --japan-ios "$IOS_JAPAN" --assets-url "$ASSET_URL" --max-time $maxTime
+imports=$([ "$DISABLE_IMPORTS" = "true" ] && echo "--disable-imports" || echo "")
+
+exports=$([ "$DISABLE_EXPORTS" = "true" ] && echo "--disable-exports" || echo "")
+
+/root/ew/ew --path $directory --port $port --npps4 $npps4 $exports $imports $purge $hidden $https --global-android "$ANDROID_GLOBAL"  --japan-android "$ANDROID_JAPAN"  --global-ios "$IOS_GLOBAL"  --japan-ios "$IOS_JAPAN" --assets-url "$ASSET_URL" --max-time $maxTime

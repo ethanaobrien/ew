@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import Login from './login/Login.jsx'
 import Home from './home/Home.jsx'
 import Import from './import/Import.jsx'
-import Admin from './admin/Admin.jsx'
 import Help from './help/Help.jsx'
 
 let Elem;
@@ -17,9 +16,6 @@ switch (window.location.pathname) {
     case "/import/":
         Elem = Import;
         break;
-    case "/admin/":
-      Elem = Admin;
-      break;
     case "/help/":
       Elem = Help;
       break;

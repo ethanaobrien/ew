@@ -71,7 +71,13 @@ pub struct Args {
     hidden: bool,
 
     #[arg(long, default_value_t = false, help = "Purge dead user accounts on startup")]
-    purge: bool
+    purge: bool,
+
+    #[arg(long, default_value_t = false, help = "Disable user account imports")]
+    disable_imports: bool,
+
+    #[arg(long, default_value_t = false, help = "Disable user account exports")]
+    disable_exports: bool
 }
 
 #[actix_web::main]

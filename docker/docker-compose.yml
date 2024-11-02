@@ -12,6 +12,8 @@ services:
       NPPS4_ADDRESS: "http://127.0.0.1:51376"
       MAXTIME: 1717045200 # A day before global EOS
       HIDDEN: false # Will disable the webui
+      DISABLE_IMPORTS: false # Will disable account imports
+      DISABLE_EXPORTS: false # Will disable account exports
 
       # Everything below is for the "Help" page
       #ANDROID_GLOBAL: "link.to/patched/android/global.apk"

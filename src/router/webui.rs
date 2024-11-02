@@ -5,35 +5,16 @@ use actix_web::{
     http::header::ContentType
 };
 use json::{JsonValue, object};
-use std::fs;
-use std::fs::File;
-use std::io::Write;
 
 use crate::include_file;
 use crate::router::{userdata, items};
 
 fn get_config() -> JsonValue {
-    let def = object!{
-        import: true,
-        export: true
-    };
-    let contents = fs::read_to_string(crate::get_data_path("config.json")).unwrap_or(String::from("aaaaaaaaaaaaaaaaa"));
-    let mut rv = json::parse(&contents).unwrap_or(def.clone());
-    for val in def.entries() {
-        if rv[val.0] == JsonValue::Null {
-            rv[val.0] = val.1.clone();
-        }
+    let args = crate::get_args();
+    object!{
+        import: !args.disable_imports,
+        export: !args.disable_exports
     }
-    rv
-}
-fn save_config(val: String) {
-    let mut current = get_config();
-    let new = json::parse(&val).unwrap();
-    for vall in new.entries() {
-        current[vall.0] = vall.1.clone();
-    }
-    let mut f = File::create(crate::get_data_path("config.json")).unwrap();
-    f.write_all(json::stringify(current).as_bytes()).unwrap();
 }
 
 fn get_login_token(req: &HttpRequest) -> Option<String> {
@@ -172,7 +153,7 @@ pub fn main(req: HttpRequest) -> HttpResponse {
             }
         }
     }
-    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" && req.path() != "/admin/" && req.path() != "/help/" {
+    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" && req.path() != "/help/" {
         return HttpResponse::Found()
             .insert_header(("Location", "/"))
             .body("");
@@ -180,45 +161,6 @@ pub fn main(req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType::html())
         .body(include_file!("webui/dist/index.html"))
-}
-
-
-macro_rules! check_admin {
-    ( $s:expr ) => {
-        {
-            if $s.peer_addr().unwrap().ip().to_string() != "127.0.0.1" {
-                let resp = object!{
-                    result: "ERR",
-                    message: "Must be on localhost address to access admin panel."
-                };
-                return HttpResponse::Ok()
-                    .insert_header(ContentType::json())
-                    .body(json::stringify(resp))
-            }
-        }
-    };
-}
-
-pub fn admin(req: HttpRequest) -> HttpResponse {
-    check_admin!(req);
-    let resp = object!{
-        result: "OK",
-        data: get_config()
-    };
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .body(json::stringify(resp))
-}
-
-pub fn admin_post(req: HttpRequest, body: String) -> HttpResponse {
-    check_admin!(req);
-    save_config(body);
-    let resp = object!{
-        result: "OK"
-    };
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .body(json::stringify(resp))
 }
 
 pub fn export(req: HttpRequest) -> HttpResponse {

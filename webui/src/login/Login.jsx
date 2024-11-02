@@ -45,11 +45,6 @@ function Login() {
         e.preventDefault();
         window.location.href = "/help/";
     }
-
-    const adminPanel = (e) => {
-        e.preventDefault();
-        window.location.href = "/admin/";
-    }
   
     return (
         <div id="login-form">
@@ -63,7 +58,6 @@ function Login() {
                 <div id="sub_div">
                     <button onClick={import_user}>Import User</button><br/><br/>
                     <button onClick={help}>Need help?</button><br/><br/>
-                    <button hidden={!["127.0.0.1", "localhost"].includes(window.location.hostname)} onClick={adminPanel}>Admin panel</button>
                     { error[0] ? <p>Error: { error[0] } </p> : <p></p> }
                 </div>
             </form>

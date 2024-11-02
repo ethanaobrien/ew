@@ -199,7 +199,6 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/startLoginbonus" => webui::start_loginbonus(req, body),
             "/api/webui/import" => webui::import(req, body),
             "/api/webui/set_time" => webui::set_time(req, body),
-            "/api/webui/admin" => webui::admin_post(req, body),
             _ => api_req(req, body).await
         }
     } else {
@@ -214,7 +213,6 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/web/announcement" => web::announcement(req),
             "/api/webui/userInfo" => webui::user(req),
             "/webui/logout" => webui::logout(req),
-            "/api/webui/admin" => webui::admin(req),
             "/api/webui/export" => webui::export(req),
             "/api/webui/serverInfo" => webui::server_info(req),
             _ => api_req(req, body).await
