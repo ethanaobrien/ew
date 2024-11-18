@@ -18,6 +18,37 @@ pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
 pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";
 pub const ASSET_HASH_IOS_JP:      &str = "b8975be8300013a168d061d3fdcd4a16";
 
+pub fn get_asset_hash(asset_version: String, android: bool) -> String {
+    let args = crate::get_args();
+    if asset_version == ASSET_VERSION_JP {
+        if android {
+            if args.jp_android_asset_hash != String::new() {
+                args.jp_android_asset_hash
+            } else {
+                ASSET_HASH_ANDROID_JP.to_string()
+            }
+        } else {
+            if args.jp_ios_asset_hash != String::new() {
+                args.jp_ios_asset_hash
+            } else {
+                ASSET_HASH_IOS_JP.to_string()
+            }
+        }
+    } else if android {
+        if args.en_android_asset_hash != String::new() {
+            args.en_android_asset_hash
+        } else {
+            ASSET_HASH_ANDROID.to_string()
+        }
+    } else {
+        if args.en_ios_asset_hash != String::new() {
+            args.en_ios_asset_hash
+        } else {
+            ASSET_HASH_IOS.to_string()
+        }
+    }
+}
+
 pub fn create_token() -> String {
     format!("{}", Uuid::now_v7())
 }

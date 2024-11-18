@@ -77,7 +77,19 @@ pub struct Args {
     disable_imports: bool,
 
     #[arg(long, default_value_t = false, help = "Disable user account exports")]
-    disable_exports: bool
+    disable_exports: bool,
+
+    #[arg(long, default_value = "", help = "Asset hash for English iOS client.")]
+    en_ios_asset_hash: String,
+
+    #[arg(long, default_value = "", help = "Asset hash for JP iOS client.")]
+    jp_ios_asset_hash: String,
+
+    #[arg(long, default_value = "", help = "Asset hash for English Android client.")]
+    en_android_asset_hash: String,
+
+    #[arg(long, default_value = "", help = "Asset hash for JP Android client.")]
+    jp_android_asset_hash: String
 }
 
 #[actix_web::main]
