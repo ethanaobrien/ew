@@ -167,11 +167,13 @@ fn get_json() -> JsonValue {
 }
 
 async fn get_clearrate_json() -> JsonValue {
-    let mut result = crate::lock_onto_mutex!(CACHED_DATA);
-    if result.is_none() {
-        result.replace(get_json());
-    }
-    let cache = result.as_ref().unwrap();
+    let cache = {
+        let mut result = crate::lock_onto_mutex!(CACHED_DATA);
+        if result.is_none() {
+            result.replace(get_json());
+        }
+        result.as_ref().unwrap().clone()
+    };
     let rv = cache["cache"].clone();
     if cache["last_updated"].as_u64().unwrap() + (60 * 60) < global::timestamp() {
         let mut result = crate::lock_onto_mutex!(CACHED_DATA);

@@ -190,6 +190,7 @@ macro_rules! lock_onto_mutex {
                     break value;
                 }
                 Err(_) => {
+                    $mutex.clear_poison();
                     actix_web::rt::time::sleep(std::time::Duration::from_millis(15)).await;
                 }
             }
