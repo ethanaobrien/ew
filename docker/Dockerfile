@@ -1,4 +1,4 @@
-FROM docker.io/library/debian:latest as builder
+FROM docker.io/library/debian:latest AS builder
 
 # First - build
 

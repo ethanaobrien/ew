@@ -35,16 +35,14 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
                     data["amount"] = (data["amount"].as_i64().unwrap() - money).into();
                 }
             }
-            if evolve {
-                if !databases::CHARACTER_CHATS[card["master_card_id"].to_string()]["50"].is_empty() {
-                    let chat = &databases::CHARACTER_CHATS[card["master_card_id"].to_string()]["50"];
-                    let mission_id = databases::MISSION_REWARD[chat[0].to_string()]["value"].as_i64().unwrap();
+            if evolve && !databases::CHARACTER_CHATS[card["master_card_id"].to_string()]["50"].is_empty() {
+                let chat = &databases::CHARACTER_CHATS[card["master_card_id"].to_string()]["50"];
+                let mission_id = databases::MISSION_REWARD[chat[0].to_string()]["value"].as_i64().unwrap();
 
-                    if crate::router::chat::add_chat_from_chapter_id(mission_id, chats) {
-                        items::update_mission_status(chat[1].as_i64().unwrap(), 0, true, true, 1, missions);
-                        if !clear_mission_ids.contains(chat[1].as_i64().unwrap()) {
-                            clear_mission_ids.push(chat[1].clone()).unwrap();
-                        }
+                if crate::router::chat::add_chat_from_chapter_id(mission_id, chats) {
+                    items::update_mission_status(chat[1].as_i64().unwrap(), 0, true, true, 1, missions);
+                    if !clear_mission_ids.contains(chat[1].as_i64().unwrap()) {
+                        clear_mission_ids.push(chat[1].clone()).unwrap();
                     }
                 }
             }

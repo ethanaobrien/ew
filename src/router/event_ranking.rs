@@ -109,5 +109,5 @@ pub async fn get_scores_json() -> JsonValue {
         let new = get_json();
         result.replace(new.clone());
     }
-    return rv;
+    rv
 }

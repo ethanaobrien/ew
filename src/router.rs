@@ -51,7 +51,7 @@ fn not_found(headers: &HeaderMap) -> HttpResponse {
         "server_time": global::timestamp(),
         "message": ""
     };
-    return global::send(rv, 0, &headers)
+    global::send(rv, 0, headers)
 }
 
 async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
@@ -171,11 +171,11 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
     let args = crate::get_args();
     let headers = req.headers();
     if args.hidden && req.path().starts_with("/api/webui/") {
-        return not_found(&headers);
+        return not_found(headers);
     }
     if headers.get("aoharu-asset-version").is_none() && req.path().starts_with("/api") && !req.path().starts_with("/api/webui") {
         if args.hidden {
-            return not_found(&headers);
+            return not_found(headers);
         } else {
             return webui::main(req);
         }

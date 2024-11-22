@@ -60,7 +60,7 @@ fn get_random_song() -> JsonValue {
 }
 
 fn switch_music(event: &mut JsonValue, index: i32) {
-    if index > 5 || index < 1 {
+    if !(1..=5).contains(&index) {
         return;
     }
 

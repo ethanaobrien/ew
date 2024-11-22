@@ -27,12 +27,10 @@ pub fn get_asset_hash(asset_version: String, android: bool) -> String {
             } else {
                 ASSET_HASH_ANDROID_JP.to_string()
             }
+        } else if args.jp_ios_asset_hash != String::new() {
+            args.jp_ios_asset_hash
         } else {
-            if args.jp_ios_asset_hash != String::new() {
-                args.jp_ios_asset_hash
-            } else {
-                ASSET_HASH_IOS_JP.to_string()
-            }
+            ASSET_HASH_IOS_JP.to_string()
         }
     } else if android {
         if args.en_android_asset_hash != String::new() {
@@ -40,12 +38,10 @@ pub fn get_asset_hash(asset_version: String, android: bool) -> String {
         } else {
             ASSET_HASH_ANDROID.to_string()
         }
+    } else if args.en_ios_asset_hash != String::new() {
+        args.en_ios_asset_hash
     } else {
-        if args.en_ios_asset_hash != String::new() {
-            args.en_ios_asset_hash
-        } else {
-            ASSET_HASH_IOS.to_string()
-        }
+        ASSET_HASH_IOS.to_string()
     }
 }
 

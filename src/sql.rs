@@ -41,12 +41,12 @@ impl SQLite {
     pub fn lock_and_select(&self, command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlite::Error> {
         let conn = lock_onto_mutex!(self.engine);
         let mut stmt = conn.prepare(command)?;
-        return stmt.query_row(args, |row| {
+        stmt.query_row(args, |row| {
             match row.get::<usize, i64>(0) {
                 Ok(val) => Ok(val.to_string()),
                 Err(_) => row.get(0)
             }
-        });
+        })
     }
     pub fn lock_and_select_all(&self, command: &str, args: &[&dyn ToSql]) -> Result<JsonValue, rusqlite::Error> {
         let conn = lock_onto_mutex!(self.engine);
@@ -65,12 +65,12 @@ impl SQLite {
                               Err(_) => rv.push(res).unwrap()
             };
         }
-        return Ok(rv);
+        Ok(rv)
     }
     pub fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error> {
         let conn = lock_onto_mutex!(self.engine);
         let mut stmt = conn.prepare("SELECT * FROM lives WHERE live_id=?1")?;
-        return stmt.query_row(params!(id), |row| {
+        stmt.query_row(params!(id), |row| {
             Ok(Live {
                live_id: row.get(0)?,
                normal_failed: row.get(1)?,
@@ -82,7 +82,7 @@ impl SQLite {
                master_failed: row.get(7)?,
                master_pass: row.get(8)?,
             })
-        });
+        })
     }
     pub fn create_store_v2(&self, table: &str) {
         self.lock_and_exec(table, params!());

@@ -180,7 +180,7 @@ async fn get_clearrate_json() -> JsonValue {
         let new = get_json();
         result.replace(new.clone());
     }
-    return rv;
+    rv
 }
 
 pub async fn clearrate(_req: HttpRequest) -> Option<JsonValue> {

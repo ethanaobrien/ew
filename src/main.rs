@@ -153,7 +153,7 @@ pub fn get_args() -> Args {
 pub fn get_data_path(file_name: &str) -> String {
     let args = get_args();
     let mut path = args.path;
-    while path.ends_with("/") {
+    while path.ends_with('/') {
         path.pop();
     }
     fs::create_dir_all(&path).unwrap();
@@ -209,5 +209,5 @@ async fn set_running(running: bool) {
 
 async fn get_running() -> bool {
     let result = lock_onto_mutex!(RUNNING);
-    return *result;
+    *result
 }

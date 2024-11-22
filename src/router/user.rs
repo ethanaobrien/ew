@@ -325,7 +325,7 @@ async fn npps4_req(sha_id: String) -> Option<JsonValue> {
     let args = crate::get_args();
 
     let mut host = args.npps4;
-    while host.ends_with("/") {
+    while host.ends_with('/') {
         host.pop();
     }
     let url = format!("{}/ewexport?sha1={}", host, sha_id);
@@ -334,7 +334,7 @@ async fn npps4_req(sha_id: String) -> Option<JsonValue> {
     let client = reqwest::Client::new();
     let response = client.get(url);
     let response_body = response.send().await.ok()?.text().await.ok()?;
-    Some(json::parse(&response_body).ok()?)
+    json::parse(&response_body).ok()
 }
 
 fn clean_sif_data(current: &JsonValue) -> JsonValue {

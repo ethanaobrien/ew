@@ -356,7 +356,7 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
 
 pub fn get_protocol() -> String {
     let args = crate::get_args();
-    if args.https == true {
+    if args.https {
         return String::from("https");
     }
     String::from("http")
