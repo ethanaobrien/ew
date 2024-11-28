@@ -55,7 +55,7 @@ jobs:
             org.opencontainers.image.version=${{ env.EW_VERSION }}
           tags: "${{ steps.set-tag.outputs.tags }}"
           file: "docker/Dockerfile"
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64 #,linux/arm64
 
           # arm64 builds OOM without the git fetch setting. c.f.
           # https://github.com/rust-lang/cargo/issues/10583
