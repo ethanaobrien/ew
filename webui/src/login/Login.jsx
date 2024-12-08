@@ -60,6 +60,7 @@ function Login() {
                     <button onClick={help}>Need help?</button><br/><br/>
                     { error[0] ? <p>Error: { error[0] } </p> : <p></p> }
                 </div>
+                <p>EW Version 1.0.0 - <a href="https://git.ethanthesleepy.one/ethanaobrien/ew">View source</a> - <a href="https://git.ethanthesleepy.one/ethanaobrien/ew/src/branch/main/LICENSE">View license</a></p>
             </form>
         </div>
     );
