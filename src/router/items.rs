@@ -24,6 +24,18 @@ pub fn remove_gems(user: &mut JsonValue, amount: i64) {
     user["gem"]["total"] = (free + paid).into();
 }
 
+pub fn remove_paid_gems(user: &mut JsonValue, amount: i64) {
+    let free = user["gem"]["free"].as_i64().unwrap();
+    let mut paid = user["gem"]["charge"].as_i64().unwrap();
+    
+    paid -= amount;
+    if paid < 0 {
+        paid = 0;
+    }
+    user["gem"]["charge"] = paid.into();
+    user["gem"]["total"] = (free + paid).into();
+}
+
 pub fn get_region(headers: &HeaderMap) -> bool {
     let blank_header = HeaderValue::from_static("");
     let asset_version = headers.get("aoharu-asset-version").unwrap_or(&blank_header).to_str().unwrap_or("");
@@ -110,6 +122,8 @@ pub fn use_item(item: &JsonValue, multiplier: i64, user: &mut JsonValue) {
         // Is anything really ever free...?
     } else if item["consumeType"] == 1 {
         remove_gems(user, item["amount"].as_i64().unwrap());
+    } else if item["consumeType"] == 2 {
+        remove_paid_gems(user, item["amount"].as_i64().unwrap());
     } else if item["consumeType"] == 4 {
         use_itemm(item["value"].as_i64().unwrap(), item["amount"].as_i64().unwrap() * multiplier, user);
     } else {

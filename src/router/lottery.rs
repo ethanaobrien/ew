@@ -118,12 +118,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
         consumeType: price["consumeType"].clone()
     }, 1, &mut user);
 
-    let mut count = price["count"].as_usize().unwrap();
-
-    // This is a temporary easter egg, not meant to stay
-    if lottery_id == 4110044 {
-        count = 30;
-    }
+    let count = price["count"].as_usize().unwrap();
     
     let cardstogive = get_random_cards(lottery_id, count);
     
