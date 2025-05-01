@@ -47,7 +47,7 @@ pub fn encrypt_packet(input: &str) -> Result<String, ErrorStack> {
 }
 
 fn generate_random_iv() -> Vec<u8> {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut bytes = vec![0u8; IV_LENGTH];
     rng.fill(&mut bytes[..]);
     bytes

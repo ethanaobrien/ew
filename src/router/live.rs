@@ -34,7 +34,7 @@ fn random_number(lowest: usize, highest: usize) -> usize {
     }
     assert!(lowest < highest);
     
-    rand::thread_rng().gen_range(lowest..highest + 1)
+    rand::rng().random_range(lowest..highest + 1)
 }
 
 pub fn guest(req: HttpRequest, body: String) -> Option<JsonValue> {

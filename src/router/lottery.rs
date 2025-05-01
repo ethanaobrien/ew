@@ -46,7 +46,7 @@ fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::T
     
     let mut random_id = 0;
     while random_id == 0 {
-        let card = rng.gen_range(1..databases::POOL[lottery_id.to_string()][databases::POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
+        let card = rng.random_range(1..databases::POOL[lottery_id.to_string()][databases::POOL[lottery_id.to_string()].len() - 1].as_i64().unwrap() + 1);
         if get_card_master_id(lottery_id.to_string(), card.to_string()).is_some() {
             random_id = card;
             break;
@@ -63,7 +63,7 @@ fn get_random_card(item: &JsonValue, rv: &mut JsonValue, rng: &mut rand::rngs::T
 
 fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     let total_ratio: i64 = databases::RARITY[id.to_string()].members().map(|item| if item["ensured"].as_i32().unwrap() == 1 { 0 } else { item["ratio"].as_i64().unwrap() }).sum();
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut rv = array![];
     let mut promised = false;
     
@@ -80,7 +80,7 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
         count -= 1;
     }
     for _i in 0..count {
-        let random_number: i64 = rng.gen_range(1..total_ratio + 1);
+        let random_number: i64 = rng.random_range(1..total_ratio + 1);
         let mut cumulative_ratio = 0;
         for item in databases::RARITY[id.to_string()].members() {
             cumulative_ratio += item["ratio"].as_i64().unwrap();

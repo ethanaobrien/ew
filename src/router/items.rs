@@ -244,7 +244,7 @@ fn random_number(lowest: usize, highest: usize) -> usize {
     }
     assert!(lowest < highest);
     
-    rand::thread_rng().gen_range(lowest..highest + 1)
+    rand::rng().random_range(lowest..highest + 1)
 }
 
 pub fn gift_item_basic(id: i32, value: i64, ty_pe: i32, reason: &str, user: &mut JsonValue) -> JsonValue {

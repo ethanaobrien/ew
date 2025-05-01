@@ -94,8 +94,8 @@ fn get_key(auth_key: &str) -> i64 {
 }
 
 fn generate_uid() -> i64 {
-    let mut rng = rand::thread_rng();
-    let random_number = rng.gen_range(100_000_000_000_000..=999_999_999_999_999);
+    let mut rng = rand::rng();
+    let random_number = rng.random_range(100_000_000_000_000..=999_999_999_999_999);
     //the chances of this...?
     if acc_exists(random_number) {
         return generate_uid();
@@ -301,7 +301,7 @@ pub fn save_acc_sif(auth_key: &str, data: JsonValue) {
 }
 
 fn generate_salt() -> Vec<u8> {
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     let mut bytes = vec![0u8; 16];
     rng.fill(&mut bytes[..]);
     bytes

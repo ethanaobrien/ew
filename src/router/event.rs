@@ -51,8 +51,8 @@ fn save_event_data(key: &str, event_id: u32, data: JsonValue) {
 }
 
 fn get_random_song() -> JsonValue {
-    let mut rng = rand::thread_rng();
-    let random_number = rng.gen_range(0..=databases::LIVES.len());
+    let mut rng = rand::rng();
+    let random_number = rng.random_range(0..=databases::LIVES.len());
     object!{
         song: databases::LIVES[random_number]["masterMusicId"].clone(),
         score: (databases::LIVES[random_number]["scoreC"].as_f64().unwrap() * 1.75).round() as i64
