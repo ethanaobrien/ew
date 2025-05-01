@@ -106,11 +106,11 @@ pub fn timestamp_since_midnight() -> u64 {
     unix_timestamp.as_secs() - midnight
 }
 
-fn init_time(data: &JsonValue, server_data: &mut JsonValue, token: &str, max_time: u64) {
+fn init_time(current_time: u64, server_data: &mut JsonValue, token: &str, max_time: u64) {
     let mut edited = false;
     let default_time = 1709272800;
 
-    if max_time > 10 && max_time < data["server_time"].as_u64().unwrap_or(0) && server_data["server_time"].as_u64().unwrap_or(0) < max_time {
+    if max_time > 10 && max_time < current_time && server_data["server_time"].as_u64().unwrap_or(0) < max_time {
         server_data["server_time_set"] = timestamp().into();
         edited = true;
     }
@@ -128,31 +128,30 @@ fn init_time(data: &JsonValue, server_data: &mut JsonValue, token: &str, max_tim
     }
 }
 
-fn set_time(data: &mut JsonValue, uid: i64) {
+pub fn set_time(current_time: u64, uid: i64) -> u64 {
     let max_time = crate::get_args().max_time;
     if uid == 0 {
-        if max_time > 10 && max_time < data["server_time"].as_u64().unwrap_or(0) {
-            data["server_time"] = max_time.into();
+        if max_time > 10 && max_time < current_time {
+            return max_time;
         }
-        return;
     }
     let token = userdata::get_login_token(uid);
     let mut server_data = userdata::get_server_data(&token);
-    init_time(data, &mut server_data, &token, max_time);
+    init_time(current_time, &mut server_data, &token, max_time);
     
     let time_set = server_data["server_time_set"].as_u64().unwrap_or(timestamp());
     let server_time = server_data["server_time"].as_u64().unwrap_or(0);//1711741114
     if server_time == 0 {
-        return;
+        return current_time;
     }
     
     let time_since_set = timestamp() - time_set;
-    data["server_time"] = (server_time + time_since_set).into();
+    return server_time + time_since_set;
 }
 
 pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse {
     //println!("{}", json::stringify(data.clone()));
-    set_time(&mut data, uid);
+    data["server_time"] = set_time(data["server_time"].as_u64().unwrap_or(0), uid).into();
 
     if !data["data"]["item_list"].is_empty() || !data["data"]["updated_value_list"]["item_list"].is_empty() {
         items::check_for_region(&mut data, headers);

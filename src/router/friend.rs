@@ -52,10 +52,11 @@ pub fn recommend(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     let mut rv = array![];
     for uid in random.members() {
-        let user = global::get_user(uid.as_i64().unwrap(), &friends, false);
+        let mut user = global::get_user(uid.as_i64().unwrap(), &friends, false);
         if user["user"]["friend_request_disabled"] == 1 || user.is_empty() {
             continue;
         }
+        user["user"]["last_login_time"] = global::set_time(user["user"]["last_login_time"].as_u64().unwrap_or(0), user_id).into();
         rv.push(user).unwrap();
     }
     
