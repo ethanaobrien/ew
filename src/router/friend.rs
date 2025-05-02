@@ -56,7 +56,7 @@ pub fn recommend(req: HttpRequest, body: String) -> Option<JsonValue> {
         if user["user"]["friend_request_disabled"] == 1 || user.is_empty() {
             continue;
         }
-        user["user"]["last_login_time"] = global::set_time(user["user"]["last_login_time"].as_u64().unwrap_or(0), user_id).into();
+        user["user"]["last_login_time"] = global::set_time(user["user"]["last_login_time"].as_u64().unwrap_or(0), user_id, false).into();
         rv.push(user).unwrap();
     }
     
