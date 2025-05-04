@@ -24,7 +24,9 @@ pub fn friend(req: HttpRequest, body: String) -> Option<JsonValue> {
     };
     
     for uid in rv_data.members() {
-        rv.push(global::get_user(uid.as_i64().unwrap(), &friends, false)).unwrap();
+        let mut user = global::get_user(uid.as_i64().unwrap(), &friends, false);
+        user["user"]["last_login_time"] = global::set_time(user["user"]["last_login_time"].as_u64().unwrap_or(0), user_id, false).into();
+        rv.push(user).unwrap();
     }
     
     Some(object!{
