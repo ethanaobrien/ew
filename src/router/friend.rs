@@ -9,6 +9,7 @@ pub const FRIEND_LIMIT: usize = 40;
 pub fn friend(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
     
     let mut rv = array![];
