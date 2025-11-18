@@ -31,6 +31,27 @@ async fn js(_req: HttpRequest) -> HttpResponse {
         .insert_header(ContentType(mime::APPLICATION_JAVASCRIPT_UTF_8))
         .body(include_file!("webui/dist/index.js"))
 }
+#[get("/maintenance/maintenance.json")]
+async fn maintenance(_req: HttpRequest) -> HttpResponse {
+    HttpResponse::Ok()
+    .insert_header(ContentType(mime::APPLICATION_JSON))
+    .body(r#"{"opened_at":"2024-02-05 02:00:00","closed_at":"2024-02-05 04:00:00","message":":(","server":1,"gamelib":0}"#)
+}
+fn handle_assets(req: HttpRequest) -> HttpResponse {
+    let file_name: String = req.match_info().get("file").unwrap().parse().unwrap();
+    HttpResponse::SeeOther()
+    .insert_header(("location", format!("https://sif2.sif.moe{}", req.path())))
+    .body("")
+}
+#[get("/Android/{hash}/{file}")]
+async fn files_jp(req: HttpRequest) -> HttpResponse {
+    handle_assets(req)
+}
+
+#[get("/Android/{lang}/{hash}/{file}")]
+async fn files_gl(req: HttpRequest) -> HttpResponse {
+    handle_assets(req)
+}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -110,7 +131,10 @@ async fn run_server(in_thread: bool) -> std::io::Result<()> {
     })
     .app_data(web::PayloadConfig::default().limit(1024 * 1024 * 25))
     .service(css)
+    .service(maintenance)
     .service(js)
+    .service(files_jp)
+    .service(files_gl)
     .default_service(web::route().to(router::request))
     ).bind(("0.0.0.0", port))?.run();
 
