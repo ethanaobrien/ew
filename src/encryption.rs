@@ -1,47 +1,38 @@
-use openssl::symm::{Cipher, Crypter, Mode};
-use openssl::error::ErrorStack;
 use base64::{Engine as _, engine::general_purpose};
 use rand::Rng;
+use aes::cipher::BlockEncryptMut;
+use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, KeyIvInit};
+
+type Aes256CbcEnc = cbc::Encryptor<aes::Aes256>;
+type Aes256CbcDec = cbc::Decryptor<aes::Aes256>;
 
 const IV_LENGTH: usize = 16;
 const KEY: &str = "3559b435f24b297a79c68b9709ef2125";
 
-pub fn decrypt_packet(base64_input: &str) -> Result<String, ErrorStack> {
+pub fn decrypt_packet(base64_input: &str) -> Result<String, String> {
     if base64_input.len() < IV_LENGTH + 1 {
         return Ok(String::new());
     }
     let base64_buffer = general_purpose::STANDARD.decode(base64_input).unwrap();
 
     let decryption_iv = &base64_buffer[..IV_LENGTH];
-    let ciphertext = &base64_buffer[IV_LENGTH..];
+    let mut ciphertext = base64_buffer[IV_LENGTH..].to_vec();
 
-    let cipher = Cipher::aes_256_cbc();
-    let mut decrypter = Crypter::new(cipher, Mode::Decrypt, KEY.as_bytes(), Some(decryption_iv))?;
+    let decrypted_data = Aes256CbcDec::new(KEY.as_bytes().into(), decryption_iv.into())
+        .decrypt_padded_mut::<Pkcs7>(&mut ciphertext).ok()
+        .ok_or(String::from("uhoh"))?;
 
-    let mut decrypted_data = vec![0u8; ciphertext.len() + cipher.block_size()];
-    let mut decrypted_len = decrypter.update(ciphertext, &mut decrypted_data)?;
-    decrypted_len += decrypter.finalize(&mut decrypted_data[decrypted_len..])?;
-    
-    decrypted_data.truncate(decrypted_len);
-
-    Ok(String::from_utf8(decrypted_data).unwrap())
+    Ok(String::from_utf8(decrypted_data.to_vec()).unwrap())
 }
 
-pub fn encrypt_packet(input: &str) -> Result<String, ErrorStack> {
-    let cipher = Cipher::aes_256_cbc();
+pub fn encrypt_packet(input: &str) -> Result<String, String> {
     let encryption_iv = generate_random_iv();
 
-    let mut encrypter = Crypter::new(cipher, Mode::Encrypt, KEY.as_bytes(), Some(&encryption_iv))?;
+    let encrypted = Aes256CbcEnc::new(KEY.as_bytes().into(), encryption_iv.as_slice().into())
+        .encrypt_padded_vec_mut::<Pkcs7>(input.as_bytes());
 
-    let mut encrypted_data = vec![0u8; input.len() + cipher.block_size()];
-    let mut encrypted_len = encrypter.update(input.as_bytes(), &mut encrypted_data)?;
-
-    encrypted_len += encrypter.finalize(&mut encrypted_data[encrypted_len..])?;
-
-    encrypted_data.truncate(encrypted_len);
-    
     let mut result = encryption_iv.to_vec();
-    result.extend_from_slice(&encrypted_data);
+    result.extend_from_slice(&encrypted);
 
     Ok(general_purpose::STANDARD.encode(&result))
 }
