@@ -331,10 +331,12 @@ async fn npps4_req(sha_id: String) -> Option<JsonValue> {
     let url = format!("{}/ewexport?sha1={}", host, sha_id);
     println!("Polling NPPS4 at {}", host);
 
-    let client = reqwest::Client::new();
-    let response = client.get(url);
-    let response_body = response.send().await.ok()?.text().await.ok()?;
-    json::parse(&response_body).ok()
+    let body = ureq::get(&url)
+        .call().ok()?
+        .body_mut()
+        .read_to_string().ok()?;
+
+    json::parse(&body).ok()
 }
 
 fn clean_sif_data(current: &JsonValue) -> JsonValue {

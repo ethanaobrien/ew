@@ -38,10 +38,9 @@ async fn maintenance(_req: HttpRequest) -> HttpResponse {
     .body(r#"{"opened_at":"2024-02-05 02:00:00","closed_at":"2024-02-05 04:00:00","message":":(","server":1,"gamelib":0}"#)
 }
 fn handle_assets(req: HttpRequest) -> HttpResponse {
-    let file_name: String = req.match_info().get("file").unwrap().parse().unwrap();
     HttpResponse::SeeOther()
-    .insert_header(("location", format!("https://sif2.sif.moe{}", req.path())))
-    .body("")
+        .insert_header(("location", format!("https://sif2.sif.moe{}", req.path())))
+        .body("")
 }
 #[get("/Android/{hash}/{file}")]
 async fn files_jp(req: HttpRequest) -> HttpResponse {
