@@ -8,10 +8,9 @@ use hmac::{Hmac, Mac};
 use rusqlite::params;
 use lazy_static::lazy_static;
 
-use openssl::pkey::PKey;
-use openssl::rsa::Rsa;
-use openssl::hash::MessageDigest;
-use openssl::sign::Verifier;
+use sha1::Digest;
+use rsa::{RsaPublicKey, Pkcs1v15Sign};
+use rsa::pkcs8::DecodePublicKey;
 
 use crate::router::global;
 use crate::router::userdata;
@@ -56,19 +55,14 @@ fn create_acc(cert: &str) -> String {
     uuid
 }
 
-fn verify_signature(signature: &[u8], message: &[u8], public_key: &[u8]) -> bool {
-    let rsa_public_key = match Rsa::public_key_from_pem(public_key) {
-        Ok(key) => key,
-        Err(_) => return false,
-    };
-    let pkey = match PKey::from_rsa(rsa_public_key) {
-        Ok(pkey) => pkey,
-        Err(_) => return false,
-    };
-    let mut verifier = Verifier::new(MessageDigest::sha1(), &pkey).unwrap();
-    verifier.update(message).unwrap();
+fn verify_signature(signature: &[u8], message: &[u8], public_key: &str) -> bool {
+    let pem = pem::parse(public_key).unwrap();
+    let public_key = RsaPublicKey::from_public_key_der(&pem.contents()).unwrap();
+    let digest = Sha1::digest(message);
 
-    verifier.verify(signature).is_ok()
+    public_key
+        .verify(Pkcs1v15Sign::new::<Sha1>(), &digest, signature)
+        .is_ok()
 }
 
 pub fn delete_uuid(user_id: i64) {
@@ -97,7 +91,7 @@ pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
     
     let decoded = general_purpose::STANDARD.decode(login).unwrap_or_default();
     
-    if verify_signature(&decoded, encoded.as_bytes(), cert.as_bytes()) {
+    if verify_signature(&decoded, encoded.as_bytes(), &cert) {
         DATABASE.lock_and_select("SELECT uuid FROM users WHERE user_id=?1;", params!(uid)).unwrap()
     } else {
         String::new()
