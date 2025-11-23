@@ -7,3 +7,5 @@ webui/node_modules/
 webui/dist/
 config.json
 docker/data/
+.idea/
+ndk/
