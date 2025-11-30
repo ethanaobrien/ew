@@ -1,45 +1,29 @@
 use rusqlite::{Connection, params, ToSql};
-use std::sync::Mutex;
 use json::{JsonValue, array};
 
 use crate::router::clear_rate::Live;
 
-macro_rules! lock_onto_mutex {
-    ($mutex:expr) => {{
-        loop {
-            match $mutex.lock() {
-                Ok(value) => {
-                    break value;
-                }
-                Err(_) => {
-                    $mutex.clear_poison();
-                    std::thread::sleep(std::time::Duration::from_millis(10));
-                }
-            }
-        }
-    }};
-}
-
 pub struct SQLite {
-    engine: Mutex<Connection>
+    path: String
 }
 
 impl SQLite {
-    pub fn new(path: &str, setup: fn(&SQLite)) -> SQLite {
-        let conn = Connection::open(crate::get_data_path(path)).unwrap();
-        conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
+    pub fn new(path: &str, setup: fn(&Connection)) -> SQLite {
         let instance = SQLite {
-            engine: Mutex::new(conn)
+            path: crate::get_data_path(path)
         };
-        setup(&instance);
+        let conn = Connection::open(&instance.path).unwrap();
+        conn.busy_timeout(std::time::Duration::from_secs(10)).unwrap();
+        conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
+        setup(&conn);
         instance
     }
     pub fn lock_and_exec(&self, command: &str, args: &[&dyn ToSql]) {
-        let conn = lock_onto_mutex!(self.engine);
+        let conn = Connection::open(&self.path).unwrap();
         conn.execute(command, args).unwrap();
     }
     pub fn lock_and_select(&self, command: &str, args: &[&dyn ToSql]) -> Result<String, rusqlite::Error> {
-        let conn = lock_onto_mutex!(self.engine);
+        let conn = Connection::open(&self.path).unwrap();
         let mut stmt = conn.prepare(command)?;
         stmt.query_row(args, |row| {
             match row.get::<usize, i64>(0) {
@@ -49,7 +33,7 @@ impl SQLite {
         })
     }
     pub fn lock_and_select_all(&self, command: &str, args: &[&dyn ToSql]) -> Result<JsonValue, rusqlite::Error> {
-        let conn = lock_onto_mutex!(self.engine);
+        let conn = Connection::open(&self.path).unwrap();
         let mut stmt = conn.prepare(command)?;
         let map = stmt.query_map(args, |row| {
             match row.get::<usize, i64>(0) {
@@ -62,13 +46,13 @@ impl SQLite {
             let res = val?;
             match res.clone().parse::<i64>() {
                 Ok(v) => rv.push(v).unwrap(),
-                              Err(_) => rv.push(res).unwrap()
+                Err(_) => rv.push(res).unwrap()
             };
         }
         Ok(rv)
     }
     pub fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error> {
-        let conn = lock_onto_mutex!(self.engine);
+        let conn = Connection::open(&self.path).unwrap();
         let mut stmt = conn.prepare("SELECT * FROM lives WHERE live_id=?1")?;
         stmt.query_row(params!(id), |row| {
             Ok(Live {
@@ -83,8 +67,5 @@ impl SQLite {
                master_pass: row.get(8)?,
             })
         })
-    }
-    pub fn create_store_v2(&self, table: &str) {
-        self.lock_and_exec(table, params!());
     }
 }

@@ -11,11 +11,11 @@ lazy_static! {
     static ref CACHED_DATA: Mutex<Option<JsonValue>> = Mutex::new(None);
 }
 
-fn setup_tables(conn: &SQLite) {
-    conn.lock_and_exec("CREATE TABLE IF NOT EXISTS scores (
+fn setup_tables(conn: &rusqlite::Connection) {
+    conn.execute_batch("CREATE TABLE IF NOT EXISTS scores (
         event_id     INT NOT NULL PRIMARY KEY,
         score_data   TEXT NOT NULL
-    )", params!());
+    );").unwrap();
 }
 
 pub fn live_completed(event_id: u32, uid: i64, score: i64, star_level: i64) {

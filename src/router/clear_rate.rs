@@ -25,8 +25,8 @@ pub struct Live {
     pub master_pass: i64,
 }
 
-fn setup_tables(conn: &SQLite) {
-    conn.lock_and_exec("CREATE TABLE IF NOT EXISTS lives (
+fn setup_tables(conn: &rusqlite::Connection) {
+    conn.execute_batch("CREATE TABLE IF NOT EXISTS lives (
         live_id         INT NOT NULL PRIMARY KEY,
         normal_failed   BIGINT NOT NULL,
         normal_pass     BIGINT NOT NULL,
@@ -36,11 +36,11 @@ fn setup_tables(conn: &SQLite) {
         expert_pass     BIGINT NOT NULL,
         master_failed   BIGINT NOT NULL,
         master_pass     BIGINT NOT NULL
-    )", params!());
-    conn.lock_and_exec("CREATE TABLE IF NOT EXISTS scores (
+    );
+    CREATE TABLE IF NOT EXISTS scores (
         live_id      INT NOT NULL PRIMARY KEY,
         score_data   TEXT NOT NULL
-    )", params!());
+    );").unwrap();
 }
 
 fn update_live_score(id: i64, uid: i64, score: i64) {

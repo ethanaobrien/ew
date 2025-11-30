@@ -22,12 +22,12 @@ lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("gree.db", setup_tables);
 }
 
-fn setup_tables(conn: &SQLite) {
-    conn.create_store_v2("CREATE TABLE IF NOT EXISTS users (
+fn setup_tables(conn: &rusqlite::Connection) {
+    conn.execute_batch("CREATE TABLE IF NOT EXISTS users (
         cert     TEXT NOT NULL,
         uuid     TEXT NOT NULL,
         user_id  BIGINT NOT NULL PRIMARY KEY
-    )");
+    );").unwrap();
 }
 
 fn update_cert(uid: i64, cert: &str) {
