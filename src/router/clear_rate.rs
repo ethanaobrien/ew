@@ -8,6 +8,29 @@ use crate::encryption;
 use crate::sql::SQLite;
 use crate::router::{global, databases};
 
+trait SqlClearRate {
+    fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error>;
+}
+impl SqlClearRate for SQLite {
+    fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error> {
+        let conn = rusqlite::Connection::open(self.get_path()).unwrap();
+        let mut stmt = conn.prepare("SELECT * FROM lives WHERE live_id=?1")?;
+        stmt.query_row(params!(id), |row| {
+            Ok(Live {
+               live_id: row.get(0)?,
+               normal_failed: row.get(1)?,
+               normal_pass: row.get(2)?,
+               hard_failed: row.get(3)?,
+               hard_pass: row.get(4)?,
+               expert_failed: row.get(5)?,
+               expert_pass: row.get(6)?,
+               master_failed: row.get(7)?,
+               master_pass: row.get(8)?,
+            })
+        })
+    }
+}
+
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("live_statistics.db", setup_tables);
     static ref CACHED_DATA: Mutex<Option<JsonValue>> = Mutex::new(None);

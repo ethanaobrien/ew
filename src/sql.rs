@@ -1,7 +1,5 @@
-use rusqlite::{Connection, params, ToSql};
+use rusqlite::{Connection, ToSql};
 use json::{JsonValue, array};
-
-use crate::router::clear_rate::Live;
 
 pub struct SQLite {
     path: String
@@ -17,6 +15,9 @@ impl SQLite {
         conn.execute("PRAGMA foreign_keys = ON;", ()).unwrap();
         setup(&conn);
         instance
+    }
+    pub fn get_path(&self) -> &str {
+        &self.path
     }
     pub fn lock_and_exec(&self, command: &str, args: &[&dyn ToSql]) {
         let conn = Connection::open(&self.path).unwrap();
@@ -50,22 +51,5 @@ impl SQLite {
             };
         }
         Ok(rv)
-    }
-    pub fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error> {
-        let conn = Connection::open(&self.path).unwrap();
-        let mut stmt = conn.prepare("SELECT * FROM lives WHERE live_id=?1")?;
-        stmt.query_row(params!(id), |row| {
-            Ok(Live {
-               live_id: row.get(0)?,
-               normal_failed: row.get(1)?,
-               normal_pass: row.get(2)?,
-               hard_failed: row.get(3)?,
-               hard_pass: row.get(4)?,
-               expert_failed: row.get(5)?,
-               expert_pass: row.get(6)?,
-               master_failed: row.get(7)?,
-               master_pass: row.get(8)?,
-            })
-        })
     }
 }
