@@ -32,9 +32,14 @@ include_dir = { version = "0.7.4", optional = true }
 [target.aarch64-linux-android.dependencies]
 jni = { version = "0.21.1", features = ["invocation", "default"] }
 
+[target.aarch64-apple-ios.dependencies]
+objc2 = "0.6.3"
+objc2-foundation = { version = "0.3.2", features = ["NSFileManager"] }
+
 [build-dependencies]
 cc = "1.0"
 
+# To enable this library you MUST comment out lib block below and add --features library
 [features]
 library = ["dep:include_dir"]
 

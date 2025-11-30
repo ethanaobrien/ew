@@ -7,10 +7,10 @@ pub static INITIALIZER: extern "C" fn() = main;
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
     let data_path = get_bundle_path().into_os_string().into_string().unwrap();
-    android::set_datapath(data_path);
+    //set_datapath(data_path);
 
     std::thread::spawn(|| {
-        run_server(true).unwrap();
+        crate::run_server(true).unwrap();
     });
 }
 
