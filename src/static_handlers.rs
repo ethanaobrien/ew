@@ -4,6 +4,7 @@ use actix_web::{
     HttpRequest,
     http::header::ContentType
 };
+use std::fs;
 use crate::include_file;
 
 #[get("/index.css")]
@@ -24,7 +25,17 @@ async fn maintenance(_req: HttpRequest) -> HttpResponse {
         .insert_header(ContentType(mime::APPLICATION_JSON))
         .body(r#"{"opened_at":"2024-02-05 02:00:00","closed_at":"2024-02-05 04:00:00","message":":(","server":1,"gamelib":0}"#)
 }
+
 fn handle_assets(req: HttpRequest) -> HttpResponse {
+    let file_path = format!("assets{}", req.path());
+    let exists = fs::exists(&file_path);
+
+    if exists.unwrap_or(false) {
+        let resp = fs::read(&file_path).unwrap();
+        return HttpResponse::Ok()
+            .body(resp)
+    }
+
     HttpResponse::SeeOther()
         .insert_header(("location", format!("https://sif2.sif.moe{}", req.path())))
         .body("")
