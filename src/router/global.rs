@@ -9,40 +9,54 @@ use uuid::Uuid;
 
 use crate::encryption;
 use crate::router::{userdata, gree, items};
+use crate::runtime::get_easter_mode;
 
-pub const ASSET_VERSION:          &str = "5260ff15dff8ba0c00ad91400f515f55";
-pub const ASSET_HASH_ANDROID:     &str = "d210b28037885f3ef56b8f8aa45ac95b";
-pub const ASSET_HASH_IOS:         &str = "dd7175e4bcdab476f38c33c7f34b5e4d";
+pub const ASSET_VERSION_GL:        &str = "5260ff15dff8ba0c00ad91400f515f55";
+pub const ASSET_HASH_ANDROID_GL:   &str = "d210b28037885f3ef56b8f8aa45ac95b";
+pub const ASSET_HASH_IOS_GL:       &str = "dd7175e4bcdab476f38c33c7f34b5e4d";
 
-pub const ASSET_VERSION_JP:       &str = "4c921d2443335e574a82e04ec9ea243c";
-pub const ASSET_HASH_ANDROID_JP:  &str = "67f8f261c16b3cca63e520a25aad6c1c";
-pub const ASSET_HASH_IOS_JP:      &str = "b8975be8300013a168d061d3fdcd4a16";
+pub const ASSET_VERSION_JP:        &str = "4c921d2443335e574a82e04ec9ea243c";
+pub const ASSET_HASH_ANDROID_JP:   &str = "67f8f261c16b3cca63e520a25aad6c1c";
+pub const ASSET_HASH_IOS_JP:       &str = "b8975be8300013a168d061d3fdcd4a16";
+
+pub const ASSET_HASH_ANDROID_EASTER_GL:     &str = "da7ae831381c3f29337caa9891db7e6a";
+pub const ASSET_HASH_ANDROID_EASTER_JP:     &str = "eac0cad61c82bf2e31fc596555747d11";
 
 pub fn get_asset_hash(asset_version: String, android: bool) -> String {
     let args = crate::get_args();
-    if asset_version == ASSET_VERSION_JP {
-        if android {
+    if android {
+        if asset_version == ASSET_VERSION_JP {
             if args.jp_android_asset_hash != String::new() {
-                args.jp_android_asset_hash
+                &args.jp_android_asset_hash
+            } else if get_easter_mode() {
+                ASSET_HASH_ANDROID_EASTER_JP
             } else {
-                ASSET_HASH_ANDROID_JP.to_string()
+                ASSET_HASH_ANDROID_JP
             }
-        } else if args.jp_ios_asset_hash != String::new() {
-            args.jp_ios_asset_hash
         } else {
-            ASSET_HASH_IOS_JP.to_string()
+            if args.en_android_asset_hash != String::new() {
+                &args.en_android_asset_hash
+            } else if get_easter_mode() {
+                ASSET_HASH_ANDROID_EASTER_GL
+            } else {
+                ASSET_HASH_ANDROID_GL
+            }
         }
-    } else if android {
-        if args.en_android_asset_hash != String::new() {
-            args.en_android_asset_hash
-        } else {
-            ASSET_HASH_ANDROID.to_string()
-        }
-    } else if args.en_ios_asset_hash != String::new() {
-        args.en_ios_asset_hash
     } else {
-        ASSET_HASH_IOS.to_string()
-    }
+        if asset_version == ASSET_VERSION_JP {
+            if args.jp_ios_asset_hash != String::new() {
+                &args.jp_ios_asset_hash
+            } else {
+                ASSET_HASH_IOS_JP
+            }
+        } else {
+            if args.en_ios_asset_hash != String::new() {
+                &args.en_ios_asset_hash
+            } else {
+                ASSET_HASH_IOS_GL
+            }
+        }
+    }.to_string()
 }
 
 pub fn create_token() -> String {

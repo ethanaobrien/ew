@@ -5,7 +5,7 @@ use crate::encryption;
 use crate::router::{userdata, global};
 
 fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
-    if body["asset_version"] != global::ASSET_VERSION && body["asset_version"] != global::ASSET_VERSION_JP {
+    if body["asset_version"] != global::ASSET_VERSION_GL && body["asset_version"] != global::ASSET_VERSION_JP {
         println!("Warning! Asset version is not what was expected. (Did the app update?)");
     }
     

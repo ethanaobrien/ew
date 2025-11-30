@@ -39,7 +39,12 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
 
     let rv = HttpServer::new(|| App::new()
     .wrap_fn(|req, srv| {
-        println!("Request: {}", req.path());
+        println!("Request: {} {}", req.method(), req.path());
+
+        #[cfg(feature = "library")]
+        #[cfg(target_os = "android")]
+        log_to_logcat!("ew", "Request: {} {}", req.method(), req.path());
+
         srv.call(req)
     })
     .app_data(web::PayloadConfig::default().limit(1024 * 1024 * 25))

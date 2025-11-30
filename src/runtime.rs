@@ -5,6 +5,7 @@ use std::fs;
 lazy_static! {
     static ref RUNNING: RwLock<bool> = RwLock::new(false);
     static ref DATAPATH: RwLock<String> = RwLock::new(String::new());
+    static ref EASTER: RwLock<bool> = RwLock::new(false);
 }
 
 pub fn set_running(running: bool) {
@@ -30,4 +31,14 @@ pub fn get_data_path(file_name: &str) -> String {
 pub fn update_data_path(path: &str) {
     let mut w = DATAPATH.write().unwrap();
     *w = path.to_string();
+}
+
+// Only currently editable by the android so
+pub fn set_easter_mode(enabled: bool) {
+    let mut w = EASTER.write().unwrap();
+    *w = enabled;
+}
+
+pub fn get_easter_mode() -> bool {
+    *EASTER.read().unwrap()
 }

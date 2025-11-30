@@ -7,7 +7,7 @@ pub static INITIALIZER: extern "C" fn() = main;
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
     let data_path = get_bundle_path().into_os_string().into_string().unwrap();
-    crate::runtime::update_data_path(data_path);
+    crate::runtime::update_data_path(&data_path);
 
     std::thread::spawn(|| {
         crate::run_server(true).unwrap();

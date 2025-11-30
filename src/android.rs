@@ -33,10 +33,10 @@ extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_startServer<'l
     data_path: JString<'local>,
     easter: jboolean
 ) -> jstring {
-    //crate::runtime::set_easter_mode(easter != 0);
+    crate::runtime::set_easter_mode(easter != 0);
 
     let data_path: String = env.get_string(&data_path).unwrap().into();
-    crate::runtime::update_data_path(data_path);
+    crate::runtime::update_data_path(&data_path);
 
     let output = env.new_string(String::from("Azunyannnn~")).unwrap();
     thread::spawn(|| {
@@ -56,5 +56,5 @@ extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_stopServer<'lo
 
 #[unsafe(no_mangle)]
 extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_setEasterMode<'local>(_env: JNIEnv<'local>, _class: JClass<'local>, easter: jboolean) {
-    //crate::runtime::set_easter_mode(easter != 0);
+    crate::runtime::set_easter_mode(easter != 0);
 }
