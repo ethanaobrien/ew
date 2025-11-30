@@ -9,3 +9,4 @@ config.json
 docker/data/
 .idea/
 ndk/
+.DS_Store
