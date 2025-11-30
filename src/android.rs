@@ -36,7 +36,7 @@ extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_startServer<'l
     //crate::runtime::set_easter_mode(easter != 0);
 
     let data_path: String = env.get_string(&data_path).unwrap().into();
-    //crate::runtime::set_datapath(data_path);
+    crate::runtime::update_data_path(data_path);
 
     let output = env.new_string(String::from("Azunyannnn~")).unwrap();
     thread::spawn(|| {

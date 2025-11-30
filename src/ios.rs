@@ -7,7 +7,7 @@ pub static INITIALIZER: extern "C" fn() = main;
 #[unsafe(no_mangle)]
 pub extern "C" fn main() {
     let data_path = get_bundle_path().into_os_string().into_string().unwrap();
-    //set_datapath(data_path);
+    crate::runtime::update_data_path(data_path);
 
     std::thread::spawn(|| {
         crate::run_server(true).unwrap();
@@ -18,7 +18,7 @@ pub extern "C" fn main() {
 use objc2_foundation::{NSFileManager, NSSearchPathDirectory, NSSearchPathDomainMask};
 
 #[cfg(target_os = "ios")]
-fn get_bundle_path() -> std::path::PathBuf {
+pub fn get_bundle_path() -> std::path::PathBuf {
     unsafe {
         let manager = NSFileManager::defaultManager();
         let application_support = manager.URLsForDirectory_inDomains(NSSearchPathDirectory::ApplicationSupportDirectory, NSSearchPathDomainMask::UserDomainMask);

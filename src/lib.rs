@@ -3,7 +3,7 @@ mod options;
 mod router;
 mod encryption;
 mod sql;
-mod runtime;
+pub mod runtime;
 #[macro_use]
 mod macros;
 
@@ -22,9 +22,9 @@ use actix_web::{
     web,
     dev::Service
 };
-use std::fs;
 use std::time::Duration;
-use options::get_args;
+pub use options::get_args;
+use runtime::get_data_path;
 
 #[actix_web::main]
 pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
@@ -77,14 +77,4 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
 pub async fn stop_server() {
     runtime::set_running(false);
     println!("Stopping");
-}
-
-pub fn get_data_path(file_name: &str) -> String {
-    let args = get_args();
-    let mut path = args.path;
-    while path.ends_with('/') {
-        path.pop();
-    }
-    fs::create_dir_all(&path).unwrap();
-    format!("{}/{}", path, file_name)
 }

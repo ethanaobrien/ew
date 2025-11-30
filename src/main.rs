@@ -1,6 +1,7 @@
 
 #[cfg(not(feature = "library"))]
 fn main() -> std::io::Result<()> {
+    ew::runtime::update_data_path(&ew::get_args().path);
     ew::run_server(false)
 }
 
