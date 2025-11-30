@@ -7,6 +7,14 @@ mod runtime;
 #[macro_use]
 mod macros;
 
+#[cfg(feature = "library")]
+#[cfg(target_os = "android")]
+mod android;
+
+#[cfg(feature = "library")]
+#[cfg(target_os = "ios")]
+mod ios;
+
 use actix_web::{
     rt,
     App,
@@ -66,7 +74,7 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
 }
 
 #[actix_web::main]
-async fn stop_server() {
+pub async fn stop_server() {
     runtime::set_running(false);
     println!("Stopping");
 }
