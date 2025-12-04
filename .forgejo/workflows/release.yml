@@ -2,7 +2,8 @@ name: Build release binaries
 
 on:
   push:
-    tags: 'v*'
+    branches: '**'
+    tags: '*'
 
 jobs:
   build:
@@ -20,9 +21,15 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Install android NDK
+        id: setup-ndk
+        uses: https://github.com/nttld/setup-ndk@v1
+        with:
+          ndk-version: r29
+
       - name: Create out directory
         run: |
-          mkdir out          
+          mkdir out
 
       - name: Build webui
         run: |
@@ -30,21 +37,75 @@ jobs:
           npm install
           npm run build
 
-      - name: Build x86_64-unknown-linux-gnu
+      - name: Install cargo ndk
+        shell: bash
         run: |
           . "$HOME/.cargo/env"
-          cargo build --target x86_64-unknown-linux-gnu --release || echo "Failed to build"
-          mv target/x86_64-unknown-linux-gnu/release/ew out/ew-x86_64-unknown-linux-gnu    
+          cargo install cargo-ndk
+          rustup target add aarch64-linux-android
 
-      - name: Build x86_64-pc-windows-gnu
+      - name: Write cargo linker config
+        shell: bash
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          mkdir -p .cargo
+          echo "[target.aarch64-linux-android]" > .cargo/config.toml
+          echo "linker = \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android21-clang\"" >> .cargo/config.toml
+          echo "ar = \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar\"" >> .cargo/config.toml
+          echo "" >> .cargo/config.toml
+          echo "[target.aarch64-unknown-linux-gnu]" >> .cargo/config.toml
+          echo "linker = \"aarch64-linux-gnu-gcc\"" >> .cargo/config.toml
+          echo "ar = \"aarch64-linux-gnu-ar\"" >> .cargo/config.toml
+          echo "" >> .cargo/config.toml
+          echo "[target.x86_64-linux-android]" >> .cargo/config.toml
+          echo "linker = \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android21-clang\"" >> .cargo/config.toml
+          echo "ar = \"$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar\"" >> .cargo/config.toml
+
+      - name: Build Stuff
+        shell: bash
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           . "$HOME/.cargo/env"
-          sudo apt update && sudo apt install gcc-mingw-w64 -y
-          rustup target add x86_64-pc-windows-gnu
-          cargo build --target x86_64-pc-windows-gnu --release || echo "Failed to build"
-          mv target/x86_64-pc-windows-gnu/release/ew.exe out/ew-x86_64-pc-windows-gnu.exe          
+          export PATH=$PATH:$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/
+          sudo apt update && sudo apt install gcc-mingw-w64 gcc-aarch64-linux-gnu -y
+          
+          arr=("aarch64-linux-android" "aarch64-unknown-linux-gnu" "x86_64-linux-android" "x86_64-pc-windows-gnu" "x86_64-unknown-linux-gnu")
+          for target in "${arr[@]}"; do
+            rustup target add $target
+            cargo build --target $target --release || echo "Failed to build"
+            if [[ "$target" == *"windows"* ]]; then
+              mv target/$target/release/ew.exe out/ew-$target.exe
+            else
+              mv target/$target/release/ew out/ew-$target
+            fi
+            done
+
+      - name: Patch for library build
+        run: |
+          sed -i 's|#\[lib\]|\[lib\]|g' Cargo.toml
+          sed -i 's|#crate-type|crate-type|g' Cargo.toml
+          sed -i 's|#required-features|required-features|g' Cargo.toml
+
+      - name: Build jnilibs
+        shell: bash
+        env:
+          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          . "$HOME/.cargo/env"
+          cargo ndk -t arm64-v8a build --release --features library
+          mv target/aarch64-linux-android/release/libew.so out/libew-aarch64-linux-android.so
+
+      - name: Upload artifacts
+        if: startsWith(github.ref, 'refs/heads/')
+        uses: actions/upload-artifact@v3
+        with:
+          name: output
+          path: ./out/
 
       - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: actions/forgejo-release@v2
         with:
           direction: upload
