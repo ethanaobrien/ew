@@ -440,7 +440,7 @@ pub fn initialize(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     for (i, data) in cardstoreward.members().enumerate() {
         items::give_character(data.as_i64().unwrap(), &mut user, &mut missions, &mut array![], &mut array![]);
-        if i < 10 {
+        if i < 9 {
             user["deck_list"][0]["main_card_ids"][i] = data.clone();
         }
     }
