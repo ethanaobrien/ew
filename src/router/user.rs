@@ -217,7 +217,7 @@ pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
     let user = userdata::get_acc(&key);
     let code = uid_to_code(user["user"]["id"].to_string());
     
-    userdata::save_acc_transfer(&code, &body["pass"].to_string());
+    userdata::user::migration::save_acc_transfer(&code, &body["pass"].to_string());
     
     Some(array![])
 }
@@ -227,7 +227,7 @@ pub fn verify_migration_code(_req: HttpRequest, body: String) -> Option<JsonValu
     
     let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
     
-    let user = userdata::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
+    let user = userdata::user::migration::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || uid == 0 {
         return None;
@@ -247,7 +247,7 @@ pub fn request_migration_code(_req: HttpRequest, body: String) -> Option<JsonVal
     
     let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
     
-    let user = userdata::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
+    let user = userdata::user::migration::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || uid == 0 {
         return None;

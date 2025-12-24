@@ -233,7 +233,7 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
     
     let uid = code_to_uid(body["migration_code"].to_string()).parse::<i64>().unwrap_or(0);
     
-    let user = userdata::get_acc_transfer(uid, &body["migration_code"].to_string(), &password);
+    let user = userdata::user::migration::get_acc_transfer(uid, &body["migration_code"].to_string(), &password);
     
     let resp = if !user["success"].as_bool().unwrap() || uid == 0 {
         object!{
@@ -339,7 +339,7 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
     let code = uid_to_code(user["user"]["id"].to_string());
     let pass = decrypt_transfer_password(&body["migration_password"].to_string());
     
-    userdata::save_acc_transfer(&code, &pass);
+    userdata::user::migration::save_acc_transfer(&code, &pass);
     
     let resp = object!{
         result: "OK"

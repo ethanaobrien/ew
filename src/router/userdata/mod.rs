@@ -1,9 +1,9 @@
+pub mod user;
+
 use rusqlite::params;
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
 use rand::Rng;
-use sha2::{Digest, Sha256};
-use base64::{Engine as _, engine::general_purpose};
 
 use crate::router::global;
 use crate::router::items;
@@ -15,6 +15,10 @@ lazy_static! {
     static ref NEW_USER: JsonValue = {
         json::parse(&include_file!("src/router/userdata/new_user.json")).unwrap()
     };
+}
+
+fn get_userdata_database() -> &'static SQLite {
+    &DATABASE
 }
 
 fn setup_tables(conn: &rusqlite::Connection) {
@@ -301,67 +305,6 @@ pub fn save_acc_sif(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "sifcards", data);
 }
 
-fn generate_salt() -> Vec<u8> {
-    let mut rng = rand::rng();
-    let mut bytes = vec![0u8; 16];
-    rng.fill(&mut bytes[..]);
-    bytes
-}
-
-fn hash_password(password: &str) -> String {
-    let salt = &generate_salt();
-    let mut hasher = Sha256::new();
-    hasher.update(password.as_bytes());
-    hasher.update(salt);
-    let hashed_password = hasher.finalize();
-
-    let salt_hash = [&salt[..], &hashed_password[..]].concat();
-    general_purpose::STANDARD.encode(salt_hash)
-}
-
-fn verify_password(password: &str, salted_hash: &str) -> bool {
-    if password.is_empty() || salted_hash.is_empty() {
-        return false;
-    }
-    let bytes = general_purpose::STANDARD.decode(salted_hash);
-    if bytes.is_err() {
-        return password == salted_hash;
-    }
-    let bytes = bytes.unwrap();
-    if bytes.len() < 17 {
-        return password == salted_hash;
-    }
-    let (salt, hashed_password) = bytes.split_at(16);
-    let hashed_password = &hashed_password[0..32];
-
-    let mut hasher = Sha256::new();
-    hasher.update(password.as_bytes());
-    hasher.update(salt);
-    let input_hash = hasher.finalize();
-
-    input_hash.as_slice() == hashed_password
-}
-
-pub fn get_acc_transfer(uid: i64, token: &str, password: &str) -> JsonValue {
-    let data = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token));
-    if data.is_err() {
-        return object!{success: false};
-    }
-    if verify_password(password, &data.unwrap()) {
-        let login_token = get_login_token(uid);
-        if login_token == String::new() {
-            return object!{success: false};
-        }
-        return object!{success: true, login_token: login_token};
-    }
-    object!{success: false}
-}
-
-pub fn save_acc_transfer(token: &str, password: &str) {
-    DATABASE.lock_and_exec("DELETE FROM migration WHERE token=?1", params!(token));
-    DATABASE.lock_and_exec("INSERT INTO migration (token, password) VALUES (?1, ?2)", params!(token, hash_password(password)));
-}
-
 pub fn get_name_and_rank(uid: i64) -> JsonValue {
     let login_token = get_login_token(uid);
     if login_token == String::new() {
@@ -480,7 +423,7 @@ fn create_webui_token() -> String {
 
 pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
     let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or_default();
-    if !verify_password(password, &pass) {
+    if !user::migration::verify_password(password, &pass) {
         if acc_exists(uid) && pass.is_empty() {
             return Err(String::from("Migration token not set. Set token in game settings."));
         }
@@ -507,7 +450,7 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
     DATABASE.lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, token));
     let mig = crate::router::user::uid_to_code(uid.to_string());
     
-    save_acc_transfer(&mig, &user["password"].to_string());
+    user::migration::save_acc_transfer(&mig, &user["password"].to_string());
     
     Ok(object!{
         uid: uid,
