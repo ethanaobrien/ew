@@ -27,20 +27,21 @@ cbc = { version = "0.1.2", features = ["alloc"] }
 aes = "0.8.4"
 pem = "3.0.6"
 ureq = "3.1.4"
+include_dir = {version = "0.7.4", optional = true }
 
 [target.aarch64-linux-android.dependencies]
-jni = { version = "0.21.1", features = ["invocation", "default"] }
+jni = { version = "0.21.1", features = ["invocation", "default"], optional = true }
 
 [target.aarch64-apple-ios.dependencies]
-objc2 = "0.6.3"
-objc2-foundation = { version = "0.3.2", features = ["NSFileManager"] }
+objc2 = { version = "0.6.3", optional = true }
+objc2-foundation = { version = "0.3.2", features = ["NSFileManager"], optional = true }
 
 [build-dependencies]
 cc = "1.0"
 
 # To enable this library you MUST comment out lib block below and add --features library
 [features]
-library = []
+library = ["jni", "objc2", "objc2-foundation", "include_dir"]
 
 #[lib]
 #crate-type = ["cdylib"]
