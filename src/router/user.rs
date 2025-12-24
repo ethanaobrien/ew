@@ -169,41 +169,10 @@ pub fn announcement(req: HttpRequest) -> Option<JsonValue> {
     })
 }
 
-pub fn uid_to_code(uid: String) -> String {
-    //just replace uid with numbers because im too lazy to have a real database and this is close enough anyways
-    uid
-        .replace('1', "A")
-        .replace('2', "G")
-        .replace('3', "W")
-        .replace('4', "Q")
-        .replace('5', "Y")
-        .replace('6', "6")
-        .replace('7', "I")
-        .replace('8', "P")
-        .replace('9', "U")
-        .replace('0', "M")
-        + "7"
-}
-pub fn code_to_uid(code: String) -> String {
-    //just replace uid with numbers because im too lazy to have a real database and this is close enough anyways
-    code
-        .replace('7', "")
-        .replace('A', "1")
-        .replace('G', "2")
-        .replace('W', "3")
-        .replace('Q', "4")
-        .replace('Y', "5")
-        .replace('6', "6")
-        .replace('I', "7")
-        .replace('P', "8")
-        .replace('U', "9")
-        .replace('M', "0")
-}
-
 pub fn get_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
-    let code = uid_to_code(body["user_id"].to_string());
+    let code = userdata::user::migration::get_acc_token(body["user_id"].as_i64()?);
     
     Some(object!{
         "migrationCode": code
@@ -215,9 +184,8 @@ pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::get_acc(&key);
-    let code = uid_to_code(user["user"]["id"].to_string());
     
-    userdata::user::migration::save_acc_transfer(&code, &body["pass"].to_string());
+    userdata::user::migration::save_acc_transfer(user["user"]["id"].as_i64().unwrap(), &body["pass"].to_string());
     
     Some(array![])
 }
@@ -225,18 +193,16 @@ pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
 pub fn verify_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
-    let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
+    let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
-    let user = userdata::user::migration::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
-    
-    if !user["success"].as_bool().unwrap() || uid == 0 {
+    if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
         return None;
     }
     
     let data_user = userdata::get_acc(&user["login_token"].to_string());
     
     Some(object!{
-        "user_id": uid,
+        "user_id": user["user_id"].clone(),
         "uuid": user["login_token"].to_string(),
         "charge": data_user["gem"]["charge"].clone(),
         "free": data_user["gem"]["free"].clone()
@@ -245,11 +211,9 @@ pub fn verify_migration_code(_req: HttpRequest, body: String) -> Option<JsonValu
 pub fn request_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
-    let uid = code_to_uid(body["migrationCode"].to_string()).parse::<i64>().unwrap_or(0);
+    let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
-    let user = userdata::user::migration::get_acc_transfer(uid, &body["migrationCode"].to_string(), &body["pass"].to_string());
-    
-    if !user["success"].as_bool().unwrap() || uid == 0 {
+    if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
         return None;
     }
     

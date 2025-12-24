@@ -33,6 +33,13 @@ impl SQLite {
             }
         })
     }
+    pub fn lock_and_select_type<T: rusqlite::types::FromSql>(&self, command: &str, args: &[&dyn ToSql]) -> Result<T, rusqlite::Error> {
+        let conn = Connection::open(&self.path).unwrap();
+        let mut stmt = conn.prepare(command)?;
+        stmt.query_row(args, |row| {
+            row.get(0)
+        })
+    }
     pub fn lock_and_select_all(&self, command: &str, args: &[&dyn ToSql]) -> Result<JsonValue, rusqlite::Error> {
         let conn = Connection::open(&self.path).unwrap();
         let mut stmt = conn.prepare(command)?;

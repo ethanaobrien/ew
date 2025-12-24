@@ -22,14 +22,11 @@ fn get_userdata_database() -> &'static SQLite {
 }
 
 fn setup_tables(conn: &rusqlite::Connection) {
+    user::migration::setup_sql(conn).unwrap();
     conn.execute_batch("
 CREATE TABLE IF NOT EXISTS tokens (
     user_id           BIGINT NOT NULL PRIMARY KEY,
     token             TEXT NOT NULL
-);
-CREATE TABLE IF NOT EXISTS migration (
-    token             TEXT NOT NULL PRIMARY KEY,
-    password          TEXT NOT NULL
 );
 CREATE TABLE IF NOT EXISTS userdata (
     user_id                  BIGINT NOT NULL PRIMARY KEY,
@@ -422,7 +419,7 @@ fn create_webui_token() -> String {
 }
 
 pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
-    let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(uid.to_string()))).unwrap_or_default();
+    let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE user_id=?1", params!(uid)).unwrap_or_default();
     if !user::migration::verify_password(password, &pass) {
         if acc_exists(uid) && pass.is_empty() {
             return Err(String::from("Migration token not set. Set token in game settings."));
@@ -448,13 +445,12 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
     let token = global::create_token();
     
     DATABASE.lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, token));
-    let mig = crate::router::user::uid_to_code(uid.to_string());
     
-    user::migration::save_acc_transfer(&mig, &user["password"].to_string());
+    let token = user::migration::save_acc_transfer(uid, &user["password"].to_string());
     
     Ok(object!{
         uid: uid,
-        migration_token: mig
+        migration_token: token
     })
 }
 
@@ -583,7 +579,7 @@ pub fn purge_accounts() -> usize {
         DATABASE.lock_and_exec("DELETE FROM server_data WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM tokens WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM migration WHERE token=?1", params!(crate::router::user::uid_to_code(user_id.to_string())));
+        DATABASE.lock_and_exec("DELETE FROM migration WHERE user_id=?1", params!(user_id));
     }
     DATABASE.lock_and_exec("VACUUM", params!());
     crate::router::gree::vacuum_database();

@@ -15,7 +15,6 @@ use rsa::pkcs8::DecodePublicKey;
 use crate::router::global;
 use crate::router::userdata;
 use crate::encryption;
-use crate::router::user::{code_to_uid, uid_to_code};
 use crate::sql::SQLite;
 
 lazy_static! {
@@ -231,11 +230,9 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
     let body = json::parse(&body).unwrap();
     let password = decrypt_transfer_password(&body["migration_password"].to_string());
     
-    let uid = code_to_uid(body["migration_code"].to_string()).parse::<i64>().unwrap_or(0);
+    let user = userdata::user::migration::get_acc_transfer(&body["migration_code"].to_string(), &password);
     
-    let user = userdata::user::migration::get_acc_transfer(uid, &body["migration_code"].to_string(), &password);
-    
-    let resp = if !user["success"].as_bool().unwrap() || uid == 0 {
+    let resp = if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
         object!{
             result: "ERR",
             messsage: "User Not Found"
@@ -245,7 +242,7 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
         object!{
             result: "OK",
             src_uuid: user["login_token"].clone(),
-            src_x_uid: uid.to_string(),
+            src_x_uid: user["user_id"].to_string(),
             migration_token: user["login_token"].clone(),
             balance_charge_gem: data_user["gem"]["charge"].to_string(),
             balance_free_gem: data_user["gem"]["free"].to_string(),
@@ -311,12 +308,12 @@ pub fn migration_code(req: HttpRequest) -> HttpResponse {
             uid = uid_str.to_string();
         }
     }
-    
+
     let user = userdata::get_acc(&uid);
-    
+
     let resp = object!{
         result: "OK",
-        migration_code: uid_to_code(user["user"]["id"].to_string())
+        migration_code: userdata::user::migration::get_acc_token(user["user"]["id"].as_i64().unwrap())
     };
     
     send(req, resp)
@@ -334,12 +331,12 @@ pub fn migration_password_register(req: HttpRequest, body: String) -> HttpRespon
             uid = uid_str.to_string();
         }
     }
-    
+
     let user = userdata::get_acc(&uid);
-    let code = uid_to_code(user["user"]["id"].to_string());
+
     let pass = decrypt_transfer_password(&body["migration_password"].to_string());
     
-    userdata::user::migration::save_acc_transfer(&code, &pass);
+    userdata::user::migration::save_acc_transfer(user["user"]["id"].as_i64().unwrap(), &pass);
     
     let resp = object!{
         result: "OK"
