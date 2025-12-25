@@ -182,6 +182,10 @@ fn check_for_stale_data(server_data: &mut JsonValue, live_id: i64) {
         if live["expire_date_time"].as_u64().unwrap() < curr_time || live["master_live_id"] == live_id {
             expired.push(i).unwrap();
         }
+        if live["expire_date_time"].as_u64().unwrap() < curr_time {
+            // User closed game after losing. Count this as a fail.
+            live_completed(live["master_live_id"].as_i64().unwrap(), live["level"].as_i32().unwrap(), true, 0, 0);
+        }
     }
     for i in expired.members() {
         server_data["last_live_started"].array_remove(i.as_usize().unwrap());
@@ -225,8 +229,8 @@ fn start_live(login_token: &str, body: &JsonValue) {
     }
     check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
     let mut to_save = body.clone();
-    // The user has 24 hours to complete a live
-    to_save["expire_date_time"] = (global::timestamp() + (24 * 60 * 60)).into();
+    // The user has 1 hour to complete a live
+    to_save["expire_date_time"] = (global::timestamp() + (1 * 60 * 60)).into();
     server_data["last_live_started"].push(to_save).unwrap();
 
     userdata::save_server_data(login_token, server_data);

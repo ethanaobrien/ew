@@ -274,6 +274,14 @@ lazy_static! {
         }
         info
     };
+    pub static ref MUSIC: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(&include_file!("src/router/databases/json/music.json")).unwrap();
+        for data in items.members() {
+            info[data["id"].to_string()] = data.clone();
+        }
+        info
+    };
     pub static ref RANKS: JsonValue = {
         json::parse(&include_file!("src/router/databases/json/user_rank.json")).unwrap()
     };
