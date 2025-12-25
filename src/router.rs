@@ -170,7 +170,7 @@ async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
 pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
     let args = crate::get_args();
     let headers = req.headers();
-    if args.hidden && req.path().starts_with("/api/webui/") {
+    if args.hidden && (req.path().starts_with("/api/webui/") || req.path().starts_with("/live_clear_rate.html")) {
         return not_found(headers);
     }
     if headers.get("aoharu-asset-version").is_none() && req.path().starts_with("/api") && !req.path().starts_with("/api/webui") {
@@ -212,6 +212,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/v1.0/payment/balance" => gree::balance(req),
             "/web/announcement" => web::announcement(req),
             "/api/webui/userInfo" => webui::user(req),
+            "/live_clear_rate.html" => clear_rate::clearrate_html(req).await,
             "/webui/logout" => webui::logout(req),
             "/api/webui/export" => webui::export(req),
             "/api/webui/serverInfo" => webui::server_info(req),

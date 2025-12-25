@@ -277,9 +277,35 @@ lazy_static! {
     pub static ref MUSIC: JsonValue = {
         let mut info = object!{};
         let items = json::parse(&include_file!("src/router/databases/json/music.json")).unwrap();
-        for data in items.members() {
-            info[data["id"].to_string()] = data.clone();
-        }
+        for live in LIVE_LIST.entries() {
+            info[live.1["id"].to_string()] = loop {
+                let mut val = object!{};
+                for data in items.members() {
+                    if live.1["masterMusicId"] == data["id"] {
+                        val = data.clone();
+                        break;
+                    }
+                }
+                break val;
+            };
+        };
+        info
+    };
+    pub static ref MUSIC_EN: JsonValue = {
+        let mut info = object!{};
+        let items = json::parse(&include_file!("src/router/databases/json/global/music.json")).unwrap();
+        for live in LIVE_LIST.entries() {
+            info[live.1["id"].to_string()] = loop {
+                let mut val = object!{};
+                for data in items.members() {
+                    if live.1["masterMusicId"] == data["id"] {
+                        val = data.clone();
+                        break;
+                    }
+                }
+                break val;
+            };
+        };
         info
     };
     pub static ref RANKS: JsonValue = {

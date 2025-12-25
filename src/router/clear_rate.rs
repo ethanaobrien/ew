@@ -1,5 +1,5 @@
 use json::{object, array, JsonValue};
-use actix_web::{HttpRequest};
+use actix_web::{HttpRequest, HttpResponse, http::header::ContentType};
 use rusqlite::params;
 use std::sync::Mutex;
 use lazy_static::lazy_static;
@@ -7,6 +7,7 @@ use lazy_static::lazy_static;
 use crate::encryption;
 use crate::sql::SQLite;
 use crate::router::{global, databases};
+use crate::include_file;
 
 trait SqlClearRate {
     fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error>;
@@ -34,6 +35,7 @@ impl SqlClearRate for SQLite {
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("live_statistics.db", setup_tables);
     static ref CACHED_DATA: Mutex<Option<JsonValue>> = Mutex::new(None);
+    static ref CACHED_HTML_DATA: Mutex<Option<JsonValue>> = Mutex::new(None);
 }
 
 pub struct Live {
@@ -150,6 +152,18 @@ pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
     };
 }
 
+fn get_song_title(live_id: i32, english: bool) -> String {
+    let details = if english {
+        databases::MUSIC_EN[live_id.to_string()].clone()
+    } else {
+        databases::MUSIC[live_id.to_string()].clone()
+    };
+    if !details.is_null() {
+        return details["name"].to_string();
+    }
+    String::from("Unknown Song")
+}
+
 fn get_pass_percent(failed: i64, pass: i64) -> String {
     let total = (failed + pass) as f64;
     if failed + pass == 0 {
@@ -235,4 +249,102 @@ pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
     Some(object!{
         "ranking_list": rank
     })
+}
+
+fn get_html() -> JsonValue {
+    let lives = DATABASE.lock_and_select_all("SELECT live_id FROM lives", params!()).unwrap();
+
+    let mut table = String::new();
+
+    for id in lives.members() {
+        let live_id = id.as_i64().unwrap();
+
+        let info = match DATABASE.get_live_data(live_id) {
+            Ok(i) => i,
+            Err(_) => continue,
+        };
+
+        let calc_rate = |pass: i64, fail: i64| -> f64 {
+            let total = pass + fail;
+            if total == 0 { 0.0 } else { pass as f64 / total as f64 }
+        };
+
+        let title_jp = get_song_title(info.live_id, false);
+        let title_en = get_song_title(info.live_id, true);
+
+        let normal_txt = get_pass_percent(info.normal_failed, info.normal_pass);
+        let hard_txt = get_pass_percent(info.hard_failed, info.hard_pass);
+        let expert_txt = get_pass_percent(info.expert_failed, info.expert_pass);
+        let master_txt = get_pass_percent(info.master_failed, info.master_pass);
+
+        let normal_plays = info.normal_pass + info.normal_failed;
+        let hard_plays = info.hard_pass + info.hard_failed;
+        let expert_plays = info.expert_pass + info.expert_failed;
+        let master_plays = info.master_pass + info.master_failed;
+
+        let normal_rate_sort = calc_rate(info.normal_pass, info.normal_failed);
+        let hard_rate_sort = calc_rate(info.hard_pass, info.hard_failed);
+        let expert_rate_sort = calc_rate(info.expert_pass, info.expert_failed);
+        let master_rate_sort = calc_rate(info.master_pass, info.master_failed);
+
+        table.push_str(&format!(
+            r#"<tr>
+                <td class="title-cell"
+                    data-val="{title_jp}"
+                    data-title-en="{title_en}"
+                    data-title-jp="{title_jp}">
+                    {title_jp}
+                </td>
+
+                <td data-plays="{normal_plays}" data-rate="{normal_rate_sort}">
+                    <span class="rate-text">{normal_txt}</span>
+                    <span class="meta-text">{normal_plays} plays</span>
+                </td>
+
+                <td data-plays="{hard_plays}" data-rate="{hard_rate_sort}">
+                    <span class="rate-text">{hard_txt}</span>
+                    <span class="meta-text">{hard_plays} plays</span>
+                </td>
+
+                <td data-plays="{expert_plays}" data-rate="{expert_rate_sort}">
+                    <span class="rate-text">{expert_txt}</span>
+                    <span class="meta-text">{expert_plays} plays</span>
+                </td>
+
+                <td data-plays="{master_plays}" data-rate="{master_rate_sort}">
+                    <span class="rate-text">{master_txt}</span>
+                    <span class="meta-text">{master_plays} plays</span>
+                </td>
+            </tr>"#
+        ));
+    }
+
+    let html = include_file!("src/router/clear_rate_template.html").replace("{{TABLEBODY}}", &table);
+    object!{
+        "cache": html,
+        "last_updated": global::timestamp()
+    }
+}
+
+async fn get_clearrate_html() -> String {
+    let cache = {
+        let mut result = crate::lock_onto_mutex!(CACHED_HTML_DATA);
+        if result.is_none() {
+            result.replace(get_html());
+        }
+        result.as_ref().unwrap().clone()
+    };
+    if cache["last_updated"].as_u64().unwrap() + (60 * 60) < global::timestamp() {
+        let mut result = crate::lock_onto_mutex!(CACHED_HTML_DATA);
+        result.replace(get_html());
+    }
+    cache["cache"].to_string()
+}
+
+pub async fn clearrate_html(_req: HttpRequest) -> HttpResponse {
+    let html = get_clearrate_html().await;
+
+    HttpResponse::Ok()
+        .content_type(ContentType::html())
+        .body(html)
 }

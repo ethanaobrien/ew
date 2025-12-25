@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Live Clear Rates</title>
+    <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --text-color: #333;
+            --table-bg: #ffffff;
+            --primary-color: #6c5ce7;
+            --primary-hover: #5649c0;
+            --header-text: #ffffff;
+            --border-color: #dddddd;
+            --row-even: #f8f9fa;
+            --row-hover: #eef2ff;
+            --meta-text: #666;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode {
+            --bg-color: #18181b;
+            --text-color: #e4e4e7;
+            --table-bg: #27272a;
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --header-text: #ffffff;
+            --border-color: #3f3f46;
+            --row-even: #2f2f35;
+            --row-hover: #353540;
+            --meta-text: #a1a1aa;
+            --shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            padding: 20px; 
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        h1 { text-align: center; margin-bottom: 20px; }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 2px solid var(--primary-color);
+            background: transparent;
+            color: var(--text-color);
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover, .btn.active {
+            background-color: var(--primary-color);
+            color: var(--header-text);
+        }
+
+        .table-container { 
+            overflow-x: auto; 
+            box-shadow: 0 0 20px var(--shadow); 
+            border-radius: 8px; 
+            background: var(--table-bg); 
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+
+        th, td { 
+            padding: 12px 15px; 
+            text-align: center; 
+            border-bottom: 1px solid var(--border-color); 
+        }
+
+        th { 
+            background-color: var(--primary-color); 
+            color: var(--header-text); 
+            cursor: pointer; 
+            user-select: none; 
+            position: sticky; 
+            top: 0;
+            white-space: nowrap;
+        }
+        th:hover { background-color: var(--primary-hover); }
+
+        tr:nth-of-type(even) { background-color: var(--row-even); }
+        tr:last-of-type { border-bottom: 2px solid var(--primary-color); }
+        tr:hover { background-color: var(--row-hover); transition: 0.2s; }
+
+        th::after { content: ' \2195'; opacity: 0.3; font-size: 0.8em; margin-left: 5px; }
+        th.asc::after { content: ' \2191'; opacity: 1; }
+        th.desc::after { content: ' \2193'; opacity: 1; }
+
+        .meta-text { font-size: 0.85em; color: var(--meta-text); display: block; margin-top: 4px; }
+        .rate-text { font-weight: bold; font-size: 1.1em; }
+        .title-cell { text-align: left; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <h1>Live Clear Rates</h1>
+
+    <div class="controls">
+        <button class="btn" id="btnLang" onclick="toggleLanguage()">Language: JP</button>
+
+        <button class="btn active" id="btnPlays" onclick="setSortMode('plays')">Sort by Plays</button>
+        <button class="btn" id="btnRate" onclick="setSortMode('rate')">Sort by Rate %</button>
+        <button class="btn" onclick="toggleTheme()">Dark Mode 🌓</button>
+    </div>
+
+    <div class="table-container">
+        <table id="rateTable">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Song Title</th>
+                    <th onclick="sortTable(1)">Normal</th>
+                    <th onclick="sortTable(2)">Hard</th>
+                    <th onclick="sortTable(3)">Expert</th>
+                    <th onclick="sortTable(4)">Master</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{TABLEBODY}}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let currentSortMode = 'plays'; 
+        let currentLang = localStorage.getItem('lang') || 'jp';
+
+        updateLanguageDisplay();
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'jp' ? 'en' : 'jp';
+            localStorage.setItem('lang', currentLang);
+            updateLanguageDisplay();
+        }
+
+        function updateLanguageDisplay() {
+            const btn = document.getElementById('btnLang');
+            btn.innerText = 'Language: ' + (currentLang === 'jp' ? 'JP' : 'EN');
+
+            const titleCells = document.querySelectorAll('.title-cell');
+            
+            titleCells.forEach(td => {
+                const newTitle = td.getAttribute(`data-title-${currentLang}`);
+                
+                if (newTitle) {
+                    td.innerText = newTitle;
+                    td.setAttribute('data-val', newTitle);
+                }
+            });
+        }
+
+        function setSortMode(mode) {
+            currentSortMode = mode;
+
+            document.getElementById('btnPlays').classList.toggle('active', mode === 'plays');
+            document.getElementById('btnRate').classList.toggle('active', mode === 'rate');
+        }
+
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("rateTable");
+            switching = true;
+            dir = "desc"; 
+
+            var headers = table.getElementsByTagName("TH");
+            for (var h of headers) { h.classList.remove("asc", "desc"); }
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+
+                    let attrName = (n === 0) ? 'data-val' : (currentSortMode === 'plays' ? 'data-plays' : 'data-rate');
+
+                    var xVal = x.getAttribute(attrName);
+                    var yVal = y.getAttribute(attrName);
+
+                    var xNum = parseFloat(xVal);
+                    var yNum = parseFloat(yVal);
+
+                    if (!isNaN(xNum) && !isNaN(yNum)) {
+                        if (dir == "asc") {
+                            if (xNum > yNum) { shouldSwitch = true; break; }
+                        } else if (dir == "desc") {
+                            if (xNum < yNum) { shouldSwitch = true; break; }
+                        }
+                    } else {
+                        // String sorting (for titles)
+                        if (dir == "asc") {
+                            if (xVal.toLowerCase() > yVal.toLowerCase()) { shouldSwitch = true; break; }
+                        } else if (dir == "desc") {
+                            if (xVal.toLowerCase() < yVal.toLowerCase()) { shouldSwitch = true; break; }
+                        }
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount ++; 
+                } else {
+                    if (switchcount == 0 && dir == "desc") {
+                        dir = "asc";
+                        switching = true;
+                    }
+                }
+            }
+            headers[n].classList.add(dir);
+        }
+    </script>
+</body>
+</html>
