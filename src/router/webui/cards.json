@@ -1,0 +1,4626 @@
+[
+  {
+    "id": 10010001,
+    "name": "Originator",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01001_0001_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010002,
+    "name": "Full Speed Ahead!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01001_0002_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010003,
+    "name": "Positive",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01001_0003_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010004,
+    "name": "Pep is Paramount",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01001_0004_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010005,
+    "name": "Prep for Practice!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01001_0005_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010006,
+    "name": "Let's Sing Together",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01001_0006_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010007,
+    "name": "Goodnight Smiles",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01001_0007_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010008,
+    "name": "Out and About Smiles",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01001_0008_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010009,
+    "name": "Prepare to Be Smashed",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01001_0009_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010010,
+    "name": "Ear-to-Ear Smiles!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01001_0010_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010011,
+    "name": "Hearts Aflame",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01001_0011_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010012,
+    "name": "I'll Eat You Up!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01001_0012_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010013,
+    "name": "Blossoms in Bloom",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01001_0013_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10010014,
+    "name": "Rice Fruit?!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01001_0014_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10020001,
+    "name": "Quarter",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01002_0001_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020002,
+    "name": "Clearheaded",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01002_0002_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020003,
+    "name": "Universally Popular",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01002_0003_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020004,
+    "name": "Exceptional Athlete",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01002_0004_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020005,
+    "name": "Sense of Duty",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01002_0005_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020006,
+    "name": "Student Council Prez",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01002_0006_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020007,
+    "name": "Before Falling Asleep",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01002_0007_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020008,
+    "name": "I'm Going Out!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01002_0008_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020009,
+    "name": "Let's Be Supportive!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01002_0009_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020010,
+    "name": "Harasho!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01002_0010_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020011,
+    "name": "Eli's Confessional",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01002_0011_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020012,
+    "name": "Sun Shower",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01002_0012_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020013,
+    "name": "Evening Student Council Room",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01002_0013_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020014,
+    "name": "Arisa's Prank?",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01002_0014_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10030001,
+    "name": "Soft and Gentle",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01003_0001_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030002,
+    "name": "Actually a Maid",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01003_0002_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030003,
+    "name": "Come Play with Kotori!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01003_0003_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030004,
+    "name": "I'm Ready to Roll!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01003_0004_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030005,
+    "name": "Here Goes!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01003_0005_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030006,
+    "name": "Heart Sign",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01003_0006_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030007,
+    "name": "Sleepy Time",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01003_0007_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030008,
+    "name": "Dressing Up to Go Out",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01003_0008_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030009,
+    "name": "Flying Down the Court",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01003_0009_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030010,
+    "name": "Goddess of Healing",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01003_0010_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030011,
+    "name": "Wonderful Treats",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01003_0011_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030012,
+    "name": "Feeling Like a Sheep",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01003_0012_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030013,
+    "name": "Welcome!",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01003_0013_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030014,
+    "name": "Don't Get It Wrong!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01003_0014_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10040001,
+    "name": "The Ideal Lady",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01004_0001_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040002,
+    "name": "Dancing Master",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01004_0002_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040003,
+    "name": "Dignified",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01004_0003_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040004,
+    "name": "Harsh Practice",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01004_0004_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040005,
+    "name": "Loosening Up",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01004_0005_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040006,
+    "name": "The Ideal Smile",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01004_0006_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040007,
+    "name": "Goodnight Greeting",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01004_0007_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040008,
+    "name": "Hiker's Express",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01004_0008_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040009,
+    "name": "Crisp in White",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01004_0009_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040010,
+    "name": "A Focused Mind",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01004_0010_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040011,
+    "name": "Love's Bind",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01004_0011_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040012,
+    "name": "Lucky White Rabbit",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01004_0012_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040013,
+    "name": "To Enlightenment",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01004_0013_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040014,
+    "name": "Unified Feelings",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01004_0014_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10050001,
+    "name": "Athletic",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01005_0001_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050002,
+    "name": "Always Be Cheerful",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01005_0002_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050003,
+    "name": "Joyful Jump!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01005_0003_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050004,
+    "name": "Good to Go",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01005_0004_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050005,
+    "name": "Rooftop Practice",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01005_0005_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050006,
+    "name": "Counting on Mew!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01005_0006_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050007,
+    "name": "Getting Ready to Rest",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01005_0007_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050008,
+    "name": "Let's Go Hiking!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01005_0008_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050009,
+    "name": "Competing in Speed",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01005_0009_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050010,
+    "name": "μ's Was Here",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01005_0010_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050011,
+    "name": "Check Out Rin!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01005_0011_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050012,
+    "name": "Fickle Kitten",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01005_0012_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050013,
+    "name": "Dazzling Rooftop",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01005_0013_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050014,
+    "name": "My 1st Homemade Chocolate",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01005_0014_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10060001,
+    "name": "Hospital Heiress",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01006_0001_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060002,
+    "name": "On a High Horse",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01006_0002_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060003,
+    "name": "Hold My Head up High",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01006_0003_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060004,
+    "name": "Practice Confidently",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01006_0004_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060005,
+    "name": "Start with Stretching",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01006_0005_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060006,
+    "name": "Strong Opinions",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01006_0006_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060007,
+    "name": "Plans for Tomorrow",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01006_0007_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060008,
+    "name": "Young Lady’s Jaunt",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01006_0008_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060009,
+    "name": "Land the Spiral",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01006_0009_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060010,
+    "name": "After-School Diva",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01006_0010_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060011,
+    "name": "Secret Exam Room",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01006_0011_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060012,
+    "name": "You're My Next Target",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01006_0012_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060013,
+    "name": "Smartphone Shyness",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01006_0013_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060014,
+    "name": "Fruit Tea",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01006_0014_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10070001,
+    "name": "Surprising Strategist",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01007_0001_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070002,
+    "name": "I'll Pull You In!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01007_0002_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070003,
+    "name": "Nonchalant",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01007_0003_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070004,
+    "name": "Blinding Light",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01007_0004_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070005,
+    "name": "Time to Practice!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01007_0005_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070006,
+    "name": "The Power of Fortune-Telling",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01007_0006_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070007,
+    "name": "See You Tomorrow",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01007_0007_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070008,
+    "name": "A Good Day to Go Out",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01007_0008_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070009,
+    "name": "I'm Gonna Attack!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01007_0009_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070010,
+    "name": "Spiritual Power",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01007_0010_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070011,
+    "name": "Cards of Destiny",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01007_0011_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070012,
+    "name": "Faking Sleep",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01007_0012_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070013,
+    "name": "Rain of Light",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01007_0013_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10070014,
+    "name": "Surprise Wish!",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01007_0014_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10080001,
+    "name": "White Rice Fanatic",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01008_0001_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080002,
+    "name": "Not So Confident...",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01008_0002_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080003,
+    "name": "Admiration of Idols",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01008_0003_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080004,
+    "name": "I'll Give It My All!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01008_0004_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080005,
+    "name": "I Want to Improve",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01008_0005_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080006,
+    "name": "Shy of Strangers",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01008_0006_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080007,
+    "name": "Lonely by Myself",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01008_0007_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080008,
+    "name": "Excited to Go Out!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01008_0008_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080009,
+    "name": "Whole Mikan Oranges",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01008_0009_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080010,
+    "name": "Freshly Cooked Rice!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01008_0010_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080011,
+    "name": "Your Order is Ready!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01008_0011_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080012,
+    "name": "Strange Sympathy",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01008_0012_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080013,
+    "name": "Feelings for µ's",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01008_0013_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080014,
+    "name": "Glittering Lips",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01008_0014_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10090001,
+    "name": "Idol Otaku",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01009_0001_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090002,
+    "name": "Working Hard 24/7",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01009_0002_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090003,
+    "name": "Cute Movement",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01009_0003_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090004,
+    "name": "Nico Will Do Her Best!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01009_0004_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090005,
+    "name": "No One Works Harder",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01009_0005_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090006,
+    "name": "Nico-Ni for All!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01009_0006_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090007,
+    "name": "Hold Me Tight",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "01009_0007_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090008,
+    "name": "The Wait's Over!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "01009_0008_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090009,
+    "name": "Training Both Mind & Body",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "01009_0009_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090010,
+    "name": "Nico-Nico-Ni!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01009_0010_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090011,
+    "name": "Let Me Teach You!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "01009_0011_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090012,
+    "name": "Nico's the Most Popular",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01009_0012_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090013,
+    "name": "A Welcome Lecture",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01009_0013_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10090014,
+    "name": "Watermelon Cake?",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01009_0014_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 20010001,
+    "name": "Beloved School Idols",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02001_0001_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010002,
+    "name": "Dreams Come True!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02001_0002_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010003,
+    "name": "Gotta Give It a Try",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02001_0003_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010004,
+    "name": "Sore Loser",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02001_0004_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010005,
+    "name": "Packing for a Trip",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02001_0005_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010006,
+    "name": "Sending Out My Feelings",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02001_0006_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010007,
+    "name": "Swimming Weather!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02001_0007_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010008,
+    "name": "Mikan Orange Power!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02001_0008_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010009,
+    "name": "Time to Brush!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02001_0009_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010010,
+    "name": "Koala Nap",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02001_0010_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010011,
+    "name": "Post-Practice Walk & Talk",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02001_0011_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010012,
+    "name": "Orange Mermaid",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02001_0012_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20020001,
+    "name": "Here to Aid Everyone",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02002_0001_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020002,
+    "name": "Transfer Student from the City",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02002_0002_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020003,
+    "name": "Let's Have Some Fun!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02002_0003_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020004,
+    "name": "Worked up a Sweat",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02002_0004_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020005,
+    "name": "Going All Over",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02002_0005_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020006,
+    "name": "Let's Have Tons of Fun",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02002_0006_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020007,
+    "name": "Uchiura's Appeal",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02002_0007_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020008,
+    "name": "Toward a New Me",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02002_0008_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020009,
+    "name": "Time for Your Shot",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02002_0009_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020010,
+    "name": "Performance Partner",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02002_0010_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020011,
+    "name": "Trio's Melody",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02002_0011_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020012,
+    "name": "Apple's Temptation",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02002_0012_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20030001,
+    "name": "Grownup Personality",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02003_0001_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030002,
+    "name": "Shopping Support",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02003_0002_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030003,
+    "name": "Wanna Go Out?",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02003_0003_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030004,
+    "name": "Tie Back Your Hair",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02003_0004_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030005,
+    "name": "Far, Far Away",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02003_0005_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030006,
+    "name": "All Systems Go",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02003_0006_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030007,
+    "name": "Surfing's My Forte",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02003_0007_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030008,
+    "name": "Costume Fitting",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02003_0008_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030009,
+    "name": "Try, Try Again!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02003_0009_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030010,
+    "name": "Entranced by Nature",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02003_0010_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030011,
+    "name": "Sea Breeze's Kiss",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02003_0011_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030012,
+    "name": "Ring Finger",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02003_0012_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20040001,
+    "name": "Famous Daughter",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02004_0001_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040002,
+    "name": "Perfectionist",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02004_0002_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040003,
+    "name": "Zero Defects Allowed",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02004_0003_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040004,
+    "name": "Aim for the Top",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02004_0004_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040005,
+    "name": "How Far Can We Go?",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02004_0005_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040006,
+    "name": "Meetup at the Sluice Gate",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02004_0006_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040007,
+    "name": "Lighting Up Uchiura",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02004_0007_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040008,
+    "name": "The Limit Is 2 cm!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02004_0008_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040009,
+    "name": "We Are Aqours!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02004_0009_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040010,
+    "name": "Twist of History",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02004_0010_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040011,
+    "name": "Sister's Routine",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02004_0011_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040012,
+    "name": "Beware of Wolf",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02004_0012_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20050001,
+    "name": "Aye Aye!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02005_0001_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050002,
+    "name": "Aspiring Captain",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02005_0002_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050003,
+    "name": "Chika's Mikan Oranges",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02005_0003_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050004,
+    "name": "Time to Set Sail",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02005_0004_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050005,
+    "name": "All Aboard!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02005_0005_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050006,
+    "name": "Excuse Me!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02005_0006_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050007,
+    "name": "Seaside Swimming Spot",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02005_0007_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050008,
+    "name": "Costume-Making",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02005_0008_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050009,
+    "name": "Come a Little Closer",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02005_0009_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050010,
+    "name": "The Culprit...Is You!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02005_0010_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050011,
+    "name": "Sparkling Water",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02005_0011_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050012,
+    "name": "Bridal Countdown",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02005_0012_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20060001,
+    "name": "Meeting Yohane!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02006_0001_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060002,
+    "name": "Fallen Angel Yohane",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02006_0002_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060003,
+    "name": "A Sinful Devil",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02006_0003_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060004,
+    "name": "Fall from Grace",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02006_0004_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060005,
+    "name": "This Is Temporary!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02006_0005_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060006,
+    "name": "Descend with Me",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02006_0006_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060007,
+    "name": "Seaside Fallen Angel",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02006_0007_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060008,
+    "name": "Sinfully Dark Dress",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02006_0008_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060009,
+    "name": "Ultimate Fallen Angel Cheer",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02006_0009_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060010,
+    "name": "Black Magic Woman",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02006_0010_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060011,
+    "name": "Fallen Angel R-P-S",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02006_0011_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060012,
+    "name": "Descent into Hellfire",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02006_0012_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20070001,
+    "name": "Temple's Daughter",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02007_0001_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070002,
+    "name": "Lover of Literature",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02007_0002_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070003,
+    "name": "Chilling at the Library",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02007_0003_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070004,
+    "name": "I'll Do My Best",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02007_0004_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070005,
+    "name": "Bookworm's Day Out",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02007_0005_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070006,
+    "name": "After Choir Practice",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02007_0006_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070007,
+    "name": "At the Uchiura Shore",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02007_0007_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070008,
+    "name": "My Books Are My Fortune",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02007_0008_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070009,
+    "name": "Every Day's an Adventure",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02007_0009_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070010,
+    "name": "Cubify the Ball",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02007_0010_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070011,
+    "name": "After Lunch",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02007_0011_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070012,
+    "name": "Unfading Beauty",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02007_0012_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20080001,
+    "name": "Ciao♪",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02008_0001_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080002,
+    "name": "Chairwoman",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02008_0002_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080003,
+    "name": "Shiny☆",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02008_0003_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080004,
+    "name": "Fearless Challenger",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02008_0004_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080005,
+    "name": "Equestrian Lessons",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02008_0005_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080006,
+    "name": "Out and About with Mari",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02008_0006_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080007,
+    "name": "Uchiura is the Best!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02008_0007_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080008,
+    "name": "Resort Outfit",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02008_0008_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080009,
+    "name": "Love Potion",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02008_0009_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080010,
+    "name": "Flaming Passion",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02008_0010_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080011,
+    "name": "So Picturesque",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02008_0011_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080012,
+    "name": "Fruit Carnival!",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02008_0012_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20090001,
+    "name": "Crybaby",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02009_0001_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090002,
+    "name": "Easily Frightened",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02009_0002_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090003,
+    "name": "Sewing Specialist",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02009_0003_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090004,
+    "name": "Aim to Be an Idol",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02009_0004_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090005,
+    "name": "Let's Travel Far Away",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "02009_0005_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090006,
+    "name": "Waiting On My Sister",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "02009_0006_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090007,
+    "name": "Warm Sandy Beach",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "02009_0007_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090008,
+    "name": "I Can Do It!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02009_0008_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090009,
+    "name": "Cheerleader Tryout",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02009_0009_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090010,
+    "name": "Ruby's Courage",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "02009_0010_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090011,
+    "name": "Sleepyhead",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02009_0011_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090012,
+    "name": "Note the Flowers",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02009_0012_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 30010001,
+    "name": "Gracefully",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03001_0001_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010002,
+    "name": "One Step at a Time",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03001_0002_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010003,
+    "name": "Hard Worker",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03001_0003_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010004,
+    "name": "Flower in the Night Sky",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03001_0004_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010005,
+    "name": "Cool Blooming Flower",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03001_0005_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010006,
+    "name": "Easter Bunny!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03001_0006_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010007,
+    "name": "Right Next to You",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03001_0007_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30020001,
+    "name": "Little Demon",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03002_0001_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020002,
+    "name": "Kasumin!",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03002_0002_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020003,
+    "name": "Cuteness Research",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03002_0003_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020004,
+    "name": "Canary Kasumin",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03002_0004_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020005,
+    "name": "Healthy and Cute",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03002_0005_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020006,
+    "name": "Search with Kasumin!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03002_0006_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020007,
+    "name": "Rainbow Bread Roll",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03002_0007_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30030001,
+    "name": "Red Ribbon",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03003_0001_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030002,
+    "name": "Capable and Collected",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03003_0002_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030003,
+    "name": "Theater Club Member",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03003_0003_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030004,
+    "name": "Azure Heroine",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03003_0004_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030005,
+    "name": "Seeking Coolness",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03003_0005_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030006,
+    "name": "Tea Time, Break Time",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03003_0006_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030007,
+    "name": "My True Self",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03003_0007_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30040001,
+    "name": "Magazine Model",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03004_0001_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040002,
+    "name": "A Reliable Ally",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03004_0002_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040003,
+    "name": "With Self Discipline",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03004_0003_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040004,
+    "name": "Fragrant Folding Fan",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03004_0004_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040005,
+    "name": "Passion Is in My Heart",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03004_0005_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040006,
+    "name": "Sometimes Cute's the Way",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03004_0006_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040007,
+    "name": "The Pursuit of Quality",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03004_0007_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30050001,
+    "name": "Everyone's Sun",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03005_0001_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30050002,
+    "name": "Helper",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03005_0002_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30050003,
+    "name": "Ambition",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03005_0003_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30050004,
+    "name": "Summertime Sunshine",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03005_0004_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30050005,
+    "name": "Water Balloon Splash!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03005_0005_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30050006,
+    "name": "Happy Easter!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03005_0006_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30050007,
+    "name": "A Change of Pace",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03005_0007_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30060001,
+    "name": "At My Own Pace",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03006_0001_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060002,
+    "name": "Zzz...",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03006_0002_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060003,
+    "name": "As the Big Sister",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03006_0003_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060004,
+    "name": "Land of Dreams in Summer",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03006_0004_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060005,
+    "name": "Tranquil Morning Trip",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03006_0005_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060006,
+    "name": "Follow the Rabbit",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03006_0006_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060007,
+    "name": "Sisterly Supper",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03006_0007_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30070001,
+    "name": "Hot-Blooded Drive",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03007_0001_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30070002,
+    "name": "Heroic Transformation",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03007_0002_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30070003,
+    "name": "Passionate Soul",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03007_0003_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30070004,
+    "name": "Shine Under the Sun",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03007_0004_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30070005,
+    "name": "Crimson Pinwheel",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03007_0005_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30070006,
+    "name": "I Found an Egg!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03007_0006_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30070007,
+    "name": "Professing My Love!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03007_0007_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30080001,
+    "name": "Calm but Headstrong",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03008_0001_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080002,
+    "name": "Swiss Air",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03008_0002_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080003,
+    "name": "Everyone's Support",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03008_0003_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080004,
+    "name": "Under the Summer Sun",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03008_0004_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080005,
+    "name": "Savoring a Snow Cone",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03008_0005_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080006,
+    "name": "I Found the Cutest Egg",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03008_0006_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080007,
+    "name": "Gently Filtered Sun",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03008_0007_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30090001,
+    "name": "What I Want to Do",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03009_0001_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30090002,
+    "name": "Forming Bonds",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03009_0002_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30090003,
+    "name": "Rina-chan Board",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03009_0003_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30090004,
+    "name": "Rina-chan Fan",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03009_0004_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30090005,
+    "name": "Cool Off in a Cool Spot",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03009_0005_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30090006,
+    "name": "Easter Balloon",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03009_0006_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30090007,
+    "name": "Walker-in-Charge",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03009_0007_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30100001,
+    "name": "Where Dreams Begin",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03010_0001_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30100002,
+    "name": "For Everyone's Sake",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03010_0002_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30100003,
+    "name": "Steady Effort",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03010_0003_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30100004,
+    "name": "Fluttering Flowers",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03010_0004_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30100005,
+    "name": "Blooming in the Shade",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03010_0005_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30100006,
+    "name": "A Symbol of Revival",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03010_0006_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30100007,
+    "name": "Diligence!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03010_0007_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30110001,
+    "name": "Grade-Skipper",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03011_0001_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30110002,
+    "name": "New Yorker",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03011_0002_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30110003,
+    "name": "My Song",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03011_0003_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30110004,
+    "name": "Trying on a Yukata",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03011_0004_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30110005,
+    "name": "Oh, Sweet Ramune",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03011_0005_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30110006,
+    "name": "Where Are the Eggs?",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03011_0006_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30110007,
+    "name": "All-Out Composing",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03011_0007_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30120001,
+    "name": "Mou Man Tai! No Prob!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "03012_0001_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120002,
+    "name": "Born in Hong Kong",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "03012_0002_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120003,
+    "name": "I Can Do Anything",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "03012_0003_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120004,
+    "name": "Nonchalant Strut",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03012_0004_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120005,
+    "name": "Crunchy Candy Apple",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03012_0005_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120006,
+    "name": "Fruit Sandwich",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03012_0006_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120007,
+    "name": "Friends and Rivals",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03012_0007_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 40010001,
+    "name": "Feeling Determined",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04001_0001_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010002,
+    "name": "I Love to Sing",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04001_0002_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010003,
+    "name": "Singing at Home",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04001_0003_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010004,
+    "name": "Cheering Everybody Up",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04001_0004_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010005,
+    "name": "A Little Shy",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04001_0005_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010006,
+    "name": "Heading Out to Harajuku",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04001_0006_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010007,
+    "name": "Heartfelt Feelings",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04001_0007_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010008,
+    "name": "Always Sunny Above the Clouds",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04001_0008_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40020001,
+    "name": "Beeline!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04002_0001_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020002,
+    "name": "Born in Shanghai",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04002_0002_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020003,
+    "name": "Dressing Up at Home",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04002_0003_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020004,
+    "name": "I'll Do My Very Best!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04002_0004_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020005,
+    "name": "Powerfully Passionate",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04002_0005_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020006,
+    "name": "Getting Rough!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04002_0006_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020007,
+    "name": "Costume Stylist",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04002_0007_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020008,
+    "name": "No Time Like the Present",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04002_0008_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40030001,
+    "name": "Choreographer",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04003_0001_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030002,
+    "name": "Love for Round Things",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04003_0002_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030003,
+    "name": "Surprises at Home",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04003_0003_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030004,
+    "name": "Let's Dance Together",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04003_0004_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030005,
+    "name": "Wanna Eat Takoyaki?",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04003_0005_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030006,
+    "name": "Carefree Greetings",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04003_0006_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030007,
+    "name": "Veteran Steps",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04003_0007_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030008,
+    "name": "Fortune Visits Those Who Smile",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04003_0008_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40040001,
+    "name": "The Showbiz Spirit",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04004_0001_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040002,
+    "name": "A Real Wild Card",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04004_0002_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040003,
+    "name": "A Toast at Home☆",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04004_0003_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040004,
+    "name": "Galaxy!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04004_0004_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040005,
+    "name": "Back to Center Stage",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04004_0005_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040006,
+    "name": "Walking in Platform Shoes!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04004_0006_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040007,
+    "name": "Two Armfuls",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04004_0007_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040008,
+    "name": "Faith Moves Mountains",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04004_0008_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40050001,
+    "name": "Honor Student",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04005_0001_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050002,
+    "name": "Young Miss",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04005_0002_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050003,
+    "name": "Decorating Home",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04005_0003_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050004,
+    "name": "Diligent Effort",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04005_0004_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050005,
+    "name": "An Example to All",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04005_0005_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050006,
+    "name": "Leisure Outfit",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04005_0006_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050007,
+    "name": "Mother's Yuigaoka",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04005_0007_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050008,
+    "name": "Never Forget Your Roots",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04005_0008_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40060001,
+    "name": "From the Far North",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04006_0001_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060002,
+    "name": "Genial and Generous",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04006_0002_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060003,
+    "name": "Relaxing at Home",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04006_0003_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060004,
+    "name": "Aiming to Shine",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04006_0004_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060005,
+    "name": "I'm Going for It!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04006_0005_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060006,
+    "name": "Let's Get Girly",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04006_0006_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060007,
+    "name": "230m above Ground",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04006_0007_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060008,
+    "name": "If At First You Don’t Succeed",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04006_0008_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40070001,
+    "name": "I Wanna Try!",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04007_0001_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070002,
+    "name": "With the Seasons",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04007_0002_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070003,
+    "name": "House Party!",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04007_0003_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070004,
+    "name": "Please Cheer Me On...",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04007_0004_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070005,
+    "name": "Following My Dreams",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04007_0005_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070006,
+    "name": "Looking Cool",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04007_0006_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070007,
+    "name": "Almost Complete",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04007_0007_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070008,
+    "name": "With All Your Might",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04007_0008_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40080001,
+    "name": "Science Club Member",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04008_0001_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080002,
+    "name": "With Mei",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04008_0002_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080003,
+    "name": "Chilling at Home",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04008_0003_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080004,
+    "name": "Cool and Mysterious",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04008_0004_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080005,
+    "name": "Lively's Not So Bad",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04008_0005_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080006,
+    "name": "I Make This Look Good",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04008_0006_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080007,
+    "name": "After School Science",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04008_0007_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080008,
+    "name": "Silence Is Golden",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04008_0008_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40090001,
+    "name": "Oni-Supplement",
+    "rarity": "N",
+    "attribute": "Smile",
+    "image": "04009_0001_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090002,
+    "name": "I Smell Money",
+    "rarity": "N",
+    "attribute": "Pure",
+    "image": "04009_0002_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090003,
+    "name": "Happy Heart at Home",
+    "rarity": "N",
+    "attribute": "Cool",
+    "image": "04009_0003_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090004,
+    "name": "I'll Fire Them Up!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04009_0004_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090005,
+    "name": "Newfound Dream",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04009_0005_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090006,
+    "name": "Sweet & Spicy",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04009_0006_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090007,
+    "name": "OniNatsu Live Stream!",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04009_0007_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090008,
+    "name": "Ends Justify Means",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04009_0008_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 10010015,
+    "name": "Miracle Live!",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01001_0015_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 20010013,
+    "name": "Miracle Live☆",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02001_0013_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 30010009,
+    "name": "Miracle Live♡",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03001_0009_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 40010009,
+    "name": "Miracle Live♪",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04001_0009_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40090009,
+    "name": "Time for a Lecture",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04009_0009_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40020009,
+    "name": "Swirling Ice Cream",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04002_0009_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40030009,
+    "name": "Cheer Up!",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04003_0009_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 10010016,
+    "name": "Sports Drink",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01001_0016_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 10020015,
+    "name": "New! Animal Cookie",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01002_0015_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10090015,
+    "name": "µ's and Me",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01009_0015_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 20010014,
+    "name": "Trying on Glasses",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02001_0014_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20020013,
+    "name": "Take a Bite",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02002_0013_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20070013,
+    "name": "Having a Snack Downtown",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02007_0013_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 40010010,
+    "name": "Lovely Apple Pie",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04001_0010_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 30050009,
+    "name": "Surprise BBQ",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03005_0009_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30060009,
+    "name": "Catching Some Zzz's",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03006_0009_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30080009,
+    "name": "Healing Voice Echoes in the Air",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03008_0009_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30090009,
+    "name": "Super Intense Live Show",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03009_0009_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 20030013,
+    "name": "I Love this Ocean",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02003_0013_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20040013,
+    "name": "Shell Float",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02004_0013_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20090013,
+    "name": "Unbreakable Watermelon",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02009_0013_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 10070015,
+    "name": "Rainy Birthday",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01007_0015_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 20080013,
+    "name": "Hydrangea After Rain",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02008_0013_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 40080009,
+    "name": "Stag Beetle Cake",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04008_0009_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 30040009,
+    "name": "Morning Surprise!",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03004_0009_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 10070016,
+    "name": "I'll See You in Umeda",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01007_0016_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 40040009,
+    "name": "Like a Hollywood Star",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04004_0009_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40050009,
+    "name": "Summertime Beach Volleyball",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04005_0009_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40060010,
+    "name": "High Waves Surprise",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04006_0010_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 30010010,
+    "name": "Poolside Break",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03001_0010_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30100009,
+    "name": "Waterslide",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03010_0009_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30020009,
+    "name": "Lurking Under the Sea",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03002_0009_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 20060014,
+    "name": "With Gratitude",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02006_0014_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 40020010,
+    "name": "Sunny Passion Surprise",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04002_0010_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020012,
+    "name": "A Tree of Snow and Ice",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04002_0012_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 40020014,
+    "name": "It's Cooking!",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04002_0014_00",
+    "character": "Keke Tang"
+  },
+  {
+    "id": 10090016,
+    "name": "Echoes of a Stationfront Duet",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01009_0016_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10030016,
+    "name": "Close to Summer's End...",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01003_0016_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10050015,
+    "name": "Big Wave Surfin'",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01005_0015_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10040016,
+    "name": "Beach Races",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01004_0016_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 40070010,
+    "name": "Festival Games",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04007_0010_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40080010,
+    "name": "Bullseye for Mei",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04008_0010_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080011,
+    "name": "From a Prehistoric World",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04008_0011_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40080013,
+    "name": "Taste Tester Wanted",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04008_0013_00",
+    "character": "Shiki Wakana"
+  },
+  {
+    "id": 40010011,
+    "name": "Evening Flower Buds",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04001_0011_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 20010015,
+    "name": "Cozy Bus Ride",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02001_0015_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 10010017,
+    "name": "Letter from a Childhood Friend",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01001_0017_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 40090010,
+    "name": "Cradled by the Trunk",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04009_0010_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 30070009,
+    "name": "Anime Song Karaoke Party",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03007_0009_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 20060015,
+    "name": "Where Darkness Gathers",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02006_0015_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060016,
+    "name": "Overenthusiastic Exorcist",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02006_0016_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20060017,
+    "name": "What Should I Do?!",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02006_0017_00",
+    "character": "Yoshiko Tsushima"
+  },
+  {
+    "id": 20080014,
+    "name": "Gazing at the Distant Moon",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02008_0014_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20080016,
+    "name": "Super Luxury Ehomaki",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02008_0016_00",
+    "character": "Mari Ohara"
+  },
+  {
+    "id": 20050014,
+    "name": "Rustling Silvergrass",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02005_0014_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 10060015,
+    "name": "Refreshing Evening",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01006_0015_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060017,
+    "name": "On the Snowy Rink",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01006_0017_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10060018,
+    "name": "Spring Astronomical Observation",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01006_0018_00",
+    "character": "Maki Nishikino"
+  },
+  {
+    "id": 10070017,
+    "name": "Summer Boat to Kanda",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01007_0017_00",
+    "character": "Nozomi Tojo"
+  },
+  {
+    "id": 10080016,
+    "name": "How Many Plates Can we Eat?",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01008_0016_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10080017,
+    "name": "A Reason to Be Excited",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01008_0017_00",
+    "character": "Hanayo Koizumi"
+  },
+  {
+    "id": 10030017,
+    "name": "Costume Photoshoot ♡",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01003_0017_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 10030018,
+    "name": "Ah, I Slipped!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01003_0018_00",
+    "character": "Kotori Minami"
+  },
+  {
+    "id": 20020014,
+    "name": "Flying Seagulls",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02002_0014_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20020016,
+    "name": "Making Demon Masks",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02002_0016_00",
+    "character": "Riko Sakurauchi"
+  },
+  {
+    "id": 20090014,
+    "name": "Fresh Autumn Sweets",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02009_0014_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 20090016,
+    "name": "With the Penguins",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02009_0016_00",
+    "character": "Ruby Kurosawa"
+  },
+  {
+    "id": 40040010,
+    "name": "Mesmerized by Melons ♡",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04004_0010_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040012,
+    "name": "Want Me to Feed You?",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04004_0012_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 40040013,
+    "name": "Can't Be Honest",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04004_0013_00",
+    "character": "Sumire Heanna"
+  },
+  {
+    "id": 30120010,
+    "name": "Halloween Afternoon",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03012_0010_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30110010,
+    "name": "Halloween Surprise",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03011_0010_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30030010,
+    "name": "Secret Plan",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03003_0010_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 20070015,
+    "name": "Flower Park",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02007_0015_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20070016,
+    "name": "Impressive VR Experience",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02007_0016_00",
+    "character": "Hanamaru Kunikida"
+  },
+  {
+    "id": 20040015,
+    "name": "The World is Upside-Down",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02004_0015_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20040016,
+    "name": "Wish on the Ema",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02004_0016_00",
+    "character": "Dia Kurosawa"
+  },
+  {
+    "id": 20030015,
+    "name": "Haunted House",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02003_0015_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 20030016,
+    "name": "Special Teatime",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "02003_0016_00",
+    "character": "Kanan Matsuura"
+  },
+  {
+    "id": 30100010,
+    "name": "Spending Time with My Sister",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03010_0010_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 10020017,
+    "name": "New Hairstyle",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01002_0017_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 10020018,
+    "name": "Forever Smiling",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "01002_0018_00",
+    "character": "Eli Ayase"
+  },
+  {
+    "id": 40070011,
+    "name": "A Day at the Cat Cafe",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04007_0011_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070012,
+    "name": "Came Out Great",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04007_0012_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 40070013,
+    "name": "Snacks for Our Seniors",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04007_0013_00",
+    "character": "Mei Yoneme"
+  },
+  {
+    "id": 10040017,
+    "name": "With You to Wherever",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "01004_0017_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 20050015,
+    "name": "Adventure, Aye Aye!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02005_0015_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 30070011,
+    "name": "The Great Adventure Begins",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03007_0011_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 40030011,
+    "name": "To Sights Yet Unseen",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04003_0011_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 30010011,
+    "name": "Walking Together With You",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03001_0011_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30020010,
+    "name": "Super Sweet Cutie Girl",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03002_0010_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30030011,
+    "name": "In the Springtime of Life",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03003_0011_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30040010,
+    "name": "Cool Beauty",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03004_0010_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30050011,
+    "name": "\"i\" Love You",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03005_0011_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30060010,
+    "name": "Nap and a Show",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03006_0010_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30070012,
+    "name": "Professing My Love!",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03007_0012_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30080010,
+    "name": "Singing a Comforting Song",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03008_0010_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30090011,
+    "name": "Connecting with Fans",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03009_0011_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30100011,
+    "name": "Gifted with Aptitude",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03010_0011_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30100012,
+    "name": "Time to Get to Work",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03010_0012_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30110011,
+    "name": "Reach for My Dreams",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03011_0011_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30110012,
+    "name": "Let’s Go, Baby!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03011_0012_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30120011,
+    "name": "As a Part of the Club",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03012_0011_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120012,
+    "name": "Lanzhu’s the Boss!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03012_0012_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120013,
+    "name": "The Best Love!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03012_0013_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30120014,
+    "name": "On a Flying Trapeze",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03012_0014_00",
+    "character": "Lanzhu Zhong"
+  },
+  {
+    "id": 30010012,
+    "name": "Gazing at You",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03001_0012_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30020011,
+    "name": "Grown-up Date ♡",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03002_0011_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020013,
+    "name": "Formal Kasumin",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03002_0013_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30020014,
+    "name": "Makeup Kasumin",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03002_0014_00",
+    "character": "Kasumi Nakasu"
+  },
+  {
+    "id": 30030012,
+    "name": "Flirty Attitude",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03003_0012_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030013,
+    "name": "Acting Like an Adult",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03003_0013_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030014,
+    "name": "Some Help from Ophelia",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03003_0014_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30030015,
+    "name": "Two of are Heroes☆",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03003_0015_00",
+    "character": "Shizuku Osaka"
+  },
+  {
+    "id": 30040011,
+    "name": "Searching for a Special Love",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03004_0011_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30050012,
+    "name": "Fun with the Two of Us",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03005_0012_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 40030012,
+    "name": "After Party",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04003_0012_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40060011,
+    "name": "Offstage Nerves",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04006_0011_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060012,
+    "name": "My Tastebuds Are Tingling",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04006_0012_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40060013,
+    "name": "Tokyo French Fries",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04006_0013_00",
+    "character": "Kinako Sakurakoji"
+  },
+  {
+    "id": 40090011,
+    "name": "Natural Informant",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04009_0011_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40090013,
+    "name": "My Special Smoothie",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04009_0013_00",
+    "character": "Natsumi Onitsuka"
+  },
+  {
+    "id": 40100001,
+    "name": "Overwhelming Musical Sense",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04010_0001_00",
+    "character": "Wien Margarete"
+  },
+  {
+    "id": 40100002,
+    "name": "Duet",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04010_0002_00",
+    "character": "Wien Margarete"
+  },
+  {
+    "id": 40100003,
+    "name": "Made with All My Heart",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04010_0003_00",
+    "character": "Wien Margarete"
+  },
+  {
+    "id": 40110001,
+    "name": "Rigid Analysis",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04011_0001_00",
+    "character": "Tomari Onitsuka"
+  },
+  {
+    "id": 40110002,
+    "name": "Jellyfish",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04011_0002_00",
+    "character": "Tomari Onitsuka"
+  },
+  {
+    "id": 40110003,
+    "name": "Cooked Efficiently",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04011_0003_00",
+    "character": "Tomari Onitsuka"
+  },
+  {
+    "id": 30070013,
+    "name": "Band of Volunteers",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03007_0013_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30050013,
+    "name": "Food Stall Crawl",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03005_0013_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30050014,
+    "name": "I'll Manage to Manage!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03005_0014_00",
+    "character": "Ai Miyashita"
+  },
+  {
+    "id": 30040012,
+    "name": "Ace of the Butler Cafe",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03004_0012_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040013,
+    "name": "Working in Style",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03004_0013_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 30040014,
+    "name": "Experiments in Chocolate",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03004_0014_00",
+    "character": "Karin Asaka"
+  },
+  {
+    "id": 10050016,
+    "name": "Delivering a Bundle of Cuteness",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01005_0016_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 10050018,
+    "name": "You Can Count on Me!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01005_0018_00",
+    "character": "Rin Hoshizora"
+  },
+  {
+    "id": 30090012,
+    "name": "FULL COMBO!",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03009_0012_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 40050011,
+    "name": "Strawberry Dessert Buffet",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "04005_0011_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050012,
+    "name": "Here You Are",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04005_0012_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 40050013,
+    "name": "Filled with My Gratitude",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04005_0013_00",
+    "character": "Ren Hazuki"
+  },
+  {
+    "id": 30060011,
+    "name": "You, Forever, Always",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03006_0011_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060012,
+    "name": "Some Work Before Snoozing",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03006_0012_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30060013,
+    "name": "Irresistable Kotatsu",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03006_0013_00",
+    "character": "Kanata Konoe"
+  },
+  {
+    "id": 30070014,
+    "name": "Let This Love Reach Everyone",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03007_0014_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30080011,
+    "name": "My Memories of You",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03008_0011_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080012,
+    "name": "Do I Look Cool?",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03008_0012_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30080014,
+    "name": "Always Room for More Bread",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03008_0014_00",
+    "character": "Emma Verde"
+  },
+  {
+    "id": 30090013,
+    "name": "To My Special You",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03009_0013_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 30090014,
+    "name": "A Different Feel",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03009_0014_00",
+    "character": "Rina Tennoji"
+  },
+  {
+    "id": 10040018,
+    "name": "Giving Ai to You",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01004_0018_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 20050016,
+    "name": "It's Going to be Fun!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02005_0016_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050017,
+    "name": "Osechi and Special Stewshine",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02005_0017_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 20050019,
+    "name": "Re-photographed at a Memorable Place",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "02005_0019_00",
+    "character": "You Watanabe"
+  },
+  {
+    "id": 30070015,
+    "name": "Here We Go!",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03007_0015_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 30070016,
+    "name": "Let's Stay Sharp",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03007_0016_00",
+    "character": "Setsuna Yuki"
+  },
+  {
+    "id": 40030013,
+    "name": "Ready, Set, Okay ♪",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04003_0013_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030014,
+    "name": "A Day of Circling for Circles",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "04003_0014_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 40030015,
+    "name": "Take a Bite",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "04003_0015_00",
+    "character": "Chisato Arashi"
+  },
+  {
+    "id": 10010019,
+    "name": "Spring in Full Bloom!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "01001_0019_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 20010017,
+    "name": "Scorching Summer Beach",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "02001_0017_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 30010013,
+    "name": "Long Autumn Nights",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "03001_0013_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 40010013,
+    "name": "Shimmering Winter Skies",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04001_0013_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010014,
+    "name": "Posing Together",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "04001_0014_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 30010014,
+    "name": "I'm Ready to Go!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "03001_0014_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 10040019,
+    "name": "A Very µ's Christmas",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01004_0019_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10040020,
+    "name": "Smile Spilling Out on the Porch",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "01004_0020_00",
+    "character": "Umi Sonoda"
+  },
+  {
+    "id": 10090018,
+    "name": "Preparing the Feast",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01009_0018_00",
+    "character": "Nico Yazawa"
+  },
+  {
+    "id": 10010020,
+    "name": "Winter Stars Above the Trees",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "01001_0020_00",
+    "character": "Honoka Kosaka"
+  },
+  {
+    "id": 30110013,
+    "name": "My Favorite Athlete is in Japan!",
+    "rarity": "SSR",
+    "attribute": "Cool",
+    "image": "03011_0013_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 30100013,
+    "name": "My Mark",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03010_0013_00",
+    "character": "Shioriko Mifune"
+  },
+  {
+    "id": 30110014,
+    "name": "Racing Heart",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03011_0014_00",
+    "character": "Mia Taylor"
+  },
+  {
+    "id": 60010001,
+    "name": "Fortune Teller Girl",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "06001_0001_00",
+    "character": "Yohane"
+  },
+  {
+    "id": 60020001,
+    "name": "Food Stall Peddler",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "06002_0001_00",
+    "character": "Hanamaru"
+  },
+  {
+    "id": 60030001,
+    "name": "Executive Director General",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "06003_0001_00",
+    "character": "Dia"
+  },
+  {
+    "id": 60040001,
+    "name": "Descendant of the Fairy Tribe",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "06004_0001_00",
+    "character": "Ruby"
+  },
+  {
+    "id": 60050001,
+    "name": "Ryokan Poster Girl",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "06005_0001_00",
+    "character": "Chika"
+  },
+  {
+    "id": 60060001,
+    "name": "Messenger",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "06006_0001_00",
+    "character": "You"
+  },
+  {
+    "id": 60070001,
+    "name": "Mechanic",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "06007_0001_00",
+    "character": "Kanon"
+  },
+  {
+    "id": 60080001,
+    "name": "Zoologist",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "06008_0001_00",
+    "character": "Riko"
+  },
+  {
+    "id": 60090001,
+    "name": "Descendant of the Demon King",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "06009_0001_00",
+    "character": "Mari"
+  },
+  {
+    "id": 20010018,
+    "name": "A Lively Town!",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "02001_0018_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 20010019,
+    "name": "First Sunrise from the Sea",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "02001_0019_00",
+    "character": "Chika Takami"
+  },
+  {
+    "id": 30010015,
+    "name": "Onto a New Stage",
+    "rarity": "SR",
+    "attribute": "Pure",
+    "image": "03001_0015_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010017,
+    "name": "Open Wide!",
+    "rarity": "SSR",
+    "attribute": "Pure",
+    "image": "03001_0017_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010018,
+    "name": "Trying Out Flower Arranging!",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03001_0018_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 30010019,
+    "name": "Won't You Stay With Me?",
+    "rarity": "SSR",
+    "attribute": "Smile",
+    "image": "03001_0019_00",
+    "character": "Ayumu Uehara"
+  },
+  {
+    "id": 40010015,
+    "name": "A Hunch of an Encounter",
+    "rarity": "SR",
+    "attribute": "Cool",
+    "image": "04001_0015_00",
+    "character": "Kanon Shibuya"
+  },
+  {
+    "id": 40010016,
+    "name": "Sorry To Keep You Waiting",
+    "rarity": "SR",
+    "attribute": "Smile",
+    "image": "04001_0016_00",
+    "character": "Kanon Shibuya"
+  }
+]

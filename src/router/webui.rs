@@ -199,7 +199,44 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
         }
     };
     HttpResponse::Ok()
-    .insert_header(ContentType::json())
-    .body(json::stringify(resp))
+        .insert_header(ContentType::json())
+        .body(json::stringify(resp))
+}
 
+pub fn get_card_info(req: HttpRequest) -> HttpResponse {
+    let query_str = req.query_string();
+    let page: usize = query_str
+        .split('&')
+        .find(|s| s.starts_with("page="))
+        .and_then(|s| s.split('=').nth(1))
+        .and_then(|s| s.parse().ok())
+        .unwrap_or(1) - 1;
+
+    let max = 10;
+    let start = page * max;
+
+    let items = json::parse(&include_file!("src/router/webui/cards.json")).unwrap();
+
+    let page_items: Vec<_> = items.members()
+        .skip(start)
+        .take(max)
+        .cloned()
+        .collect();
+
+    if page_items.is_empty() {
+        return HttpResponse::NotFound().finish();
+    }
+
+    let total_items = items.len();
+    let total_pages = (total_items as f64 / max as f64).ceil() as usize;
+
+    let resp = object!{
+        total_pages: total_pages,
+        current: page_items
+    };
+
+    HttpResponse::Ok()
+        .content_type(ContentType::json())
+        .insert_header(("Access-Control-Allow-Origin", "*"))
+        .body(json::stringify(resp))
 }
