@@ -79,6 +79,7 @@ pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
 
@@ -101,6 +102,7 @@ pub fn user(req: HttpRequest) -> HttpResponse {
     };
     HttpResponse::Ok()
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -115,6 +117,7 @@ pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
     
     HttpResponse::Ok()
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -129,6 +132,7 @@ pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
     
     HttpResponse::Ok()
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -143,6 +147,7 @@ pub fn logout(req: HttpRequest) -> HttpResponse {
     };
     HttpResponse::Found()
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .insert_header(("Set-Cookie", "ew_token=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT"))
         .insert_header(("Location", "/"))
@@ -208,6 +213,7 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
 
@@ -223,22 +229,37 @@ fn get_query_str(req: &HttpRequest, key: &str, def: &str) -> String {
 pub fn get_card_info(req: HttpRequest) -> HttpResponse {
     let page = get_query_str(&req, "page", "1").parse::<usize>().unwrap_or(1) - 1;
     let max = get_query_str(&req, "max", "10").parse::<usize>().unwrap_or(10);
+    let name_query = get_query_str(&req, "query", "");
 
     let start = page * max;
 
     let items = json::parse(&include_file!("src/router/webui/cards.json")).unwrap();
 
-    let page_items: Vec<_> = items.members()
+    let mut filtered_items: Vec<_> = items.members().collect();
+
+    if !name_query.is_empty() {
+        let lowercase_query = name_query.to_lowercase();
+        filtered_items.retain(|item| {
+            item["name"].to_string().to_lowercase().contains(&lowercase_query)
+        });
+    }
+    
+    let total_len = filtered_items.len();
+
+    let page_items: Vec<_> = filtered_items
+        .into_iter()
         .skip(start)
         .take(max)
         .cloned()
         .collect();
 
     if page_items.is_empty() {
-        return HttpResponse::NotFound().finish();
+        return HttpResponse::NotFound()
+            //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+            .finish();
     }
 
-    let total_items = items.len();
+    let total_items = total_len;
     let total_pages = (total_items as f64 / max as f64).ceil() as usize;
 
     let resp = object!{
@@ -272,7 +293,9 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
         .collect();
 
     if page_items.is_empty() {
-        return HttpResponse::NotFound().finish();
+        return HttpResponse::NotFound()
+            //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+            .finish();
     }
 
     let total_items = items.len();
