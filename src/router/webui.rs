@@ -9,6 +9,8 @@ use json::{JsonValue, object};
 use crate::include_file;
 use crate::router::{userdata, items};
 
+//pub const FRONTEND_DOMAIN: &str = "https://sif2-api.ethanthesleepy.one";
+
 fn get_config() -> JsonValue {
     let args = crate::get_args();
     object!{
@@ -32,7 +34,7 @@ fn error(msg: &str) -> HttpResponse {
         message: msg
     };
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
     
@@ -51,8 +53,9 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .insert_header(("Access-Control-Allow-Origin", "*"))
-        .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=None; HttpOnly", token.unwrap())))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        //.insert_header(("Access-Control-Allow-Credentials", "true"))
+        .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=Strict; HttpOnly", token.unwrap())))
         .body(json::stringify(resp))
 }
 
@@ -97,7 +100,7 @@ pub fn user(req: HttpRequest) -> HttpResponse {
         data: data
     };
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -111,7 +114,7 @@ pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
     let resp = userdata::webui_start_loginbonus(body["bonus_id"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -125,7 +128,7 @@ pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
     let resp = userdata::set_server_time(body["timestamp"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -139,7 +142,7 @@ pub fn logout(req: HttpRequest) -> HttpResponse {
         result: "OK"
     };
     HttpResponse::Found()
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .insert_header(ContentType::json())
         .insert_header(("Set-Cookie", "ew_token=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT"))
         .insert_header(("Location", "/"))
@@ -245,7 +248,7 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
 
@@ -282,6 +285,6 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        .insert_header(("Access-Control-Allow-Origin", "*"))
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
