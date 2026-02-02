@@ -217,6 +217,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/export" => webui::export(req),
             "/api/webui/serverInfo" => webui::server_info(req),
             "/api/webui/listCards" => webui::get_card_info(req),
+            "/api/webui/listMusic" => webui::get_music_info(req),
             _ => api_req(req, body).await
         }
     }

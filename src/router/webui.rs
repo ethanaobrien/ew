@@ -51,7 +51,8 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=Strict; HttpOnly", token.unwrap())))
+        .insert_header(("Access-Control-Allow-Origin", "*"))
+        .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=None; HttpOnly", token.unwrap())))
         .body(json::stringify(resp))
 }
 
@@ -96,6 +97,7 @@ pub fn user(req: HttpRequest) -> HttpResponse {
         data: data
     };
     HttpResponse::Ok()
+        .insert_header(("Access-Control-Allow-Origin", "*"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -109,6 +111,7 @@ pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
     let resp = userdata::webui_start_loginbonus(body["bonus_id"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
+        .insert_header(("Access-Control-Allow-Origin", "*"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -122,6 +125,7 @@ pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
     let resp = userdata::set_server_time(body["timestamp"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
+        .insert_header(("Access-Control-Allow-Origin", "*"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -135,6 +139,7 @@ pub fn logout(req: HttpRequest) -> HttpResponse {
         result: "OK"
     };
     HttpResponse::Found()
+        .insert_header(("Access-Control-Allow-Origin", "*"))
         .insert_header(ContentType::json())
         .insert_header(("Set-Cookie", "ew_token=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT"))
         .insert_header(("Location", "/"))
@@ -203,19 +208,59 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
         .body(json::stringify(resp))
 }
 
-pub fn get_card_info(req: HttpRequest) -> HttpResponse {
+fn get_query_str(req: &HttpRequest, key: &str, def: &str) -> String {
     let query_str = req.query_string();
-    let page: usize = query_str
+    query_str
         .split('&')
-        .find(|s| s.starts_with("page="))
+        .find(|s| s.starts_with(&format!("{key}=")))
         .and_then(|s| s.split('=').nth(1))
-        .and_then(|s| s.parse().ok())
-        .unwrap_or(1) - 1;
+        .unwrap_or(def).to_string()
+}
 
-    let max = 10;
+pub fn get_card_info(req: HttpRequest) -> HttpResponse {
+    let page = get_query_str(&req, "page", "1").parse::<usize>().unwrap_or(1) - 1;
+    let max = get_query_str(&req, "max", "10").parse::<usize>().unwrap_or(10);
+
     let start = page * max;
 
     let items = json::parse(&include_file!("src/router/webui/cards.json")).unwrap();
+
+    let page_items: Vec<_> = items.members()
+        .skip(start)
+        .take(max)
+        .cloned()
+        .collect();
+
+    if page_items.is_empty() {
+        return HttpResponse::NotFound().finish();
+    }
+
+    let total_items = items.len();
+    let total_pages = (total_items as f64 / max as f64).ceil() as usize;
+
+    let resp = object!{
+        total_pages: total_pages,
+        current: page_items
+    };
+
+    HttpResponse::Ok()
+        .content_type(ContentType::json())
+        .insert_header(("Access-Control-Allow-Origin", "*"))
+        .body(json::stringify(resp))
+}
+
+pub fn get_music_info(req: HttpRequest) -> HttpResponse {
+    let page = get_query_str(&req, "page", "1").parse::<usize>().unwrap_or(1) - 1;
+    let max = get_query_str(&req, "max", "10").parse::<usize>().unwrap_or(10);
+    let lang = get_query_str(&req, "lang", "JP");
+
+    let start = page * max;
+
+    let items = if lang == "EN" {
+        json::parse(&include_file!("src/router/databases/json/global/music.json")).unwrap()
+    } else {
+        json::parse(&include_file!("src/router/databases/json/music.json")).unwrap()
+    };
 
     let page_items: Vec<_> = items.members()
         .skip(start)
