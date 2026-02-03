@@ -229,11 +229,24 @@ fn get_query_str(req: &HttpRequest, key: &str, def: &str) -> String {
 pub fn get_card_info(req: HttpRequest) -> HttpResponse {
     let page = get_query_str(&req, "page", "1").parse::<usize>().unwrap_or(1) - 1;
     let max = get_query_str(&req, "max", "10").parse::<usize>().unwrap_or(10);
+    let all = get_query_str(&req, "all", "false");
     let name_query = get_query_str(&req, "query", "");
 
     let start = page * max;
 
     let items = json::parse(&include_file!("src/router/webui/cards.json")).unwrap();
+
+    if all == "true" {
+        let resp = object!{
+            total_pages: 1,
+            current: items
+        };
+
+        return HttpResponse::Ok()
+            .content_type(ContentType::json())
+            //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+            .body(json::stringify(resp));
+    }
 
     let mut filtered_items: Vec<_> = items.members().collect();
 
@@ -259,8 +272,7 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
             .finish();
     }
 
-    let total_items = total_len;
-    let total_pages = (total_items as f64 / max as f64).ceil() as usize;
+    let total_pages = (total_len as f64 / max as f64).ceil() as usize;
 
     let resp = object!{
         total_pages: total_pages,
