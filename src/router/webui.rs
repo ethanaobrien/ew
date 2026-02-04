@@ -323,3 +323,13 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
+
+pub fn list_login_bonus(_req: HttpRequest) -> HttpResponse {
+
+    let resp = json::parse(&include_file!("src/router/webui/login_bonus.json")).unwrap();
+
+    HttpResponse::Ok()
+        .content_type(ContentType::json())
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        .body(json::stringify(resp))
+}

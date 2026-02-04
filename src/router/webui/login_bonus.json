@@ -1,0 +1,1262 @@
+{
+  "1": {
+    "en": "Daily Login Bonus",
+    "jp": "デイリーログインボーナス"
+  },
+  "2": {
+    "en": "Starting Dash Login Bonus",
+    "jp": "スタートダッシュログインボーナス"
+  },
+  "3": {
+    "en": "Starting Dash Login Bonus (Constant)",
+    "jp": "スタートダッシュログインボーナス[恒常]"
+  },
+  "10001": {
+    "en": "Thanksgiving 10-Day",
+    "jp": "感謝祭10日間"
+  },
+  "10002": {
+    "en": "Thanksgiving Day 1",
+    "jp": "感謝祭DAY1"
+  },
+  "10003": {
+    "en": "Thanksgiving Day 2",
+    "jp": "感謝祭DAY2"
+  },
+  "10004": {
+    "en": "Yohane 1",
+    "jp": "ヨハネ1"
+  },
+  "10005": {
+    "en": "Yohane 2",
+    "jp": "ヨハネ2"
+  },
+  "10006": {
+    "en": "Yohane 3",
+    "jp": "ヨハネ3"
+  },
+  "10007": {
+    "en": "Yohane 4",
+    "jp": "ヨハネ4"
+  },
+  "10008": {
+    "en": "Yohane 5",
+    "jp": "ヨハネ5"
+  },
+  "10009": {
+    "en": "Yohane 6",
+    "jp": "ヨハネ6"
+  },
+  "10010": {
+    "en": "Yohane 7",
+    "jp": "ヨハネ7"
+  },
+  "10011": {
+    "en": "Yohane 8",
+    "jp": "ヨハネ8"
+  },
+  "10012": {
+    "en": "Yohane 9",
+    "jp": "ヨハネ9"
+  },
+  "10013": {
+    "en": "Yohane 10",
+    "jp": "ヨハネ10"
+  },
+  "10014": {
+    "en": "Yohane 11",
+    "jp": "ヨハネ11"
+  },
+  "10015": {
+    "en": "Yohane 12",
+    "jp": "ヨハネ12"
+  },
+  "10016": {
+    "en": "Yohane 13",
+    "jp": "ヨハネ13"
+  },
+  "10017": {
+    "en": "Nijigasaki OVA Release Celebration Login Bonus",
+    "jp": "虹ヶ咲OVA 公開記念ログボ"
+  },
+  "10018": {
+    "en": "Bon Festival",
+    "jp": "お盆"
+  },
+  "10019": {
+    "en": "Animelo Summer Login Bonus 1",
+    "jp": "アニサマログボ_1"
+  },
+  "10020": {
+    "en": "Animelo Summer Login Bonus 2",
+    "jp": "アニサマログボ_2"
+  },
+  "10021": {
+    "en": "Comiket Login Bonus",
+    "jp": "コミケログボ"
+  },
+  "10022": {
+    "en": "Liella! Chiba",
+    "jp": "Liella!千葉"
+  },
+  "10023": {
+    "en": "Liella! Aichi",
+    "jp": "Liella!愛知"
+  },
+  "10024": {
+    "en": "Liella! Tokyo",
+    "jp": "Liella!東京"
+  },
+  "10025": {
+    "en": "Ice Cream",
+    "jp": "アイス"
+  },
+  "10026": {
+    "en": "",
+    "jp": ""
+  },
+  "10027": {
+    "en": "",
+    "jp": ""
+  },
+  "10028": {
+    "en": "Halloween",
+    "jp": "ハロウィン"
+  },
+  "10029": {
+    "en": "Hasunosora: Fukuoka Concert",
+    "jp": "蓮ノ空＜福岡公演＞"
+  },
+  "10030": {
+    "en": "Hasunosora: Tokyo Concert",
+    "jp": "蓮ノ空＜東京公演＞"
+  },
+  "10031": {
+    "en": "Hasunosora: Aichi Concert",
+    "jp": "蓮ノ空＜愛知公演＞"
+  },
+  "10034": {
+    "en": "IJIGEN FES THE IDOLM@STER★︎♥LOVE LIVE! Login Bonus",
+    "jp": "異次元フェス アイドルマスター★♥ラブライブ！歌合戦開催記念ログインボーナス"
+  },
+  "10035": {
+    "en": "Yohane the Parhelion: The Story of the Sound of Heart Login Bonus",
+    "jp": "ログボ_幻日のヨハネ -The Story of the Sound of Heart-　開催記念ログインボーナス"
+  },
+  "10036": {
+    "en": "Love Live! Nijigasaki High School Idol Club 6th Live! I love You ⇆ You love Me Aichi Concert Login Bonus",
+    "jp": "ラブライブ！虹ヶ咲学園スクールアイドル同好会 6th Live! I love You ⇆ You love Me　愛知公演開催記念ログインボーナス"
+  },
+  "10037": {
+    "en": "Fall Festival",
+    "jp": "秋まつり"
+  },
+  "10038": {
+    "en": "Snow White Christmas Campaign first half",
+    "jp": "スノーホワイトクリスマスキャンペーン前半"
+  },
+  "10039": {
+    "en": "New Year's! Miracle Campaign Login Bonus",
+    "jp": "お正月！みらくるキャンペーンログインボーナス"
+  },
+  "10040": {
+    "en": "Snow White Christmas Campaign second half",
+    "jp": "スノーホワイトクリスマスキャンペーン後半"
+  },
+  "10041": {
+    "en": "Love Live! Nijigasaki High School Idol Club 6th Live! I love You ⇆ You love Me Kanagawa Concert Login Bonus",
+    "jp": "ラブライブ！虹ヶ咲学園スクールアイドル同好会 6th Live! I love You ⇆ You love Me　神奈川公演開催記念ログインボーナス"
+  },
+  "10042": {
+    "en": "School Idol Musical: 2024 Performance Login Bonus",
+    "jp": "スクールアイドルミュージカル＜2024年公演＞開催記念ログインボーナス"
+  },
+  "10043": {
+    "en": "3週連続ライブ応援！いっぱいシャンシャンしようキャンペーンログインボーナス",
+    "jp": "3週連続ライブ応援！いっぱいシャンシャンしようキャンペーンログインボーナス"
+  },
+  "10044": {
+    "en": "Love Live! Superstar!! Liella! 5th LoveLive! ~Twinkle Triangle~ Fukuoka Concert Login Bonus",
+    "jp": "「ラブライブ！スーパースター!! Liella! 5th LoveLive! ～Twinkle Triangle～＜福岡公演＞」開催記念ログインボーナス"
+  },
+  "10045": {
+    "en": "Love Live! Superstar!! Liella! 5th LoveLive! ~Twinkle Triangle~ Tokyo Concert Login Bonus",
+    "jp": "「ラブライブ！スーパースター!! Liella! 5th LoveLive! ～Twinkle Triangle～＜東京公演＞」開催記念ログインボーナス"
+  },
+  "10046": {
+    "en": "Happy Valentine's Day Campaign Login Bonus",
+    "jp": "ハッピーバレンタインデーキャンペーンログインボーナス"
+  },
+  "10047": {
+    "en": "Winter Vacation! Let’s Play Together All We Can Campaign Login Bonus",
+    "jp": "冬休み！いっぱいシャンシャンしようキャンペーンログインボーナス"
+  },
+  "10050": {
+    "en": "Colorful Spring Campaign Login Bonus",
+    "jp": "カラフルスプリングキャンペーンログインボーナス"
+  },
+  "10051": {
+    "en": "Super Thanks! Let’s Play Together Until the End Campaign Login Bonus",
+    "jp": "大感謝！最後までいっぱいシャンシャンしようキャンペーンログインボーナス"
+  },
+  "10054": {
+    "en": "Anime Broadcast 10 Year Anniversary LoveLive! Special Talk Session Login Bonus",
+    "jp": "ラブライブ！TVアニメ放送10周年記念　LoveLive! Special Talk Session開催記念ログインボーナス"
+  },
+  "10055": {
+    "en": "LoveLive! Series Presents ユニット甲子園 2024　開催記念ログインボーナス",
+    "jp": "LoveLive! Series Presents ユニット甲子園 2024　開催記念ログインボーナス"
+  },
+  "10056": {
+    "en": "ラブライブ！TVアニメ放送10周年記念　LoveLive! Orchestra Concert　開催記念ログインボーナス",
+    "jp": "ラブライブ！TVアニメ放送10周年記念　LoveLive! Orchestra Concert　開催記念ログインボーナス"
+  },
+  "10057": {
+    "en": "School Idol Festival 2 Super Thanks Login Bonus",
+    "jp": "スクフェス2 大感謝ログインボーナス"
+  },
+  "10058": {
+    "en": "School Idol Festival 2 Super Thanks Login Bonus",
+    "jp": "スクフェス2 大感謝ログインボーナス"
+  },
+  "10059": {
+    "en": "スペシャル勧誘記念ログインボーナス～桜坂しずく～",
+    "jp": "スペシャル勧誘記念ログインボーナス～桜坂しずく～"
+  },
+  "10060": {
+    "en": "スペシャル勧誘記念ログインボーナス～桜小路きな子～",
+    "jp": "スペシャル勧誘記念ログインボーナス～桜小路きな子～"
+  },
+  "10061": {
+    "en": "スペシャル勧誘記念ログインボーナス～渡辺 曜～",
+    "jp": "スペシャル勧誘記念ログインボーナス～渡辺 曜～"
+  },
+  "10062": {
+    "en": "スペシャル勧誘記念ログインボーナス～西木野真姫～",
+    "jp": "スペシャル勧誘記念ログインボーナス～西木野真姫～"
+  },
+  "20000": {
+    "en": "Subscription Login Bonus",
+    "jp": "サブスク用ログインボーナス"
+  },
+  "20001": {
+    "en": "Operation: Slump Escape! Login Bonus",
+    "jp": "スランプ脱出大作戦！ ログインボーナス"
+  },
+  "20002": {
+    "en": "April 2023 (Event): μ's Login Bonus",
+    "jp": "23年04月：イベント_μ's_ログインボーナス"
+  },
+  "20003": {
+    "en": "May 2023 (Event): Basic",
+    "jp": "23年05月：イベント_簡易"
+  },
+  "20004": {
+    "en": "May 2023 (Event): Aqours Login Bonus",
+    "jp": "23年05月：イベント_Aqours_ログインボーナス"
+  },
+  "20005": {
+    "en": "May 2023 (Event): Basic",
+    "jp": "23年05月：イベント_簡易"
+  },
+  "20006": {
+    "en": "June 2023 (Event A): Login Bonus",
+    "jp": "23年06月：イベントA_ログインボーナス"
+  },
+  "20007": {
+    "en": "June 2023 (Event): Basic",
+    "jp": "23年06月：イベント_簡易"
+  },
+  "20008": {
+    "en": "June 2023 (Event B): Login Bonus",
+    "jp": "23年06月：イベントB_ログインボーナス"
+  },
+  "20009": {
+    "en": "July 2023 (Event A): Login Bonus",
+    "jp": "23年07月：イベントA_ログインボーナス"
+  },
+  "20010": {
+    "en": "July 2023 (Event): Basic",
+    "jp": "23年07月：イベント_簡易"
+  },
+  "20011": {
+    "en": "July 2023 (Event B): Login Bonus",
+    "jp": "23年07月：イベントB_ログインボーナス"
+  },
+  "20012": {
+    "en": "July 2023 (Event): Basic",
+    "jp": "23年07月：イベント_簡易"
+  },
+  "20013": {
+    "en": "August 2023 (Event A): Login Bonus",
+    "jp": "23年08月：イベントA_ログインボーナス"
+  },
+  "20014": {
+    "en": "August 2023 (Event): Basic",
+    "jp": "23年08月：イベント_簡易"
+  },
+  "20015": {
+    "en": "August 2023 (Event B): Login Bonus",
+    "jp": "23年08月：イベントB_ログインボーナス"
+  },
+  "20016": {
+    "en": "August 2023 (Event): Basic",
+    "jp": "23年08月：イベント_簡易"
+  },
+  "20017": {
+    "en": "September 2023 (Event A): Login Bonus",
+    "jp": "23年09月：イベントA_ログインボーナス"
+  },
+  "20018": {
+    "en": "September 2023 (Event): Basic",
+    "jp": "23年09月：イベント_簡易"
+  },
+  "20019": {
+    "en": "September 2023 (Event B): Login Bonus",
+    "jp": "23年09月：イベントB_ログインボーナス"
+  },
+  "20020": {
+    "en": "September 2023 (Event): Basic",
+    "jp": "23年09月：イベント_簡易"
+  },
+  "20021": {
+    "en": "October 2023 (Event A): Login Bonus",
+    "jp": "23年10月：イベントA_ログインボーナス"
+  },
+  "20022": {
+    "en": "October 2023 (Event): Basic (Early October)",
+    "jp": "23年10月：イベント_簡易(上旬)"
+  },
+  "20023": {
+    "en": "October 2023 (Event B): Login Bonus",
+    "jp": "23年10月：イベントB_ログインボーナス"
+  },
+  "20024": {
+    "en": "October 2023 (Event): Basic (Late October)",
+    "jp": "23年10月：イベント_簡易(下旬)"
+  },
+  "20025": {
+    "en": "October 2023 (Event A): Login Bonus",
+    "jp": "23年11月：イベントA_ログインボーナス"
+  },
+  "20026": {
+    "en": "November 2023 (Event): Basic (Early October) Login Bonus",
+    "jp": "23年11月：イベント_簡易(上旬)_ログインボーナス"
+  },
+  "20027": {
+    "en": "November 2023 (Event B): Login Bonus",
+    "jp": "23年11月：イベントB_ログインボーナス"
+  },
+  "20028": {
+    "en": "November 2023 (Event): Basic (Late November) Login Bonus",
+    "jp": "23年11月：イベント_簡易(下旬)_ログインボーナス"
+  },
+  "20029": {
+    "en": "December 2023 (Event A): Login Bonus",
+    "jp": "23年12月：イベントA_ログインボーナス"
+  },
+  "20030": {
+    "en": "December 2023 (Event): Basic (Early December) Login Bonus",
+    "jp": "23年12月：イベント_簡易(上旬)_ログインボーナス"
+  },
+  "20031": {
+    "en": "December 2023 (Event B): Login Bonus",
+    "jp": "23年12月：イベントB_ログインボーナス"
+  },
+  "20032": {
+    "en": "December 2023 (Event): Basic (Late December) Login Bonus",
+    "jp": "23年12月：イベント_簡易(下旬)_ログインボーナス"
+  },
+  "20033": {
+    "en": "January 2024 (Event A): Login Bonus",
+    "jp": "24年01月：イベントA_ログインボーナス"
+  },
+  "20034": {
+    "en": "January, 2024: Simple (Early)_Login Bonus",
+    "jp": "24年01月：イベント_簡易(上旬)_ログインボーナス"
+  },
+  "20035": {
+    "en": "January, 2024: Event B_Login Bonus",
+    "jp": "24年01月：イベントB_ログインボーナス"
+  },
+  "20036": {
+    "en": "January, 2024: Simple (Late)_Login Bonus",
+    "jp": "24年01月：イベント_簡易(下旬)_ログインボーナス"
+  },
+  "20037": {
+    "en": "February, 2024 : Event A_Login Bonus",
+    "jp": "24年02月：イベントA_ログインボーナス"
+  },
+  "20038": {
+    "en": "February, 2024 : Event_Simple (Early)_Login Bonus",
+    "jp": "24年02月：イベント_簡易(上旬)_ログインボーナス"
+  },
+  "20039": {
+    "en": "February 2024 (Event B): Login Bonus",
+    "jp": "24年02月：イベントB_ログインボーナス"
+  },
+  "20040": {
+    "en": "February 2024 (Event): Basic (Late February) Login Bonus",
+    "jp": "24年02月：イベント_簡易(下旬)_ログインボーナス"
+  },
+  "20041": {
+    "en": "March 2024 (Event B): Login Bonus",
+    "jp": "24年03月：イベントB_ログインボーナス"
+  },
+  "30001": {
+    "en": "Honoka's Birthday Login Bonus",
+    "jp": "穂乃果ちゃんお誕生日記念ログインボーナス"
+  },
+  "30002": {
+    "en": "Eli's Birthday Login Bonus",
+    "jp": "絵里ちゃんお誕生日記念ログインボーナス"
+  },
+  "30003": {
+    "en": "Kotori's Birthday Login Bonus",
+    "jp": "ことりちゃんお誕生日記念ログインボーナス"
+  },
+  "30004": {
+    "en": "Umi's Birthday Commemorative Login Bonus",
+    "jp": "海未ちゃんお誕生日記念ログインボーナス"
+  },
+  "30005": {
+    "en": "Rin's Birthday Login Bonus",
+    "jp": "凛ちゃんお誕生日記念ログインボーナス"
+  },
+  "30006": {
+    "en": "Maki's Birthday Login Bonus"
+  },
+  "30007": {
+    "en": "Nozomi's Birthday Login Bonus",
+    "jp": "希ちゃんお誕生日記念ログインボーナス"
+  },
+  "30008": {
+    "en": "Hanayo's Birthday Login Bonus",
+    "jp": "花陽ちゃんお誕生日記念ログインボーナス"
+  },
+  "30009": {
+    "en": "Nico's Birthday Login Bonus",
+    "jp": "にこちゃんお誕生日記念ログインボーナス"
+  },
+  "30010": {
+    "en": "Chika's Birthday Login Bonus",
+    "jp": "千歌ちゃんお誕生日記念ログインボーナス"
+  },
+  "30011": {
+    "en": "Riko's Birthday Login Bonus",
+    "jp": "梨子ちゃんお誕生日記念ログインボーナス"
+  },
+  "30012": {
+    "en": "Kanan's Birthday Login Bonus",
+    "jp": "果南ちゃんお誕生日記念ログインボーナス"
+  },
+  "30013": {
+    "en": "Dia's Birthday Login Bonus",
+    "jp": "ダイヤちゃんお誕生日記念ログインボーナス"
+  },
+  "30014": {
+    "en": "You's Birthday Login Bonus"
+  },
+  "30015": {
+    "en": "Yoshiko's Birthday Login Bonus",
+    "jp": "善子ちゃんお誕生日記念ログインボーナス"
+  },
+  "30016": {
+    "en": "Hanamaru's Birthday Login Bonus",
+    "jp": "花丸ちゃんお誕生日記念ログインボーナス"
+  },
+  "30017": {
+    "en": "Mari's Birthday Login Bonus",
+    "jp": "鞠莉ちゃんお誕生日記念ログインボーナス"
+  },
+  "30018": {
+    "en": "Ruby's Birthday Login Bonus",
+    "jp": "ルビィちゃんお誕生日記念ログインボーナス"
+  },
+  "30019": {
+    "en": "Ayumu's Birthday Login Bonus",
+    "jp": "歩夢ちゃんお誕生日記念ログインボーナス"
+  },
+  "30020": {
+    "en": "Kasumi's Birthday Login Bonus",
+    "jp": "かすみちゃんお誕生日記念ログインボーナス"
+  },
+  "30021": {
+    "en": "Shizuku's Birthday Login Bonus"
+  },
+  "30022": {
+    "en": "Karin's Birthday Login Bonus",
+    "jp": "果林ちゃんお誕生日記念ログインボーナス"
+  },
+  "30023": {
+    "en": "Ai's Birthday Login Bonus",
+    "jp": "愛ちゃんお誕生日記念ログインボーナス"
+  },
+  "30024": {
+    "en": "Kanata's Birthday Login Bonus",
+    "jp": "彼方ちゃんお誕生日記念ログインボーナス"
+  },
+  "30025": {
+    "en": "Setsuna's Birthday Login Bonus",
+    "jp": "せつ菜ちゃんお誕生日記念ログインボーナス"
+  },
+  "30026": {
+    "en": "Emma's Birthday Login Bonus",
+    "jp": "エマちゃんお誕生日記念ログインボーナス"
+  },
+  "30027": {
+    "en": "Rina's Birthday Login Bonus",
+    "jp": "璃奈ちゃんお誕生日記念ログインボーナス"
+  },
+  "30028": {
+    "en": "Shioriko's Birthday Login Bonus",
+    "jp": "栞子ちゃんお誕生日記念ログインボーナス"
+  },
+  "30029": {
+    "en": "Mia's Birthday Login Bonus",
+    "jp": "ミアちゃんお誕生日記念ログインボーナス"
+  },
+  "30030": {
+    "en": "Lanzhu's Birthday Login Bonus",
+    "jp": "嵐珠ちゃんお誕生日記念ログインボーナス"
+  },
+  "30031": {
+    "en": "Kanon's Birthday Login Bonus",
+    "jp": "かのんちゃんお誕生日記念ログインボーナス"
+  },
+  "30032": {
+    "en": "Keke's Birthday Login Bonus",
+    "jp": "可可ちゃんお誕生日記念ログインボーナス"
+  },
+  "30033": {
+    "en": "Chisato's Birthday Login Bonus",
+    "jp": "千砂都ちゃんお誕生日記念ログインボーナス"
+  },
+  "30034": {
+    "en": "Sumire's Birthday Login Bonus",
+    "jp": "すみれちゃんお誕生日記念ログインボーナス"
+  },
+  "30035": {
+    "en": "Ren's Birthday Login Bonus",
+    "jp": "恋ちゃんお誕生日記念ログインボーナス"
+  },
+  "30036": {
+    "en": "Kinako's Birthday Login Bonus"
+  },
+  "30037": {
+    "en": "Mei's Birthday Login Bonus",
+    "jp": "メイちゃんお誕生日記念ログインボーナス"
+  },
+  "30038": {
+    "en": "Shiki's Birthday Login Bonus",
+    "jp": "四季ちゃんお誕生日記念ログインボーナス"
+  },
+  "30039": {
+    "en": "Natsumi's Birthday Login Bonus",
+    "jp": "夏美ちゃんお誕生日記念ログインボーナス"
+  },
+  "30040": {
+    "en": "Riko's Birthday Login Bonus",
+    "jp": "梨子ちゃんお誕生日記念ログインボーナス"
+  },
+  "30041": {
+    "en": "Margarete's Birthday Login Bonus",
+    "jp": "マルガレーテちゃんお誕生日記念ログインボーナス"
+  },
+  "30042": {
+    "en": "Tomari's Birthday Login Bonus",
+    "jp": "冬毬ちゃんお誕生日記念ログインボーナス"
+  },
+  "40001": {
+    "en": "Daily Login Bonus 1",
+    "jp": "毎日ログボ_1"
+  },
+  "40002": {
+    "en": "Daily Login Bonus 2",
+    "jp": "毎日ログボ_2"
+  },
+  "40003": {
+    "en": "Daily Login Bonus 3",
+    "jp": "毎日ログボ_3"
+  },
+  "40004": {
+    "en": "Daily Login Bonus 4",
+    "jp": "毎日ログボ_4"
+  },
+  "40005": {
+    "en": "Daily Login Bonus 5",
+    "jp": "毎日ログボ_5"
+  },
+  "40006": {
+    "en": "Daily Login Bonus 6",
+    "jp": "毎日ログボ_6"
+  },
+  "40007": {
+    "en": "Daily Login Bonus 7",
+    "jp": "毎日ログボ_7"
+  },
+  "40008": {
+    "en": "Daily Login Bonus 8",
+    "jp": "毎日ログボ_8"
+  },
+  "40009": {
+    "en": "Daily Login Bonus 9",
+    "jp": "毎日ログボ_9"
+  },
+  "40010": {
+    "en": "Daily Login Bonus 10",
+    "jp": "毎日ログボ_10"
+  },
+  "40011": {
+    "en": "Daily Login Bonus 11",
+    "jp": "毎日ログボ_11"
+  },
+  "40012": {
+    "en": "Daily Login Bonus 12",
+    "jp": "毎日ログボ_12"
+  },
+  "40013": {
+    "en": "Daily Login Bonus 13",
+    "jp": "毎日ログボ_13"
+  },
+  "40014": {
+    "en": "Daily Login Bonus 14",
+    "jp": "毎日ログボ_14"
+  },
+  "40015": {
+    "en": "Daily Login Bonus 15",
+    "jp": "毎日ログボ_15"
+  },
+  "40016": {
+    "en": "Daily Login Bonus 16",
+    "jp": "毎日ログボ_16"
+  },
+  "40017": {
+    "en": "Daily Login Bonus 17",
+    "jp": "毎日ログボ_17"
+  },
+  "40018": {
+    "en": "Daily Login Bonus 18",
+    "jp": "毎日ログボ_18"
+  },
+  "40019": {
+    "en": "Daily Login Bonus 19",
+    "jp": "毎日ログボ_19"
+  },
+  "40020": {
+    "en": "Daily Login Bonus 20",
+    "jp": "毎日ログボ_20"
+  },
+  "40021": {
+    "en": "Daily Login Bonus 21",
+    "jp": "毎日ログボ_21"
+  },
+  "40022": {
+    "en": "Daily Login Bonus 22",
+    "jp": "毎日ログボ_22"
+  },
+  "40023": {
+    "en": "Daily Login Bonus 23",
+    "jp": "毎日ログボ_23"
+  },
+  "40024": {
+    "en": "Daily Login Bonus 24",
+    "jp": "毎日ログボ_24"
+  },
+  "40025": {
+    "en": "Daily Login Bonus 25",
+    "jp": "毎日ログボ_25"
+  },
+  "40026": {
+    "en": "Daily Login Bonus 26",
+    "jp": "毎日ログボ_26"
+  },
+  "40027": {
+    "en": "Daily Login Bonus 27",
+    "jp": "毎日ログボ_27"
+  },
+  "40028": {
+    "en": "Daily Login Bonus 28",
+    "jp": "毎日ログボ_28"
+  },
+  "40029": {
+    "en": "Daily Login Bonus 29",
+    "jp": "毎日ログボ_29"
+  },
+  "40030": {
+    "en": "Daily Login Bonus 30",
+    "jp": "毎日ログボ_30"
+  },
+  "40031": {
+    "en": "Daily Login Bonus 31",
+    "jp": "毎日ログボ_31"
+  },
+  "40032": {
+    "en": "Daily Login Bonus 32",
+    "jp": "毎日ログボ_32"
+  },
+  "40033": {
+    "en": "Daily Login Bonus 33",
+    "jp": "毎日ログボ_33"
+  },
+  "40034": {
+    "en": "Daily Login Bonus 34",
+    "jp": "毎日ログボ_34"
+  },
+  "40035": {
+    "en": "Daily Login Bonus 35",
+    "jp": "毎日ログボ_35"
+  },
+  "40036": {
+    "en": "Daily Login Bonus 36",
+    "jp": "毎日ログボ_36"
+  },
+  "40037": {
+    "en": "Daily Login Bonus 37",
+    "jp": "毎日ログボ_37"
+  },
+  "40038": {
+    "en": "Daily Login Bonus 38",
+    "jp": "毎日ログボ_38"
+  },
+  "40039": {
+    "en": "Daily Login Bonus 39",
+    "jp": "毎日ログボ_39"
+  },
+  "40040": {
+    "en": "Daily Login Bonus 40",
+    "jp": "毎日ログボ_40"
+  },
+  "40041": {
+    "en": "Daily Login Bonus 41",
+    "jp": "毎日ログボ_41"
+  },
+  "40042": {
+    "en": "Daily Login Bonus 42",
+    "jp": "毎日ログボ_42"
+  },
+  "40043": {
+    "en": "Daily Login Bonus 43",
+    "jp": "毎日ログボ_43"
+  },
+  "40044": {
+    "en": "Daily Login Bonus 44",
+    "jp": "毎日ログボ_44"
+  },
+  "40045": {
+    "en": "Daily Login Bonus 45",
+    "jp": "毎日ログボ_45"
+  },
+  "40046": {
+    "en": "Daily Login Bonus 46",
+    "jp": "毎日ログボ_46"
+  },
+  "40047": {
+    "en": "Daily Login Bonus 47",
+    "jp": "毎日ログボ_47"
+  },
+  "40048": {
+    "en": "Daily Login Bonus 48",
+    "jp": "毎日ログボ_48"
+  },
+  "40049": {
+    "en": "Daily Login Bonus 49",
+    "jp": "毎日ログボ_49"
+  },
+  "40050": {
+    "en": "Daily Login Bonus 50",
+    "jp": "毎日ログボ_50"
+  },
+  "40051": {
+    "en": "Daily Login Bonus 51",
+    "jp": "毎日ログボ_51"
+  },
+  "40052": {
+    "en": "Daily Login Bonus 52",
+    "jp": "毎日ログボ_52"
+  },
+  "40053": {
+    "en": "Daily Login Bonus 53",
+    "jp": "毎日ログボ_53"
+  },
+  "40054": {
+    "en": "Daily Login Bonus 54",
+    "jp": "毎日ログボ_54"
+  },
+  "40055": {
+    "en": "Daily Login Bonus 55",
+    "jp": "毎日ログボ_55"
+  },
+  "40056": {
+    "en": "Daily Login Bonus 56",
+    "jp": "毎日ログボ_56"
+  },
+  "40057": {
+    "en": "Daily Login Bonus 57",
+    "jp": "毎日ログボ_57"
+  },
+  "40058": {
+    "en": "Daily Login Bonus 58",
+    "jp": "毎日ログボ_58"
+  },
+  "40059": {
+    "en": "Daily Login Bonus 59",
+    "jp": "毎日ログボ_59"
+  },
+  "40060": {
+    "en": "Daily Login Bonus 60",
+    "jp": "毎日ログボ_60"
+  },
+  "40061": {
+    "en": "Daily Login Bonus 61",
+    "jp": "毎日ログボ_61"
+  },
+  "40062": {
+    "en": "Daily Login Bonus 62",
+    "jp": "毎日ログボ_62"
+  },
+  "40063": {
+    "en": "Daily Login Bonus 63",
+    "jp": "毎日ログボ_63"
+  },
+  "40064": {
+    "en": "Daily Login Bonus 64",
+    "jp": "毎日ログボ_64"
+  },
+  "40065": {
+    "en": "Daily Login Bonus 65",
+    "jp": "毎日ログボ_65"
+  },
+  "40066": {
+    "en": "Daily Login Bonus 66",
+    "jp": "毎日ログボ_66"
+  },
+  "40067": {
+    "en": "Daily Login Bonus 67",
+    "jp": "毎日ログボ_67"
+  },
+  "40068": {
+    "en": "Daily Login Bonus 68",
+    "jp": "毎日ログボ_68"
+  },
+  "40069": {
+    "en": "Daily Login Bonus 69",
+    "jp": "毎日ログボ_69"
+  },
+  "40070": {
+    "en": "Daily Login Bonus 70",
+    "jp": "毎日ログボ_70"
+  },
+  "40071": {
+    "en": "Daily Login Bonus 71",
+    "jp": "毎日ログボ_71"
+  },
+  "40072": {
+    "en": "Daily Login Bonus 72",
+    "jp": "毎日ログボ_72"
+  },
+  "40073": {
+    "en": "Daily Login Bonus 73",
+    "jp": "毎日ログボ_73"
+  },
+  "40074": {
+    "en": "Daily Login Bonus 74",
+    "jp": "毎日ログボ_74"
+  },
+  "40075": {
+    "en": "Daily Login Bonus 75",
+    "jp": "毎日ログボ_75"
+  },
+  "40076": {
+    "en": "Daily Login Bonus 76",
+    "jp": "毎日ログボ_76"
+  },
+  "40077": {
+    "en": "Daily Login Bonus 77",
+    "jp": "毎日ログボ_77"
+  },
+  "40078": {
+    "en": "Daily Login Bonus 78",
+    "jp": "毎日ログボ_78"
+  },
+  "40079": {
+    "en": "Daily Login Bonus 79",
+    "jp": "毎日ログボ_79"
+  },
+  "40080": {
+    "en": "Daily Login Bonus 80",
+    "jp": "毎日ログボ_80"
+  },
+  "40081": {
+    "en": "Daily Login Bonus 81",
+    "jp": "毎日ログボ_81"
+  },
+  "40082": {
+    "en": "Daily Login Bonus 82",
+    "jp": "毎日ログボ_82"
+  },
+  "40083": {
+    "en": "Daily Login Bonus 83",
+    "jp": "毎日ログボ_83"
+  },
+  "40084": {
+    "en": "Daily Login Bonus 84",
+    "jp": "毎日ログボ_84"
+  },
+  "40085": {
+    "en": "Daily Login Bonus 85",
+    "jp": "毎日ログボ_85"
+  },
+  "40086": {
+    "en": "Daily Login Bonus 86",
+    "jp": "毎日ログボ_86"
+  },
+  "40087": {
+    "en": "Daily Login Bonus 87",
+    "jp": "毎日ログボ_87"
+  },
+  "40088": {
+    "en": "Daily Login Bonus 88",
+    "jp": "毎日ログボ_88"
+  },
+  "40089": {
+    "en": "Daily Login Bonus 89",
+    "jp": "毎日ログボ_89"
+  },
+  "40090": {
+    "en": "Daily Login Bonus 90",
+    "jp": "毎日ログボ_90"
+  },
+  "40091": {
+    "en": "Daily Login Bonus 91",
+    "jp": "毎日ログボ_91"
+  },
+  "40092": {
+    "en": "Daily Login Bonus 92",
+    "jp": "毎日ログボ_92"
+  },
+  "40093": {
+    "en": "Daily Login Bonus 93",
+    "jp": "毎日ログボ_93"
+  },
+  "40094": {
+    "en": "Daily Login Bonus 94",
+    "jp": "毎日ログボ_94"
+  },
+  "40095": {
+    "en": "Daily Login Bonus 95",
+    "jp": "毎日ログボ_95"
+  },
+  "40096": {
+    "en": "Daily Login Bonus 96",
+    "jp": "毎日ログボ_96"
+  },
+  "40097": {
+    "en": "Daily Login Bonus 97",
+    "jp": "毎日ログボ_97"
+  },
+  "40098": {
+    "en": "Daily Login Bonus 98",
+    "jp": "毎日ログボ_98"
+  },
+  "40099": {
+    "en": "Daily Login Bonus 99",
+    "jp": "毎日ログボ_99"
+  },
+  "40100": {
+    "en": "Daily Login Bonus 00",
+    "jp": "毎日ログボ_00"
+  },
+  "40101": {
+    "en": "Daily Login Bonus 01",
+    "jp": "毎日ログボ_01"
+  },
+  "40102": {
+    "en": "Daily Login Bonus 02",
+    "jp": "毎日ログボ_02"
+  },
+  "40103": {
+    "en": "Daily Login Bonus 03",
+    "jp": "毎日ログボ_03"
+  },
+  "40104": {
+    "en": "Daily Login Bonus 04",
+    "jp": "毎日ログボ_04"
+  },
+  "40105": {
+    "en": "Daily Login Bonus 05",
+    "jp": "毎日ログボ_05"
+  },
+  "40106": {
+    "en": "Daily Login Bonus 06",
+    "jp": "毎日ログボ_06"
+  },
+  "40107": {
+    "en": "Daily Login Bonus 07",
+    "jp": "毎日ログボ_07"
+  },
+  "40108": {
+    "en": "Daily Login Bonus 08",
+    "jp": "毎日ログボ_08"
+  },
+  "40109": {
+    "en": "Daily Login Bonus 09",
+    "jp": "毎日ログボ_09"
+  },
+  "40110": {
+    "en": "Daily Login Bonus 10",
+    "jp": "毎日ログボ_10"
+  },
+  "40111": {
+    "en": "Daily Login Bonus 11",
+    "jp": "毎日ログボ_11"
+  },
+  "40112": {
+    "en": "Daily Login Bonus 12",
+    "jp": "毎日ログボ_12"
+  },
+  "40113": {
+    "en": "Daily Login Bonus 13",
+    "jp": "毎日ログボ_13"
+  },
+  "40114": {
+    "en": "Daily Login Bonus 14",
+    "jp": "毎日ログボ_14"
+  },
+  "40115": {
+    "en": "Daily Login Bonus 15",
+    "jp": "毎日ログボ_15"
+  },
+  "40116": {
+    "en": "Daily Login Bonus 16",
+    "jp": "毎日ログボ_16"
+  },
+  "40117": {
+    "en": "Daily Login Bonus 17",
+    "jp": "毎日ログボ_17"
+  },
+  "40118": {
+    "en": "Daily Login Bonus 18",
+    "jp": "毎日ログボ_18"
+  },
+  "40119": {
+    "en": "Daily Login Bonus 19",
+    "jp": "毎日ログボ_19"
+  },
+  "40120": {
+    "en": "Daily Login Bonus 20",
+    "jp": "毎日ログボ_20"
+  },
+  "40121": {
+    "en": "Daily Login Bonus 21",
+    "jp": "毎日ログボ_21"
+  },
+  "40122": {
+    "en": "Daily Login Bonus 22",
+    "jp": "毎日ログボ_22"
+  },
+  "40123": {
+    "en": "Daily Login Bonus 23",
+    "jp": "毎日ログボ_23"
+  },
+  "40124": {
+    "en": "Daily Login Bonus 24",
+    "jp": "毎日ログボ_24"
+  },
+  "40125": {
+    "en": "Daily Login Bonus 25",
+    "jp": "毎日ログボ_25"
+  },
+  "40126": {
+    "en": "Daily Login Bonus 26",
+    "jp": "毎日ログボ_26"
+  },
+  "40127": {
+    "en": "Daily Login Bonus 27",
+    "jp": "毎日ログボ_27"
+  },
+  "40128": {
+    "en": "Daily Login Bonus 28",
+    "jp": "毎日ログボ_28"
+  },
+  "40129": {
+    "en": "Daily Login Bonus 29",
+    "jp": "毎日ログボ_29"
+  },
+  "40130": {
+    "en": "Daily Login Bonus 30",
+    "jp": "毎日ログボ_30"
+  },
+  "40131": {
+    "en": "Daily Login Bonus 31",
+    "jp": "毎日ログボ_31"
+  },
+  "40132": {
+    "en": "Daily Login Bonus 32",
+    "jp": "毎日ログボ_32"
+  },
+  "40133": {
+    "en": "Daily Login Bonus 33",
+    "jp": "毎日ログボ_33"
+  },
+  "40134": {
+    "en": "Daily Login Bonus 34",
+    "jp": "毎日ログボ_34"
+  },
+  "40135": {
+    "en": "Daily Login Bonus 35",
+    "jp": "毎日ログボ_35"
+  },
+  "40136": {
+    "en": "Daily Login Bonus 36",
+    "jp": "毎日ログボ_36"
+  },
+  "40137": {
+    "en": "Daily Login Bonus 37",
+    "jp": "毎日ログボ_37"
+  },
+  "40138": {
+    "en": "Daily Login Bonus 38",
+    "jp": "毎日ログボ_38"
+  },
+  "40139": {
+    "en": "Daily Login Bonus 39",
+    "jp": "毎日ログボ_39"
+  },
+  "40140": {
+    "en": "Daily Login Bonus 40",
+    "jp": "毎日ログボ_40"
+  },
+  "40141": {
+    "en": "Daily Login Bonus 41",
+    "jp": "毎日ログボ_41"
+  },
+  "40142": {
+    "en": "Daily Login Bonus 42",
+    "jp": "毎日ログボ_42"
+  },
+  "40143": {
+    "en": "Daily Login Bonus 43",
+    "jp": "毎日ログボ_43"
+  },
+  "40144": {
+    "en": "Daily Login Bonus 44",
+    "jp": "毎日ログボ_44"
+  },
+  "40145": {
+    "en": "Daily Login Bonus 45",
+    "jp": "毎日ログボ_45"
+  },
+  "40146": {
+    "en": "Daily Login Bonus 46",
+    "jp": "毎日ログボ_46"
+  },
+  "40147": {
+    "en": "Daily Login Bonus 47",
+    "jp": "毎日ログボ_47"
+  },
+  "40148": {
+    "en": "Daily Login Bonus 48",
+    "jp": "毎日ログボ_48"
+  },
+  "40149": {
+    "en": "Daily Login Bonus 49",
+    "jp": "毎日ログボ_49"
+  },
+  "40150": {
+    "en": "Daily Login Bonus 50",
+    "jp": "毎日ログボ_50"
+  },
+  "40151": {
+    "en": "Daily Login Bonus 51",
+    "jp": "毎日ログボ_51"
+  },
+  "40152": {
+    "en": "Daily Login Bonus 52",
+    "jp": "毎日ログボ_52"
+  },
+  "40153": {
+    "en": "Daily Login Bonus 53",
+    "jp": "毎日ログボ_53"
+  },
+  "40154": {
+    "en": "Daily Login Bonus 54",
+    "jp": "毎日ログボ_54"
+  },
+  "40155": {
+    "en": "Daily Login Bonus 55",
+    "jp": "毎日ログボ_55"
+  },
+  "40156": {
+    "en": "Daily Login Bonus 56",
+    "jp": "毎日ログボ_56"
+  },
+  "40157": {
+    "en": "Daily Login Bonus 57",
+    "jp": "毎日ログボ_57"
+  },
+  "40158": {
+    "en": "Daily Login Bonus 58",
+    "jp": "毎日ログボ_58"
+  },
+  "40159": {
+    "en": "Daily Login Bonus 59",
+    "jp": "毎日ログボ_59"
+  },
+  "40160": {
+    "en": "Daily Login Bonus 60",
+    "jp": "毎日ログボ_60"
+  },
+  "40161": {
+    "en": "Daily Login Bonus 61",
+    "jp": "毎日ログボ_61"
+  },
+  "40162": {
+    "en": "Daily Login Bonus 62",
+    "jp": "毎日ログボ_62"
+  },
+  "40163": {
+    "en": "Daily Login Bonus 63",
+    "jp": "毎日ログボ_63"
+  },
+  "40164": {
+    "en": "Daily Login Bonus 64",
+    "jp": "毎日ログボ_64"
+  },
+  "40165": {
+    "en": "Daily Login Bonus 65",
+    "jp": "毎日ログボ_65"
+  },
+  "40166": {
+    "en": "Daily Login Bonus 66",
+    "jp": "毎日ログボ_66"
+  },
+  "40167": {
+    "en": "Daily Login Bonus 67",
+    "jp": "毎日ログボ_67"
+  },
+  "40168": {
+    "en": "Daily Login Bonus 68",
+    "jp": "毎日ログボ_68"
+  },
+  "40169": {
+    "en": "Daily Login Bonus 69",
+    "jp": "毎日ログボ_69"
+  },
+  "40170": {
+    "en": "Daily Login Bonus 70",
+    "jp": "毎日ログボ_70"
+  },
+  "40171": {
+    "en": "Daily Login Bonus 71",
+    "jp": "毎日ログボ_71"
+  },
+  "40172": {
+    "en": "Daily Login Bonus 72",
+    "jp": "毎日ログボ_72"
+  },
+  "40173": {
+    "en": "Daily Login Bonus 73",
+    "jp": "毎日ログボ_73"
+  }
+}
