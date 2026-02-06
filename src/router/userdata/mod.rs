@@ -454,7 +454,7 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
     })
 }
 
-fn webui_login_token(token: &str) -> Option<String> {
+pub fn webui_login_token(token: &str) -> Option<String> {
     let uid = DATABASE.lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).unwrap_or_default();
     if uid == String::new() || token.is_empty() {
         return None;

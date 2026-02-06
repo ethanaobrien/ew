@@ -342,3 +342,38 @@ pub fn list_items(_req: HttpRequest) -> HttpResponse {
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(ITEM.clone()))
 }
+
+pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
+    let token = get_login_token(&req);
+    if token.is_none() {
+        return error("Not logged in");
+    }
+    let key = userdata::webui_login_token(&token.unwrap());
+    if key.is_some() {
+        return error("Not logged in");
+    }
+    let key = key.unwrap();
+    let mut user = userdata::get_acc_home(&key);
+    
+    for item in ITEM.entries() {
+        let id = item.0.parse::<i32>().unwrap_or(0);
+        let data = item.1;
+        if id == 0 {
+            continue;
+        }
+        items::gift_item_basic(id, items::LIMIT_ITEMS, data["reward_type"].as_i32().unwrap(), "You have cheated. Here are \"gifts\"", &mut user);
+    }
+    
+    userdata::save_acc_home(&key, user);
+
+    let resp = object!{
+        result: "OK"
+    };
+    
+    HttpResponse::Ok()
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        //.insert_header(("Access-Control-Allow-Credentials", "true"))
+        .insert_header(ContentType::json())
+        .body(json::stringify(resp))
+    
+}

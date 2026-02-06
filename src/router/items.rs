@@ -66,10 +66,10 @@ pub fn check_for_region(user: &mut JsonValue, headers: &HeaderMap) {
 
 // true - limit reached
 // false - all good
-const GIFT_LIMIT: usize = 100000;
-const LIMIT_ITEMS: i64 = 200000000;
-const LIMIT_COINS: i64 = 2000000000;
-const LIMIT_PRIMOGEMS: i64 = 1000000;
+pub const GIFT_LIMIT: usize = 100000;
+pub const LIMIT_ITEMS: i64 = 200000000;
+pub const LIMIT_COINS: i64 = 2000000000;
+pub const LIMIT_PRIMOGEMS: i64 = 1000000;
 
 fn give(array: &mut JsonValue, shop_id: &str, master_item_id: i64, limit: i64, count_id: &str, count: i64, default_push: JsonValue) -> bool {
     for data in array.members_mut() {

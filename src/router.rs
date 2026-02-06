@@ -199,6 +199,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/startLoginbonus" => webui::start_loginbonus(req, body),
             "/api/webui/import" => webui::import(req, body),
             "/api/webui/set_time" => webui::set_time(req, body),
+            "/api/webui/cheat" => webui::cheat(req, body),
             _ => api_req(req, body).await
         }
     } else {
