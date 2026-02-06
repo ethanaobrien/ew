@@ -72,48 +72,46 @@ const LIMIT_COINS: i64 = 2000000000;
 const LIMIT_PRIMOGEMS: i64 = 1000000;
 
 pub fn give_shop(master_item_id: i64, count: i64, user: &mut JsonValue) -> bool {
-    let mut has = false;
     for dataa in user["shop_list"].members_mut() {
         if dataa["master_shop_item_id"].as_i64().unwrap() == master_item_id {
-            has = true;
-            let new_amount = dataa["count"].as_i64().unwrap() + count;
-            if new_amount > LIMIT_ITEMS {
+            if dataa["count"].as_i64().unwrap() >= LIMIT_ITEMS {
                 return true;
             }
+            let mut new_amount = dataa["count"].as_i64().unwrap() + count;
+            if new_amount > LIMIT_ITEMS {
+                new_amount = LIMIT_ITEMS;
+            }
             dataa["count"] = new_amount.into();
-            break;
+            return false;
         }
     }
-    if !has {
-        user["shop_list"].push(object!{
-            master_shop_item_id: master_item_id,
-            count: count
-        }).unwrap();
-    }
+    user["shop_list"].push(object!{
+        master_shop_item_id: master_item_id,
+        count: count
+    }).unwrap();
     false
 }
 
 pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
-    let mut has = false;
     for dataa in user["item_list"].members_mut() {
         if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
-            has = true;
-            let new_amount = dataa["amount"].as_i64().unwrap() + amount;
-            if new_amount > LIMIT_ITEMS {
+            if dataa["amount"].as_i64().unwrap() >= LIMIT_ITEMS {
                 return true;
             }
+            let mut new_amount = dataa["amount"].as_i64().unwrap() + amount;
+            if new_amount > LIMIT_ITEMS {
+                new_amount = LIMIT_ITEMS;
+            }
             dataa["amount"] = new_amount.into();
-            break;
+            return false;
         }
     }
-    if !has {
-        user["item_list"].push(object!{
-            id: master_item_id,
-            master_item_id: master_item_id,
-            amount: amount,
-            expire_date_time: null
-        }).unwrap();
-    }
+    user["item_list"].push(object!{
+        id: master_item_id,
+        master_item_id: master_item_id,
+        amount: amount,
+        expire_date_time: null
+    }).unwrap();
     false
 }
 
@@ -175,24 +173,23 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missi
             }
         }
     }
-    let mut has = false;
     for data in user["point_list"].members_mut() {
         if data["type"].as_i64().unwrap() == master_item_id {
-            has = true;
-            let new_amount = data["amount"].as_i64().unwrap() + amount;
-            if new_amount > LIMIT_COINS {
+            if data["amount"].as_i64().unwrap() >= LIMIT_COINS {
                 return true;
             }
+            let mut new_amount = data["amount"].as_i64().unwrap() + amount;
+            if new_amount > LIMIT_COINS {
+                new_amount = LIMIT_COINS;
+            }
             data["amount"] = new_amount.into();
-            break;
+            return false;
         }
     }
-    if !has {
-        user["point_list"].push(object!{
-            type: master_item_id,
-            amount: amount
-        }).unwrap();
-    }
+    user["point_list"].push(object!{
+        type: master_item_id,
+        amount: amount
+    }).unwrap();
     false
 }
 
@@ -210,11 +207,14 @@ pub fn use_itemm(master_item_id: i64, amount: i64, user: &mut JsonValue) {
 }
 
 pub fn give_primogems(amount: i64, user: &mut JsonValue) -> bool {
-    let new_amount = user["gem"]["free"].as_i64().unwrap() + amount;
-    if new_amount > LIMIT_PRIMOGEMS {
+    if user["gem"]["free"].as_i64().unwrap() >= LIMIT_PRIMOGEMS {
         return true;
     }
-    
+    let new_amount = user["gem"]["free"].as_i64().unwrap() + amount;
+    if user["gem"]["free"].as_i64().unwrap() > LIMIT_PRIMOGEMS {
+        user["gem"]["free"] = LIMIT_PRIMOGEMS.into();
+    }
+
     user["gem"]["free"] = new_amount.into();
     false
 }
