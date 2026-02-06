@@ -71,48 +71,54 @@ const LIMIT_ITEMS: i64 = 200000000;
 const LIMIT_COINS: i64 = 2000000000;
 const LIMIT_PRIMOGEMS: i64 = 1000000;
 
-pub fn give_shop(master_item_id: i64, count: i64, user: &mut JsonValue) -> bool {
-    for dataa in user["shop_list"].members_mut() {
-        if dataa["master_shop_item_id"].as_i64().unwrap() == master_item_id {
-            if dataa["count"].as_i64().unwrap() >= LIMIT_ITEMS {
+fn give(array: &mut JsonValue, shop_id: &str, master_item_id: i64, limit: i64, count_id: &str, count: i64, default_push: JsonValue) -> bool {
+    for data in array.members_mut() {
+        if data[shop_id].as_i64().unwrap() == master_item_id {
+            if data[count_id].as_i64().unwrap() >= limit {
                 return true;
             }
-            let mut new_amount = dataa["count"].as_i64().unwrap() + count;
-            if new_amount > LIMIT_ITEMS {
-                new_amount = LIMIT_ITEMS;
+            let mut new_amount = data[count_id].as_i64().unwrap() + count;
+            if new_amount > limit {
+                new_amount = limit;
             }
-            dataa["count"] = new_amount.into();
+            data[count_id] = new_amount.into();
             return false;
         }
     }
-    user["shop_list"].push(object!{
-        master_shop_item_id: master_item_id,
-        count: count
-    }).unwrap();
+    array.push(default_push).unwrap();
     false
 }
 
-pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
-    for dataa in user["item_list"].members_mut() {
-        if dataa["master_item_id"].as_i64().unwrap() == master_item_id {
-            if dataa["amount"].as_i64().unwrap() >= LIMIT_ITEMS {
-                return true;
-            }
-            let mut new_amount = dataa["amount"].as_i64().unwrap() + amount;
-            if new_amount > LIMIT_ITEMS {
-                new_amount = LIMIT_ITEMS;
-            }
-            dataa["amount"] = new_amount.into();
-            return false;
+pub fn give_shop(master_item_id: i64, count: i64, user: &mut JsonValue) -> bool {
+    give(
+        &mut user["shop_list"],
+        "master_shop_item_id",
+        master_item_id,
+        LIMIT_ITEMS,
+        "count",
+        count,
+        object!{
+            master_shop_item_id: master_item_id,
+            count: count
         }
-    }
-    user["item_list"].push(object!{
-        id: master_item_id,
-        master_item_id: master_item_id,
-        amount: amount,
-        expire_date_time: null
-    }).unwrap();
-    false
+    )
+}
+
+pub fn give_item(master_item_id: i64, amount: i64, user: &mut JsonValue) -> bool {
+    give(
+        &mut user["item_list"],
+        "master_item_id",
+        master_item_id,
+        LIMIT_ITEMS,
+        "amount",
+        amount,
+        object!{
+            id: master_item_id,
+            master_item_id: master_item_id,
+            amount: amount,
+            expire_date_time: null
+        }
+    )
 }
 
 pub fn use_item(item: &JsonValue, multiplier: i64, user: &mut JsonValue) {
@@ -173,24 +179,18 @@ pub fn give_points(master_item_id: i64, amount: i64, user: &mut JsonValue, missi
             }
         }
     }
-    for data in user["point_list"].members_mut() {
-        if data["type"].as_i64().unwrap() == master_item_id {
-            if data["amount"].as_i64().unwrap() >= LIMIT_COINS {
-                return true;
-            }
-            let mut new_amount = data["amount"].as_i64().unwrap() + amount;
-            if new_amount > LIMIT_COINS {
-                new_amount = LIMIT_COINS;
-            }
-            data["amount"] = new_amount.into();
-            return false;
+    give(
+        &mut user["point_list"],
+        "type",
+        master_item_id,
+        LIMIT_COINS,
+        "amount",
+        amount,
+        object!{
+            type: master_item_id,
+            amount: amount
         }
-    }
-    user["point_list"].push(object!{
-        type: master_item_id,
-        amount: amount
-    }).unwrap();
-    false
+    )
 }
 
 pub fn use_itemm(master_item_id: i64, amount: i64, user: &mut JsonValue) {
