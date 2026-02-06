@@ -5,6 +5,7 @@ use actix_web::{
     http::header::ContentType
 };
 use json::{JsonValue, object};
+use lazy_static::lazy_static;
 
 use crate::include_file;
 use crate::router::{userdata, items};
@@ -37,7 +38,6 @@ fn error(msg: &str) -> HttpResponse {
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
-    
 }
 
 pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
@@ -324,12 +324,21 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
         .body(json::stringify(resp))
 }
 
+lazy_static! {
+    static ref ITEM: JsonValue = json::parse(&include_file!("src/router/webui/item.json")).unwrap();
+    static ref LOGIN_BONUS: JsonValue = json::parse(&include_file!("src/router/webui/login_bonus.json")).unwrap();
+}
+
 pub fn list_login_bonus(_req: HttpRequest) -> HttpResponse {
-
-    let resp = json::parse(&include_file!("src/router/webui/login_bonus.json")).unwrap();
-
     HttpResponse::Ok()
         .content_type(ContentType::json())
         //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
-        .body(json::stringify(resp))
+        .body(json::stringify(LOGIN_BONUS.clone()))
+}
+
+pub fn list_items(_req: HttpRequest) -> HttpResponse {
+    HttpResponse::Ok()
+        .content_type(ContentType::json())
+        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
+        .body(json::stringify(ITEM.clone()))
 }
