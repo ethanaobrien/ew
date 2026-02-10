@@ -43,24 +43,34 @@ pub fn get_region(headers: &HeaderMap) -> bool {
 }
 
 pub fn check_for_region(user: &mut JsonValue, headers: &HeaderMap) {
-    let items = if user["data"]["updated_value_list"]["item_list"].is_empty() {user["data"]["item_list"].clone()} else {user["data"]["updated_value_list"]["item_list"].clone()};
-    let is_jp = get_region(headers);
-    if !is_jp || items.is_empty() {
+    // returns true if jp
+    if !get_region(headers) {
         return;
     }
-    let mut id = 0;
-    for (i, data) in items.members().enumerate() {
-        if data["master_item_id"] == 15570008 {
-            id = i + 1;
-            break;
-        }
-    }
-    if id > 0 {
-        if user["data"]["updated_value_list"]["item_list"].is_empty() {
-            user["data"]["item_list"].array_remove(id - 1);
-        } else {
-            user["data"]["updated_value_list"]["item_list"].array_remove(id - 1);
-        }
+
+    let targets = [
+        15570001, 15570002, 15570003, 15570004,
+        15570005, 15570006, 15570007, 15570008
+    ];
+
+    let list = if !user["data"]["updated_value_list"]["item_list"].is_empty() {
+        &mut user["data"]["updated_value_list"]["item_list"]
+    } else {
+        &mut user["data"]["item_list"]
+    };
+
+    let mut to_remove: Vec<usize> = list
+        .members()
+        .enumerate()
+        .filter(|(_, item)| {
+            targets.contains(&item["master_item_id"].as_i64().unwrap_or(0))
+        })
+        .map(|(i, _)| i)
+        .collect();
+
+    to_remove.reverse();
+    for i in to_remove {
+        list.array_remove(i);
     }
 }
 

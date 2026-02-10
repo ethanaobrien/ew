@@ -349,7 +349,7 @@ pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
         return error("Not logged in");
     }
     let key = userdata::webui_login_token(&token.unwrap());
-    if key.is_some() {
+    if key.is_none() {
         return error("Not logged in");
     }
     let key = key.unwrap();
@@ -375,5 +375,4 @@ pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
         //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
-    
 }
