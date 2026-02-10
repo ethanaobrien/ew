@@ -1,4 +1,14 @@
 {
+  "1": {
+    "reward_type": 4,
+    "en": "Coin",
+    "jp": "Coin"
+  },
+  "1000": {
+    "reward_type": 1,
+    "en": "Primogem (idk what its actually called)",
+    "jp": "Primogem (idk what its actually called)"
+  },
   "15010001": {
     "reward_type": 3,
     "en": "1x Scout Ticket",
