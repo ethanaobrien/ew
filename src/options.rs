@@ -57,7 +57,10 @@ pub struct Args {
     pub en_android_asset_hash: String,
 
     #[arg(long, default_value = "", help = "Asset hash for JP Android client.")]
-    pub jp_android_asset_hash: String
+    pub jp_android_asset_hash: String,
+
+    #[arg(long, default_value = "", help = "Path to image assets.")]
+    pub image_asset_path: String
 }
 
 pub fn get_args() -> Args {

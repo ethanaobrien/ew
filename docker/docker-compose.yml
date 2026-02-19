@@ -1,4 +1,3 @@
-version: '3'
 services:
   sif2-ew:
     image: sif2-ew:latest
@@ -14,6 +13,7 @@ services:
       HIDDEN: false # Will disable the webui
       DISABLE_IMPORTS: false # Will disable account imports
       DISABLE_EXPORTS: false # Will disable account exports
+      #IMAGE_ASSET_PATH: /images/ # Images for cards in webui (will default to the public server)
 
       # Everything below is for the "Help" page
       #ANDROID_GLOBAL: "link.to/patched/android/global.apk"
@@ -25,4 +25,7 @@ services:
       - 8080:8080
     volumes:
       - ./data:/data
+      # You can download from https://git.ethanthesleepy.one/ethanaobrien/ew-webui/releases/download/images/card-thumbnails.zip
+      # No, you should not have a nested folder EXAMPLE: `images/FILENAME.webp`
+      #- ./images:/images
     restart: unless-stopped
