@@ -1,3 +1,6 @@
 [submodule "assets"]
 	path = assets
 	url = https://git.ethanthesleepy.one/ethanaobrien/sif2-runtime-files
+[submodule "webui"]
+	path = webui
+	url = https://git.ethanthesleepy.one/ethanaobrien/ew-webui

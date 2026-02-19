@@ -5,20 +5,7 @@ use actix_web::{
     http::header::ContentType
 };
 use std::fs;
-use crate::include_file;
 
-#[get("/index.css")]
-async fn css(_req: HttpRequest) -> HttpResponse {
-    HttpResponse::Ok()
-        .insert_header(ContentType(mime::TEXT_CSS))
-        .body(include_file!("webui/dist/index.css"))
-}
-#[get("/index.js")]
-async fn js(_req: HttpRequest) -> HttpResponse {
-    HttpResponse::Ok()
-        .insert_header(ContentType(mime::APPLICATION_JAVASCRIPT_UTF_8))
-        .body(include_file!("webui/dist/index.js"))
-}
 #[get("/maintenance/maintenance.json")]
 async fn maintenance(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()

@@ -27,7 +27,8 @@ cbc = { version = "0.1.2", features = ["alloc"] }
 aes = "0.8.4"
 pem = "3.0.6"
 ureq = "3.1.4"
-include_dir = {version = "0.7.4", optional = true }
+mime_guess = "2.0.5"
+include_dir = "0.7.4"
 
 [target.aarch64-linux-android.dependencies]
 jni = { version = "0.21.1", features = ["invocation", "default"], optional = true }
@@ -41,7 +42,7 @@ cc = "1.0"
 
 # To enable this library you MUST comment out lib block below and add --features library
 [features]
-library = ["jni", "objc2", "objc2-foundation", "include_dir"]
+library = ["jni", "objc2", "objc2-foundation"]
 
 #[lib]
 #crate-type = ["cdylib"]

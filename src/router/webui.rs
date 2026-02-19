@@ -6,11 +6,10 @@ use actix_web::{
 };
 use json::{JsonValue, object};
 use lazy_static::lazy_static;
+use include_dir::{include_dir, Dir};
 
 use crate::include_file;
 use crate::router::{userdata, items};
-
-//pub const FRONTEND_DOMAIN: &str = "https://sif2-api.ethanthesleepy.one";
 
 fn get_config() -> JsonValue {
     let args = crate::get_args();
@@ -35,7 +34,6 @@ fn error(msg: &str) -> HttpResponse {
         message: msg
     };
     HttpResponse::Ok()
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -53,8 +51,6 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
-        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=Strict; HttpOnly", token.unwrap())))
         .body(json::stringify(resp))
 }
@@ -79,7 +75,6 @@ pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
 
@@ -101,8 +96,6 @@ pub fn user(req: HttpRequest) -> HttpResponse {
         data: data
     };
     HttpResponse::Ok()
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
-        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -116,8 +109,6 @@ pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
     let resp = userdata::webui_start_loginbonus(body["bonus_id"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
-        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -131,8 +122,6 @@ pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
     let resp = userdata::set_server_time(body["timestamp"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
-        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
@@ -146,34 +135,44 @@ pub fn logout(req: HttpRequest) -> HttpResponse {
         result: "OK"
     };
     HttpResponse::Found()
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
-        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .insert_header(("Set-Cookie", "ew_token=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT"))
-        .insert_header(("Location", "/"))
+        .insert_header(("Location", "/login.html"))
         .body(json::stringify(resp))
 }
 
+static WEBUI_ASSETS: Dir<'_> = include_dir!("webui/");
+
 pub fn main(req: HttpRequest) -> HttpResponse {
-    if req.path() == "/" {
+    let path = if req.path().ends_with("/") { format!("{}index.html", req.path()) } else { req.path().to_string() };
+    let mut chars = path.chars();
+    chars.next();
+    let path = chars.as_str();
+
+    if path == "login.html" {
         let token = get_login_token(&req);
         if token.is_some() {
             let data = userdata::webui_get_user(&token.unwrap());
             if data.is_some() {
                 return HttpResponse::Found()
-                    .insert_header(("Location", "/home/"))
+                    .insert_header(("Location", "/account.html"))
                     .body("");
             }
         }
     }
-    if req.path() != "/" && req.path() != "/home/" && req.path() != "/import/" && req.path() != "/help/" {
-        return HttpResponse::Found()
-            .insert_header(("Location", "/"))
-            .body("");
+
+    if let Some(file) = WEBUI_ASSETS.get_file(&path) {
+        let body = file.contents();
+        let mime = mime_guess::from_path(path).first_or_octet_stream();
+        return HttpResponse::Ok()
+            .insert_header(ContentType(mime))
+            .insert_header(("content-length", body.len()))
+            .body(body);
     }
-    HttpResponse::Ok()
-        .insert_header(ContentType::html())
-        .body(include_file!("webui/dist/index.html"))
+
+    HttpResponse::Found()
+        .insert_header(("Location", "/"))
+        .body("")
 }
 
 pub fn export(req: HttpRequest) -> HttpResponse {
@@ -213,7 +212,6 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
 
@@ -244,7 +242,6 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
         return HttpResponse::Ok()
             .content_type(ContentType::json())
-            //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
             .body(json::stringify(resp));
     }
 
@@ -268,7 +265,6 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
     if page_items.is_empty() {
         return HttpResponse::NotFound()
-            //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
             .finish();
     }
 
@@ -281,7 +277,6 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
 
@@ -306,7 +301,6 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
 
     if page_items.is_empty() {
         return HttpResponse::NotFound()
-            //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
             .finish();
     }
 
@@ -320,7 +314,6 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(resp))
 }
 
@@ -332,14 +325,12 @@ lazy_static! {
 pub fn list_login_bonus(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(LOGIN_BONUS.clone()))
 }
 
 pub fn list_items(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
         .body(json::stringify(ITEM.clone()))
 }
 
@@ -379,8 +370,6 @@ pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
     };
 
     HttpResponse::Ok()
-        //.insert_header(("Access-Control-Allow-Origin", FRONTEND_DOMAIN))
-        //.insert_header(("Access-Control-Allow-Credentials", "true"))
         .insert_header(ContentType::json())
         .body(json::stringify(resp))
 }
