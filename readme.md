@@ -5,27 +5,15 @@ A (mostly functioning) server for Love Live! School idol festival 2 MIRACLE LIVE
 
 ## Building
 
-### Linux
-
-#### Requirements
-- [perl](https://www.perl.org/get.html) (This is normally pre-installed)
-- [rust](https://www.rust-lang.org/tools/install)
-- [npm](https://www.npmjs.com/)
-- The [libssl-dev](https://packages.debian.org/buster/libssl-dev) package. This will vary across distros.
-
-`apt install -y npm libssl-dev perl`
-
-### Windows
-
-#### Requirements
-- [Strawberry Perl](https://strawberryperl.com/)
+### Requirements
 - [rust](https://www.rust-lang.org/tools/install)
 
 ### Packaging/Running
 
-**Build npm:**
-`cd webui && npm install && npm run build`
-
-**Build Rust:**
+**Build:**
 Debug: `cargo run`
 Release: `cargo build --release`
+
+**Docker:**
+`docker build --tag ew --file docker/Dockerfile .`
+Will create docker image with tag "ew"
