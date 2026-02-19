@@ -1,4 +1,4 @@
-use jni::Env;
+use jni::JNIEnv;
 use jni::objects::{JClass};
 use jni::sys::{jstring, jboolean};
 use std::thread;
@@ -28,14 +28,14 @@ macro_rules! log_to_logcat {
 
 #[unsafe(no_mangle)]
 extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_startServer<'local>(
-    mut env: Env<'local>,
+    mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     data_path: JString<'local>,
     easter: jboolean
 ) -> jstring {
-    crate::runtime::set_easter_mode(easter);
+    crate::runtime::set_easter_mode(easter != 0);
 
-    let data_path = data_path.to_string();
+    let data_path: String = env.get_string(&data_path).unwrap().into();
     crate::runtime::update_data_path(&data_path);
 
     let output = env.new_string(String::from("Azunyannnn~")).unwrap();
@@ -47,7 +47,7 @@ extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_startServer<'l
 }
 
 #[unsafe(no_mangle)]
-extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_stopServer<'local>(mut env: Env<'local>, _class: JClass<'local>) -> jstring {
+extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_stopServer<'local>(env: JNIEnv<'local>, _class: JClass<'local>) -> jstring {
     stop_server();
     let output = env.new_string(String::from("I like Yui!")).unwrap();
     output.into_raw()
@@ -55,6 +55,6 @@ extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_stopServer<'lo
 
 
 #[unsafe(no_mangle)]
-extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_setEasterMode<'local>(_env: Env<'local>, _class: JClass<'local>, easter: jboolean) {
-    crate::runtime::set_easter_mode(easter);
+extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_setEasterMode<'local>(_env: JNIEnv<'local>, _class: JClass<'local>, easter: jboolean) {
+    crate::runtime::set_easter_mode(easter != 0);
 }
