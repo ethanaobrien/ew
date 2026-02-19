@@ -18,11 +18,6 @@ jobs:
         shell: bash
         run: curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain stable --profile minimal
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-
       - name: Install android NDK
         id: setup-ndk
         uses: https://github.com/nttld/setup-ndk@v1
@@ -32,12 +27,6 @@ jobs:
       - name: Create out directory
         run: |
           mkdir out
-
-      - name: Build webui
-        run: |
-          cd webui
-          npm install
-          npm run build
 
       - name: Install cargo ndk
         shell: bash

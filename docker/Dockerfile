@@ -3,17 +3,11 @@ FROM docker.io/library/debian:latest AS builder
 # First - build
 
 RUN apt update && apt install -y curl libssl-dev perl git gcc make
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash
-RUN apt update && apt install -y nodejs
 RUN curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain stable --profile minimal
 
 WORKDIR /ew/
 
 COPY ./ ./
-
-WORKDIR /ew/webui/
-
-RUN npm i && npm run build
 
 WORKDIR /ew/
 
