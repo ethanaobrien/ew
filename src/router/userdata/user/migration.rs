@@ -1,7 +1,7 @@
 use rusqlite::params;
 use json::{JsonValue, object};
 use crate::router::userdata;
-use rand::Rng;
+use rand::RngExt;
 use sha2::{Digest, Sha256};
 use base64::{Engine as _, engine::general_purpose};
 

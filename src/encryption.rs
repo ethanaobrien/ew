@@ -1,5 +1,5 @@
 use base64::{Engine as _, engine::general_purpose};
-use rand::Rng;
+use rand::RngExt;
 use aes::cipher::BlockEncryptMut;
 use aes::cipher::{block_padding::Pkcs7, BlockDecryptMut, KeyIvInit};
 

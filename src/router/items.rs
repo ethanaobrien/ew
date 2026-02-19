@@ -1,5 +1,5 @@
 use json::{array, object, JsonValue};
-use rand::Rng;
+use rand::RngExt;
 use actix_web::{HttpRequest, http::header::{HeaderMap, HeaderValue}};
 use crate::encryption;
 

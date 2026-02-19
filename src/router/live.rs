@@ -1,6 +1,6 @@
 use json::{object, array, JsonValue};
 use actix_web::{HttpRequest};
-use rand::Rng;
+use rand::RngExt;
 use lazy_static::lazy_static;
 
 use crate::router::{global, userdata, items, databases};

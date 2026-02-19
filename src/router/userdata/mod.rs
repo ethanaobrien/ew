@@ -3,7 +3,7 @@ pub mod user;
 use rusqlite::params;
 use lazy_static::lazy_static;
 use json::{JsonValue, array, object};
-use rand::Rng;
+use rand::RngExt;
 
 use crate::router::global;
 use crate::router::items;
@@ -430,7 +430,8 @@ pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
     let new_token = create_webui_token();
     
     DATABASE.lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(uid));
-    DATABASE.lock_and_exec("INSERT INTO webui (user_id, token, last_login) VALUES (?1, ?2, ?3)", params!(uid, new_token, global::timestamp()));
+    // This could overflow given enough time... though rusqlite doesnt currently support ToSql on a u64...... maybe someday
+    DATABASE.lock_and_exec("INSERT INTO webui (user_id, token, last_login) VALUES (?1, ?2, ?3)", params!(uid, new_token, global::timestamp() as i64));
     Ok(new_token)
 }
 

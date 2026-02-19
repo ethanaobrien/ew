@@ -1,6 +1,6 @@
 use json::{array, object, JsonValue};
 use actix_web::{HttpRequest};
-use rand::Rng;
+use rand::RngExt;
 
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;

@@ -1,6 +1,6 @@
 use json::{JsonValue, object, array};
 use actix_web::HttpRequest;
-use rand::Rng;
+use rand::RngExt;
 
 use crate::encryption;
 use crate::include_file;
