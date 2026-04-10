@@ -161,7 +161,9 @@ pub fn set_time(current_time: u64, uid: i64, max: bool) -> u64 {
         return current_time;
     }
     
-    let time_since_set = current_time - time_set;
+    let time_since_set = if current_time > time_set {
+        current_time - time_set
+    } else { 0 };
     return server_time + time_since_set;
 }
 
