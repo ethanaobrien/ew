@@ -1,4 +1,4 @@
-use json::{object, JsonValue};
+use jzon::{object, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::encryption;
@@ -6,7 +6,7 @@ use crate::router::{global, userdata, databases};
 
 pub fn read(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     let part = body["master_story_part_id"].as_i64().unwrap();
     let master_id = databases::STORY[part.to_string()]["masterStoryId"].as_i64().unwrap();

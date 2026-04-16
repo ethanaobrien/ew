@@ -1,4 +1,4 @@
-use json::{array, object, JsonValue};
+use jzon::{array, object, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::router::{global, userdata, items};
@@ -12,7 +12,7 @@ pub fn events(_req: HttpRequest) -> Option<JsonValue> {
 
 pub fn serial_code(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc_home(&key);
     
     let mut itemz = array![];

@@ -1,4 +1,4 @@
-use json::{object, JsonValue};
+use jzon::{object, JsonValue};
 use actix_web::{HttpRequest};
 
 pub fn location(_req: HttpRequest) -> Option<JsonValue> {

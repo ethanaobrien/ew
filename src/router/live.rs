@@ -1,4 +1,4 @@
-use json::{object, array, JsonValue};
+use jzon::{object, array, JsonValue};
 use actix_web::{HttpRequest};
 use rand::RngExt;
 use lazy_static::lazy_static;
@@ -9,7 +9,7 @@ use crate::router::clear_rate::live_completed;
 
 pub fn retire(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     live_retire(&key, &body);
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
@@ -238,7 +238,7 @@ fn start_live(login_token: &str, body: &JsonValue) {
 
 pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     start_live(&key, &body);
     Some(array![])
 }
@@ -532,7 +532,7 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
 
 pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     let key = global::get_login(req.headers(), body);
-    let body = json::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
     let user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     let mut user_missions = userdata::get_acc_missions(&key);

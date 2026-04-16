@@ -1,4 +1,4 @@
-use json::{object, JsonValue};
+use jzon::{object, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::router::{userdata, global, items, databases};
@@ -15,7 +15,7 @@ pub fn shop(req: HttpRequest) -> Option<JsonValue> {
 
 pub fn buy(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     let user_home = userdata::get_acc_home(&key);
     

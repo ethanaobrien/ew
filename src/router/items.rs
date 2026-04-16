@@ -1,4 +1,4 @@
-use json::{array, object, JsonValue};
+use jzon::{array, object, JsonValue};
 use rand::RngExt;
 use actix_web::{HttpRequest, http::header::{HeaderMap, HeaderValue}};
 use crate::encryption;
@@ -513,7 +513,7 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
 
 pub fn use_item_req(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     
     let item = &databases::ITEM_INFO[body["id"].to_string()];

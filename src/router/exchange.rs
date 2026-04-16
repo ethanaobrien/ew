@@ -1,4 +1,4 @@
-use json::{object, array, JsonValue};
+use jzon::{object, array, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::router::{global, userdata, items, databases};
@@ -10,7 +10,7 @@ pub fn exchange(_req: HttpRequest) -> Option<JsonValue> {
 
 pub fn exchange_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     let mut missions = userdata::get_acc_missions(&key);
     let mut chats = userdata::get_acc_chats(&key);

@@ -1,4 +1,4 @@
-use json::{array, JsonValue};
+use jzon::{array, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::router::{userdata, global};
@@ -6,7 +6,7 @@ use crate::encryption;
 
 pub fn tutorial(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
 
     if user["tutorial_step"].as_i32().unwrap() < 130 {

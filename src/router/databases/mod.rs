@@ -1,4 +1,4 @@
-use json::{array, object, JsonValue};
+use jzon::{array, object, JsonValue};
 use lazy_static::lazy_static;
 
 use crate::include_file;
@@ -6,7 +6,7 @@ use crate::include_file;
 lazy_static! {
     pub static ref STORY: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/story_part.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/story_part.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -14,7 +14,7 @@ lazy_static! {
     };
     pub static ref LOGIN_REWARDS: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/login_bonus_reward.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/login_bonus_reward.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -22,7 +22,7 @@ lazy_static! {
     };
     pub static ref SHOP_INFO: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/shop_item.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/shop_item.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -30,7 +30,7 @@ lazy_static! {
     };
     pub static ref CHATS: JsonValue = {
         let mut chats = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/chat_room.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/chat_room.json")).unwrap();
         for data in items.members() {
             if chats[data["masterChatId"].to_string()].is_null() {
                 chats[data["masterChatId"].to_string()] = object!{};
@@ -41,7 +41,7 @@ lazy_static! {
     };
     pub static ref CHAPTERS: JsonValue = {
         let mut chats = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/chat_chapter.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/chat_chapter.json")).unwrap();
         for data in items.members() {
             if chats[data["masterChatId"].to_string()].is_null() {
                 chats[data["masterChatId"].to_string()] = object!{};
@@ -52,7 +52,7 @@ lazy_static! {
     };
     pub static ref CHAPTERS_MASTER: JsonValue = {
         let mut chats = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/chat_chapter.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/chat_chapter.json")).unwrap();
         for data in items.members() {
             chats[data["chapterId"].to_string()] = data.clone();
         }
@@ -60,7 +60,7 @@ lazy_static! {
     };
     pub static ref EXCHANGE_LIST: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/exchange_item.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/exchange_item.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -68,7 +68,7 @@ lazy_static! {
     };
     pub static ref EXCHANGE_REWARD: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/exchange_item_reward.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/exchange_item_reward.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -76,21 +76,21 @@ lazy_static! {
     };
     pub static ref LIVE_LIST: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/live.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/live.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
         info
     };
     pub static ref LIVES: JsonValue = {
-        json::parse(&include_file!("src/router/databases/json/live.json")).unwrap()
+        jzon::parse(&include_file!("src/router/databases/json/live.json")).unwrap()
     };
     pub static ref MISSION_DATA: JsonValue = {
-        json::parse(&include_file!("src/router/databases/json/live_mission.json")).unwrap()
+        jzon::parse(&include_file!("src/router/databases/json/live_mission.json")).unwrap()
     };
     pub static ref MISSION_COMBO_DATA: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/live_mission_combo.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/live_mission_combo.json")).unwrap();
         for data in items.members() {
             info[data["masterMusicId"].to_string()] = data.clone();
         }
@@ -98,7 +98,7 @@ lazy_static! {
     };
     pub static ref MISSION_REWARD_DATA: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/live_mission_reward.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/live_mission_reward.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -106,7 +106,7 @@ lazy_static! {
     };
     pub static ref CARD_LIST: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/card.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/card.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -114,7 +114,7 @@ lazy_static! {
     };
     pub static ref LOTTERY_INFO: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/login_bonus.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/login_bonus.json")).unwrap();
         for data in items.members() {
             if info[data["id"].to_string()].is_null() {
                 info[data["id"].to_string()] = object!{
@@ -123,7 +123,7 @@ lazy_static! {
                 };
             }
         }
-        let days = json::parse(&include_file!("src/router/databases/json/login_bonus_reward_setting.json")).unwrap();
+        let days = jzon::parse(&include_file!("src/router/databases/json/login_bonus_reward_setting.json")).unwrap();
         for data in days.members() {
             if info[data["masterLoginBonusId"].to_string()].is_null() {
                 continue;
@@ -138,8 +138,8 @@ lazy_static! {
     };
     pub static ref CARDS: JsonValue = {
         let mut cardz = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/lottery_item.json")).unwrap();
-        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_item.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/lottery_item.json")).unwrap();
+        let items_global = jzon::parse(&include_file!("src/router/databases/json/global/lottery_item.json")).unwrap();
         for data in items.members() {
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = object!{};
@@ -159,8 +159,8 @@ lazy_static! {
     pub static ref POOL: JsonValue = {
         let mut cardz = object!{};
         let mut i2 = array![];
-        let items = json::parse(&include_file!("src/router/databases/json/lottery_item.json")).unwrap();
-        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_item.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/lottery_item.json")).unwrap();
+        let items_global = jzon::parse(&include_file!("src/router/databases/json/global/lottery_item.json")).unwrap();
         for data in items.members() {
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = array![];
@@ -182,8 +182,8 @@ lazy_static! {
     pub static ref RARITY: JsonValue = {
         let mut cardz = object!{};
         let mut i2 = array![];
-        let items = json::parse(&include_file!("src/router/databases/json/lottery_rarity.json")).unwrap();
-        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_rarity.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/lottery_rarity.json")).unwrap();
+        let items_global = jzon::parse(&include_file!("src/router/databases/json/global/lottery_rarity.json")).unwrap();
         for data in items.members() {
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = array![];
@@ -204,8 +204,8 @@ lazy_static! {
     };
     pub static ref LOTTERY: JsonValue = {
         let mut cardz = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/lottery.json")).unwrap();
-        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/lottery.json")).unwrap();
+        let items_global = jzon::parse(&include_file!("src/router/databases/json/global/lottery.json")).unwrap();
         for data in items.members() {
             cardz[data["id"].to_string()] = data.clone();
         }
@@ -218,8 +218,8 @@ lazy_static! {
     };
     pub static ref PRICE: JsonValue = {
         let mut cardz = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/lottery_price.json")).unwrap();
-        let items_global = json::parse(&include_file!("src/router/databases/json/global/lottery_price.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/lottery_price.json")).unwrap();
+        let items_global = jzon::parse(&include_file!("src/router/databases/json/global/lottery_price.json")).unwrap();
         for data in items.members() {
             if cardz[data["id"].to_string()].is_null() {
                 cardz[data["id"].to_string()] = object!{};
@@ -238,7 +238,7 @@ lazy_static! {
     };
     pub static ref MISSION_LIST: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/mission.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/mission.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -246,7 +246,7 @@ lazy_static! {
     };
     pub static ref CHARACTER_CHATS: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/mission.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/mission.json")).unwrap();
         for data in items.members() {
             if data["conditionValues"].len() != 1 || (data["conditionType"] != 50 && data["conditionType"] != 51) {
                 continue;
@@ -260,7 +260,7 @@ lazy_static! {
     };
     pub static ref MISSION_REWARD: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/mission_reward.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/mission_reward.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -268,7 +268,7 @@ lazy_static! {
     };
     pub static ref ITEM_INFO: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/item.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/item.json")).unwrap();
         for data in items.members() {
             info[data["id"].to_string()] = data.clone();
         }
@@ -276,7 +276,7 @@ lazy_static! {
     };
     pub static ref MUSIC: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/music.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/music.json")).unwrap();
         for live in LIVE_LIST.entries() {
             info[live.1["id"].to_string()] = loop {
                 let mut val = object!{};
@@ -293,7 +293,7 @@ lazy_static! {
     };
     pub static ref MUSIC_EN: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/global/music.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/global/music.json")).unwrap();
         for live in LIVE_LIST.entries() {
             info[live.1["id"].to_string()] = loop {
                 let mut val = object!{};
@@ -309,11 +309,11 @@ lazy_static! {
         info
     };
     pub static ref RANKS: JsonValue = {
-        json::parse(&include_file!("src/router/databases/json/user_rank.json")).unwrap()
+        jzon::parse(&include_file!("src/router/databases/json/user_rank.json")).unwrap()
     };
     pub static ref EVOLVE_COST: JsonValue = {
         let mut info = object!{};
-        let items = json::parse(&include_file!("src/router/databases/json/card_evolve.json")).unwrap();
+        let items = jzon::parse(&include_file!("src/router/databases/json/card_evolve.json")).unwrap();
         for data in items.members() {
             info[data["rarity"].to_string()] = data["price"].clone();
         }

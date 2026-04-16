@@ -1,4 +1,4 @@
-use json::{array, object, JsonValue};
+use jzon::{array, object, JsonValue};
 use actix_web::{HttpRequest};
 use rand::RngExt;
 
@@ -6,7 +6,7 @@ use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
 pub fn tutorial(_req: HttpRequest, body: String) -> Option<JsonValue> {
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let id = body["master_character_id"].to_string();
     let user = &id[id.len() - 2..].parse::<i32>().unwrap();
@@ -101,7 +101,7 @@ pub fn lottery(_req: HttpRequest) -> Option<JsonValue> {
 
 pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     //println!("lottery: {}", body);
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);

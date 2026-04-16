@@ -2,7 +2,7 @@ pub mod user;
 
 use rusqlite::params;
 use lazy_static::lazy_static;
-use json::{JsonValue, array, object};
+use jzon::{JsonValue, array, object};
 use rand::RngExt;
 
 use crate::router::global;
@@ -13,7 +13,7 @@ use crate::include_file;
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("userdata.db", setup_tables);
     static ref NEW_USER: JsonValue = {
-        json::parse(&include_file!("src/router/userdata/new_user.json")).unwrap()
+        jzon::parse(&include_file!("src/router/userdata/new_user.json")).unwrap()
     };
 }
 
@@ -107,13 +107,13 @@ fn generate_uid() -> i64 {
 }
 
 fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_missions: JsonValue, sif_cards: JsonValue) {
-    let home = json::stringify(user_home.clone());
-    let missions = json::stringify(user_missions.clone());
-    let cards = json::stringify(sif_cards.clone());
+    let home = jzon::stringify(user_home.clone());
+    let missions = jzon::stringify(user_missions.clone());
+    let cards = jzon::stringify(sif_cards.clone());
     
     DATABASE.lock_and_exec("INSERT INTO userdata (user_id, userdata, friend_request_disabled) VALUES (?1, ?2, ?3)", params!(
         uid,
-        json::stringify(user.clone()),
+        jzon::stringify(user.clone()),
         user["user"]["friend_request_disabled"].as_i32().unwrap()
     ));
     DATABASE.lock_and_exec("INSERT INTO userhome (user_id, userhome) VALUES (?1, ?2)", params!(
@@ -218,7 +218,7 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
     
     let result = DATABASE.lock_and_select(&format!("SELECT {} FROM {} WHERE user_id=?1", row, row), params!(key));
     
-    json::parse(&result.unwrap()).unwrap()
+    jzon::parse(&result.unwrap()).unwrap()
 }
 
 pub fn get_acc(auth_key: &str) -> JsonValue {
@@ -267,7 +267,7 @@ pub fn get_acc_eventlogin(auth_key: &str) -> JsonValue {
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
     let key = get_key(auth_key);
     
-    DATABASE.lock_and_exec(&format!("UPDATE {} SET {}=?1 WHERE user_id=?2", row, row), params!(json::stringify(data), key));
+    DATABASE.lock_and_exec(&format!("UPDATE {} SET {}=?1 WHERE user_id=?2", row, row), params!(jzon::stringify(data), key));
 }
 
 pub fn save_acc(auth_key: &str, data: JsonValue) {
@@ -318,7 +318,7 @@ pub fn get_name_and_rank(uid: i64) -> JsonValue {
         }
     }
     let result = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
-    let data = json::parse(&result.unwrap()).unwrap();
+    let data = jzon::parse(&result.unwrap()).unwrap();
     
     object!{
         user_name: data["user"]["name"].clone(),
@@ -338,7 +338,7 @@ pub fn get_acc_from_uid(uid: i64) -> JsonValue {
         return object!{"error": true}
     }
     let result = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
-    json::parse(&result.unwrap()).unwrap()
+    jzon::parse(&result.unwrap()).unwrap()
 }
 
 pub fn friend_request(uid: i64, requestor: i64) {
@@ -348,10 +348,10 @@ pub fn friend_request(uid: i64, requestor: i64) {
     }
     let uid = get_uid(&login_token);
     let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
-    let mut friends = json::parse(&friends.unwrap()).unwrap();
+    let mut friends = jzon::parse(&friends.unwrap()).unwrap();
     if !friends["pending_user_id_list"].contains(requestor) && friends["pending_user_id_list"].len() < crate::router::friend::FRIEND_LIMIT {
         friends["pending_user_id_list"].push(requestor).unwrap();
-        DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+        DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(jzon::stringify(friends), uid));
     }
 }
 
@@ -362,7 +362,7 @@ pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool, key: &st
     }
     let uid = get_uid(&login_token);
     let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
-    let mut friends = json::parse(&friends.unwrap()).unwrap();
+    let mut friends = jzon::parse(&friends.unwrap()).unwrap();
     let index = friends[key].members().position(|r| *r.to_string() == requestor.to_string());
     if index.is_some() {
         friends[key].array_remove(index.unwrap());
@@ -374,7 +374,7 @@ pub fn friend_request_approve(uid: i64, requestor: i64, accepted: bool, key: &st
     if accepted && !friends["friend_user_id_list"].contains(requestor) && friends["friend_user_id_list"].len() < crate::router::friend::FRIEND_LIMIT {
         friends["friend_user_id_list"].push(requestor).unwrap();
     }
-    DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+    DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(jzon::stringify(friends), uid));
 }
 
 pub fn friend_request_disabled(uid: i64) -> bool {
@@ -384,7 +384,7 @@ pub fn friend_request_disabled(uid: i64) -> bool {
     }
     let uid = get_uid(&login_token);
     let user = DATABASE.lock_and_select("SELECT userdata FROM userdata WHERE user_id=?1", params!(uid));
-    let user = json::parse(&user.unwrap()).unwrap();
+    let user = jzon::parse(&user.unwrap()).unwrap();
     user["user"]["friend_request_disabled"] == 1
 }
 
@@ -395,12 +395,12 @@ pub fn friend_remove(uid: i64, requestor: i64) {
     }
     let uid = get_uid(&login_token);
     let friends = DATABASE.lock_and_select("SELECT friends FROM friends WHERE user_id=?1", params!(uid));
-    let mut friends = json::parse(&friends.unwrap()).unwrap();
+    let mut friends = jzon::parse(&friends.unwrap()).unwrap();
     let index = friends["friend_user_id_list"].members().position(|r| *r.to_string() == requestor.to_string());
     if index.is_some() {
         friends["friend_user_id_list"].array_remove(index.unwrap());
     }
-    DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(json::stringify(friends), uid));
+    DATABASE.lock_and_exec("UPDATE friends SET friends=?1 WHERE user_id=?2", params!(jzon::stringify(friends), uid));
 }
 
 pub fn get_random_uids(count: i32) -> JsonValue {
@@ -545,10 +545,10 @@ pub fn export_user(token: &str) -> Option<JsonValue> {
     let login_token = webui_login_token(token)?;
 
     Some(object!{
-         userdata: json::stringify(get_acc(&login_token)),
-         userhome: json::stringify(get_acc_home(&login_token)),
-         missions: json::stringify(get_acc_missions(&login_token)),
-         sifcards: json::stringify(get_acc_sif(&login_token))
+         userdata: jzon::stringify(get_acc(&login_token)),
+         userhome: jzon::stringify(get_acc_home(&login_token)),
+         missions: jzon::stringify(get_acc_missions(&login_token)),
+         sifcards: jzon::stringify(get_acc_sif(&login_token))
     })
 }
 

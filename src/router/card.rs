@@ -1,4 +1,4 @@
-use json::{object, array, JsonValue};
+use jzon::{object, array, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::router::{userdata, global, items, databases};
@@ -54,7 +54,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
 
 pub fn reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     let mut clear_mission_ids = array![];
     
@@ -72,7 +72,7 @@ pub fn reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn skill_reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     let mut clear_mission_ids = array![];
     
@@ -90,7 +90,7 @@ pub fn skill_reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn evolve(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     let mut chats = userdata::get_acc_chats(&key);
     let mut missions = userdata::get_acc_missions(&key);

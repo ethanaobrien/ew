@@ -1,5 +1,5 @@
 use rusqlite::{Connection, ToSql};
-use json::{JsonValue, array};
+use jzon::{JsonValue, array};
 
 pub struct SQLite {
     path: String

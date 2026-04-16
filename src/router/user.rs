@@ -1,4 +1,4 @@
-use json::{array, object, JsonValue};
+use jzon::{array, object, JsonValue};
 use actix_web::{HttpRequest};
 use sha1::{Sha1, Digest};
 
@@ -8,7 +8,7 @@ use crate::include_file;
 
 pub fn deck(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     
     for (i, data) in user["deck_list"].clone().members().enumerate() {
@@ -50,7 +50,7 @@ pub fn user(req: HttpRequest) -> Option<JsonValue> {
 
 pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let mut user = userdata::get_acc_home(&key);
     let mut userr = userdata::get_acc(&key);
@@ -108,7 +108,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn user_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
     let mut user = userdata::get_acc(&key);
     
@@ -170,7 +170,7 @@ pub fn announcement(req: HttpRequest) -> Option<JsonValue> {
 }
 
 pub fn get_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let code = userdata::user::migration::get_acc_token(body["user_id"].as_i64()?);
     
@@ -181,7 +181,7 @@ pub fn get_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> 
 
 pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::get_acc(&key);
     
@@ -191,7 +191,7 @@ pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
 }
 
 pub fn verify_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
@@ -209,7 +209,7 @@ pub fn verify_migration_code(_req: HttpRequest, body: String) -> Option<JsonValu
     })
 }
 pub fn request_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
@@ -222,7 +222,7 @@ pub fn request_migration_code(_req: HttpRequest, body: String) -> Option<JsonVal
     })
 }
 pub fn migration(_req: HttpRequest, body: String) -> Option<JsonValue> {
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::get_name_and_rank(body["user_id"].to_string().parse::<i64>().unwrap());
     
@@ -231,7 +231,7 @@ pub fn migration(_req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn detail(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let friends = userdata::get_acc_friends(&key);
     
     let mut user_detail_list = array![];
@@ -252,7 +252,7 @@ pub fn sif(req: HttpRequest) -> Option<JsonValue> {
     
     // prevent duplicate data in the database
     if user["user"]["sif_user_id"].as_i64().unwrap_or(0) == 111111111 {
-        cards = json::parse(&include_file!("src/router/userdata/full_sif.json")).unwrap();
+        cards = jzon::parse(&include_file!("src/router/userdata/full_sif.json")).unwrap();
     }
 
     if items::give_gift_basic(8, 4293000525, 1, &mut user, &mut array![], &mut array![], &mut array![]) || items::give_gift_basic(8, 4293000521, 1, &mut user, &mut array![], &mut array![], &mut array![]) {
@@ -300,7 +300,7 @@ async fn npps4_req(sha_id: String) -> Option<JsonValue> {
         .body_mut()
         .read_to_string().ok()?;
 
-    json::parse(&body).ok()
+    jzon::parse(&body).ok()
 }
 
 fn clean_sif_data(current: &JsonValue) -> JsonValue {
@@ -318,7 +318,7 @@ fn clean_sif_data(current: &JsonValue) -> JsonValue {
 pub async fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
     let id = generate_passcode_sha1(body["sif_user_id"].to_string(), body["password"].to_string());
     let user_info = npps4_req(id).await;
@@ -356,7 +356,7 @@ pub fn getregisteredplatformlist(_req: HttpRequest, _body: String) -> Option<Jso
 
 pub fn initialize(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let mut user = userdata::get_acc(&key);
     let mut user2 = userdata::get_acc_home(&key);

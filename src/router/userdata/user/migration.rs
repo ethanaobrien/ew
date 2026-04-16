@@ -1,5 +1,5 @@
 use rusqlite::params;
-use json::{JsonValue, object};
+use jzon::{JsonValue, object};
 use crate::router::userdata;
 use rand::RngExt;
 use sha2::{Digest, Sha256};

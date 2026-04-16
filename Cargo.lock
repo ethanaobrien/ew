@@ -691,7 +691,7 @@ dependencies = [
  "include-flate-codegen",
  "include_dir",
  "jni",
- "json",
+ "jzon",
  "lazy_static",
  "libflate",
  "md5",
@@ -1197,10 +1197,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "json"
-version = "0.12.4"
+name = "jzon"
+version = "0.12.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "078e285eafdfb6c4b434e0d31e8cfcb5115b651496faca5749b88fafd4f23bfd"
+checksum = "17ab85f84ca42c5ec520e6f3c9966ba1fd62909ce260f8837e248857d2560509"
 
 [[package]]
 name = "language-tags"

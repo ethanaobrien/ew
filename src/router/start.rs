@@ -1,4 +1,4 @@
-use json::{JsonValue, object};
+use jzon::{JsonValue, object};
 use actix_web::{HttpRequest, http::header::HeaderValue};
 
 use crate::encryption;
@@ -17,7 +17,7 @@ fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
 }
 
 pub fn asset_hash(req: HttpRequest, body: String) -> Option<JsonValue> {
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     Some(object!{
         "asset_hash": get_asset_hash(&req, &body)
@@ -26,7 +26,7 @@ pub fn asset_hash(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
     
     println!("Signin from uid: {}", user["user"]["id"].clone());

@@ -1,4 +1,4 @@
-use json::{object, array, JsonValue};
+use jzon::{object, array, JsonValue};
 use actix_web::{HttpRequest, HttpResponse, http::header::ContentType};
 use rusqlite::params;
 use std::sync::Mutex;
@@ -74,7 +74,7 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
     }
     
     let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(id)).unwrap_or(String::from("[]"));
-    let scores = json::parse(&info).unwrap();
+    let scores = jzon::parse(&info).unwrap();
     
     let mut result = array![];
     let mut current = 0;
@@ -110,9 +110,9 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
     
     if added {
         if DATABASE.lock_and_select("SELECT live_id FROM scores WHERE live_id=?1", params!(id)).is_ok() {
-            DATABASE.lock_and_exec("UPDATE scores SET score_data=?1 WHERE live_id=?2", params!(json::stringify(result), id));
+            DATABASE.lock_and_exec("UPDATE scores SET score_data=?1 WHERE live_id=?2", params!(jzon::stringify(result), id));
         } else {
-            DATABASE.lock_and_exec("INSERT INTO scores (score_data, live_id) VALUES (?1, ?2)", params!(json::stringify(result), id));
+            DATABASE.lock_and_exec("INSERT INTO scores (score_data, live_id) VALUES (?1, ?2)", params!(jzon::stringify(result), id));
         }
     }
 }
@@ -225,11 +225,11 @@ pub async fn clearrate(_req: HttpRequest) -> Option<JsonValue> {
 }
 
 pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
     
     let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(live)).unwrap_or(String::from("[]"));
-    let scores = json::parse(&info).unwrap();
+    let scores = jzon::parse(&info).unwrap();
     
     let mut rank = array![];
     

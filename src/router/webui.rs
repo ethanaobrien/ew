@@ -4,7 +4,7 @@ use actix_web::{
     http::header::HeaderValue,
     http::header::ContentType
 };
-use json::{JsonValue, object};
+use jzon::{JsonValue, object};
 use lazy_static::lazy_static;
 use include_dir::{include_dir, Dir};
 use std::fs;
@@ -36,11 +36,11 @@ fn error(msg: &str) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let token = userdata::webui_login(body["uid"].as_i64().unwrap(), &body["password"].to_string());
     
     if token.is_err() {
@@ -53,14 +53,14 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType::json())
         .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=Strict; HttpOnly", token.unwrap())))
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
     if !get_config()["import"].as_bool().unwrap() {
         return error("Importing accounts is disabled on this server.");
     }
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     
     let result = userdata::webui_import_user(body);
     
@@ -76,7 +76,7 @@ pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn user(req: HttpRequest) -> HttpResponse {
@@ -98,7 +98,7 @@ pub fn user(req: HttpRequest) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
@@ -106,12 +106,12 @@ pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
     if token.is_none() {
         return error("Not logged in");
     }
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let resp = userdata::webui_start_loginbonus(body["bonus_id"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
@@ -119,12 +119,12 @@ pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
     if token.is_none() {
         return error("Not logged in");
     }
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let resp = userdata::set_server_time(body["timestamp"].as_i64().unwrap(), &token.unwrap());
     
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn logout(req: HttpRequest) -> HttpResponse {
@@ -139,7 +139,7 @@ pub fn logout(req: HttpRequest) -> HttpResponse {
         .insert_header(ContentType::json())
         .insert_header(("Set-Cookie", "ew_token=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT"))
         .insert_header(("Location", "/login.html"))
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 static WEBUI_ASSETS: Dir<'_> = include_dir!("webui/");
@@ -209,7 +209,7 @@ pub fn export(req: HttpRequest) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn server_info(_req: HttpRequest) -> HttpResponse {
@@ -232,7 +232,7 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 fn get_query_str(req: &HttpRequest, key: &str, def: &str) -> String {
@@ -252,7 +252,7 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
     let start = page * max;
 
-    let items = json::parse(&include_file!("src/router/webui/cards.json")).unwrap();
+    let items = jzon::parse(&include_file!("src/router/webui/cards.json")).unwrap();
 
     if all == "true" {
         let resp = object!{
@@ -262,7 +262,7 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
         return HttpResponse::Ok()
             .content_type(ContentType::json())
-            .body(json::stringify(resp));
+            .body(jzon::stringify(resp));
     }
 
     let mut filtered_items: Vec<_> = items.members().collect();
@@ -299,7 +299,7 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn get_music_info(req: HttpRequest) -> HttpResponse {
@@ -310,9 +310,9 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
     let start = page * max;
 
     let items = if lang == "EN" {
-        json::parse(&include_file!("src/router/databases/json/global/music.json")).unwrap()
+        jzon::parse(&include_file!("src/router/databases/json/global/music.json")).unwrap()
     } else {
-        json::parse(&include_file!("src/router/databases/json/music.json")).unwrap()
+        jzon::parse(&include_file!("src/router/databases/json/music.json")).unwrap()
     };
 
     let page_items: Vec<_> = items.members()
@@ -336,24 +336,24 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
 
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 lazy_static! {
-    static ref ITEM: JsonValue = json::parse(&include_file!("src/router/webui/item.json")).unwrap();
-    static ref LOGIN_BONUS: JsonValue = json::parse(&include_file!("src/router/webui/login_bonus.json")).unwrap();
+    static ref ITEM: JsonValue = jzon::parse(&include_file!("src/router/webui/item.json")).unwrap();
+    static ref LOGIN_BONUS: JsonValue = jzon::parse(&include_file!("src/router/webui/login_bonus.json")).unwrap();
 }
 
 pub fn list_login_bonus(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        .body(json::stringify(LOGIN_BONUS.clone()))
+        .body(jzon::stringify(LOGIN_BONUS.clone()))
 }
 
 pub fn list_items(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .content_type(ContentType::json())
-        .body(json::stringify(ITEM.clone()))
+        .body(jzon::stringify(ITEM.clone()))
 }
 
 pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
@@ -393,5 +393,5 @@ pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
 
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }

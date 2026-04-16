@@ -3,7 +3,7 @@ use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
 use sha1::Sha1;
 use substring::Substring;
-use json::{object, JsonValue};
+use jzon::{object, JsonValue};
 use hmac::{Hmac, Mac};
 use rusqlite::params;
 use lazy_static::lazy_static;
@@ -125,7 +125,7 @@ fn send(req: HttpRequest, resp: JsonValue) -> HttpResponse {
         .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
         .insert_header(("Vary", "Authorization,Accept-Encoding"))
         .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn not_found() -> HttpResponse {
@@ -139,11 +139,11 @@ pub fn not_found() -> HttpResponse {
         .insert_header(("Expires", "-1"))
         .insert_header(("Pragma", "no-cache"))
         .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .body(json::stringify(resp))
+        .body(jzon::stringify(resp))
 }
 
 pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let token = create_acc(&body["token"].to_string());
     
     let app_id = "232610769078541";
@@ -227,7 +227,7 @@ pub fn payment_ticket(req: HttpRequest) -> HttpResponse {
 }
 
 pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let password = decrypt_transfer_password(&body["migration_password"].to_string());
     
     let user = userdata::user::migration::get_acc_transfer(&body["migration_code"].to_string(), &password);
@@ -254,7 +254,7 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     
     let user = userdata::get_acc(&body["src_uuid"].to_string());
     //clear old token
@@ -320,7 +320,7 @@ pub fn migration_code(req: HttpRequest) -> HttpResponse {
 }
 
 pub fn migration_password_register(req: HttpRequest, body: String) -> HttpResponse {
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let mut uid = String::new();
     let blank_header = HeaderValue::from_static("");
     let auth_header = req.headers().get("Authorization").unwrap_or(&blank_header).to_str().unwrap_or("");

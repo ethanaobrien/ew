@@ -1,4 +1,4 @@
-use json::{JsonValue, object, array};
+use jzon::{JsonValue, object, array};
 use actix_web::HttpRequest;
 use rand::RngExt;
 
@@ -20,7 +20,7 @@ fn get_event_data(key: &str, event_id: u32) -> JsonValue {
     }
 
     if event[event_id.to_string()].is_empty() {
-        event[event_id.to_string()] = json::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
+        event[event_id.to_string()] = jzon::parse(&include_file!("src/router/userdata/new_user_event.json")).unwrap();
         if is_star_event {
             let mut ev = event[event_id.to_string()].clone();
             init_star_event(&mut ev);
@@ -101,7 +101,7 @@ pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
 
     let master_event_id = body["master_event_id"].as_u32().unwrap();
     let mut event = get_event_data(&key, master_event_id);
@@ -150,7 +150,7 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
     let user = userdata::get_acc(&key);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let master_event_id = body["master_event_id"].as_u32().unwrap();
 
     let mut event = get_event_data(&key, master_event_id);
@@ -174,7 +174,7 @@ pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> 
     let key = global::get_login(req.headers(), &body);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let master_event_id = body["master_event_id"].as_u32().unwrap();
 
     let mut event = get_event_data(&key, master_event_id);
@@ -192,7 +192,7 @@ pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let master_event_id = body["master_event_id"].as_u32().unwrap();
 
     let mut event = get_event_data(&key, master_event_id);
@@ -225,7 +225,7 @@ fn get_rank(event: u32, user_id: u64) -> u32 {
 
 pub async fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
     let body = &encryption::decrypt_packet(&body).unwrap();
-    let body = json::parse(&body).unwrap();
+    let body = jzon::parse(&body).unwrap();
     let master_event_id = body["master_event_id"].as_u32().unwrap();
     let scores = crate::router::event_ranking::get_scores_json().await[master_event_id as usize].clone();
     let mut rv = array![];
@@ -289,7 +289,7 @@ fn get_points(event_id: u32, user: &JsonValue) -> i64 {
 
 pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body_temp = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body_temp = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let event_id = if skipped {
         body_temp["master_event_id"].as_u32().unwrap()
     } else {
@@ -298,7 +298,7 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
 
     let mut resp = crate::router::live::live_end(&req, &body, skipped);
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut event = get_event_data(&key, event_id);
     let mut user = userdata::get_acc(&key);
 

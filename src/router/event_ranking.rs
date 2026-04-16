@@ -1,4 +1,4 @@
-use json::{object, array, JsonValue};
+use jzon::{object, array, JsonValue};
 use rusqlite::params;
 use std::sync::Mutex;
 use lazy_static::lazy_static;
@@ -24,7 +24,7 @@ pub fn live_completed(event_id: u32, uid: i64, score: i64, star_level: i64) {
     }
 
     let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE event_id=?1", params!(event_id)).unwrap_or(String::from("[]"));
-    let scores = json::parse(&info).unwrap();
+    let scores = jzon::parse(&info).unwrap();
 
     let mut result = array![];
     let mut current = 0;
@@ -60,16 +60,16 @@ pub fn live_completed(event_id: u32, uid: i64, score: i64, star_level: i64) {
 
     if added {
         if DATABASE.lock_and_select("SELECT score_data FROM scores WHERE event_id=?1", params!(event_id)).is_ok() {
-            DATABASE.lock_and_exec("UPDATE scores SET score_data=?1 WHERE event_id=?2", params!(json::stringify(result), event_id));
+            DATABASE.lock_and_exec("UPDATE scores SET score_data=?1 WHERE event_id=?2", params!(jzon::stringify(result), event_id));
         } else {
-            DATABASE.lock_and_exec("INSERT INTO scores (score_data, event_id) VALUES (?1, ?2)", params!(json::stringify(result), event_id));
+            DATABASE.lock_and_exec("INSERT INTO scores (score_data, event_id) VALUES (?1, ?2)", params!(jzon::stringify(result), event_id));
         }
     }
 }
 
 pub fn get_raw_info(event: u32) -> JsonValue {
     let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE event_id=?1", params!(event)).unwrap_or(String::from("[]"));
-    json::parse(&info).unwrap()
+    jzon::parse(&info).unwrap()
 }
 
 fn get_json() -> JsonValue {
@@ -77,7 +77,7 @@ fn get_json() -> JsonValue {
     let mut rv = object!{};
     for event in events.members() {
         rv[event.to_string()] = array![];
-        let scores = json::parse(&DATABASE.lock_and_select("SELECT score_data FROM scores WHERE event_id=?1", params!(event.as_i64().unwrap())).unwrap()).unwrap();
+        let scores = jzon::parse(&DATABASE.lock_and_select("SELECT score_data FROM scores WHERE event_id=?1", params!(event.as_i64().unwrap())).unwrap()).unwrap();
 
         let mut i = 1;
         for score in scores.members() {

@@ -1,4 +1,4 @@
-use json::{array, object, JsonValue};
+use jzon::{array, object, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::router::{global, userdata, items, databases};
@@ -17,7 +17,7 @@ pub fn clear(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     
     let mut missions = userdata::get_acc_missions(&key);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     for id in body["master_mission_ids"].members() {
         items::update_mission_status(id.as_i64().unwrap(), 0, true, true, 1, &mut missions);
@@ -32,7 +32,7 @@ pub fn clear(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let mut missions = userdata::get_acc_missions(&key);
     let mut user = userdata::get_acc(&key);

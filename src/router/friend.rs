@@ -1,4 +1,4 @@
-use json::{object, array, JsonValue};
+use jzon::{object, array, JsonValue};
 use actix_web::{HttpRequest};
 
 use crate::router::{userdata, global};
@@ -8,7 +8,7 @@ pub const FRIEND_LIMIT: usize = 40;
 
 pub fn friend(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
     
@@ -70,7 +70,7 @@ pub fn recommend(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn search(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let friends = userdata::get_acc_friends(&key);
     
     let uid = body["user_id"].as_i64().unwrap();
@@ -81,7 +81,7 @@ pub fn search(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn request(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
     
@@ -99,7 +99,7 @@ pub fn request(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn approve(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
     
@@ -120,7 +120,7 @@ pub fn approve(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn cancel(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
     
@@ -137,7 +137,7 @@ pub fn cancel(req: HttpRequest, body: String) -> Option<JsonValue> {
 
 pub fn delete(req: HttpRequest, body: String) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
-    let body = json::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
     

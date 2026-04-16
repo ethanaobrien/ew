@@ -1,4 +1,4 @@
-use json::{array, object, JsonValue};
+use jzon::{array, object, JsonValue};
 use actix_web::{
     HttpResponse,
     http::header::{HeaderValue, HeaderMap}
@@ -168,14 +168,14 @@ pub fn set_time(current_time: u64, uid: i64, max: bool) -> u64 {
 }
 
 pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse {
-    //println!("{}", json::stringify(data.clone()));
+    //println!("{}", jzon::stringify(data.clone()));
     data["server_time"] = set_time(data["server_time"].as_u64().unwrap_or(0), uid, true).into();
 
     if !data["data"]["item_list"].is_empty() || !data["data"]["updated_value_list"]["item_list"].is_empty() {
         items::check_for_region(&mut data, headers);
     }
     
-    let encrypted = encryption::encrypt_packet(&json::stringify(data)).unwrap();
+    let encrypted = encryption::encrypt_packet(&jzon::stringify(data)).unwrap();
     let resp = encrypted.into_bytes();
 
     HttpResponse::Ok().body(resp)

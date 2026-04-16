@@ -34,7 +34,7 @@ use actix_web::{
     http::header::HeaderValue,
     http::header::HeaderMap
 };
-use json::{JsonValue, object};
+use jzon::{JsonValue, object};
 use crate::encryption;
 
 fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
