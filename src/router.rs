@@ -27,6 +27,7 @@ pub mod items;
 pub mod databases;
 pub mod location;
 pub mod event_ranking;
+pub mod file_lists;
 
 use actix_web::{
     HttpResponse,
@@ -221,6 +222,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/listMusic" => webui::get_music_info(req),
             "/api/webui/listLoginBonus" => webui::list_login_bonus(req),
             "/api/webui/listItems" => webui::list_items(req),
+            "/api/fileLists/JP/Bundle.json" => file_lists::bundle(req),
             _ => api_req(req, body).await
         }
     }
