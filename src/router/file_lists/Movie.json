@@ -1,0 +1,1489 @@
+{
+    "m_manifestCollection": [
+        {
+            "m_identifier": "Scenes/Common/bg_cartoon",
+            "m_name": "9071a0a9645b673844f09d054ca1a6e9",
+            "m_hash": "446dbf61bee5daa5f0887f2446e8e997",
+            "m_usmHash": "a6dc5d4bc38efb1fe154921bf873a802",
+            "m_usmSize": 5779488,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_deckEdit",
+            "m_name": "830dbdc9ba6554974f45ba5c42c2b036",
+            "m_hash": "5f6dca27b5f0742c8a476f12cd3d1048",
+            "m_usmHash": "c782974ac9aab1554f6f58a587a22803",
+            "m_usmSize": 5645088,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_exchange",
+            "m_name": "432a329495ea55a7cb69da5bc78394c6",
+            "m_hash": "156033ef21b21d0e9c786a5182ccc869",
+            "m_usmHash": "d1f5ecab86cf1e4215fad6a17c33ad9a",
+            "m_usmSize": 5708928,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_friend",
+            "m_name": "03d2860db322bc87847f1620dc3f5f75",
+            "m_hash": "d02915f535f74c8c41a61230f061ed1c",
+            "m_usmHash": "3047003ee3bd5f9e3807b5a24704826c",
+            "m_usmSize": 5789568,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_gps",
+            "m_name": "924821d8f8027b2878a706dd89e99cdf",
+            "m_hash": "d11ce34fe93e397cc3d4e8bd17efc1d5",
+            "m_usmHash": "5b3c4a42fb72c3ac4a8fd6ee401067f4",
+            "m_usmSize": 5689600,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_homePreset",
+            "m_name": "1cfa6369c719de7ffb62a55987a4ab9a",
+            "m_hash": "df490bb84f2514b22018e1694b26fe13",
+            "m_usmHash": "8272719e1b2ff862990761a9f69f1fa8",
+            "m_usmSize": 5807744,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_item",
+            "m_name": "dc166a6e15d724f689870492f3817c9f",
+            "m_hash": "d4fe2d8d438169e3d93a57a3ebb256ca",
+            "m_usmHash": "ae25a5d7f98445a54e6505dc13ac1d5e",
+            "m_usmSize": 5757312,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_member",
+            "m_name": "b56a159ea13a071e0cea7e20583f4e16",
+            "m_hash": "04a3836486972dfcfaded4dee6b75fb4",
+            "m_usmHash": "f6f3299b0176e1f72fb8b27fec49d6b5",
+            "m_usmSize": 5675648,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_multiPlay",
+            "m_name": "4e581e153dd0953eab547c2e35c10501",
+            "m_hash": "76ba82518f3e4d24353b8e94d04d490e",
+            "m_usmHash": "d03d86a75aaa631a10a82e24af8ae1a5",
+            "m_usmSize": 5818816,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/bg_shop",
+            "m_name": "da32866b5de139357a1a72b53435be6e",
+            "m_hash": "66bde6ff366d9c097e344bd31addde4c",
+            "m_usmHash": "0dd60df76ca7d2bd572e6cd5a8fb2111",
+            "m_usmSize": 5810112,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/Render_Aqours_1",
+            "m_name": "efdeab918c3f03b8e3739422410e7d19",
+            "m_hash": "20ef30dcbad3038bb90d9774ec004d88",
+            "m_usmHash": "5821d4191b0c2f44576dca76f845bff1",
+            "m_usmSize": 5754784,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/Render_Hasu_1",
+            "m_name": "0e3474ed28a594a682aafd3c2e9b28d1",
+            "m_hash": "54a22c9bf3aab646c7a23aa41a7a559e",
+            "m_usmHash": "85f0288edf206cc732388746fc2e557e",
+            "m_usmSize": 5691744,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/Render_Liella_1",
+            "m_name": "21b2a257da379fd1650c12f331ffefa9",
+            "m_hash": "b969d0205f00fed4b94f608b086e8f14",
+            "m_usmHash": "c217bc950909f0ea62dca39dc498bbd1",
+            "m_usmSize": 5751072,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/Render_Muse_1",
+            "m_name": "a8884ecd38745be9ed3884c0da80086b",
+            "m_hash": "e4ae9373c9d78a80e28dd7c872a55dda",
+            "m_usmHash": "2f8472a4ab2c41333b6c66f770b8fd4b",
+            "m_usmSize": 5781312,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/Render_Niji_1",
+            "m_name": "685b23617c4d5422e8107efbd8866b2a",
+            "m_hash": "a5f27be1d7684493335d10b6dd1f5c6c",
+            "m_usmHash": "603d1cbf71bdcaacd22f18af3b638ce3",
+            "m_usmSize": 5861888,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/Render_Others_1",
+            "m_name": "d90d75384c10752ac16b6bc4ad9b7c03",
+            "m_hash": "a031cbdd1cbd4e60da612d614d05ffd8",
+            "m_usmHash": "d9643ba2b32d82005c74c0161735ac07",
+            "m_usmSize": 5776896,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/Common/Render_Yohane_1",
+            "m_name": "3843a87073d23566db30786a9cf8f82a",
+            "m_hash": "3aaa36276792a46bb402eb386204b891",
+            "m_usmHash": "7307b72a2a6f22836f82a93150d2fb20",
+            "m_usmSize": 5682272,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_01muse_A",
+            "m_name": "4dc27769515e7e6396701a9ac0cbdaab",
+            "m_hash": "259522059a1060f93417899edf6821aa",
+            "m_usmHash": "c5ffa93c1651a9be4e5bf1d2f9a15b38",
+            "m_usmSize": 7896960,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_01muse_B",
+            "m_name": "3fb742ae4fbda979f838953cd32be855",
+            "m_hash": "b2052d825b47fd3b87219c03c287e9c8",
+            "m_usmHash": "5c7b58a45b54e86883c786b422cb3a06",
+            "m_usmSize": 7826688,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_02aqours_A",
+            "m_name": "810b204ddc91753c9553ac8e41c46bd2",
+            "m_hash": "90a7495ef1550e1f7ecfedec11c311c6",
+            "m_usmHash": "c9584f9c4d7548fc6e7d6069c7246dc5",
+            "m_usmSize": 8054592,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_02aqours_B",
+            "m_name": "2ad6b14525c8a8cc11ff053ea0a7b742",
+            "m_hash": "06608546efdc6d776804e5415f0d0d66",
+            "m_usmHash": "5a16470de9f2f61b042b1bbad8872998",
+            "m_usmSize": 7790656,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_03niji_A",
+            "m_name": "9a73601a284a9d378d3469abc9f0ab48",
+            "m_hash": "cdddd0753eb69e6f6db56dec15507b22",
+            "m_usmHash": "ed3c3a114ed5165b8d5981572b3f980b",
+            "m_usmSize": 8039360,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_03niji_B",
+            "m_name": "0a5ca1b66f6db5bbe43c835fe63158e1",
+            "m_hash": "f2974fea3ccc3ec25fa7d191caa4d152",
+            "m_usmHash": "96983b4194a40768ad76f0c654aa603c",
+            "m_usmSize": 7929408,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_04liella_A",
+            "m_name": "a06dd42d85b9bbc7bb64e3d3008f43ab",
+            "m_hash": "107102b75cf75dc4e2230cc88c1c1272",
+            "m_usmHash": "d171acd8f1eb89ad6373b6a373fb53db",
+            "m_usmSize": 8055424,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_c01_04liella_B",
+            "m_name": "5741b1237d99b7e9f31b2171c7e68f91",
+            "m_hash": "0e649468898b31c0754345e9ef64776f",
+            "m_usmHash": "53d71af1c8eff8c084d74490b1030d3f",
+            "m_usmSize": 7777376,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_rect1_bg_01r",
+            "m_name": "6f1ca5485dca70f300f486c371016877",
+            "m_hash": "25fbcd9802a79d1a3e2563ddd1d136c8",
+            "m_usmHash": "da8b8b632cc177ac76926c0ba9724d13",
+            "m_usmSize": 449568,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_rect1_bg_02sr",
+            "m_name": "79d15095fc8b3681b3eae8853e606ad8",
+            "m_hash": "f640ad59a49e8eff65929f0d7c4e981f",
+            "m_usmHash": "5b4808d3e83dba5d1d16ecc7302acbee",
+            "m_usmSize": 442944,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_rect1_bg_03ur",
+            "m_name": "27d9d87143bf2d62004eef0409f45d2b",
+            "m_hash": "93cef2e223a7239c68ad0f643538310a",
+            "m_usmHash": "77b7e72c778fe2948b1b79d2619649fc",
+            "m_usmSize": 462144,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_rect2_bg_03ur",
+            "m_name": "e869eb2620cf42506639a1d97d3910d6",
+            "m_hash": "8d9a26aa197280e44cf1290b3cb7b8dd",
+            "m_usmHash": "89eb0a368e46f511d5263a2957d3f257",
+            "m_usmSize": 5469472,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/GachaScene/gacha_rect2_bg_03urB",
+            "m_name": "b2042bea7e1fb7e439040759301ab297",
+            "m_hash": "79aec5b07e86763cf2f9995515c679c6",
+            "m_usmHash": "71b0e0f95876c098f6e11aceeebfd94a",
+            "m_usmSize": 5465184,
+            "m_usmPrimaryPartHash": "",
+            "m_usmPrimaryPartSize": 0,
+            "m_usmSecondaryPartHash": "",
+            "m_usmSecondaryPartSize": 0,
+            "m_enableSplit": false,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/LiveBg/Monitor_Aqours",
+            "m_name": "62395e43d07a90ef3aa55f1674b97858",
+            "m_hash": "efa43ce10a4f2c53c0aea1a5b6936743",
+            "m_usmHash": "f590360803bc979cb5dd1f8392e5727a",
+            "m_usmSize": 4845888,
+            "m_usmPrimaryPartHash": "15a3692f712a1fa6d1e5c9f272b428e2",
+            "m_usmPrimaryPartSize": 4841155,
+            "m_usmSecondaryPartHash": "0a935373817eea3148f9241a947dc349",
+            "m_usmSecondaryPartSize": 4733,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/LiveBg/Monitor_Hasu",
+            "m_name": "29c5f5ae2dcf8187d35343b43eb7f34a",
+            "m_hash": "59ab014b16df1b86f6d886b7263ff32d",
+            "m_usmHash": "6ab703f2e5f1b74736194b81aaf81006",
+            "m_usmSize": 4879264,
+            "m_usmPrimaryPartHash": "72580a5d047ffc3c3a0d03464076348d",
+            "m_usmPrimaryPartSize": 4874499,
+            "m_usmSecondaryPartHash": "d1b2b2faf55bd7b15927b29cf05e8ae4",
+            "m_usmSecondaryPartSize": 4765,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/LiveBg/Monitor_Liella",
+            "m_name": "224bd085ae925f09127e67156688df7e",
+            "m_hash": "23be0e6c872a8e5455796d44240fe5d3",
+            "m_usmHash": "bb35555e520cf1609225c017dd4510ff",
+            "m_usmSize": 17697184,
+            "m_usmPrimaryPartHash": "67e3fa955c01427d991a5d82cb8ea590",
+            "m_usmPrimaryPartSize": 17679901,
+            "m_usmSecondaryPartHash": "1a91649a741419ec4be02400a62eac75",
+            "m_usmSecondaryPartSize": 17283,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/LiveBg/Monitor_Muse",
+            "m_name": "fc2319f6801eee6d903345e39bcdb028",
+            "m_hash": "35d5924246593aecc053558d2f53735b",
+            "m_usmHash": "078271945f4a031c16ee81347782fdd7",
+            "m_usmSize": 19110880,
+            "m_usmPrimaryPartHash": "fdd039f98499508fbb9b99e1c9d3baf5",
+            "m_usmPrimaryPartSize": 19092217,
+            "m_usmSecondaryPartHash": "26cf406da2aea0c3fd26ecc9ca80b0a3",
+            "m_usmSecondaryPartSize": 18663,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/LiveBg/Monitor_Niji",
+            "m_name": "2110b44877a6a92049b5f6c08bb7ab9a",
+            "m_hash": "1c96028d2b2b644904e87b91c79520ce",
+            "m_usmHash": "c584acb70f8e5daa6a82171df27f9b37",
+            "m_usmSize": 18540288,
+            "m_usmPrimaryPartHash": "91a8bc1acb35cf8ffc2f2747cf3dc53c",
+            "m_usmPrimaryPartSize": 18522182,
+            "m_usmSecondaryPartHash": "0eb2c870a29cda8f246f345dff0918a8",
+            "m_usmSecondaryPartSize": 18106,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/LiveBg/Monitor_Other",
+            "m_name": "7fb1e2048788c6d58f76fd6f2069c94b",
+            "m_hash": "effeecaba64fabea51bf37b550c564aa",
+            "m_usmHash": "39aad9ee3d290c5577c3eb37fc28ea26",
+            "m_usmSize": 5103744,
+            "m_usmPrimaryPartHash": "9a5325e6d13df43b149652c6eca18b58",
+            "m_usmPrimaryPartSize": 5098759,
+            "m_usmSecondaryPartHash": "ea85e29404b0bb0a3eb45d1da99605f0",
+            "m_usmSecondaryPartSize": 4985,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/LiveBg/Monitor_Yohane",
+            "m_name": "91241e2c8a3f9e944fae82ca2a7adbc4",
+            "m_hash": "94fc35c7c1b03e730f6dfa8cf305d582",
+            "m_usmHash": "79d3272f50a8d1c047534badcb9cf938",
+            "m_usmSize": 4982752,
+            "m_usmPrimaryPartHash": "d08c6aa6418ca5f4aa714e41bd05f503",
+            "m_usmPrimaryPartSize": 4977886,
+            "m_usmSecondaryPartHash": "49f4ca66296636ddbfb454ab3644325a",
+            "m_usmSecondaryPartSize": 4866,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Core"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0001",
+            "m_name": "d52c83474118ca27d2ebee12c9809c40",
+            "m_hash": "c01efa9c17eb111eada20599c66b705d",
+            "m_usmHash": "f43b28a70a31dabb27432f4ceaa6723a",
+            "m_usmSize": 20050272,
+            "m_usmPrimaryPartHash": "efbd240cdbd0934182da1414388ee8f8",
+            "m_usmPrimaryPartSize": 20030691,
+            "m_usmSecondaryPartHash": "0f649ae18c9c7cbf0ec4f5e294f8c428",
+            "m_usmSecondaryPartSize": 19581,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0002",
+            "m_name": "61d47d2e8875c16c7b70354cc54e6945",
+            "m_hash": "8f0f47ea91684fd9a664eb88de847d29",
+            "m_usmHash": "42ff7e3ca24c69f63655549d24ec7441",
+            "m_usmSize": 22617856,
+            "m_usmPrimaryPartHash": "84c5668a1956609bc05af7ccf9bebcf1",
+            "m_usmPrimaryPartSize": 22595768,
+            "m_usmSecondaryPartHash": "b074c81b5381eb3a87818dd4556b61f1",
+            "m_usmSecondaryPartSize": 22088,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0003",
+            "m_name": "5030e36a31ed917f375551eb731abc70",
+            "m_hash": "f5dc76f837e0614039d98e54d31dd7aa",
+            "m_usmHash": "2e9622a60993f5306937391e42e3e45b",
+            "m_usmSize": 24315168,
+            "m_usmPrimaryPartHash": "b3c54fde620f0fcd9af0826fb1bea397",
+            "m_usmPrimaryPartSize": 24291422,
+            "m_usmSecondaryPartHash": "a12eeabb7354ea3bd313542addf75a2a",
+            "m_usmSecondaryPartSize": 23746,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0004",
+            "m_name": "ac4a2c22aaee1cd1d3c634825fa8860e",
+            "m_hash": "420e227ddf5435cecbe638afc0c5eabe",
+            "m_usmHash": "f4d02df1f227c13e8a912aecb3d24133",
+            "m_usmSize": 20720960,
+            "m_usmPrimaryPartHash": "e1059d4d4924fab3fb4a3c6553555023",
+            "m_usmPrimaryPartSize": 20700724,
+            "m_usmSecondaryPartHash": "1ef348562f46e94a000d93d345e665a8",
+            "m_usmSecondaryPartSize": 20236,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0005",
+            "m_name": "d24fe0390b2faab8c474f6dd7b4b14ba",
+            "m_hash": "381d9d9b17180ce22e394d6a83203028",
+            "m_usmHash": "1aa009614ad3d3d72361d05786616854",
+            "m_usmSize": 17709344,
+            "m_usmPrimaryPartHash": "1cd16eae23fa5beb73059ffab3ca62d3",
+            "m_usmPrimaryPartSize": 17692049,
+            "m_usmSecondaryPartHash": "4f288de8400fdbf311b3c0b8e588b2da",
+            "m_usmSecondaryPartSize": 17295,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0006",
+            "m_name": "6c323e2e77974d29046a7c4435fd7116",
+            "m_hash": "1a12e8aa0913926e95c2cc75a88ca1f0",
+            "m_usmHash": "e83f2bbf65c24874fcc2dd1edc4de408",
+            "m_usmSize": 29375520,
+            "m_usmPrimaryPartHash": "8100280f29d25bb6aa0173384e6836c1",
+            "m_usmPrimaryPartSize": 29346832,
+            "m_usmSecondaryPartHash": "d19dc651dc829aec8f19f027655b8a70",
+            "m_usmSecondaryPartSize": 28688,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0007",
+            "m_name": "89a5d3020c34ad8a0bb947b505035ab3",
+            "m_hash": "5320939591eb70071b001332eaf58b1c",
+            "m_usmHash": "44e5dd8c5069a404bc9fa2fa6105bee4",
+            "m_usmSize": 26685312,
+            "m_usmPrimaryPartHash": "d00f8f317a8d5ea531169c41fd9620e3",
+            "m_usmPrimaryPartSize": 26659252,
+            "m_usmSecondaryPartHash": "b76ca8ebff914d92746e0f30683b3e5f",
+            "m_usmSecondaryPartSize": 26060,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_01_0008",
+            "m_name": "5ec2fb333f5254c89e57610e1bcb7934",
+            "m_hash": "83d1da8cb799e6f6f0cd3e05d87bc82a",
+            "m_usmHash": "3bd54d9a2fea963e7a59ce5a055499e9",
+            "m_usmSize": 21523616,
+            "m_usmPrimaryPartHash": "7dc4441eec79c5ed27ff490dab52b618",
+            "m_usmPrimaryPartSize": 21502596,
+            "m_usmSecondaryPartHash": "9a9044aed46c9fc94899b8e2141964d2",
+            "m_usmSecondaryPartSize": 21020,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_02_0001",
+            "m_name": "50495c387148b8f97e16badc0b1d9a3c",
+            "m_hash": "94323a8b632aa4fc890fc9bdb09a72db",
+            "m_usmHash": "9dccc7ff93d7e3f5afc44b67a715667e",
+            "m_usmSize": 17424416,
+            "m_usmPrimaryPartHash": "b856b3d09a4b549f78e6ed2ee8bb8135",
+            "m_usmPrimaryPartSize": 17407399,
+            "m_usmSecondaryPartHash": "89d54685782e01459b3f12d2c94f8cd6",
+            "m_usmSecondaryPartSize": 17017,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_02_0002",
+            "m_name": "4f26c2baf9ba9511c23f82944319f62a",
+            "m_hash": "0df90f7f06631af707a002be43211d8d",
+            "m_usmHash": "520b7fb09ca866a551b77cf3d8a5668c",
+            "m_usmSize": 20366848,
+            "m_usmPrimaryPartHash": "9880210c46e8642576efa603401b1548",
+            "m_usmPrimaryPartSize": 20346958,
+            "m_usmSecondaryPartHash": "8a3b875f754e90410e3686af490470cf",
+            "m_usmSecondaryPartSize": 19890,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_02_0003",
+            "m_name": "50dfb0defdbdc916ceb9315af3c74667",
+            "m_hash": "18cabf32a0bc37d5f07e0ef51f30f5f8",
+            "m_usmHash": "b88e2aa7f21b48c46f72ba2bb8be7898",
+            "m_usmSize": 20777248,
+            "m_usmPrimaryPartHash": "dc641cfcdb202a735e82885b54faa71c",
+            "m_usmPrimaryPartSize": 20756957,
+            "m_usmSecondaryPartHash": "78bd2065354be82e08b5fa93afb14189",
+            "m_usmSecondaryPartSize": 20291,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_02_0004",
+            "m_name": "6150893a5051f072fcbeb8d3faba2e79",
+            "m_hash": "b7b3b0cf5781f75d015595bdaca49414",
+            "m_usmHash": "1ce2473c3b54f43de976d81d06736ff0",
+            "m_usmSize": 20492896,
+            "m_usmPrimaryPartHash": "6ee392af95c9653e25a681ed7da77519",
+            "m_usmPrimaryPartSize": 20472883,
+            "m_usmSecondaryPartHash": "558ba0c1e6f7e3d4cf43e864780db812",
+            "m_usmSecondaryPartSize": 20013,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_02_0005",
+            "m_name": "3933171f0c67a56437a0d8580ac769ff",
+            "m_hash": "8e0a3f0d75322e09437c7dbd0fce4e34",
+            "m_usmHash": "85af478bd0b09bbaf0131e7ddcec3b26",
+            "m_usmSize": 21636224,
+            "m_usmPrimaryPartHash": "53bba742cb4a54aebdc799c8947a2c80",
+            "m_usmPrimaryPartSize": 21615094,
+            "m_usmSecondaryPartHash": "71b91230ea3989d4fecb9c2b97ff98cb",
+            "m_usmSecondaryPartSize": 21130,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0001",
+            "m_name": "985f3f9b6aff1a832968d33cb73cba54",
+            "m_hash": "eb5d363ef51ae7547b425514f49780ab",
+            "m_usmHash": "6705262dc39c9f5256f090cc4c6566a3",
+            "m_usmSize": 22817568,
+            "m_usmPrimaryPartHash": "07828bc0d2048560b49605e6579eb070",
+            "m_usmPrimaryPartSize": 22795285,
+            "m_usmSecondaryPartHash": "4c110baa32299d54e20efbdf5d984e8e",
+            "m_usmSecondaryPartSize": 22283,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0002",
+            "m_name": "79d8a671491a44b426e65e9b8f0b1964",
+            "m_hash": "9dfb54e017108cad54dd7ab85e72a967",
+            "m_usmHash": "3103d62c4a17e13db4529d308cfd0922",
+            "m_usmSize": 19003456,
+            "m_usmPrimaryPartHash": "c40c3c13533fcc58dd1fc374c404e2e5",
+            "m_usmPrimaryPartSize": 18984897,
+            "m_usmSecondaryPartHash": "2039f81f6e2e6dabb25f7130d1afc8ec",
+            "m_usmSecondaryPartSize": 18559,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0003",
+            "m_name": "f0a02ab96ab5eedb1c9f5606af656111",
+            "m_hash": "93105277054ac87bb36e59dbd95cd871",
+            "m_usmHash": "6ef0b6c4e892f89fac5cf9acbfc85de0",
+            "m_usmSize": 16615904,
+            "m_usmPrimaryPartHash": "fae2e6bfeda82457efbe7f74cb49d782",
+            "m_usmPrimaryPartSize": 16599677,
+            "m_usmSecondaryPartHash": "8e91ce8aa9bb11336347a58d00358f12",
+            "m_usmSecondaryPartSize": 16227,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0004",
+            "m_name": "a2ea7efc5cc188ec34d5984aba79a93e",
+            "m_hash": "afa71c2cea860cee39f2826fd2a2e747",
+            "m_usmHash": "a319f5cfe0306753f21379e18498cf9f",
+            "m_usmSize": 20371680,
+            "m_usmPrimaryPartHash": "a874125ec87dc273a8ed31633c3e7983",
+            "m_usmPrimaryPartSize": 20351785,
+            "m_usmSecondaryPartHash": "4135a72f7d3dda7144f1d7c01fc87bf9",
+            "m_usmSecondaryPartSize": 19895,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0005",
+            "m_name": "6c316cd93c6830baed3992d161e2e6ad",
+            "m_hash": "5e51f0528fea476dbfa1b3b79ea356ea",
+            "m_usmHash": "d835b245ad726abd6b8f9111179a9fee",
+            "m_usmSize": 26792736,
+            "m_usmPrimaryPartHash": "421f3912c0bedb457c579276ab90d97d",
+            "m_usmPrimaryPartSize": 26766571,
+            "m_usmSecondaryPartHash": "2f1d56f8f8bc79dda8a9cb3966ac719c",
+            "m_usmSecondaryPartSize": 26165,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0006",
+            "m_name": "91bf62b282f8a57dfbc88e32bb78357f",
+            "m_hash": "107a301d70a0878f2cd55de655cf0f62",
+            "m_usmHash": "60b272e5bc10a91058e62f0a7074fa8a",
+            "m_usmSize": 29120576,
+            "m_usmPrimaryPartHash": "17ce4eb6c5fe5a14b346f865f042a1dd",
+            "m_usmPrimaryPartSize": 29092137,
+            "m_usmSecondaryPartHash": "70ae3cacb893c19886b93491019e0a38",
+            "m_usmSecondaryPartSize": 28439,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0007",
+            "m_name": "9ddfd79a35dd71b4152e864d0833c71d",
+            "m_hash": "0195e4324170e2398c86ae997496e17c",
+            "m_usmHash": "4e7c067529319b7ecadb1279d307e364",
+            "m_usmSize": 31810336,
+            "m_usmPrimaryPartHash": "f6f4205bd580d021e3d42978a8ebb688",
+            "m_usmPrimaryPartSize": 31779271,
+            "m_usmSecondaryPartHash": "1b3cd52daabe201fd92682d39d4a8410",
+            "m_usmSecondaryPartSize": 31065,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0008",
+            "m_name": "1503a19c2a8a8b63d7231d1a226c1026",
+            "m_hash": "439ce637f8dfbc2ad4d30cc06c8fbc09",
+            "m_usmHash": "e710fe575c86fd120fd6241af9c3338a",
+            "m_usmSize": 29275520,
+            "m_usmPrimaryPartHash": "5dd44da132cde6112114fe8ed6037ff0",
+            "m_usmPrimaryPartSize": 29246930,
+            "m_usmSecondaryPartHash": "656c542d534174a9ea4761ce584458ff",
+            "m_usmSecondaryPartSize": 28590,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0009",
+            "m_name": "d57adc6ac5eb03df334d113572e92768",
+            "m_hash": "c45a741d1329309d4dbce37dd78d6787",
+            "m_usmHash": "e5517feb0e013725c6aa59e85f91795b",
+            "m_usmSize": 40889536,
+            "m_usmPrimaryPartHash": "db210874f88219b89644a011ad3b8ac3",
+            "m_usmPrimaryPartSize": 40849604,
+            "m_usmSecondaryPartHash": "956fa20685fa134e4899df9ac57939ff",
+            "m_usmSecondaryPartSize": 39932,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0010",
+            "m_name": "1e186c5bc7351a4f7befd68403fe3f75",
+            "m_hash": "222ce3dd92da2b180a36e86b80771c06",
+            "m_usmHash": "daf27dfee477a0908e2e7a495e59aaf3",
+            "m_usmSize": 34655392,
+            "m_usmPrimaryPartHash": "eb3cf54cd912edb461a53763ec6c8df8",
+            "m_usmPrimaryPartSize": 34621548,
+            "m_usmSecondaryPartHash": "c8bb75cd0b7edc100c2e5f45b021d078",
+            "m_usmSecondaryPartSize": 33844,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0011",
+            "m_name": "fbf0d114757fc89468d2faa385f62f7d",
+            "m_hash": "ffc53717c900237bc021b0e7c1e5e33b",
+            "m_usmHash": "2ed18e1f7c2d26aa6637a35c892243ab",
+            "m_usmSize": 31388992,
+            "m_usmPrimaryPartHash": "3d3ebd2a575e60f2a07c56f42ad57b44",
+            "m_usmPrimaryPartSize": 31358338,
+            "m_usmSecondaryPartHash": "17664d3008fde079664d16f964dccc8d",
+            "m_usmSecondaryPartSize": 30654,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0012",
+            "m_name": "25b1e4e7405b46be78f51c1f008c96ef",
+            "m_hash": "9252707cc398a2720377097ee79a8f52",
+            "m_usmHash": "7a4d8c8d9a98a6f6a51609d2c0401192",
+            "m_usmSize": 33637216,
+            "m_usmPrimaryPartHash": "e7d78d29cdb3cdb3674406170b979bbf",
+            "m_usmPrimaryPartSize": 33604367,
+            "m_usmSecondaryPartHash": "edf02f3445f57b611e979fc09eef6a9c",
+            "m_usmSecondaryPartSize": 32849,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0013",
+            "m_name": "5298a16edf12030e5da05cf0b25a7a4a",
+            "m_hash": "71ddb71d9764a31db7c8fc790e0a69fe",
+            "m_usmHash": "5ba171f9e1c749b5c9ad8b010c952baf",
+            "m_usmSize": 28849024,
+            "m_usmPrimaryPartHash": "e31e2d6883b29330fa4655787aec475e",
+            "m_usmPrimaryPartSize": 28820851,
+            "m_usmSecondaryPartHash": "ccd7aaf7f4cbc8836a2c432e2a1d88c7",
+            "m_usmSecondaryPartSize": 28173,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0014",
+            "m_name": "fce345865485e69ec22a5b0d80b5e3a4",
+            "m_hash": "11a257c743346f89569ccd1bcb855fae",
+            "m_usmHash": "8fe6f2a9e27ad0f1bb9d93cc565e284c",
+            "m_usmSize": 25541440,
+            "m_usmPrimaryPartHash": "54846a1f89dfd08ff9275c261550e458",
+            "m_usmPrimaryPartSize": 25516497,
+            "m_usmSecondaryPartHash": "0cd5268b14da6acc6eb8b02aa1a9ab87",
+            "m_usmSecondaryPartSize": 24943,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0015",
+            "m_name": "461017b247b9fa71c261af9e16229d71",
+            "m_hash": "72732338918ca9271270cb09f00b5b07",
+            "m_usmHash": "fd66805282719364d1dbf25331dca2d4",
+            "m_usmSize": 28677504,
+            "m_usmPrimaryPartHash": "f6f0272a77c014a652df14a5eacfcd6a",
+            "m_usmPrimaryPartSize": 28649498,
+            "m_usmSecondaryPartHash": "da78079818d4c887e1dbf47052fa5c0b",
+            "m_usmSecondaryPartSize": 28006,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0016",
+            "m_name": "56b4f8b4641bddeac2a8b3754ad741a1",
+            "m_hash": "f97af8989bd8781fd12d8032788fee0e",
+            "m_usmHash": "636b15b176bba9a78d063909ef13135d",
+            "m_usmSize": 23631168,
+            "m_usmPrimaryPartHash": "a118c10929ff7bce0e4612c572cef241",
+            "m_usmPrimaryPartSize": 23608090,
+            "m_usmSecondaryPartHash": "fb934e5e898456e9a087a3601d04e2f0",
+            "m_usmSecondaryPartSize": 23078,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0017",
+            "m_name": "3676e84f5759c05f6856c35999da3ff6",
+            "m_hash": "ca8e1c8eb2aec85f43c6d79ab3fdf8e3",
+            "m_usmHash": "e55b6dbe02da6c58ad9028385ff22c45",
+            "m_usmSize": 24373248,
+            "m_usmPrimaryPartHash": "c555ff48fa4e230e150f1f074a073ed6",
+            "m_usmPrimaryPartSize": 24349446,
+            "m_usmSecondaryPartHash": "e1c45e3a8db9b03e0325fa52d9ec8919",
+            "m_usmSecondaryPartSize": 23802,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0018",
+            "m_name": "29b374c32e4a6fbebbe04812089c0013",
+            "m_hash": "61cee38a46b3accdd90a874e35138c9a",
+            "m_usmHash": "4ce384e32b0866beffde6614d5b54a50",
+            "m_usmSize": 37322496,
+            "m_usmPrimaryPartHash": "5cd809204066dc6e6400bc381aa983de",
+            "m_usmPrimaryPartSize": 37286048,
+            "m_usmSecondaryPartHash": "820cd3d812f803714332bf20e1cfa662",
+            "m_usmSecondaryPartSize": 36448,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0019",
+            "m_name": "885621a650b54c6954e4f25fedf2ba76",
+            "m_hash": "67895e91070a738271bbb050dacc3b1b",
+            "m_usmHash": "d0ac99ffff7142f59dc5922ec78df40b",
+            "m_usmSize": 27003648,
+            "m_usmPrimaryPartHash": "eb00d3fd8c610769097d73d870b7e6fc",
+            "m_usmPrimaryPartSize": 26977277,
+            "m_usmSecondaryPartHash": "71169b35ac5845d2e745eb90f13639f0",
+            "m_usmSecondaryPartSize": 26371,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0020",
+            "m_name": "37d8b78e1cdf5e9a65eea729f4de2845",
+            "m_hash": "75fce80761b3b219024b0cf3da4a8277",
+            "m_usmHash": "e9b2c4b6b93b15a2b52d3010e4afe4f4",
+            "m_usmSize": 29149984,
+            "m_usmPrimaryPartHash": "6a2163fe4d5c32a28a75062a914fd5bf",
+            "m_usmPrimaryPartSize": 29121517,
+            "m_usmSecondaryPartHash": "97a904b00e83ff778b4c2fce1dba8818",
+            "m_usmSecondaryPartSize": 28467,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0021",
+            "m_name": "8a04e8e268d2dcd9e1ccefe51bc3c37f",
+            "m_hash": "115a65f6601617ce335eed7e8c022e4c",
+            "m_usmHash": "52ce6c5b9cb5b55f1642b1cd06e63f8d",
+            "m_usmSize": 40695424,
+            "m_usmPrimaryPartHash": "af424a3f2839f9fa99152096f1b0c806",
+            "m_usmPrimaryPartSize": 40655682,
+            "m_usmSecondaryPartHash": "c8612aa471d8575246151f3c06d1a88e",
+            "m_usmSecondaryPartSize": 39742,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0022",
+            "m_name": "c95ba64477140b33685193acb97349ac",
+            "m_hash": "21abbfde8da35f137708ebd5f79d7ba8",
+            "m_usmHash": "fa12a53808e6e3522cc846e1f248d47f",
+            "m_usmSize": 25647072,
+            "m_usmPrimaryPartHash": "df38d623a4066d57fbfc8dad91a05831",
+            "m_usmPrimaryPartSize": 25622026,
+            "m_usmSecondaryPartHash": "cc405006ce2cc6d4f0492f1db35733b4",
+            "m_usmSecondaryPartSize": 25046,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0023",
+            "m_name": "9ca181856e1475c85e7835d93ed7f133",
+            "m_hash": "a8e32488269bda61c1166a2d5a049fab",
+            "m_usmHash": "2c232d47cfb7c61b3acdecf44cabe524",
+            "m_usmSize": 45876768,
+            "m_usmPrimaryPartHash": "1e51e2611519f2294286bee710326a3f",
+            "m_usmPrimaryPartSize": 45831966,
+            "m_usmSecondaryPartHash": "3d751885ba99fe97123351da0c3447d8",
+            "m_usmSecondaryPartSize": 44802,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0024",
+            "m_name": "1e996dc282c3450211d60df18a2e13cd",
+            "m_hash": "fa423d3c3df24d9e59c23eabf299aad5",
+            "m_usmHash": "16ff44ae25392accc03cbb8ead0ac415",
+            "m_usmSize": 33768448,
+            "m_usmPrimaryPartHash": "5ec3f8e7d833b364cf74972c9a10df4b",
+            "m_usmPrimaryPartSize": 33735471,
+            "m_usmSecondaryPartHash": "7995d58b3e27029e611432b65a371c30",
+            "m_usmSecondaryPartSize": 32977,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0025",
+            "m_name": "33e7771f2efa9c6703a86a2284e982ff",
+            "m_hash": "878edf5ce75db6a4ee86d457569a2035",
+            "m_usmHash": "6474f401677f54ebea05293d15e96007",
+            "m_usmSize": 24484000,
+            "m_usmPrimaryPartHash": "761c2a7bf2ce316a99650663427e2874",
+            "m_usmPrimaryPartSize": 24460089,
+            "m_usmSecondaryPartHash": "5ada81faa6d3fc4d267d9ba9a30dca00",
+            "m_usmSecondaryPartSize": 23911,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0026",
+            "m_name": "117dcb83c4c9603e2a8b77fcbd2725c5",
+            "m_hash": "f03dabea52eb985395064333cdc54d89",
+            "m_usmHash": "a9a34dc7bb303d643ffab400baa454aa",
+            "m_usmSize": 25892096,
+            "m_usmPrimaryPartHash": "ac78d4ef4677f951875b44e6d665890e",
+            "m_usmPrimaryPartSize": 25866810,
+            "m_usmSecondaryPartHash": "b708ebad82109ced19ef5e4b8a3aab2d",
+            "m_usmSecondaryPartSize": 25286,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0027",
+            "m_name": "60512692a59974105943929e41ecb140",
+            "m_hash": "6da9e93e494f43b96916fd40a716e1d8",
+            "m_usmHash": "a8ccf45bdb6a8d541e158795b7ede7cd",
+            "m_usmSize": 30322880,
+            "m_usmPrimaryPartHash": "57ff6dbe8877e0864be3aaba3284bed1",
+            "m_usmPrimaryPartSize": 30293267,
+            "m_usmSecondaryPartHash": "5b06d4d78e9f922cbaac2fbdabf4343e",
+            "m_usmSecondaryPartSize": 29613,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0028",
+            "m_name": "3460aa0b6566a9b87f0b4b22626741b3",
+            "m_hash": "fac3922943ae90ebc247c5d12001cc62",
+            "m_usmHash": "5282066384bdf296740cddb2fe810e83",
+            "m_usmSize": 29683360,
+            "m_usmPrimaryPartHash": "4a1c985c16a33fbfbf73dc768a689f0d",
+            "m_usmPrimaryPartSize": 29654372,
+            "m_usmSecondaryPartHash": "02ed40480a5b753880793677c58ae2d4",
+            "m_usmSecondaryPartSize": 28988,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0029",
+            "m_name": "a016654985367a4bde122036452e24ca",
+            "m_hash": "4c3b59876ab5b191d1c9026abf086332",
+            "m_usmHash": "c8a8eae143573eeef69a98de9ac760a0",
+            "m_usmSize": 20985696,
+            "m_usmPrimaryPartHash": "08fb01f445d64f9abfe99a40e91ed19d",
+            "m_usmPrimaryPartSize": 20965202,
+            "m_usmSecondaryPartHash": "396478ae4b541df156790742ebd3dd90",
+            "m_usmSecondaryPartSize": 20494,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0030",
+            "m_name": "556f10388a3c1e5f17c061ed44ed86ed",
+            "m_hash": "5153c9c7d55b5240c91b3d133805316b",
+            "m_usmHash": "b406115b95c4319a43ac2a310fa4e022",
+            "m_usmSize": 31536640,
+            "m_usmPrimaryPartHash": "68da27fcc539bad5e5fbee32f8f7db2f",
+            "m_usmPrimaryPartSize": 31505842,
+            "m_usmSecondaryPartHash": "172fba657a071207e739d8e69fb41ed1",
+            "m_usmSecondaryPartSize": 30798,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0031",
+            "m_name": "c1b75d873a0dd35dc6bfba8aa96b6fec",
+            "m_hash": "a1e5e0298442c2a628b0110a5d212722",
+            "m_usmHash": "860bce01d81575cc0b9a0b81f2af6091",
+            "m_usmSize": 35483552,
+            "m_usmPrimaryPartHash": "df823764cc8a23c549e2f08febef034b",
+            "m_usmPrimaryPartSize": 35448900,
+            "m_usmSecondaryPartHash": "49b51a3cb197cdfb66b1c01169b91600",
+            "m_usmSecondaryPartSize": 34652,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0032",
+            "m_name": "16930c60c6bc1c10b50c1deb552c3c1a",
+            "m_hash": "b9c30e7a9b26eefb0a7b777862e5d1a5",
+            "m_usmHash": "37756145a374df1a240f93a5439a2648",
+            "m_usmSize": 29093024,
+            "m_usmPrimaryPartHash": "b3a933bcaa290f7de2a8c6ec3f663e02",
+            "m_usmPrimaryPartSize": 29064612,
+            "m_usmSecondaryPartHash": "2c064d021b9ace2d4b2d26b028f2365b",
+            "m_usmSecondaryPartSize": 28412,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0033",
+            "m_name": "bf244d41adb35b94c522716ef9240615",
+            "m_hash": "e9ac7e5ebefcf4ec45fe6a383682f1c1",
+            "m_usmHash": "a181b2341624f47833bb3d7201cba9d2",
+            "m_usmSize": 32147584,
+            "m_usmPrimaryPartHash": "3f2f0dded71784524acb910266a5a8c2",
+            "m_usmPrimaryPartSize": 32116189,
+            "m_usmSecondaryPartHash": "07271fbdef4b9d2141f08ddbebdfcc3e",
+            "m_usmSecondaryPartSize": 31395,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0034",
+            "m_name": "46840e18b14c6224d057bed6ce4a7b4f",
+            "m_hash": "899cca1337be3a4f5190207969dced85",
+            "m_usmHash": "9130823b0fccb94f90c1bd2c55196b94",
+            "m_usmSize": 32034496,
+            "m_usmPrimaryPartHash": "0770e61eedc09ad72e181008c92350e5",
+            "m_usmPrimaryPartSize": 32003212,
+            "m_usmSecondaryPartHash": "45e7e9230c93a923f2f236c3278db232",
+            "m_usmSecondaryPartSize": 31284,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0035",
+            "m_name": "e08ae3a3f1d17aec4b6110d8a7529091",
+            "m_hash": "8b7d134e8ffac38586ea2222298518e7",
+            "m_usmHash": "8359f3c04fcbb11c7f01ad85fd7b0e56",
+            "m_usmSize": 35468832,
+            "m_usmPrimaryPartHash": "5b8d684418a43612a21edee18459b82a",
+            "m_usmPrimaryPartSize": 35434194,
+            "m_usmSecondaryPartHash": "0533871b919b31c47a346dbca7ad8997",
+            "m_usmSecondaryPartSize": 34638,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0036",
+            "m_name": "e34cbd8fdb635a8c91f1fa4ff8ec179b",
+            "m_hash": "083627008eb2532873246a1c84ca5a6f",
+            "m_usmHash": "e0eca9b344f0a4080c1d1a7c75056bef",
+            "m_usmSize": 29318560,
+            "m_usmPrimaryPartHash": "05ad5daba968134f5de1cbba28b9d578",
+            "m_usmPrimaryPartSize": 29289928,
+            "m_usmSecondaryPartHash": "8f019aa32c80a0d9433f9b2e38291431",
+            "m_usmSecondaryPartSize": 28632,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0037",
+            "m_name": "995d5f20f1385a5fdcb41f49d9f2864b",
+            "m_hash": "305cabd88e91954b42bb4c762ee14914",
+            "m_usmHash": "a18fbe2617239b985366f90b17753aa8",
+            "m_usmSize": 28892640,
+            "m_usmPrimaryPartHash": "144f4c1e3abb95679dc9b205df675500",
+            "m_usmPrimaryPartSize": 28864424,
+            "m_usmSecondaryPartHash": "e8afcb2e97825e00ef25cf544d859bab",
+            "m_usmSecondaryPartSize": 28216,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0038",
+            "m_name": "daeaf7f256658a54bb7934a30497171a",
+            "m_hash": "efcaddefa9ba4d9be1719b627cc2ffd1",
+            "m_usmHash": "0273dda033eb390da24b61e1b7348165",
+            "m_usmSize": 23799520,
+            "m_usmPrimaryPartHash": "19192b8c975d14e5b94f1c555e679241",
+            "m_usmPrimaryPartSize": 23776278,
+            "m_usmSecondaryPartHash": "4bb05a9e4afc6ffd77ab554f89a70b41",
+            "m_usmSecondaryPartSize": 23242,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0039",
+            "m_name": "f6141ed21556407d408e369a448895ef",
+            "m_hash": "7fc81b7a63b81c7b6333ab4a60540e7e",
+            "m_usmHash": "330e9d23462ce03eb4a0c96af8500bec",
+            "m_usmSize": 29403008,
+            "m_usmPrimaryPartHash": "f50d44c903238e663b09d1ab4acdd6ad",
+            "m_usmPrimaryPartSize": 29374294,
+            "m_usmSecondaryPartHash": "eda558f539f00bc8abb85c43e091c699",
+            "m_usmSecondaryPartSize": 28714,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0040",
+            "m_name": "f9cdbbddc287f95485fed61a47a6c5f5",
+            "m_hash": "001554223f9e5aecb7c9fecc58504fca",
+            "m_usmHash": "d08bf2aebdff6763b86a78a6d97afe37",
+            "m_usmSize": 19680576,
+            "m_usmPrimaryPartHash": "11718ee6725617588fa89b65224c2cb4",
+            "m_usmPrimaryPartSize": 19661356,
+            "m_usmSecondaryPartHash": "dbc425b8fa5094b07b1a38e30fc0ec1c",
+            "m_usmSecondaryPartSize": 19220,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_03_0041",
+            "m_name": "561048289ad843d71fc00c539401e9a8",
+            "m_hash": "75e25852a6db82b185731ebce98c565b",
+            "m_usmHash": "7f44373804fc41fdaf44159543923d64",
+            "m_usmSize": 21413056,
+            "m_usmPrimaryPartHash": "88f1be2e140b5e78224dc7dd39b208a0",
+            "m_usmPrimaryPartSize": 21392144,
+            "m_usmSecondaryPartHash": "8d7d25f644b563c65eb7ecfc05d64903",
+            "m_usmSecondaryPartSize": 20912,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0001",
+            "m_name": "6be95f285c7ddc1eafbf9c6c5f13ecb8",
+            "m_hash": "1d3b99d7fbf0ef8863fadd5fc5472ff4",
+            "m_usmHash": "93ba3a9f7a64003013bdca3fcfd2d07e",
+            "m_usmSize": 22907680,
+            "m_usmPrimaryPartHash": "cd395edc96b044bec7ded7ca6d8c5546",
+            "m_usmPrimaryPartSize": 22885309,
+            "m_usmSecondaryPartHash": "f59dbb5848f6212417ae4e5b3fdafaf5",
+            "m_usmSecondaryPartSize": 22371,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0002",
+            "m_name": "9c07f1189b62e332db7ebb85c380f89e",
+            "m_hash": "38711030cbeef910b985b9de16b26e65",
+            "m_usmHash": "2139cc6153ad23e212df3fd1dd3989fd",
+            "m_usmSize": 25017152,
+            "m_usmPrimaryPartHash": "9cb49735e6ab58ae22b321b531eeb30f",
+            "m_usmPrimaryPartSize": 24992721,
+            "m_usmSecondaryPartHash": "4091bce9c7ac9e84e629ccbea31adab0",
+            "m_usmSecondaryPartSize": 24431,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0003",
+            "m_name": "9dd8956aaf42b7052a30b04e62ca2aba",
+            "m_hash": "777b913cca04676f7e5778ded7c78f4f",
+            "m_usmHash": "e619aefde19aee2749da48bf800d041b",
+            "m_usmSize": 20073248,
+            "m_usmPrimaryPartHash": "95be45e598ef7fe1734a0792788a007f",
+            "m_usmPrimaryPartSize": 20053645,
+            "m_usmSecondaryPartHash": "ee76ce37550ca56b98c536749ded14cf",
+            "m_usmSecondaryPartSize": 19603,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0004",
+            "m_name": "b233a0c53cef5f27674a20fbc2890707",
+            "m_hash": "474428d5c7cb1250e4e512fe847c9ef4",
+            "m_usmHash": "4b79930b012eb11a3e03f874c7e4d09d",
+            "m_usmSize": 27205248,
+            "m_usmPrimaryPartHash": "7831c4a863507485e24058de62cff29f",
+            "m_usmPrimaryPartSize": 27178680,
+            "m_usmSecondaryPartHash": "35b8704e198fcefc8cea6f84ac484f19",
+            "m_usmSecondaryPartSize": 26568,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0005",
+            "m_name": "cc39d0e169918608b3681d54ad74231d",
+            "m_hash": "34e2c24d9fce40d4cd9bc71d4f5e09a0",
+            "m_usmHash": "a2b492a1917eb668301042e688a9285f",
+            "m_usmSize": 34208512,
+            "m_usmPrimaryPartHash": "1b37ca5114aaf03ea4b4d3b1c6b2dc55",
+            "m_usmPrimaryPartSize": 34175105,
+            "m_usmSecondaryPartHash": "e6ec0fe258c94169ca534ef2cacbadb8",
+            "m_usmSecondaryPartSize": 33407,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0006",
+            "m_name": "9ca4f741957b3c47bc483191a13f7925",
+            "m_hash": "4c45b06971e2b690857b19dfb4fa9923",
+            "m_usmHash": "8393c322e5789ba4b608dabbf48f5617",
+            "m_usmSize": 25543808,
+            "m_usmPrimaryPartHash": "898c15040808010217d847e79b0a30fd",
+            "m_usmPrimaryPartSize": 25518862,
+            "m_usmSecondaryPartHash": "25f605c9685135ab45afb05352d5a204",
+            "m_usmSecondaryPartSize": 24946,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0007",
+            "m_name": "3df6e2452f456d3f3d25118fbde4111f",
+            "m_hash": "58f8606bdde0d75a2e6034977f36a64f",
+            "m_usmHash": "ac1efe2bce375323f76b6702acade701",
+            "m_usmSize": 27635936,
+            "m_usmPrimaryPartHash": "dea5bf9bd46b1b3040a3ddce418b97bb",
+            "m_usmPrimaryPartSize": 27608947,
+            "m_usmSecondaryPartHash": "13fc62a9c3d4019f09f31551a9f63304",
+            "m_usmSecondaryPartSize": 26989,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        },
+        {
+            "m_identifier": "Scenes/StoryNichijo/nichijo_04_0008",
+            "m_name": "092c29f482802e6ca8b755b61307f1b5",
+            "m_hash": "76b14454975954b604c676150574aa1f",
+            "m_usmHash": "3fe65972712658f7ad48d395105cff78",
+            "m_usmSize": 27815744,
+            "m_usmPrimaryPartHash": "d1f1164e7f3e4a20d91e8950150d6fd5",
+            "m_usmPrimaryPartSize": 27788580,
+            "m_usmSecondaryPartHash": "c7cef02ce6dffc8b6dbcfb845590da24",
+            "m_usmSecondaryPartSize": 27164,
+            "m_enableSplit": true,
+            "m_labels": [
+                "Story"
+            ]
+        }
+    ]
+}

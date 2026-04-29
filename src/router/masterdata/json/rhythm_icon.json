@@ -1,0 +1,38 @@
+[
+    {
+        "_id": 1,
+        "_name": "スキン1",
+        "_atlasName": "MarkerAtlas_Type1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_name": "スキン2",
+        "_atlasName": "MarkerAtlas_Type2",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_name": "スキン3",
+        "_atlasName": "MarkerAtlas_Type3",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4,
+        "_name": "スキン4",
+        "_atlasName": "MarkerAtlas_Type4",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 5,
+        "_name": "スキン5",
+        "_atlasName": "MarkerAtlas_Type5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 6,
+        "_name": "スキン6",
+        "_atlasName": "MarkerAtlas_Type6",
+        "_masterReleaseLabelId": 1
+    }
+]

@@ -1,0 +1,2402 @@
+[
+    {
+        "_rank": 1,
+        "_exp": 0,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 100,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 2,
+        "_exp": 40,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 101,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 3,
+        "_exp": 130,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 102,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 4,
+        "_exp": 225,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 103,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 5,
+        "_exp": 325,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 104,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 6,
+        "_exp": 430,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 105,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 7,
+        "_exp": 540,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 106,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 8,
+        "_exp": 655,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 107,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 9,
+        "_exp": 775,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 108,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 10,
+        "_exp": 900,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 109,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 11,
+        "_exp": 1075,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 110,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 12,
+        "_exp": 1300,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 111,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 13,
+        "_exp": 1575,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 112,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 14,
+        "_exp": 1850,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 113,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 15,
+        "_exp": 2125,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 114,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 16,
+        "_exp": 2400,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 115,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 17,
+        "_exp": 2675,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 116,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 18,
+        "_exp": 2950,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 117,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 19,
+        "_exp": 3225,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 118,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 20,
+        "_exp": 3500,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 119,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 21,
+        "_exp": 3775,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 120,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 22,
+        "_exp": 4050,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 121,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 23,
+        "_exp": 4325,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 122,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 24,
+        "_exp": 4600,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 123,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 25,
+        "_exp": 4875,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 124,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 26,
+        "_exp": 5150,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 125,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 27,
+        "_exp": 5425,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 126,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 28,
+        "_exp": 5700,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 127,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 29,
+        "_exp": 5975,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 128,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 30,
+        "_exp": 6250,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 129,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 31,
+        "_exp": 6525,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 130,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 32,
+        "_exp": 6800,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 131,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 33,
+        "_exp": 7075,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 132,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 34,
+        "_exp": 7350,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 133,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 35,
+        "_exp": 7625,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 134,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 36,
+        "_exp": 7900,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 135,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 37,
+        "_exp": 8175,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 136,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 38,
+        "_exp": 8450,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 137,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 39,
+        "_exp": 8725,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 138,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 40,
+        "_exp": 9000,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 139,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 41,
+        "_exp": 9275,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 140,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 42,
+        "_exp": 9550,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 141,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 43,
+        "_exp": 9825,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 142,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 44,
+        "_exp": 10100,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 143,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 45,
+        "_exp": 10375,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 144,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 46,
+        "_exp": 10650,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 145,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 47,
+        "_exp": 10925,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 146,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 48,
+        "_exp": 11200,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 147,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 49,
+        "_exp": 11475,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 148,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 50,
+        "_exp": 11750,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 149,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 51,
+        "_exp": 12025,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 150,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 52,
+        "_exp": 12300,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 151,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 53,
+        "_exp": 12575,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 152,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 54,
+        "_exp": 12850,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 153,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 55,
+        "_exp": 13125,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 154,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 56,
+        "_exp": 13400,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 155,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 57,
+        "_exp": 13675,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 156,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 58,
+        "_exp": 13950,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 157,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 59,
+        "_exp": 14225,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 158,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 60,
+        "_exp": 14500,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 159,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 61,
+        "_exp": 14775,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 160,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 62,
+        "_exp": 15050,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 161,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 63,
+        "_exp": 15325,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 162,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 64,
+        "_exp": 15600,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 163,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 65,
+        "_exp": 15875,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 164,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 66,
+        "_exp": 16150,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 165,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 67,
+        "_exp": 16425,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 166,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 68,
+        "_exp": 16700,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 167,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 69,
+        "_exp": 16975,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 168,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 70,
+        "_exp": 17250,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 169,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 71,
+        "_exp": 17525,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 170,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 72,
+        "_exp": 17800,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 171,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 73,
+        "_exp": 18075,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 172,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 74,
+        "_exp": 18350,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 173,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 75,
+        "_exp": 18625,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 174,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 76,
+        "_exp": 18900,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 175,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 77,
+        "_exp": 19175,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 176,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 78,
+        "_exp": 19450,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 177,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 79,
+        "_exp": 19725,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 178,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 80,
+        "_exp": 20000,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 179,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 81,
+        "_exp": 20275,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 180,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 82,
+        "_exp": 20550,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 181,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 83,
+        "_exp": 20825,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 182,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 84,
+        "_exp": 21100,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 183,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 85,
+        "_exp": 21375,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 184,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 86,
+        "_exp": 21650,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 185,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 87,
+        "_exp": 21925,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 186,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 88,
+        "_exp": 22200,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 187,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 89,
+        "_exp": 22475,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 188,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 90,
+        "_exp": 22750,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 189,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 91,
+        "_exp": 23025,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 190,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 92,
+        "_exp": 23300,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 191,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 93,
+        "_exp": 23575,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 192,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 94,
+        "_exp": 23850,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 193,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 95,
+        "_exp": 24125,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 194,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 96,
+        "_exp": 24400,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 195,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 97,
+        "_exp": 24675,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 196,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 98,
+        "_exp": 24950,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 197,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 99,
+        "_exp": 25225,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 198,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 100,
+        "_exp": 25500,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 199,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 101,
+        "_exp": 25781,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 200,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 102,
+        "_exp": 26068,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 201,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 103,
+        "_exp": 26361,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 202,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 104,
+        "_exp": 26660,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 203,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 105,
+        "_exp": 26965,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 204,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 106,
+        "_exp": 27276,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 205,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 107,
+        "_exp": 27593,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 206,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 108,
+        "_exp": 27916,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 207,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 109,
+        "_exp": 28245,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 208,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 110,
+        "_exp": 28580,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 209,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 111,
+        "_exp": 28922,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 210,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 112,
+        "_exp": 29271,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 211,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 113,
+        "_exp": 29627,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 212,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 114,
+        "_exp": 29990,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 213,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 115,
+        "_exp": 30360,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 214,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 116,
+        "_exp": 30737,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 215,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 117,
+        "_exp": 31121,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 216,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 118,
+        "_exp": 31512,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 217,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 119,
+        "_exp": 31910,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 218,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 120,
+        "_exp": 32315,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 219,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 121,
+        "_exp": 32728,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 220,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 122,
+        "_exp": 33149,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 221,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 123,
+        "_exp": 33578,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 222,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 124,
+        "_exp": 34015,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 223,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 125,
+        "_exp": 34460,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 224,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 126,
+        "_exp": 34913,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 225,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 127,
+        "_exp": 35374,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 226,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 128,
+        "_exp": 35843,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 227,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 129,
+        "_exp": 36320,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 228,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 130,
+        "_exp": 36805,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 229,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 131,
+        "_exp": 37299,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 230,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 132,
+        "_exp": 37802,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 231,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 133,
+        "_exp": 38314,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 232,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 134,
+        "_exp": 38835,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 233,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 135,
+        "_exp": 39365,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 234,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 136,
+        "_exp": 39904,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 235,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 137,
+        "_exp": 40452,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 236,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 138,
+        "_exp": 41009,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 237,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 139,
+        "_exp": 41575,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 238,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 140,
+        "_exp": 42150,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 239,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 141,
+        "_exp": 42735,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 240,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 142,
+        "_exp": 43330,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 241,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 143,
+        "_exp": 43935,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 242,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 144,
+        "_exp": 44550,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 243,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 145,
+        "_exp": 45175,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 244,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 146,
+        "_exp": 45810,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 245,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 147,
+        "_exp": 46455,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 246,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 148,
+        "_exp": 47110,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 247,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 149,
+        "_exp": 47775,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 248,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 150,
+        "_exp": 48452,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 249,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 151,
+        "_exp": 49141,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 250,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 152,
+        "_exp": 49842,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 251,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 153,
+        "_exp": 50555,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 252,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 154,
+        "_exp": 51280,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 253,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 155,
+        "_exp": 52017,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 254,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 156,
+        "_exp": 52766,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 255,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 157,
+        "_exp": 53527,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 256,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 158,
+        "_exp": 54300,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 257,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 159,
+        "_exp": 55085,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 258,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 160,
+        "_exp": 55882,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 259,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 161,
+        "_exp": 56693,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 260,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 162,
+        "_exp": 57518,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 261,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 163,
+        "_exp": 58357,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 262,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 164,
+        "_exp": 59210,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 263,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 165,
+        "_exp": 60077,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 264,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 166,
+        "_exp": 60958,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 265,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 167,
+        "_exp": 61853,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 266,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 168,
+        "_exp": 62762,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 267,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 169,
+        "_exp": 63685,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 268,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 170,
+        "_exp": 64624,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 269,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 171,
+        "_exp": 65579,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 270,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 172,
+        "_exp": 66550,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 271,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 173,
+        "_exp": 67537,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 272,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 174,
+        "_exp": 68540,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 273,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 175,
+        "_exp": 69559,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 274,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 176,
+        "_exp": 70594,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 275,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 177,
+        "_exp": 71645,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 276,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 178,
+        "_exp": 72712,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 277,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 179,
+        "_exp": 73795,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 278,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 180,
+        "_exp": 74894,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 279,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 181,
+        "_exp": 76011,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 280,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 182,
+        "_exp": 77146,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 281,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 183,
+        "_exp": 78299,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 282,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 184,
+        "_exp": 79470,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 283,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 185,
+        "_exp": 80659,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 284,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 186,
+        "_exp": 81866,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 285,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 187,
+        "_exp": 83091,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 286,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 188,
+        "_exp": 84334,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 287,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 189,
+        "_exp": 85595,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 288,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 190,
+        "_exp": 86874,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 289,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 191,
+        "_exp": 88173,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 290,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 192,
+        "_exp": 89492,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 291,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 193,
+        "_exp": 90831,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 292,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 194,
+        "_exp": 92190,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 293,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 195,
+        "_exp": 93569,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 294,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 196,
+        "_exp": 94968,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 295,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 197,
+        "_exp": 96387,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 296,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 198,
+        "_exp": 97826,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 297,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 199,
+        "_exp": 99285,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 298,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 200,
+        "_exp": 100764,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 299,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 201,
+        "_exp": 102263,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 202,
+        "_exp": 111023,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 203,
+        "_exp": 119783,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 204,
+        "_exp": 128543,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 205,
+        "_exp": 137303,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 206,
+        "_exp": 146063,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 207,
+        "_exp": 154823,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 208,
+        "_exp": 163583,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 209,
+        "_exp": 172343,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 210,
+        "_exp": 181103,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 211,
+        "_exp": 189863,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 212,
+        "_exp": 198623,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 213,
+        "_exp": 207383,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 214,
+        "_exp": 216143,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 215,
+        "_exp": 224903,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 216,
+        "_exp": 233663,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 217,
+        "_exp": 242423,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 218,
+        "_exp": 251183,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 219,
+        "_exp": 259943,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 220,
+        "_exp": 268703,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 221,
+        "_exp": 277463,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 222,
+        "_exp": 286223,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 223,
+        "_exp": 294983,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 224,
+        "_exp": 303743,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 225,
+        "_exp": 312503,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 226,
+        "_exp": 321263,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 227,
+        "_exp": 330023,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 228,
+        "_exp": 338783,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 229,
+        "_exp": 347543,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 230,
+        "_exp": 356303,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 231,
+        "_exp": 365063,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 232,
+        "_exp": 373823,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 233,
+        "_exp": 382583,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 234,
+        "_exp": 391343,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 235,
+        "_exp": 400103,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 236,
+        "_exp": 408863,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 237,
+        "_exp": 417623,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 238,
+        "_exp": 426383,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 239,
+        "_exp": 435143,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 240,
+        "_exp": 443903,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 241,
+        "_exp": 452663,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 242,
+        "_exp": 461423,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 243,
+        "_exp": 470183,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 244,
+        "_exp": 478943,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 245,
+        "_exp": 487703,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 246,
+        "_exp": 496463,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 247,
+        "_exp": 505223,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 248,
+        "_exp": 513983,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 249,
+        "_exp": 522743,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 250,
+        "_exp": 531503,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 251,
+        "_exp": 540263,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 252,
+        "_exp": 549023,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 253,
+        "_exp": 557783,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 254,
+        "_exp": 566543,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 255,
+        "_exp": 575303,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 256,
+        "_exp": 584063,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 257,
+        "_exp": 592823,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 258,
+        "_exp": 601583,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 259,
+        "_exp": 610343,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 260,
+        "_exp": 619103,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 261,
+        "_exp": 627863,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 262,
+        "_exp": 636623,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 263,
+        "_exp": 645383,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 264,
+        "_exp": 654143,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 265,
+        "_exp": 662903,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 266,
+        "_exp": 671663,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 267,
+        "_exp": 680423,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 268,
+        "_exp": 689183,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 269,
+        "_exp": 697943,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 270,
+        "_exp": 706703,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 271,
+        "_exp": 715463,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 272,
+        "_exp": 724223,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 273,
+        "_exp": 732983,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 274,
+        "_exp": 741743,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 275,
+        "_exp": 750503,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 276,
+        "_exp": 759263,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 277,
+        "_exp": 768023,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 278,
+        "_exp": 776783,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 279,
+        "_exp": 785543,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 280,
+        "_exp": 794303,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 281,
+        "_exp": 803063,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 282,
+        "_exp": 811823,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 283,
+        "_exp": 820583,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 284,
+        "_exp": 829343,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 285,
+        "_exp": 838103,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 286,
+        "_exp": 846863,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 287,
+        "_exp": 855623,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 288,
+        "_exp": 864383,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 289,
+        "_exp": 873143,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 290,
+        "_exp": 881903,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 291,
+        "_exp": 890663,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 292,
+        "_exp": 899423,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 293,
+        "_exp": 908183,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 294,
+        "_exp": 916943,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 295,
+        "_exp": 925703,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 296,
+        "_exp": 934463,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 297,
+        "_exp": 943223,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 298,
+        "_exp": 951983,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 299,
+        "_exp": 960743,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_rank": 300,
+        "_exp": 969503,
+        "_masterUserRankRewardId": 0,
+        "_maxFriend": 40,
+        "_maxLp": 300,
+        "_masterReleaseLabelId": 1
+    }
+]

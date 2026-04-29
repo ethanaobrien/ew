@@ -1,0 +1,317 @@
+[
+    {
+        "_id": 1,
+        "_bandCategory": {
+            "value__": 1
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_bandCategory": {
+            "value__": 2
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_bandCategory": {
+            "value__": 3
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_bandCategory": {
+            "value__": 4
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_bandCategory": {
+            "value__": 5
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_bandCategory": {
+            "value__": 6
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_bandCategory": {
+            "value__": 0
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100,
+        "_bandCategory": {
+            "value__": 1
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100,
+        "_bandCategory": {
+            "value__": 2
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100,
+        "_bandCategory": {
+            "value__": 3
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100,
+        "_bandCategory": {
+            "value__": 4
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100,
+        "_bandCategory": {
+            "value__": 5
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100,
+        "_bandCategory": {
+            "value__": 6
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100,
+        "_bandCategory": {
+            "value__": 0
+        },
+        "_normalMovieId": 90010001,
+        "_expectedMoveId": 90010002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200,
+        "_bandCategory": {
+            "value__": 1
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200,
+        "_bandCategory": {
+            "value__": 2
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200,
+        "_bandCategory": {
+            "value__": 3
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200,
+        "_bandCategory": {
+            "value__": 4
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200,
+        "_bandCategory": {
+            "value__": 5
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200,
+        "_bandCategory": {
+            "value__": 6
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200,
+        "_bandCategory": {
+            "value__": 0
+        },
+        "_normalMovieId": 90020001,
+        "_expectedMoveId": 90020002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300,
+        "_bandCategory": {
+            "value__": 1
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300,
+        "_bandCategory": {
+            "value__": 2
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300,
+        "_bandCategory": {
+            "value__": 3
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300,
+        "_bandCategory": {
+            "value__": 4
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300,
+        "_bandCategory": {
+            "value__": 5
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300,
+        "_bandCategory": {
+            "value__": 6
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300,
+        "_bandCategory": {
+            "value__": 0
+        },
+        "_normalMovieId": 90030001,
+        "_expectedMoveId": 90030002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400,
+        "_bandCategory": {
+            "value__": 1
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400,
+        "_bandCategory": {
+            "value__": 2
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400,
+        "_bandCategory": {
+            "value__": 3
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400,
+        "_bandCategory": {
+            "value__": 4
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400,
+        "_bandCategory": {
+            "value__": 5
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400,
+        "_bandCategory": {
+            "value__": 6
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400,
+        "_bandCategory": {
+            "value__": 0
+        },
+        "_normalMovieId": 90040001,
+        "_expectedMoveId": 90040002,
+        "_masterReleaseLabelId": 1
+    }
+]

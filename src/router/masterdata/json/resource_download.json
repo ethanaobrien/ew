@@ -1,0 +1,57 @@
+[
+    {
+        "_id": 1,
+        "_imageName": "AsetDl_TERU",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_imageName": "AsetDl_HISASHI",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_imageName": "AsetDl_JIRO",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4,
+        "_imageName": "AsetDl_TAKURO",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 5,
+        "_imageName": "AsetDl_GLAY_01",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 6,
+        "_imageName": "AsetDl_GLAY_02",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 7,
+        "_imageName": "AsetDl_GLAY_03",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 8,
+        "_imageName": "AsetDl_GLAY_04",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 9,
+        "_imageName": "AsetDl_GLAY_05",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 10,
+        "_imageName": "AsetDl_GLAY_06",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 11,
+        "_imageName": "AsetDl_GLAY_07",
+        "_masterReleaseLabelId": 1
+    }
+]

@@ -1,0 +1,56 @@
+[
+    {
+        "_playerCount": 2,
+        "_liveRank": 1,
+        "_eventPtBonus": 1000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 2,
+        "_liveRank": 2,
+        "_eventPtBonus": 0,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 3,
+        "_liveRank": 1,
+        "_eventPtBonus": 2000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 3,
+        "_liveRank": 2,
+        "_eventPtBonus": 1000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 3,
+        "_liveRank": 3,
+        "_eventPtBonus": 0,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 4,
+        "_liveRank": 1,
+        "_eventPtBonus": 3000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 4,
+        "_liveRank": 2,
+        "_eventPtBonus": 2000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 4,
+        "_liveRank": 3,
+        "_eventPtBonus": 1000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_playerCount": 4,
+        "_liveRank": 4,
+        "_eventPtBonus": 0,
+        "_masterReleaseLabelId": 223061303
+    }
+]

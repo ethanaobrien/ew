@@ -1,0 +1,146 @@
+[
+    {
+        "_id": 1,
+        "_name": "電飾",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "fe_00000001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_name": "花びら",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "fe_00000002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_name": "シャボン玉",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "fe_00000003",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4,
+        "_name": "[あなたを見つめる] 上原歩夢",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30010012",
+        "_masterReleaseLabelId": 223100302
+    },
+    {
+        "_id": 5,
+        "_name": "[大人デート♡] 中須かすみ",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30020011",
+        "_masterReleaseLabelId": 223101002
+    },
+    {
+        "_id": 6,
+        "_name": "[あざとくキメちゃう] 桜坂しずく",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30030012",
+        "_masterReleaseLabelId": 223101702
+    },
+    {
+        "_id": 7,
+        "_name": "[特別な恋を探して] 朝香果林",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30040011",
+        "_masterReleaseLabelId": 223102402
+    },
+    {
+        "_id": 8,
+        "_name": "[ふたりで楽しく] 宮下 愛",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30050012",
+        "_masterReleaseLabelId": 223103102
+    },
+    {
+        "_id": 9,
+        "_name": "[ずっとあなたのことを] 近江彼方",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30060011",
+        "_masterReleaseLabelId": 223110702
+    },
+    {
+        "_id": 10,
+        "_name": "[みんなに伝えるラブ] 優木せつ菜",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30070014",
+        "_masterReleaseLabelId": 223111402
+    },
+    {
+        "_id": 11,
+        "_name": "[記憶のなかのあなた] エマ・ヴェルデ",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30080011",
+        "_masterReleaseLabelId": 223112102
+    },
+    {
+        "_id": 12,
+        "_name": "[大切なあなたへ] 天王寺璃奈",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30090013",
+        "_masterReleaseLabelId": 223112802
+    },
+    {
+        "_id": 13,
+        "_name": "[私の印] 三船栞子",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30100013",
+        "_masterReleaseLabelId": 223120502
+    },
+    {
+        "_id": 14,
+        "_name": "[高鳴る気持ち] ミア・テイラー",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30110014",
+        "_masterReleaseLabelId": 223121202
+    },
+    {
+        "_id": 15,
+        "_name": "[最高の恋しましょ！] 鐘 嵐珠",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "fe_30120013",
+        "_masterReleaseLabelId": 223121902
+    },
+    {
+        "_id": 16,
+        "_name": "雪の結晶",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "fe_00000016",
+        "_masterReleaseLabelId": 223121205
+    }
+]

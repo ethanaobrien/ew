@@ -1,0 +1,444 @@
+[
+    {
+        "_id": 119999,
+        "_type": {
+            "value__": 2
+        },
+        "_masterGroupId": 100,
+        "_seasonNumber": 1,
+        "_chapterNumber": 1,
+        "_name": "µ'sとの出会い",
+        "_summary": "新聞部のあなたは、取材予定だった友人の代理で急遽「µ’ｓ」というスクールアイドルの取材をお願いされる。ライブ会場に行くと、彼女たちが出迎えてくれて……。",
+        "_imageName": "chap_119999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 129999,
+        "_type": {
+            "value__": 2
+        },
+        "_masterGroupId": 200,
+        "_seasonNumber": 1,
+        "_chapterNumber": 1,
+        "_name": "Aqoursとの出会い",
+        "_summary": "新聞部のあなたは、取材予定だった友人の代理で急遽「Aqours」というスクールアイドルの取材をお願いされる。ライブ会場に行くと、彼女たちが出迎えてくれて……。",
+        "_imageName": "chap_129999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 139999,
+        "_type": {
+            "value__": 2
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 1,
+        "_name": "ニジガクとの出会い",
+        "_summary": "新聞部のあなたは、取材予定だった友人の代理で急遽「虹ヶ咲学園スクールアイドル同好会」というスクールアイドルの取材をお願いされる。ライブ会場に行くと、彼女たちが出迎えてくれて……。",
+        "_imageName": "chap_139999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 149999,
+        "_type": {
+            "value__": 2
+        },
+        "_masterGroupId": 400,
+        "_seasonNumber": 1,
+        "_chapterNumber": 1,
+        "_name": "Liella!との出会い",
+        "_summary": "新聞部のあなたは、取材予定だった友人の代理で急遽「Liella!」というスクールアイドルの取材をお願いされる。ライブ会場に行くと、彼女たちが出迎えてくれて……。",
+        "_imageName": "chap_149999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140001,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 400,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "スランプ脱出大作戦！",
+        "_summary": "「可可はもうダメデス……」そんな可可の発言から、Liella!一行は新たなインスピレーションを得ようと原宿に繰り出すことに。",
+        "_imageName": "chap_140001",
+        "_masterReleaseLabelId": 223041904
+    },
+    {
+        "_id": 110001,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 100,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私たちの街、撮ってみた",
+        "_summary": "ある日、μ'sはリポート動画をつくることに。お客さんたちの、彼女たちや彼女たちが住む街について知りたいというニーズに応えたものだった。一行はビデオを手にあちこちを回り…！？",
+        "_imageName": "chap_110001",
+        "_masterReleaseLabelId": 223043005
+    },
+    {
+        "_id": 120001,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 200,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "沼津よいとこ　一度はおいで",
+        "_summary": "ある日、Aqoursに商店街をアピールするライブをやってほしいという依頼が。喜んで引き受ける一行は商店街に向かい色々なお店を見てまわるが、なかなかまとまらなくて……！？",
+        "_imageName": "chap_120001",
+        "_masterReleaseLabelId": 223051506
+    },
+    {
+        "_id": 130001,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "描く　つながる　ネットワーク",
+        "_summary": "かすみによると、次のライブはなんと大自然の中！　驚く同好会一行だが、それなら自分は……と次々アイデアが。一方、普段デジタルデバイスを駆使する璃奈の顔は暗くて……！？",
+        "_imageName": "chap_130001",
+        "_masterReleaseLabelId": 223053106
+    },
+    {
+        "_id": 140002,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 400,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "カモメのトラブル宅配便",
+        "_summary": "この暑さで屋外練習は厳しい。そこでLiella!一行は海合宿をすることに！　せっかくの海だから少しは遊ぼうと白熱したビーチバレーが行われるのだが、その後カモメがまさかの……！？",
+        "_imageName": "chap_140002",
+        "_masterReleaseLabelId": 223063006
+    },
+    {
+        "_id": 110002,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 100,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "勝利のフラッグは誰の手に",
+        "_summary": "夏休みも部活に勉強にと忙しいスケジュールを入れる海未。それでは十分に夏休みを楽しめないのではと思った穂乃果とことりは、他のメンバーと共に一計を案じ……！？",
+        "_imageName": "chap_110002",
+        "_masterReleaseLabelId": 223073106
+    },
+    {
+        "_id": 120002,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 200,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "銀色の月が輝く丘に降臨",
+        "_summary": "曜とルビィは衣装作りに悩んでいた。それを見た鞠莉は一行から案を募ることに。それでもまだしっくりこない様子のふたりに、鞠莉は「山へ行くわよ！」と言って……！？",
+        "_imageName": "chap_120002",
+        "_masterReleaseLabelId": 223083106
+    },
+    {
+        "_id": 130002,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "何が飛び出す！？ Halloween",
+        "_summary": "ハロウィンライブが終わり次の楽しみがないと騒ぐランジュ。ハロウィンパーティでもしたら？というミアの提案に乗り、他メンバーにサプライズをしかけることに。話を聞いていたしずくと侑も仲間に加わって……！？",
+        "_imageName": "chap_130002",
+        "_masterReleaseLabelId": 223093006
+    },
+    {
+        "_id": 140003,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 400,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "ドキドキ！ 学校説明会",
+        "_summary": "恋に大切な話があると集められた一行。どきどきするメンバーたちに、恋は大事な学校説明会の時期が始まると告げる。二期生四名がその実行委員を務めることになり……！？",
+        "_imageName": "chap_140003",
+        "_masterReleaseLabelId": 223103106
+    },
+    {
+        "_id": 110003,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 100,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "クリパは何度だって最高！",
+        "_summary": "クリスマスムードが漂う秋葉原を見て、μ'sのみんなにクリスマスパーティを提案する穂乃果。パーティで一年を振り返る一行だが、絵里は「今年の私たちの活動はまだ終わってない」と言い……！？",
+        "_imageName": "chap_110003",
+        "_masterReleaseLabelId": 223113006
+    },
+    {
+        "_id": 120003,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 200,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "淡島ハッピーニューイヤー！",
+        "_summary": "新年が待ち遠しいと今年残りの日数を指折り数える千歌。年末年始の予定は特にないと言うAqours一行に、鞠莉がひとつの提案をする。「ホテルオハラで、カウントダウン＆ニューイヤーパーティよ！」",
+        "_imageName": "chap_120003",
+        "_masterReleaseLabelId": 223123105
+    },
+    {
+        "_id": 130003,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "チョコレートは誰の手に！？",
+        "_summary": "日本のバレンタインが『特別な人』にチョコレートをあげる日だと知ったランジュは、みんなで作って持ち寄ろうというニジガク一行に一石を投じる。「『特別な人』にはあげないの？　侑はどうするつもり？」",
+        "_imageName": "chap_130003",
+        "_masterReleaseLabelId": 224013105
+    },
+    {
+        "_id": 140004,
+        "_type": {
+            "value__": 3
+        },
+        "_masterGroupId": 400,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "想い通じるホワイトデー",
+        "_summary": "ホワイトデーが近づいたある日、三年生へのお返しを悩んでいるメイを見かけるすみれと恋。ふたりは自然な形でメイをサポートできないかと考えて……――。",
+        "_imageName": "chap_140004",
+        "_masterReleaseLabelId": 224030105
+    },
+    {
+        "_id": 210001,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 100,
+        "_seasonNumber": 1,
+        "_chapterNumber": 3,
+        "_name": "μ'sの日常",
+        "_summary": "スクールアイドルとして活動するµ'sのメンバーたちのほのぼのとした日常",
+        "_imageName": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 220001,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 200,
+        "_seasonNumber": 1,
+        "_chapterNumber": 3,
+        "_name": "Aqoursの日常",
+        "_summary": "スクールアイドルとして活動するAqoursのメンバーたちのほのぼのとした日常",
+        "_imageName": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 230001,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 3,
+        "_name": "ニジガクの日常",
+        "_summary": "スクールアイドルとして活動する虹ヶ咲学園スクールアイドル同好会のメンバーたちのほのぼのとした日常",
+        "_imageName": "chap_230001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 240001,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 400,
+        "_seasonNumber": 1,
+        "_chapterNumber": 3,
+        "_name": "Liella!の日常",
+        "_summary": "スクールアイドルとして活動するLiella!のメンバーたちのほのぼのとした日常",
+        "_imageName": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 230002,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　歩夢",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取った歩夢。まずは作詞を頑張ろうとするも、コレというものがなくて……！？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230003,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　かすみ",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取ったかすみ。かすみんの理想のラブをたくさん詰め込んだものにすると意気揚々で……！？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230004,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　しずく",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取ったしずく。ヒントが欲しくて歩夢と映画に行くのだが、インスピレーションを得たのは歩夢とのやり取りで……！？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230005,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　果林",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取った果林。他メンバーに果林なら大人っぽくて格好良くてクールでドラマチックな恋愛をするのだろうと噂されるが、その実は……！？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230006,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　愛",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取った愛。世界中を愛する愛だが、今回は変化球！　みんなのことが大好きな気持ちが、ひとりだけに向いたらどうなるのだろうか……。",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230007,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　彼方",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取った彼方。しかし彼方は肝心のラブがわからないと困っていた。「誰か彼方ちゃんにラブのヒントくださ～い！」",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230008,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　せつ菜",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取ったせつ菜。小説やアニメで恋愛感情を学んではみるものの、中々自分の気持ちに落とし込めないせつ菜。しずくのアドバイスとは！？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230009,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　エマ",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取ったエマ。どんなラブソングにしようか悩みながら部室へ行くと、そこにはランジュの姿があって……！？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230010,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　璃奈",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取った璃奈。どんな曲にするか他のメンバーが悩む中、璃奈はもう内容を固めていて……！？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230011,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　栞子",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取った栞子。かすみに自分はどんな恋愛をしそうか尋ねてみると、想定外の答えが返ってきた。「そんな管理みたいなことしませんっ！」",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230012,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　ミア",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取ったミア。今までもいろんなラブソングを作ってきたボクにかかれば一瞬で！　と、取り掛かったのだが……？",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 230013,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 300,
+        "_seasonNumber": 1,
+        "_chapterNumber": 5,
+        "_name": "私のラブソング編　ランジュ",
+        "_summary": "ある日、ラブソングカーニバルへの招待状を受け取ったランジュ。恋愛を理解しているか怪訝な顔で聞いてくるミアにランジュは自信満々で答える。「恋愛っていうのはね……――」",
+        "_imageName": "chap_230002",
+        "_masterReleaseLabelId": 223090601
+    },
+    {
+        "_id": 240002,
+        "_type": {
+            "value__": 1
+        },
+        "_masterGroupId": 400,
+        "_seasonNumber": 1,
+        "_chapterNumber": 3,
+        "_name": "Liella!の日常　ライブ開催編",
+        "_summary": "Liella!11名で行う新たなライブが決まった。パワーアップしたLiella!を見せようとメンバーたちは努力して……！？",
+        "_imageName": "chap_240002",
+        "_masterReleaseLabelId": 224011902
+    }
+]

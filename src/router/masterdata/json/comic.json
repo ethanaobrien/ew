@@ -1,0 +1,978 @@
+[
+    {
+        "_id": 100001,
+        "_masterGroupId": 100,
+        "_number": 1,
+        "_name": "ほ",
+        "_imageName": "comic_01_0001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100002,
+        "_masterGroupId": 100,
+        "_number": 2,
+        "_name": "最強装備",
+        "_imageName": "comic_01_0002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100003,
+        "_masterGroupId": 100,
+        "_number": 3,
+        "_name": "勝負靴下",
+        "_imageName": "comic_01_0003",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100004,
+        "_masterGroupId": 100,
+        "_number": 4,
+        "_name": "緊張対策",
+        "_imageName": "comic_01_0004",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100005,
+        "_masterGroupId": 100,
+        "_number": 5,
+        "_name": "健康に気をつけて",
+        "_imageName": "comic_01_0005",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100006,
+        "_masterGroupId": 100,
+        "_number": 6,
+        "_name": "まきまき",
+        "_imageName": "comic_01_0006",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100007,
+        "_masterGroupId": 100,
+        "_number": 7,
+        "_name": "隠しコマンド",
+        "_imageName": "comic_01_0007",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100008,
+        "_masterGroupId": 100,
+        "_number": 8,
+        "_name": "米比べ検定有段者",
+        "_imageName": "comic_01_0008",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100009,
+        "_masterGroupId": 100,
+        "_number": 9,
+        "_name": "新設：国民の祝日",
+        "_imageName": "comic_01_0009",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200001,
+        "_masterGroupId": 200,
+        "_number": 1,
+        "_name": "輝いてるかい？",
+        "_imageName": "comic_02_0001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200002,
+        "_masterGroupId": 200,
+        "_number": 2,
+        "_name": "梨子の秘密",
+        "_imageName": "comic_02_0002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200003,
+        "_masterGroupId": 200,
+        "_number": 3,
+        "_name": "果南式トレーニング法",
+        "_imageName": "comic_02_0003",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200004,
+        "_masterGroupId": 200,
+        "_number": 4,
+        "_name": "つい集めてしまいましたわ……！",
+        "_imageName": "comic_02_0004",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200005,
+        "_masterGroupId": 200,
+        "_number": 5,
+        "_name": "冬でも半袖ヨーソロー！",
+        "_imageName": "comic_02_0005",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200006,
+        "_masterGroupId": 200,
+        "_number": 6,
+        "_name": "ある日の堕天使ランチ",
+        "_imageName": "comic_02_0006",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200007,
+        "_masterGroupId": 200,
+        "_number": 7,
+        "_name": "配膳するにゃん",
+        "_imageName": "comic_02_0007",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200008,
+        "_masterGroupId": 200,
+        "_number": 8,
+        "_name": "原価〇〇万円",
+        "_imageName": "comic_02_0008",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200009,
+        "_masterGroupId": 200,
+        "_number": 9,
+        "_name": "安眠グッズ…？",
+        "_imageName": "comic_02_0009",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300001,
+        "_masterGroupId": 300,
+        "_number": 1,
+        "_name": "なんでも褒める",
+        "_imageName": "comic_03_0001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300002,
+        "_masterGroupId": 300,
+        "_number": 2,
+        "_name": "マーケティングかすみん",
+        "_imageName": "comic_03_0002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300003,
+        "_masterGroupId": 300,
+        "_number": 3,
+        "_name": "形から入るタイプ",
+        "_imageName": "comic_03_0003",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300004,
+        "_masterGroupId": 300,
+        "_number": 4,
+        "_name": "お迎え待ち",
+        "_imageName": "comic_03_0004",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300005,
+        "_masterGroupId": 300,
+        "_number": 5,
+        "_name": "愛さんの知恵袋",
+        "_imageName": "comic_03_0005",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300006,
+        "_masterGroupId": 300,
+        "_number": 6,
+        "_name": "どんなときも",
+        "_imageName": "comic_03_0006",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300007,
+        "_masterGroupId": 300,
+        "_number": 7,
+        "_name": "焼包林檎菓子～暗黒物質を添えて～",
+        "_imageName": "comic_03_0007",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300008,
+        "_masterGroupId": 300,
+        "_number": 8,
+        "_name": "癒しの証明",
+        "_imageName": "comic_03_0008",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300009,
+        "_masterGroupId": 300,
+        "_number": 9,
+        "_name": "予算増額申請",
+        "_imageName": "comic_03_0009",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300010,
+        "_masterGroupId": 300,
+        "_number": 10,
+        "_name": "むしろ嬉しい",
+        "_imageName": "comic_03_0010",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300011,
+        "_masterGroupId": 300,
+        "_number": 11,
+        "_name": "お世話する側、される側",
+        "_imageName": "comic_03_0011",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300012,
+        "_masterGroupId": 300,
+        "_number": 12,
+        "_name": "ランジュの休日",
+        "_imageName": "comic_03_0012",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300013,
+        "_masterGroupId": 300,
+        "_number": 13,
+        "_name": "ヒトリダケナンテエラベナイ",
+        "_imageName": "comic_03_0013",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400001,
+        "_masterGroupId": 400,
+        "_number": 1,
+        "_name": "二面性",
+        "_imageName": "comic_04_0001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400002,
+        "_masterGroupId": 400,
+        "_number": 2,
+        "_name": "縁起物",
+        "_imageName": "comic_04_0002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400003,
+        "_masterGroupId": 400,
+        "_number": 3,
+        "_name": "まんまるは盲目",
+        "_imageName": "comic_04_0003",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400004,
+        "_masterGroupId": 400,
+        "_number": 4,
+        "_name": "泉からすみれ",
+        "_imageName": "comic_04_0004",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400005,
+        "_masterGroupId": 400,
+        "_number": 5,
+        "_name": "こたつむり",
+        "_imageName": "comic_04_0005",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400006,
+        "_masterGroupId": 400,
+        "_number": 6,
+        "_name": "羽生える",
+        "_imageName": "comic_04_0006",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400007,
+        "_masterGroupId": 400,
+        "_number": 7,
+        "_name": "クラウドにも同期済",
+        "_imageName": "comic_04_0007",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400008,
+        "_masterGroupId": 400,
+        "_number": 8,
+        "_name": "科学部の七不思議",
+        "_imageName": "comic_04_0008",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 400009,
+        "_masterGroupId": 400,
+        "_number": 9,
+        "_name": "今日も頑張りましたの…",
+        "_imageName": "comic_04_0009",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100010,
+        "_masterGroupId": 100,
+        "_number": 10,
+        "_name": "穂乃果の早弁",
+        "_imageName": "comic_01_0010",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100011,
+        "_masterGroupId": 100,
+        "_number": 11,
+        "_name": "もぐもぐえりち",
+        "_imageName": "comic_01_0011",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100012,
+        "_masterGroupId": 100,
+        "_number": 12,
+        "_name": "ダブルミナリンスキー",
+        "_imageName": "comic_01_0012",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100013,
+        "_masterGroupId": 100,
+        "_number": 13,
+        "_name": "作詞合宿にて",
+        "_imageName": "comic_01_0013",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100014,
+        "_masterGroupId": 100,
+        "_number": 14,
+        "_name": "または鉄火丼お魚抜き",
+        "_imageName": "comic_01_0014",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100015,
+        "_masterGroupId": 100,
+        "_number": 15,
+        "_name": "結局使いました",
+        "_imageName": "comic_01_0015",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100016,
+        "_masterGroupId": 100,
+        "_number": 16,
+        "_name": "A賞・でかでかぬいぐるみ！",
+        "_imageName": "comic_01_0016",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100017,
+        "_masterGroupId": 100,
+        "_number": 17,
+        "_name": "９人分持ってきたよ♡",
+        "_imageName": "comic_01_0017",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100018,
+        "_masterGroupId": 100,
+        "_number": 18,
+        "_name": "矢澤にこ流美容術",
+        "_imageName": "comic_01_0018",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200010,
+        "_masterGroupId": 200,
+        "_number": 10,
+        "_name": "おふとんあったか～い♡",
+        "_imageName": "comic_02_0010",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200011,
+        "_masterGroupId": 200,
+        "_number": 11,
+        "_name": "くノ一梨子ちゃん",
+        "_imageName": "comic_02_0011",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200012,
+        "_masterGroupId": 200,
+        "_number": 12,
+        "_name": "天気がいいと見れるかも！？",
+        "_imageName": "comic_02_0012",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200013,
+        "_masterGroupId": 200,
+        "_number": 13,
+        "_name": "着物大好きダイヤさん",
+        "_imageName": "comic_02_0013",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200014,
+        "_masterGroupId": 200,
+        "_number": 14,
+        "_name": "七不思議",
+        "_imageName": "comic_02_0014",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200015,
+        "_masterGroupId": 200,
+        "_number": 15,
+        "_name": "堕天使のおつかい",
+        "_imageName": "comic_02_0015",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200016,
+        "_masterGroupId": 200,
+        "_number": 16,
+        "_name": "マルの宅配便",
+        "_imageName": "comic_02_0016",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200017,
+        "_masterGroupId": 200,
+        "_number": 17,
+        "_name": "馬で来た",
+        "_imageName": "comic_02_0017",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 200018,
+        "_masterGroupId": 200,
+        "_number": 18,
+        "_name": "まずはバタ足の練習から",
+        "_imageName": "comic_02_0018",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300014,
+        "_masterGroupId": 300,
+        "_number": 14,
+        "_name": "歩夢コレクション",
+        "_imageName": "comic_03_0014",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300015,
+        "_masterGroupId": 300,
+        "_number": 15,
+        "_name": "バズかすかす",
+        "_imageName": "comic_03_0015",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300016,
+        "_masterGroupId": 300,
+        "_number": 16,
+        "_name": "お二人にもメイクしますか？",
+        "_imageName": "comic_03_0016",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300017,
+        "_masterGroupId": 300,
+        "_number": 17,
+        "_name": "果林の四次元バッグ",
+        "_imageName": "comic_03_0017",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300018,
+        "_masterGroupId": 300,
+        "_number": 18,
+        "_name": "ある日の登校風景",
+        "_imageName": "comic_03_0018",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300019,
+        "_masterGroupId": 300,
+        "_number": 19,
+        "_name": "初めてのお弁当記念日",
+        "_imageName": "comic_03_0019",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300020,
+        "_masterGroupId": 300,
+        "_number": 20,
+        "_name": "せつ菜スカーレットメイクアップ！！",
+        "_imageName": "comic_03_0020",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300021,
+        "_masterGroupId": 300,
+        "_number": 21,
+        "_name": "目指すは全制覇",
+        "_imageName": "comic_03_0021",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300022,
+        "_masterGroupId": 300,
+        "_number": 22,
+        "_name": "ピコピコエモーション",
+        "_imageName": "comic_03_0022",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300023,
+        "_masterGroupId": 300,
+        "_number": 23,
+        "_name": "通訳の適性",
+        "_imageName": "comic_03_0023",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300024,
+        "_masterGroupId": 300,
+        "_number": 24,
+        "_name": "ひとめぼれ",
+        "_imageName": "comic_03_0024",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300025,
+        "_masterGroupId": 300,
+        "_number": 25,
+        "_name": "イメチェン？",
+        "_imageName": "comic_03_0025",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 300026,
+        "_masterGroupId": 300,
+        "_number": 26,
+        "_name": "トキメキの反動",
+        "_imageName": "comic_03_0026",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400010,
+        "_masterGroupId": 400,
+        "_number": 10,
+        "_name": "秘密の特訓",
+        "_imageName": "comic_04_0010",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400011,
+        "_masterGroupId": 400,
+        "_number": 11,
+        "_name": "火力が命デス！！",
+        "_imageName": "comic_04_0011",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400012,
+        "_masterGroupId": 400,
+        "_number": 12,
+        "_name": "千砂都プロデュース",
+        "_imageName": "comic_04_0012",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400013,
+        "_masterGroupId": 400,
+        "_number": 13,
+        "_name": "取られないうちに食べたかったの！",
+        "_imageName": "comic_04_0013",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400014,
+        "_masterGroupId": 400,
+        "_number": 14,
+        "_name": "恋コイン",
+        "_imageName": "comic_04_0014",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400015,
+        "_masterGroupId": 400,
+        "_number": 15,
+        "_name": "クワトロベンティヘーゼル(略)きな子フラペチーノ",
+        "_imageName": "comic_04_0015",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400016,
+        "_masterGroupId": 400,
+        "_number": 16,
+        "_name": "メイの休日",
+        "_imageName": "comic_04_0016",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400017,
+        "_masterGroupId": 400,
+        "_number": 17,
+        "_name": "応援隊長",
+        "_imageName": "comic_04_0017",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 400018,
+        "_masterGroupId": 400,
+        "_number": 18,
+        "_name": "コラボした覚えは無いですの～！！",
+        "_imageName": "comic_04_0018",
+        "_masterReleaseLabelId": 223101512
+    },
+    {
+        "_id": 100019,
+        "_masterGroupId": 100,
+        "_number": 19,
+        "_name": "穂乃果からのクリスマスカード",
+        "_imageName": "comic_01_0019",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100020,
+        "_masterGroupId": 100,
+        "_number": 20,
+        "_name": "絵里からのクリスマスカード",
+        "_imageName": "comic_01_0020",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100021,
+        "_masterGroupId": 100,
+        "_number": 21,
+        "_name": "ことりからのクリスマスカード",
+        "_imageName": "comic_01_0021",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100022,
+        "_masterGroupId": 100,
+        "_number": 22,
+        "_name": "海未からのクリスマスカード",
+        "_imageName": "comic_01_0022",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100023,
+        "_masterGroupId": 100,
+        "_number": 23,
+        "_name": "凛からのクリスマスカード",
+        "_imageName": "comic_01_0023",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100024,
+        "_masterGroupId": 100,
+        "_number": 24,
+        "_name": "真姫からのクリスマスカード",
+        "_imageName": "comic_01_0024",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100025,
+        "_masterGroupId": 100,
+        "_number": 25,
+        "_name": "希からのクリスマスカード",
+        "_imageName": "comic_01_0025",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100026,
+        "_masterGroupId": 100,
+        "_number": 26,
+        "_name": "花陽からのクリスマスカード",
+        "_imageName": "comic_01_0026",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 100027,
+        "_masterGroupId": 100,
+        "_number": 27,
+        "_name": "にこからのクリスマスカード",
+        "_imageName": "comic_01_0027",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200019,
+        "_masterGroupId": 200,
+        "_number": 19,
+        "_name": "千歌からのクリスマスカード",
+        "_imageName": "comic_02_0019",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200020,
+        "_masterGroupId": 200,
+        "_number": 20,
+        "_name": "梨子からのクリスマスカード",
+        "_imageName": "comic_02_0020",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200021,
+        "_masterGroupId": 200,
+        "_number": 21,
+        "_name": "果南からのクリスマスカード",
+        "_imageName": "comic_02_0021",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200022,
+        "_masterGroupId": 200,
+        "_number": 22,
+        "_name": "ダイヤからのクリスマスカード",
+        "_imageName": "comic_02_0022",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200023,
+        "_masterGroupId": 200,
+        "_number": 23,
+        "_name": "曜からのクリスマスカード",
+        "_imageName": "comic_02_0023",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200024,
+        "_masterGroupId": 200,
+        "_number": 24,
+        "_name": "善子からのクリスマスカード",
+        "_imageName": "comic_02_0024",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200025,
+        "_masterGroupId": 200,
+        "_number": 25,
+        "_name": "花丸からのクリスマスカード",
+        "_imageName": "comic_02_0025",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200026,
+        "_masterGroupId": 200,
+        "_number": 26,
+        "_name": "鞠莉からのクリスマスカード",
+        "_imageName": "comic_02_0026",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 200027,
+        "_masterGroupId": 200,
+        "_number": 27,
+        "_name": "ルビィからのクリスマスカード",
+        "_imageName": "comic_02_0027",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300027,
+        "_masterGroupId": 300,
+        "_number": 27,
+        "_name": "歩夢からのクリスマスカード",
+        "_imageName": "comic_03_0027",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300028,
+        "_masterGroupId": 300,
+        "_number": 28,
+        "_name": "かすみからのクリスマスカード",
+        "_imageName": "comic_03_0028",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300029,
+        "_masterGroupId": 300,
+        "_number": 29,
+        "_name": "しずくからのクリスマスカード",
+        "_imageName": "comic_03_0029",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300030,
+        "_masterGroupId": 300,
+        "_number": 30,
+        "_name": "果林からのクリスマスカード",
+        "_imageName": "comic_03_0030",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300031,
+        "_masterGroupId": 300,
+        "_number": 31,
+        "_name": "愛からのクリスマスカード",
+        "_imageName": "comic_03_0031",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300032,
+        "_masterGroupId": 300,
+        "_number": 32,
+        "_name": "彼方からのクリスマスカード",
+        "_imageName": "comic_03_0032",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300033,
+        "_masterGroupId": 300,
+        "_number": 33,
+        "_name": "せつ菜からのクリスマスカード",
+        "_imageName": "comic_03_0033",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300034,
+        "_masterGroupId": 300,
+        "_number": 34,
+        "_name": "エマからのクリスマスカード",
+        "_imageName": "comic_03_0034",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300035,
+        "_masterGroupId": 300,
+        "_number": 35,
+        "_name": "璃奈からのクリスマスカード",
+        "_imageName": "comic_03_0035",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300036,
+        "_masterGroupId": 300,
+        "_number": 36,
+        "_name": "栞子からのクリスマスカード",
+        "_imageName": "comic_03_0036",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300037,
+        "_masterGroupId": 300,
+        "_number": 37,
+        "_name": "ミアからのクリスマスカード",
+        "_imageName": "comic_03_0037",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300038,
+        "_masterGroupId": 300,
+        "_number": 38,
+        "_name": "嵐珠からのクリスマスカード",
+        "_imageName": "comic_03_0038",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 300039,
+        "_masterGroupId": 300,
+        "_number": 39,
+        "_name": "侑からのクリスマスカード",
+        "_imageName": "comic_03_0039",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400019,
+        "_masterGroupId": 400,
+        "_number": 19,
+        "_name": "かのんからのクリスマスカード",
+        "_imageName": "comic_04_0019",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400020,
+        "_masterGroupId": 400,
+        "_number": 20,
+        "_name": "可可からのクリスマスカード",
+        "_imageName": "comic_04_0020",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400021,
+        "_masterGroupId": 400,
+        "_number": 21,
+        "_name": "千砂都からのクリスマスカード",
+        "_imageName": "comic_04_0021",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400022,
+        "_masterGroupId": 400,
+        "_number": 22,
+        "_name": "すみれからのクリスマスカード",
+        "_imageName": "comic_04_0022",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400023,
+        "_masterGroupId": 400,
+        "_number": 23,
+        "_name": "恋からのクリスマスカード",
+        "_imageName": "comic_04_0023",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400024,
+        "_masterGroupId": 400,
+        "_number": 24,
+        "_name": "きな子からのクリスマスカード",
+        "_imageName": "comic_04_0024",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400025,
+        "_masterGroupId": 400,
+        "_number": 25,
+        "_name": "メイからのクリスマスカード",
+        "_imageName": "comic_04_0025",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400026,
+        "_masterGroupId": 400,
+        "_number": 26,
+        "_name": "四季からのクリスマスカード",
+        "_imageName": "comic_04_0026",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400027,
+        "_masterGroupId": 400,
+        "_number": 27,
+        "_name": "夏美からのクリスマスカード",
+        "_imageName": "comic_04_0027",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400028,
+        "_masterGroupId": 400,
+        "_number": 28,
+        "_name": "マルガレーテからのクリスマスカード",
+        "_imageName": "comic_04_0028",
+        "_masterReleaseLabelId": 223122504
+    },
+    {
+        "_id": 400029,
+        "_masterGroupId": 400,
+        "_number": 29,
+        "_name": "冬毬からのクリスマスカード",
+        "_imageName": "comic_04_0029",
+        "_masterReleaseLabelId": 223122504
+    }
+]

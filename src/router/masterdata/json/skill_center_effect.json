@@ -1,0 +1,968 @@
+[
+    {
+        "_id": 100001,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100002,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 6000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100003,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 8000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100004,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 10000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100005,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 100,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100006,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 200,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100007,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 300,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100008,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 400,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100009,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 101,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100010,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 102,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100011,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 103,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100012,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 201,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100013,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 202,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100014,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 203,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100015,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 301,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100016,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 302,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100017,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 303,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100018,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 304,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100019,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 1
+        },
+        "_calcType": 0,
+        "_value": 13000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100020,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 100,
+        "_targetCardType": {
+            "value__": 1
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100021,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 200,
+        "_targetCardType": {
+            "value__": 1
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100022,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 300,
+        "_targetCardType": {
+            "value__": 1
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100023,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 400,
+        "_targetCardType": {
+            "value__": 1
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 1
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200001,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200002,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 6000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200003,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 8000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200004,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 10000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200005,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 100,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200006,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 200,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200007,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 300,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200008,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 400,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200009,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 101,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200010,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 102,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200011,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 103,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200012,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 201,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200013,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 202,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200014,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 203,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200015,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 301,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200016,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 302,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200017,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 303,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200018,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 304,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200019,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 2
+        },
+        "_calcType": 0,
+        "_value": 13000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200020,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 100,
+        "_targetCardType": {
+            "value__": 2
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200021,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 200,
+        "_targetCardType": {
+            "value__": 2
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200022,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 300,
+        "_targetCardType": {
+            "value__": 2
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200023,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 400,
+        "_targetCardType": {
+            "value__": 2
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 2
+        },
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 300001,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300002,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 6000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300003,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 8000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300004,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 10000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300005,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 100,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300006,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 200,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300007,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 300,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300008,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 400,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 3000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300009,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 101,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300010,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 102,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300011,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 103,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300012,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 201,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300013,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 202,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300014,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 203,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300015,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 301,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300016,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 302,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300017,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 303,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300018,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 304,
+        "_targetCardType": {
+            "value__": 4
+        },
+        "_calcType": 0,
+        "_value": 5000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300019,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 0,
+        "_targetCardType": {
+            "value__": 3
+        },
+        "_calcType": 0,
+        "_value": 13000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300020,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 100,
+        "_targetCardType": {
+            "value__": 3
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300021,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 200,
+        "_targetCardType": {
+            "value__": 3
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300022,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 300,
+        "_targetCardType": {
+            "value__": 3
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300023,
+        "_targetSchoolGrade": 0,
+        "_targetGroupId": 400,
+        "_targetCardType": {
+            "value__": 3
+        },
+        "_calcType": 0,
+        "_value": 7000,
+        "_targetParam": {
+            "value__": 3
+        },
+        "_masterReleaseLabelId": 223101507
+    }
+]

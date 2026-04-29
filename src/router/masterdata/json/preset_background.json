@@ -1,0 +1,380 @@
+[
+    {
+        "_id": 1,
+        "_name": "ライブ会場(仮称)",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_st_0004",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_name": "音ノ木坂学校前",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_adv_0001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_name": "浦の星女学院前",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4,
+        "_name": "虹ヶ咲学園前",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 5,
+        "_name": "結ヶ丘女子高等学校前",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0003",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 6,
+        "_name": "[あなたを見つめる] 上原歩夢",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0005",
+        "_masterReleaseLabelId": 223100302
+    },
+    {
+        "_id": 7,
+        "_name": "[大人デート♡] 中須かすみ",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0006",
+        "_masterReleaseLabelId": 223101002
+    },
+    {
+        "_id": 8,
+        "_name": "[あざとくキメちゃう] 桜坂しずく",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0007",
+        "_masterReleaseLabelId": 223101702
+    },
+    {
+        "_id": 9,
+        "_name": "[特別な恋を探して] 朝香果林",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0008",
+        "_masterReleaseLabelId": 223102402
+    },
+    {
+        "_id": 10,
+        "_name": "[ふたりで楽しく] 宮下 愛",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0009",
+        "_masterReleaseLabelId": 223103102
+    },
+    {
+        "_id": 11,
+        "_name": "[ずっとあなたのことを] 近江彼方",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0010",
+        "_masterReleaseLabelId": 223110702
+    },
+    {
+        "_id": 12,
+        "_name": "[みんなに伝えるラブ] 優木せつ菜",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0011",
+        "_masterReleaseLabelId": 223111402
+    },
+    {
+        "_id": 13,
+        "_name": "[記憶のなかのあなた] エマ・ヴェルデ",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0012",
+        "_masterReleaseLabelId": 223112102
+    },
+    {
+        "_id": 14,
+        "_name": "[大切なあなたへ] 天王寺璃奈",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0013",
+        "_masterReleaseLabelId": 223112802
+    },
+    {
+        "_id": 15,
+        "_name": "[私の印] 三船栞子",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0014",
+        "_masterReleaseLabelId": 223120502
+    },
+    {
+        "_id": 16,
+        "_name": "[高鳴る気持ち] ミア・テイラー",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0015",
+        "_masterReleaseLabelId": 223121202
+    },
+    {
+        "_id": 17,
+        "_name": "[最高の恋しましょ！] 鐘 嵐珠",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_st_0016",
+        "_masterReleaseLabelId": 223121902
+    },
+    {
+        "_id": 18,
+        "_name": "Aqoursステージ「WATER BLUE NEW WORLD」",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_st_0017",
+        "_masterReleaseLabelId": 223101510
+    },
+    {
+        "_id": 19,
+        "_name": "浦の星女学院（通学路）",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0018",
+        "_masterReleaseLabelId": 223101510
+    },
+    {
+        "_id": 20,
+        "_name": "内浦（バス停）",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0019",
+        "_masterReleaseLabelId": 223101510
+    },
+    {
+        "_id": 21,
+        "_name": "浦の星女学院（廊下）",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_st_0020",
+        "_masterReleaseLabelId": 223101510
+    },
+    {
+        "_id": 22,
+        "_name": "浦の星女学院（校門）",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0021",
+        "_masterReleaseLabelId": 223101510
+    },
+    {
+        "_id": 23,
+        "_name": "冒険の世界へ",
+        "_type": {
+            "value__": 4
+        },
+        "_filename": "b_card_0086",
+        "_masterReleaseLabelId": 223101510
+    },
+    {
+        "_id": 24,
+        "_name": "ステージ（屋外）",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0022",
+        "_masterReleaseLabelId": 223102505
+    },
+    {
+        "_id": 25,
+        "_name": "山道（紅葉）",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0023",
+        "_masterReleaseLabelId": 223102505
+    },
+    {
+        "_id": 26,
+        "_name": "秋の河原（昼）",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0024",
+        "_masterReleaseLabelId": 223102505
+    },
+    {
+        "_id": 27,
+        "_name": "背景_虹ヶ咲学園_部室",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_adv_0040",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": 28,
+        "_name": "背景_お台場の街並み",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0025",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": 29,
+        "_name": "背景_虹ヶ咲学園中庭(昼晴)",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_adv_0057",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": 30,
+        "_name": "背景_虹ヶ咲学園大廊下",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_adv_0048",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": 31,
+        "_name": "背景_虹ヶ咲学園校門(夜)",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_card_0092",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": 32,
+        "_name": "市街地(降雪)",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0026",
+        "_masterReleaseLabelId": 223120106
+    },
+    {
+        "_id": 33,
+        "_name": "コテージ（冬、昼）",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_st_0027",
+        "_masterReleaseLabelId": 223120106
+    },
+    {
+        "_id": 34,
+        "_name": "クリスマスの街",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0028",
+        "_masterReleaseLabelId": 223120106
+    },
+    {
+        "_id": 35,
+        "_name": "神田明神（謹賀新年）",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0029",
+        "_masterReleaseLabelId": 223123105
+    },
+    {
+        "_id": 36,
+        "_name": "スキー場",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0030",
+        "_masterReleaseLabelId": 223123105
+    },
+    {
+        "_id": 37,
+        "_name": "淡島神社_参道入口",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_card_0056",
+        "_masterReleaseLabelId": 223123105
+    },
+    {
+        "_id": 38,
+        "_name": "音ノ木坂学院_部室",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_adv_0002",
+        "_masterReleaseLabelId": 224011505
+    },
+    {
+        "_id": 39,
+        "_name": "音ノ木坂学院_屋上",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_adv_0005",
+        "_masterReleaseLabelId": 224011505
+    },
+    {
+        "_id": 40,
+        "_name": "音ノ木坂学院・校門_冬",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_adv_0093",
+        "_masterReleaseLabelId": 224011505
+    },
+    {
+        "_id": 41,
+        "_name": "音ノ木坂学院_教室",
+        "_type": {
+            "value__": 3
+        },
+        "_filename": "b_st_0031",
+        "_masterReleaseLabelId": 224011505
+    },
+    {
+        "_id": 42,
+        "_name": "µ'sステージ「これからのSomeday」",
+        "_type": {
+            "value__": 2
+        },
+        "_filename": "b_st_0032",
+        "_masterReleaseLabelId": 224011505
+    }
+]

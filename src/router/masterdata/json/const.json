@@ -1,0 +1,952 @@
+[
+    {
+        "_id": "MIN_STAMINA",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_STAMINA",
+        "_value": "300",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EXCESS_STAMINA",
+        "_value": "999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LIMIT_STAMINA",
+        "_value": "9999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STAMINA_RECOVER_VALUE",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STAMINA_RECOVER_TIME",
+        "_value": "300",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_GEM",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_GEM",
+        "_value": "9999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_COIN",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_COIN",
+        "_value": "999999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_CARD_AMOUNT",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_CARD_AMOUNT",
+        "_value": "9999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_SEAL",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_SEAL",
+        "_value": "9999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_ITEM_AMOUNT",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_ITEM_AMOUNT",
+        "_value": "9999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ONE_MEGA_BYTE_TO_BYTE",
+        "_value": "1048576",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DEFAULT_USER_NAME",
+        "_value": "チュートリアル中",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DEFAULT_USER_COMMENT",
+        "_value": "よろしくお願いします！",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DEFAULT_MASTER_TITLE_ID",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ADV_BGM_VOLUME_COEFFICIENT",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ADV_SE_VOLUME_COEFFICIENT",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ADV_VOICE_VOLUME_COEFFICIENT",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MOVIE_HISTORY_NUM",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MOVIE_EXPIRY_DAY",
+        "_value": "60",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MOVIE_DELETE_NUM",
+        "_value": "4",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_MIN_LOTTERY_ID",
+        "_value": "9000000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_GUEST_USER_NAME",
+        "_value": "素敵なゲストさん",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_GUEST_USER_RANK",
+        "_value": "10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_GUEST_USER_MASTER_CARD_ID",
+        "_value": "10010013",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_GUEST_USER_CARD_LEVEL",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_GUEST_USER_COMMENT",
+        "_value": "初めてのライブ楽しんでね！",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_GUEST_USER_TITLE_ID",
+        "_value": "3000001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_MASTER_STORY_PART_ID",
+        "_value": "11000101",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_MASTER_TALK_ID",
+        "_value": "90000001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_SPEECH_BUBBLE_MISSION_1",
+        "_value": "1605001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_SPEECH_BUBBLE_MISSION_2",
+        "_value": "1663001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_SPEECH_BUBBLE_MISSION_3",
+        "_value": "1614001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "COMEBACK_LOGIN_BONUS_REQUIRE_DAYS",
+        "_value": "14",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BANNER_MOVE_SECOND",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_GIFT",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_GIFT",
+        "_value": "100000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "GIFT_EXPIRE_DAY",
+        "_value": "30",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_GIFT_HISTORY",
+        "_value": "30",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PRESENT_BOX_EXPIRE_NOTIFY_HOUR",
+        "_value": "24",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_FRIEND_REQUEST",
+        "_value": "40",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_FRIEND_PENDING",
+        "_value": "40",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_FRIEND_SEARCH",
+        "_value": "20",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SCORE_TOTAL_POWER_COEFFICIENT",
+        "_value": "3",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SCORE_DECK_POWER_COEFFICIENT",
+        "_value": "0.0125",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SCORE_LEVEL_ADJUST_COEFFICIENT",
+        "_value": "0.01",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SCORE_LEVEL_MIN_COEFFICIENT",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LIVESCENE_SKILLNAME_MAX_LENGTH",
+        "_value": "80",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LIVESCENE_SKILLNAME_ELLIPSIS",
+        "_value": "...",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "HIGH_SCORE_RATE_COEFFICIENT",
+        "_value": "5000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "HIGH_SCORE_RATE_LIST_MAX",
+        "_value": "10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_MUSIC_LEVEL_NUMBER",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LIVE_CONTINUE_USE_GEM",
+        "_value": "100",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_REGION",
+        "_value": "jp",
+        "_masterReleaseLabelId": 223061503
+    },
+    {
+        "_id": "MULTI_LIVE_TIME_OUT",
+        "_value": "15",
+        "_masterReleaseLabelId": 223061503
+    },
+    {
+        "_id": "MULTI_PRIVATE_ROOM_PASS",
+        "_value": "0123456789",
+        "_masterReleaseLabelId": 223061503
+    },
+    {
+        "_id": "MULTI_PRIVATE_ROOM_PASS_COUNT",
+        "_value": "6",
+        "_masterReleaseLabelId": 223061503
+    },
+    {
+        "_id": "LIVE_ERORR_TIME",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_POINT_SCORE_BONUS_NUMERATOR",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_POINT_SCORE_BONUS_DENOMINATOR",
+        "_value": "2",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_POINT_ADJUST_NUMBER",
+        "_value": "0.25",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_EVENT_POINT",
+        "_value": "999999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_ROOM_MIN_ID",
+        "_value": "1000000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_ROOM_MAX_ID",
+        "_value": "99999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_PRIVATE_ROOM_MIN_ID",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_PRIVATE_ROOM_MAX_ID",
+        "_value": "999999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_PRIVATE_ROOM_ID_FORMAT",
+        "_value": "000000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_COMMENT_MAX_NUM",
+        "_value": "10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_MUSIC_SELECT_TIME",
+        "_value": "20",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_LEVEL_SELECT_TIME",
+        "_value": "15",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_LAST_CONFIRM_TIME",
+        "_value": "20",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_PENALTY_DEFAULT_ID",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_PENALTY_NO_PLAY_MISS_RATIO",
+        "_value": "5000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_EVENT_LIVE_GREAT_PERFECT_NOTES_MIN_RATIO",
+        "_value": "50",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MULTI_PENALTY_MISS_RATIO",
+        "_value": "70",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LIVE_POWER_ZERO_SCORE_COEFFICIENT",
+        "_value": "0.1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STAMP_ONE_PAGE_NUM",
+        "_value": "16",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "COUNT_BADGE_MAX",
+        "_value": "99",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MUSIC_CHANGE_PRICE",
+        "_value": "50000",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "DAILY_FREE_MUSIC_CHANGE_LIMIT",
+        "_value": "1",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_ASSIST_SKILL_PROBABILITY",
+        "_value": "20000",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_EVENT_BONUS_MAX_DAILY_COUNT",
+        "_value": "5",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_EVENT_BONUS_COEFFICIENT",
+        "_value": "50",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_BONUS_COEFFICIENT",
+        "_value": "2",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_ASSIST_CARD_BONUS_COEFFICIENT",
+        "_value": "10000",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_ASSIST_CARD_COEFFICIENT",
+        "_value": "90000",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_ASSIST_SKILL_COEFFICIENT_1",
+        "_value": "9",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "STAR_ASSIST_SKILL_COEFFICIENT_2",
+        "_value": "15",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "MIN_SKILL_LEVEL",
+        "_value": "0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_SKILL_LEVEL",
+        "_value": "9",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SKILL_REINFORCE_SAME_CARD_RATIO",
+        "_value": "30000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CHARACTER_FRIENDSHIP_MAX",
+        "_value": "500000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CHARACTER_FRIENDSHIP_REWARD_BASE",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CHARACTER_FRIENDSHIP_CENTER_BONUS",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CHARACTER_FRIENDSHIP_FRONT_BONUS",
+        "_value": "2",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CARD_EPISODE_REWARD_GEM",
+        "_value": "50",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LOTTERY_SINGLE_TICKET",
+        "_value": "15010001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LOTTERY_MULTI_TICKET",
+        "_value": "15010003",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "COMMON_LOTTERY_EXCHANGE_MASTER_ITEM_ID",
+        "_value": "17001002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EXCHANGE_CARD_LOTTERY_EFF_STEP_MOVIE_MASTER_ID",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EXCHANGE_CARD_LOTTERY_EFF_EXPECTED_MASTER_ID",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EXCHANGE_CARD_LOTTERY_EFF_ARTIST_MOVIE_MASTER_ID",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PLAYER_RANKS_TRACKING_LIST",
+        "_value": "[5/10/30/50/100/200/300/]",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MUSE_STORY_TRACKING_LIST",
+        "_value": "story_partマスタid のリスト(1~5章まで)",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AQOURS_STORY_TRACKING_LIST",
+        "_value": "story_partマスタid のリスト(1~5章まで)",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "NIGIGASAKI_STORY_TRACKING_LIST",
+        "_value": "story_partマスタid のリスト(1~5章まで)",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LIELLA_STORY_TRACKING_LIST",
+        "_value": "story_partマスタid のリスト(1~5章まで)",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "USERNAME_COMPLETE",
+        "_value": "cxaf1k",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_COMPLETE",
+        "_value": "usrdzo",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LOGIN_BONUS",
+        "_value": "253c9m",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PURCHASE",
+        "_value": "1bsthi",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "INITIAL_PURCHASE",
+        "_value": "ydtj0o",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RANK_005",
+        "_value": "gd5k9i",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RANK_010",
+        "_value": "32vmx1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RANK_030",
+        "_value": "o7jsyo",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RANK_050",
+        "_value": "a8x3q0",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RANK_100",
+        "_value": "2t4qed",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RANK_200",
+        "_value": "6910uf",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RANK_300",
+        "_value": "z7sc9p",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_MS_01",
+        "_value": "xw39p7",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_MS_02",
+        "_value": "k0e5zr",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_MS_03",
+        "_value": "tbne9l",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_MS_04",
+        "_value": "ydfmv4",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_MS_05",
+        "_value": "v3kowc",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_AQOURS_01",
+        "_value": "1y4ciq",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_AQOURS_02",
+        "_value": "2x9bkp",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_AQOURS_03",
+        "_value": "l0ynyt",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_AQOURS_04",
+        "_value": "7fhbyg",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_AQOURS_05",
+        "_value": "mxlplg",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_NIJI_01",
+        "_value": "h9iti9",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_NIJI_02",
+        "_value": "c2bx53",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_NIJI_03",
+        "_value": "jxthtq",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_NIJI_04",
+        "_value": "thehu8",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "STORYCLEAR_NIJI_05",
+        "_value": "g04pim",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SS_ALIGNMENT_END_DATETIME",
+        "_value": "2030/12/31 14:59:59",
+        "_masterReleaseLabelId": 223071201
+    },
+    {
+        "_id": "SS_THEATER_NOT_FOUND",
+        "_value": "毎日劇場は後日更新いたします",
+        "_masterReleaseLabelId": 223120502
+    },
+    {
+        "_id": "REJECT_PURCHASE_FLAG",
+        "_value": "TRUE",
+        "_masterReleaseLabelId": 224012502
+    },
+    {
+        "_id": "LOCAL_P3_SERVICE_END",
+        "_value": "2024/3/31 6:00:00",
+        "_masterReleaseLabelId": 224031103
+    },
+    {
+        "_id": "LOCAL_P4_REFUND_START",
+        "_value": "2024/3/31 15:00:00",
+        "_masterReleaseLabelId": 224031103
+    },
+    {
+        "_id": "LOCAL_P5_REFUND_END",
+        "_value": "2024/6/17 6:00:00",
+        "_masterReleaseLabelId": 224031103
+    },
+    {
+        "_id": "DEFAULT_LIVE_POWER",
+        "_value": "1000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_LIVE_POWER",
+        "_value": "2000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DEFAULT_ROOM_MASTER_AREA_ID",
+        "_value": "100",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AUTO_TICKET_MASTER_ITEM_ID",
+        "_value": "90000001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVOLVE_RARE3_MASTER_ITEM_ID",
+        "_value": "21001001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVOLVE_RARE4_MASTER_ITEM_ID",
+        "_value": "21002001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVOLVE_RARE3_NEED_ITEM_COUNT",
+        "_value": "10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVOLVE_RARE4_NEED_ITEM_COUNT",
+        "_value": "10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVOLVE_ITEM_COUNT_MAX",
+        "_value": "999",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SPIRIT_SCORE_BONUS_NUMERATOR",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SPIRIT_SCORE_BONUS_DENOMINATOR",
+        "_value": "6",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SPIRIT_ADJUST_NUMBER",
+        "_value": "50",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BEFORE_RECOMMEND_EMPTY_ID",
+        "_value": "10013001",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DEFAULT_MAX_ORNAMENT_LEVEL",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_CARD_REINFORCE_MASTER_ITEM_ID",
+        "_value": "16001002",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BATTERY_CHECK_NUM",
+        "_value": "30",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_LIVE_POINT_BOOST",
+        "_value": "40",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CARD_SPECIAL_EPISODE_REWARD_GEM",
+        "_value": "100",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TALK_USER_EXP_BASE",
+        "_value": "200",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SERIF_HIDE_TIME",
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AREA_WORLD_ID_DEFAULT",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AREA_WORLD_ID_BIRTHDAY",
+        "_value": "2",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_NEW_ORNAMENT_EVENT",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_NEW_ORNAMENT_EVENT",
+        "_value": "3",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_NEW_MAIN_AREA_EVENT",
+        "_value": "4",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_NEW_MAIN_AREA_EVENT",
+        "_value": "8",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_MAIN_AREA_EVENT",
+        "_value": "20",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MIN_MAIN_AREA_EVENT_PER_AREA",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_MAIN_AREA_EVENT_PER_AREA",
+        "_value": "3",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AREA_EVENT_PER_AREA",
+        "_value": "4",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AREA_TALK_BALLOON_VIEW_MSEC",
+        "_value": "5000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AREA_TALK_BALLOON_INTERVAL_MSEC",
+        "_value": "10000",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CANDY_SCORE_BONUS_NUMERATOR",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CANDY_SCORE_BONUS_DENOMINATOR",
+        "_value": "6",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CANDY_ADJUST_NUMBER",
+        "_value": "50",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PICK_SCORE_BONUS_NUMERATOR",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PICK_SCORE_BONUS_DENOMINATOR",
+        "_value": "6",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PICK_ADJUST_NUMBER",
+        "_value": "50",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_COIN_SCORE_BONUS_NUMERATOR",
+        "_value": "1",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_COIN_SCORE_BONUS_DENOMINATOR",
+        "_value": "6",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_COIN_ADJUST_NUMBER",
+        "_value": "50",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_HOMEWORK_CLEAR_BONUS",
+        "_value": "2",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MAX_LOTTERY_BOX_DRAW_COUNT",
+        "_value": "10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EVENT_TOP_LIVE2D_EVENT_TALK_PERCENT",
+        "_value": "70",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TUTORIAL_EXCLUDE_MEMBER",
+        "_value": "[4010/4011]",
+        "_masterReleaseLabelId": 223121502
+    }
+]

@@ -1,0 +1,322 @@
+[
+    {
+        "_id": 1,
+        "_name": "USERNAME_COMPLETE",
+        "_trackingId": "cxaf1k",
+        "_trackingType": {
+            "value__": 1
+        },
+        "_value": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_name": "TUTORIAL_COMPLETE",
+        "_trackingId": "usrdzo",
+        "_trackingType": {
+            "value__": 2
+        },
+        "_value": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_name": "LOGIN_BONUS",
+        "_trackingId": "253c9m",
+        "_trackingType": {
+            "value__": 3
+        },
+        "_value": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4,
+        "_name": "PURCHASE",
+        "_trackingId": "1bsthi",
+        "_trackingType": {
+            "value__": 4
+        },
+        "_value": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 5,
+        "_name": "INITIAL_PURCHASE",
+        "_trackingId": "ydtj0o",
+        "_trackingType": {
+            "value__": 5
+        },
+        "_value": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 6,
+        "_name": "RANK_005",
+        "_trackingId": "gd5k9i",
+        "_trackingType": {
+            "value__": 6
+        },
+        "_value": "5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 7,
+        "_name": "RANK_010",
+        "_trackingId": "32vmx1",
+        "_trackingType": {
+            "value__": 6
+        },
+        "_value": "10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 8,
+        "_name": "RANK_030",
+        "_trackingId": "o7jsyo",
+        "_trackingType": {
+            "value__": 6
+        },
+        "_value": "30",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 9,
+        "_name": "RANK_050",
+        "_trackingId": "a8x3q0",
+        "_trackingType": {
+            "value__": 6
+        },
+        "_value": "50",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 10,
+        "_name": "RANK_100",
+        "_trackingId": "2t4qed",
+        "_trackingType": {
+            "value__": 6
+        },
+        "_value": "100",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 11,
+        "_name": "RANK_200",
+        "_trackingId": "6910uf",
+        "_trackingType": {
+            "value__": 6
+        },
+        "_value": "200",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 12,
+        "_name": "RANK_300",
+        "_trackingId": "z7sc9p",
+        "_trackingType": {
+            "value__": 6
+        },
+        "_value": "300",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 13,
+        "_name": "STORYCLEAR_MS_01",
+        "_trackingId": "xw39p7",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "10001001",
+        "_masterReleaseLabelId": 223043005
+    },
+    {
+        "_id": 14,
+        "_name": "STORYCLEAR_MS_02",
+        "_trackingId": "k0e5zr",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "10001002",
+        "_masterReleaseLabelId": 223043005
+    },
+    {
+        "_id": 15,
+        "_name": "STORYCLEAR_MS_03",
+        "_trackingId": "tbne9l",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "10001003",
+        "_masterReleaseLabelId": 223043005
+    },
+    {
+        "_id": 16,
+        "_name": "STORYCLEAR_MS_04",
+        "_trackingId": "ydfmv4",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "10001004",
+        "_masterReleaseLabelId": 223043005
+    },
+    {
+        "_id": 17,
+        "_name": "STORYCLEAR_MS_05",
+        "_trackingId": "v3kowc",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "10001005",
+        "_masterReleaseLabelId": 223043005
+    },
+    {
+        "_id": 18,
+        "_name": "STORYCLEAR_AQOURS_01",
+        "_trackingId": "1y4ciq",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "20001001",
+        "_masterReleaseLabelId": 223051505
+    },
+    {
+        "_id": 19,
+        "_name": "STORYCLEAR_AQOURS_02",
+        "_trackingId": "2x9bkp",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "20001002",
+        "_masterReleaseLabelId": 223051505
+    },
+    {
+        "_id": 20,
+        "_name": "STORYCLEAR_AQOURS_03",
+        "_trackingId": "l0ynyt",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "20001003",
+        "_masterReleaseLabelId": 223051505
+    },
+    {
+        "_id": 21,
+        "_name": "STORYCLEAR_AQOURS_04",
+        "_trackingId": "7fhbyg",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "20001004",
+        "_masterReleaseLabelId": 223051505
+    },
+    {
+        "_id": 22,
+        "_name": "STORYCLEAR_AQOURS_05",
+        "_trackingId": "mxlplg",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "20001005",
+        "_masterReleaseLabelId": 223051505
+    },
+    {
+        "_id": 23,
+        "_name": "STORYCLEAR_NIJI_01",
+        "_trackingId": "h9iti9",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "30001001",
+        "_masterReleaseLabelId": 223053105
+    },
+    {
+        "_id": 24,
+        "_name": "STORYCLEAR_NIJI_02",
+        "_trackingId": "c2bx53",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "30001002",
+        "_masterReleaseLabelId": 223053105
+    },
+    {
+        "_id": 25,
+        "_name": "STORYCLEAR_NIJI_03",
+        "_trackingId": "jxthtq",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "30001003",
+        "_masterReleaseLabelId": 223053105
+    },
+    {
+        "_id": 26,
+        "_name": "STORYCLEAR_NIJI_04",
+        "_trackingId": "thehu8",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "30001004",
+        "_masterReleaseLabelId": 223053105
+    },
+    {
+        "_id": 27,
+        "_name": "STORYCLEAR_NIJI_05",
+        "_trackingId": "g04pim",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "30001005",
+        "_masterReleaseLabelId": 223053105
+    },
+    {
+        "_id": 28,
+        "_name": "STORYCLEAR_LIELLA_01",
+        "_trackingId": "dcov5n",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "40001001",
+        "_masterReleaseLabelId": 223041904
+    },
+    {
+        "_id": 29,
+        "_name": "STORYCLEAR_LIELLA_02",
+        "_trackingId": "lpanui",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "40001002",
+        "_masterReleaseLabelId": 223041904
+    },
+    {
+        "_id": 30,
+        "_name": "STORYCLEAR_LIELLA_03",
+        "_trackingId": "yt1qhl",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "40001003",
+        "_masterReleaseLabelId": 223041904
+    },
+    {
+        "_id": 31,
+        "_name": "STORYCLEAR_LIELLA_04",
+        "_trackingId": "f74i28",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "40001004",
+        "_masterReleaseLabelId": 223041904
+    },
+    {
+        "_id": 32,
+        "_name": "STORYCLEAR_LIELLA_05",
+        "_trackingId": "vurijk",
+        "_trackingType": {
+            "value__": 7
+        },
+        "_value": "40001005",
+        "_masterReleaseLabelId": 223041904
+    }
+]

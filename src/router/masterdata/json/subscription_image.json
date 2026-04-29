@@ -1,0 +1,86 @@
+[
+    {
+        "_id": 1,
+        "_masterBillingProductId": "gent.aoharu.dev.apple.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_masterBillingProductId": "gent.aoharu.qa1.apple.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_masterBillingProductId": "gent.aoharu.gqa1.apple.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4,
+        "_masterBillingProductId": "gent.aoharu.qa3.apple.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 5,
+        "_masterBillingProductId": "gent.aoharu.qa4.apple.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 6,
+        "_masterBillingProductId": "com.lovelive.sif2.ap.subscription_01.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 7,
+        "_masterBillingProductId": "gent.aoharu.dev.google.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 8,
+        "_masterBillingProductId": "gent.aoharu.qa1.google.subscription_980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 9,
+        "_masterBillingProductId": "gent.aoharu.qa3.google.subscription_980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 10,
+        "_masterBillingProductId": "gent.aoharu.gqa1.google.subscription_980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 11,
+        "_masterBillingProductId": "gent.aoharu.qa4.google.subscription_980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 12,
+        "_masterBillingProductId": "com.lovelive.sif2.gg.subscription_01.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 101,
+        "_masterBillingProductId": "gent.aoharu.dev4.apple.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 102,
+        "_masterBillingProductId": "gent.aoharu.dev4.google.subscription.980",
+        "_subscriptionImageName": "subscription_miraclepass_banner",
+        "_masterReleaseLabelId": 1
+    }
+]

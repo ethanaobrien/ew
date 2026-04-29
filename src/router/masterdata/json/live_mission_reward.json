@@ -1,0 +1,226 @@
+[
+    {
+        "_id": 140000001,
+        "_number": 1,
+        "_type": {
+            "value__": 4
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 1,
+        "_level": 0,
+        "_amount": 5000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000002,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 16005003,
+        "_level": 0,
+        "_amount": 1,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000003,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 19100001,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000004,
+        "_number": 1,
+        "_type": {
+            "value__": 1
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 0,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000011,
+        "_number": 1,
+        "_type": {
+            "value__": 4
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 1,
+        "_level": 0,
+        "_amount": 5000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000012,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 16005003,
+        "_level": 0,
+        "_amount": 1,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000013,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 19100001,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000014,
+        "_number": 1,
+        "_type": {
+            "value__": 1
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 1,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000021,
+        "_number": 1,
+        "_type": {
+            "value__": 4
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 1,
+        "_level": 0,
+        "_amount": 5000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000022,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 16005003,
+        "_level": 0,
+        "_amount": 1,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000023,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 19100001,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000024,
+        "_number": 1,
+        "_type": {
+            "value__": 1
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 0,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000031,
+        "_number": 1,
+        "_type": {
+            "value__": 4
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 1,
+        "_level": 0,
+        "_amount": 5000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000032,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 16005003,
+        "_level": 0,
+        "_amount": 1,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000033,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 19100001,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 140000034,
+        "_number": 1,
+        "_type": {
+            "value__": 1
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 0,
+        "_level": 0,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    }
+]

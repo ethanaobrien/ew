@@ -1,0 +1,58 @@
+[
+    {
+        "_id": 1,
+        "_liveMode": {
+            "value__": 2
+        },
+        "_name": "フリーセッション",
+        "_detail": "総合力に関係なく自由にプレイが可能です。",
+        "_opened": 1,
+        "_status": 1,
+        "_masterMultiRoomConditionId": 1,
+        "_minRoomId": 0,
+        "_maxRoomId": 200000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 5,
+        "_liveMode": {
+            "value__": 6
+        },
+        "_name": "XJAPANセッション",
+        "_detail": "",
+        "_opened": 1,
+        "_status": 1,
+        "_masterMultiRoomConditionId": 5,
+        "_minRoomId": 500000,
+        "_maxRoomId": 550000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 6,
+        "_liveMode": {
+            "value__": 7
+        },
+        "_name": "LUNASEAセッション",
+        "_detail": "",
+        "_opened": 1,
+        "_status": 1,
+        "_masterMultiRoomConditionId": 6,
+        "_minRoomId": 550000,
+        "_maxRoomId": 600000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 7,
+        "_liveMode": {
+            "value__": 8
+        },
+        "_name": "GLAYセッション",
+        "_detail": "",
+        "_opened": 1,
+        "_status": 1,
+        "_masterMultiRoomConditionId": 7,
+        "_minRoomId": 650000,
+        "_maxRoomId": 700000,
+        "_masterReleaseLabelId": 1
+    }
+]

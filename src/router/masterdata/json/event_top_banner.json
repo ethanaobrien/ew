@@ -1,0 +1,282 @@
+[
+    {
+        "_masterEventId": 101,
+        "_masterGachaId": 1110003,
+        "_spriteName": "",
+        "_priority": 0,
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_masterEventId": 102,
+        "_masterGachaId": 2110001,
+        "_spriteName": "",
+        "_priority": 0,
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_masterEventId": 104,
+        "_masterGachaId": 2110002,
+        "_spriteName": "",
+        "_priority": 0,
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_masterEventId": 106,
+        "_masterGachaId": 2110003,
+        "_spriteName": "",
+        "_priority": 0,
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_masterEventId": 108,
+        "_masterGachaId": 2110004,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 108,
+        "_masterGachaId": 2110005,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 109,
+        "_masterGachaId": 2110006,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 109,
+        "_masterGachaId": 2110007,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 111,
+        "_masterGachaId": 2110008,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_masterGachaId": 2110009,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 113,
+        "_masterGachaId": 2110010,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 113,
+        "_masterGachaId": 2110011,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 115,
+        "_masterGachaId": 2110012,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_masterGachaId": 2110013,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 117,
+        "_masterGachaId": 2110014,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 117,
+        "_masterGachaId": 2110015,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 119,
+        "_masterGachaId": 2110016,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_masterGachaId": 2110017,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 121,
+        "_masterGachaId": 2110018,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 121,
+        "_masterGachaId": 2110019,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 123,
+        "_masterGachaId": 2110020,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 123,
+        "_masterGachaId": 2110021,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 125,
+        "_masterGachaId": 2110022,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 125,
+        "_masterGachaId": 2110023,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 127,
+        "_masterGachaId": 2110024,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_masterGachaId": 2110025,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 129,
+        "_masterGachaId": 2110026,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 129,
+        "_masterGachaId": 2110027,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 131,
+        "_masterGachaId": 2110028,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_masterGachaId": 2110029,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 133,
+        "_masterGachaId": 2110030,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 133,
+        "_masterGachaId": 2110031,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 135,
+        "_masterGachaId": 2110032,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_masterGachaId": 2110033,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 137,
+        "_masterGachaId": 2110034,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 137,
+        "_masterGachaId": 2110035,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 139,
+        "_masterGachaId": 2110036,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_masterGachaId": 2110037,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 141,
+        "_masterGachaId": 2110038,
+        "_spriteName": "",
+        "_priority": 1,
+        "_masterReleaseLabelId": 224030104
+    },
+    {
+        "_masterEventId": 141,
+        "_masterGachaId": 2110039,
+        "_spriteName": "",
+        "_priority": 2,
+        "_masterReleaseLabelId": 224030104
+    }
+]

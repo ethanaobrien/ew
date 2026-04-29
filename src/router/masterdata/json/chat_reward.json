@@ -1,0 +1,86 @@
+[
+    {
+        "_id": 270000001,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 16005001,
+        "_level": 1,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 270000002,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 16005002,
+        "_level": 1,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 270000003,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 17001001,
+        "_level": 1,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 270000004,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 19100001,
+        "_level": 1,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 270000005,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 20000001,
+        "_level": 1,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 270000006,
+        "_number": 1,
+        "_type": {
+            "value__": 3
+        },
+        "_giveType": {
+            "value__": 1
+        },
+        "_value": 20000002,
+        "_level": 1,
+        "_amount": 10,
+        "_masterReleaseLabelId": 1
+    }
+]

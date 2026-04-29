@@ -1,0 +1,677 @@
+[
+    {
+        "_id": 100001,
+        "_name": "スマイルハート",
+        "_detailText": "スマイルPが3%アップ",
+        "_effects": [
+            100001
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100002,
+        "_name": "スマイルスター",
+        "_detailText": "スマイルPが6%アップ",
+        "_effects": [
+            100002
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100003,
+        "_name": "スマイルエンジェル",
+        "_detailText": "スマイルPが8%アップ",
+        "_effects": [
+            100003
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100004,
+        "_name": "スマイルエンプレス",
+        "_detailText": "スマイルPが10%アップ",
+        "_effects": [
+            100004
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100005,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにμ’s所属のスマイルPが3%アップ",
+        "_effects": [
+            100003,
+            100005
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100006,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにAqours所属のスマイルPが3%アップ",
+        "_effects": [
+            100003,
+            100006
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100007,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにニジガク所属のスマイルPが3%アップ",
+        "_effects": [
+            100003,
+            100007
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100008,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにLiella!所属のスマイルPが3%アップ",
+        "_effects": [
+            100003,
+            100008
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100009,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにPrintemps所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100009
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100010,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにlily white所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100010
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100011,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにBiBi所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100011
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100012,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにCYaRon!所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100012
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100013,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにAZALEA所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100013
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100014,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにGuilty Kiss所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100014
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100015,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにDiverDiva所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100015
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100016,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにA・ZU・NA所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100016
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100017,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにQU4RTZ所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100017
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100018,
+        "_name": "スマイルプリンセス",
+        "_detailText": "スマイルPが8%アップ<br>さらにR3BIRTH所属のスマイルPが5%アップ",
+        "_effects": [
+            100003,
+            100018
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 100019,
+        "_name": "スマイルエンプレス",
+        "_detailText": "スマイル属性のスマイルPが13%アップ",
+        "_effects": [
+            100019
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100020,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにμ’s所属のスマイル属性のスマイルPが7%アップ",
+        "_effects": [
+            100003,
+            100020
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100021,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにAqours所属のスマイル属性のスマイルPが7%アップ",
+        "_effects": [
+            100003,
+            100021
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100022,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにニジガク所属のスマイル属性のスマイルPが7%アップ",
+        "_effects": [
+            100003,
+            100022
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 100023,
+        "_name": "スマイルクイーン",
+        "_detailText": "スマイルPが8%アップ<br>さらにLiella!所属のスマイル属性のスマイルPが7%アップ",
+        "_effects": [
+            100003,
+            100023
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200001,
+        "_name": "ピュアハート",
+        "_detailText": "ピュアPが3%アップ",
+        "_effects": [
+            200001
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200002,
+        "_name": "ピュアスター",
+        "_detailText": "ピュアPが6%アップ",
+        "_effects": [
+            200002
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200003,
+        "_name": "ピュアエンジェル",
+        "_detailText": "ピュアPが8%アップ",
+        "_effects": [
+            200003
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200004,
+        "_name": "ピュアエンプレス",
+        "_detailText": "ピュアPが10%アップ",
+        "_effects": [
+            200004
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200005,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにμ’s所属のピュアPが3%アップ",
+        "_effects": [
+            200003,
+            200005
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200006,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにAqours所属のピュアPが3%アップ",
+        "_effects": [
+            200003,
+            200006
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200007,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにニジガク所属のピュアPが3%アップ",
+        "_effects": [
+            200003,
+            200007
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200008,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにLiella!所属のピュアPが3%アップ",
+        "_effects": [
+            200003,
+            200008
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200009,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにPrintemps所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200009
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200010,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにlily white所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200010
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200011,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにBiBi所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200011
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200012,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにCYaRon!所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200012
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200013,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにAZALEA所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200013
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200014,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにGuilty Kiss所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200014
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200015,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにDiverDiva所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200015
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200016,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにA・ZU・NA所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200016
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200017,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにQU4RTZ所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200017
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200018,
+        "_name": "ピュアプリンセス",
+        "_detailText": "ピュアPが8%アップ<br>さらにR3BIRTH所属のピュアPが5%アップ",
+        "_effects": [
+            200003,
+            200018
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 200019,
+        "_name": "ピュアエンプレス",
+        "_detailText": "ピュア属性のピュアPが13%アップ",
+        "_effects": [
+            200019
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200020,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにμ’s所属のピュア属性のピュアPが7%アップ",
+        "_effects": [
+            200003,
+            200020
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200021,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにAqours所属のピュア属性のピュアPが7%アップ",
+        "_effects": [
+            200003,
+            200021
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200022,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにニジガク所属のピュア属性のピュアPが7%アップ",
+        "_effects": [
+            200003,
+            200022
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 200023,
+        "_name": "ピュアクイーン",
+        "_detailText": "ピュアPが8%アップ<br>さらにLiella!所属のピュア属性のピュアPが7%アップ",
+        "_effects": [
+            200003,
+            200023
+        ],
+        "_masterReleaseLabelId": 223103109
+    },
+    {
+        "_id": 300001,
+        "_name": "クールハート",
+        "_detailText": "クールPが3%アップ",
+        "_effects": [
+            300001
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300002,
+        "_name": "クールスター",
+        "_detailText": "クールPが6%アップ",
+        "_effects": [
+            300002
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300003,
+        "_name": "クールエンジェル",
+        "_detailText": "クールPが8%アップ",
+        "_effects": [
+            300003
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300004,
+        "_name": "クールエンプレス",
+        "_detailText": "クールPが10%アップ",
+        "_effects": [
+            300004
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300005,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ<br>さらにμ’s所属のクールPが3%アップ",
+        "_effects": [
+            300003,
+            300005
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300006,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ<br>さらにAqours所属のクールPが3%アップ",
+        "_effects": [
+            300003,
+            300006
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300007,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ<br>さらにニジガク所属のクールPが3%アップ",
+        "_effects": [
+            300003,
+            300007
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300008,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ<br>さらにLiella!所属のクールPが3%アップ",
+        "_effects": [
+            300003,
+            300008
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300009,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにPrintemps所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300009
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300010,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにlily white所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300010
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300011,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにBiBi所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300011
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300012,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにCYaRon!所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300012
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300013,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにAZALEA所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300013
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300014,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにGuilty Kiss所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300014
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300015,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにDiverDiva所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300015
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300016,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにA・ZU・NA所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300016
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300017,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにQU4RTZ所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300017
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300018,
+        "_name": "クールプリンセス",
+        "_detailText": "クールPが8%アップ<br>さらにR3BIRTH所属のクールPが5%アップ",
+        "_effects": [
+            300003,
+            300018
+        ],
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 300019,
+        "_name": "クールエンプレス",
+        "_detailText": "クール属性のクールPが13%アップ",
+        "_effects": [
+            300019
+        ],
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300020,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ。さらにμ’s所属の<br>クール属性のクールPが7%アップ",
+        "_effects": [
+            300003,
+            300020
+        ],
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300021,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ。さらにAqours所属の<br>クール属性のクールPが7%アップ",
+        "_effects": [
+            300003,
+            300021
+        ],
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300022,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ。さらにニジガク所属の<br>クール属性のクールPが7%アップ",
+        "_effects": [
+            300003,
+            300022
+        ],
+        "_masterReleaseLabelId": 223101507
+    },
+    {
+        "_id": 300023,
+        "_name": "クールクイーン",
+        "_detailText": "クールPが8%アップ。さらにLiella!所属の<br>クール属性のクールPが7%アップ",
+        "_effects": [
+            300003,
+            300023
+        ],
+        "_masterReleaseLabelId": 223101507
+    }
+]

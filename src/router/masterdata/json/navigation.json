@@ -1,0 +1,128 @@
+[
+    {
+        "_id": "SubTutorial_FreeLive",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "楽曲選択",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Practice",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "レッスン",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_SkillPractice",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "スキルレッスン",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Training",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "覚醒",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Mission",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "課題",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Story",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "ストーリー",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_BeginnerMission",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "初心者課題",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MainTutorial_Live",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "チュートリアルライブ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Event_EmotionalRanking",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "イチ推しメンバー",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Composition",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "編成",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_LiveReady",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "ライブ準備",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MainTutorial_DeckConfirm",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "編成",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MainTutorial_MainGameCycle",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "全体サイクル",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MainTutorial_LiveReslt",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "ライブ結果",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Chat",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "チャット",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MainTutorial_Gacha",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "勧誘",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MainTutorial_GachaReslt",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "勧誘結果",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MainTutorial_MusicSerect",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "楽曲選択",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Guest",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "ゲスト選択",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SubTutorial_Star_PlayBonus",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "スターチャレンジ プレイボーナス",
+        "_masterReleaseLabelId": 223111506
+    },
+    {
+        "_id": "SubTutorial_Star_ContinuBonus",
+        "_masterScenarioId": 0,
+        "_dialogTitle": "スターチャレンジ 継続ボーナス",
+        "_masterReleaseLabelId": 223111506
+    }
+]

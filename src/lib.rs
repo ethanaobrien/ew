@@ -51,6 +51,7 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
     .service(static_handlers::maintenance)
     .service(static_handlers::files_jp)
     .service(static_handlers::files_gl)
+    .configure(router::configure)
     .default_service(web::route().to(router::request))
     ).bind(("0.0.0.0", port))?.run();
 

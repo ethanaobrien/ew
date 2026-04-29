@@ -1,0 +1,2402 @@
+[
+    {
+        "_id": 1,
+        "_level": 1,
+        "_exp": 0,
+        "_hpRatio": 10000,
+        "_smileRatio": 7830,
+        "_pureRatio": 7830,
+        "_coolRatio": 7830,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 2,
+        "_exp": 100,
+        "_hpRatio": 10000,
+        "_smileRatio": 7860,
+        "_pureRatio": 7860,
+        "_coolRatio": 7860,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 3,
+        "_exp": 300,
+        "_hpRatio": 10000,
+        "_smileRatio": 7890,
+        "_pureRatio": 7890,
+        "_coolRatio": 7890,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 4,
+        "_exp": 600,
+        "_hpRatio": 10000,
+        "_smileRatio": 7920,
+        "_pureRatio": 7920,
+        "_coolRatio": 7920,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 5,
+        "_exp": 1025,
+        "_hpRatio": 10000,
+        "_smileRatio": 7950,
+        "_pureRatio": 7950,
+        "_coolRatio": 7950,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 6,
+        "_exp": 1454,
+        "_hpRatio": 10000,
+        "_smileRatio": 7980,
+        "_pureRatio": 7980,
+        "_coolRatio": 7980,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 7,
+        "_exp": 1889,
+        "_hpRatio": 10000,
+        "_smileRatio": 8010,
+        "_pureRatio": 8010,
+        "_coolRatio": 8010,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 8,
+        "_exp": 2332,
+        "_hpRatio": 10000,
+        "_smileRatio": 8040,
+        "_pureRatio": 8040,
+        "_coolRatio": 8040,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 9,
+        "_exp": 2787,
+        "_hpRatio": 10000,
+        "_smileRatio": 8070,
+        "_pureRatio": 8070,
+        "_coolRatio": 8070,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 10,
+        "_exp": 3254,
+        "_hpRatio": 10000,
+        "_smileRatio": 8100,
+        "_pureRatio": 8100,
+        "_coolRatio": 8100,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 11,
+        "_exp": 3739,
+        "_hpRatio": 10000,
+        "_smileRatio": 8130,
+        "_pureRatio": 8130,
+        "_coolRatio": 8130,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 12,
+        "_exp": 4244,
+        "_hpRatio": 10000,
+        "_smileRatio": 8160,
+        "_pureRatio": 8160,
+        "_coolRatio": 8160,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 13,
+        "_exp": 4773,
+        "_hpRatio": 10000,
+        "_smileRatio": 8190,
+        "_pureRatio": 8190,
+        "_coolRatio": 8190,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 14,
+        "_exp": 5330,
+        "_hpRatio": 10000,
+        "_smileRatio": 8220,
+        "_pureRatio": 8220,
+        "_coolRatio": 8220,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 15,
+        "_exp": 5920,
+        "_hpRatio": 10000,
+        "_smileRatio": 8250,
+        "_pureRatio": 8250,
+        "_coolRatio": 8250,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 16,
+        "_exp": 6549,
+        "_hpRatio": 10000,
+        "_smileRatio": 8280,
+        "_pureRatio": 8280,
+        "_coolRatio": 8280,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 17,
+        "_exp": 7220,
+        "_hpRatio": 10000,
+        "_smileRatio": 8310,
+        "_pureRatio": 8310,
+        "_coolRatio": 8310,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 18,
+        "_exp": 7939,
+        "_hpRatio": 10000,
+        "_smileRatio": 8340,
+        "_pureRatio": 8340,
+        "_coolRatio": 8340,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 19,
+        "_exp": 8714,
+        "_hpRatio": 10000,
+        "_smileRatio": 8370,
+        "_pureRatio": 8370,
+        "_coolRatio": 8370,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 20,
+        "_exp": 9548,
+        "_hpRatio": 10000,
+        "_smileRatio": 8400,
+        "_pureRatio": 8400,
+        "_coolRatio": 8400,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 21,
+        "_exp": 10450,
+        "_hpRatio": 10000,
+        "_smileRatio": 8430,
+        "_pureRatio": 8430,
+        "_coolRatio": 8430,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 22,
+        "_exp": 11426,
+        "_hpRatio": 10000,
+        "_smileRatio": 8460,
+        "_pureRatio": 8460,
+        "_coolRatio": 8460,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 23,
+        "_exp": 12484,
+        "_hpRatio": 10000,
+        "_smileRatio": 8490,
+        "_pureRatio": 8490,
+        "_coolRatio": 8490,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 24,
+        "_exp": 13630,
+        "_hpRatio": 10000,
+        "_smileRatio": 8520,
+        "_pureRatio": 8520,
+        "_coolRatio": 8520,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 25,
+        "_exp": 14873,
+        "_hpRatio": 10000,
+        "_smileRatio": 8550,
+        "_pureRatio": 8550,
+        "_coolRatio": 8550,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 26,
+        "_exp": 16221,
+        "_hpRatio": 10000,
+        "_smileRatio": 8580,
+        "_pureRatio": 8580,
+        "_coolRatio": 8580,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 27,
+        "_exp": 17683,
+        "_hpRatio": 10000,
+        "_smileRatio": 8610,
+        "_pureRatio": 8610,
+        "_coolRatio": 8610,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 28,
+        "_exp": 19267,
+        "_hpRatio": 10000,
+        "_smileRatio": 8640,
+        "_pureRatio": 8640,
+        "_coolRatio": 8640,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 29,
+        "_exp": 20983,
+        "_hpRatio": 10000,
+        "_smileRatio": 8670,
+        "_pureRatio": 8670,
+        "_coolRatio": 8670,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 30,
+        "_exp": 22840,
+        "_hpRatio": 10000,
+        "_smileRatio": 8700,
+        "_pureRatio": 8700,
+        "_coolRatio": 8700,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 31,
+        "_exp": 24848,
+        "_hpRatio": 10000,
+        "_smileRatio": 8730,
+        "_pureRatio": 8730,
+        "_coolRatio": 8730,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 32,
+        "_exp": 27018,
+        "_hpRatio": 10000,
+        "_smileRatio": 8760,
+        "_pureRatio": 8760,
+        "_coolRatio": 8760,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 33,
+        "_exp": 29359,
+        "_hpRatio": 10000,
+        "_smileRatio": 8790,
+        "_pureRatio": 8790,
+        "_coolRatio": 8790,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 34,
+        "_exp": 31884,
+        "_hpRatio": 10000,
+        "_smileRatio": 8820,
+        "_pureRatio": 8820,
+        "_coolRatio": 8820,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 35,
+        "_exp": 34603,
+        "_hpRatio": 10000,
+        "_smileRatio": 8850,
+        "_pureRatio": 8850,
+        "_coolRatio": 8850,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 36,
+        "_exp": 37528,
+        "_hpRatio": 10000,
+        "_smileRatio": 8880,
+        "_pureRatio": 8880,
+        "_coolRatio": 8880,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 37,
+        "_exp": 40670,
+        "_hpRatio": 10000,
+        "_smileRatio": 8910,
+        "_pureRatio": 8910,
+        "_coolRatio": 8910,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 38,
+        "_exp": 44043,
+        "_hpRatio": 10000,
+        "_smileRatio": 8940,
+        "_pureRatio": 8940,
+        "_coolRatio": 8940,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 39,
+        "_exp": 47658,
+        "_hpRatio": 10000,
+        "_smileRatio": 8970,
+        "_pureRatio": 8970,
+        "_coolRatio": 8970,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 40,
+        "_exp": 51528,
+        "_hpRatio": 10000,
+        "_smileRatio": 9000,
+        "_pureRatio": 9000,
+        "_coolRatio": 9000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 41,
+        "_exp": 55668,
+        "_hpRatio": 10000,
+        "_smileRatio": 9050,
+        "_pureRatio": 9050,
+        "_coolRatio": 9050,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 42,
+        "_exp": 60089,
+        "_hpRatio": 10000,
+        "_smileRatio": 9100,
+        "_pureRatio": 9100,
+        "_coolRatio": 9100,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 43,
+        "_exp": 64807,
+        "_hpRatio": 10000,
+        "_smileRatio": 9150,
+        "_pureRatio": 9150,
+        "_coolRatio": 9150,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 44,
+        "_exp": 69836,
+        "_hpRatio": 10000,
+        "_smileRatio": 9200,
+        "_pureRatio": 9200,
+        "_coolRatio": 9200,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 45,
+        "_exp": 75190,
+        "_hpRatio": 10000,
+        "_smileRatio": 9250,
+        "_pureRatio": 9250,
+        "_coolRatio": 9250,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 46,
+        "_exp": 80884,
+        "_hpRatio": 10000,
+        "_smileRatio": 9300,
+        "_pureRatio": 9300,
+        "_coolRatio": 9300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 47,
+        "_exp": 86934,
+        "_hpRatio": 10000,
+        "_smileRatio": 9350,
+        "_pureRatio": 9350,
+        "_coolRatio": 9350,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 48,
+        "_exp": 93355,
+        "_hpRatio": 10000,
+        "_smileRatio": 9400,
+        "_pureRatio": 9400,
+        "_coolRatio": 9400,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 49,
+        "_exp": 100163,
+        "_hpRatio": 10000,
+        "_smileRatio": 9450,
+        "_pureRatio": 9450,
+        "_coolRatio": 9450,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 50,
+        "_exp": 107374,
+        "_hpRatio": 10000,
+        "_smileRatio": 9500,
+        "_pureRatio": 9500,
+        "_coolRatio": 9500,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 51,
+        "_exp": 115005,
+        "_hpRatio": 10000,
+        "_smileRatio": 9550,
+        "_pureRatio": 9550,
+        "_coolRatio": 9550,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 52,
+        "_exp": 123073,
+        "_hpRatio": 10000,
+        "_smileRatio": 9600,
+        "_pureRatio": 9600,
+        "_coolRatio": 9600,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 53,
+        "_exp": 131596,
+        "_hpRatio": 10000,
+        "_smileRatio": 9650,
+        "_pureRatio": 9650,
+        "_coolRatio": 9650,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 54,
+        "_exp": 140590,
+        "_hpRatio": 10000,
+        "_smileRatio": 9700,
+        "_pureRatio": 9700,
+        "_coolRatio": 9700,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 55,
+        "_exp": 150074,
+        "_hpRatio": 10000,
+        "_smileRatio": 9750,
+        "_pureRatio": 9750,
+        "_coolRatio": 9750,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 56,
+        "_exp": 160067,
+        "_hpRatio": 10000,
+        "_smileRatio": 9800,
+        "_pureRatio": 9800,
+        "_coolRatio": 9800,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 57,
+        "_exp": 170586,
+        "_hpRatio": 10000,
+        "_smileRatio": 9850,
+        "_pureRatio": 9850,
+        "_coolRatio": 9850,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 58,
+        "_exp": 181651,
+        "_hpRatio": 10000,
+        "_smileRatio": 9900,
+        "_pureRatio": 9900,
+        "_coolRatio": 9900,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 59,
+        "_exp": 193282,
+        "_hpRatio": 10000,
+        "_smileRatio": 9950,
+        "_pureRatio": 9950,
+        "_coolRatio": 9950,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1,
+        "_level": 60,
+        "_exp": 205497,
+        "_hpRatio": 10000,
+        "_smileRatio": 10000,
+        "_pureRatio": 10000,
+        "_coolRatio": 10000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 1,
+        "_exp": 0,
+        "_hpRatio": 10000,
+        "_smileRatio": 7230,
+        "_pureRatio": 7230,
+        "_coolRatio": 7230,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 2,
+        "_exp": 100,
+        "_hpRatio": 10000,
+        "_smileRatio": 7260,
+        "_pureRatio": 7260,
+        "_coolRatio": 7260,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 3,
+        "_exp": 300,
+        "_hpRatio": 10000,
+        "_smileRatio": 7290,
+        "_pureRatio": 7290,
+        "_coolRatio": 7290,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 4,
+        "_exp": 600,
+        "_hpRatio": 10000,
+        "_smileRatio": 7320,
+        "_pureRatio": 7320,
+        "_coolRatio": 7320,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 5,
+        "_exp": 1025,
+        "_hpRatio": 10000,
+        "_smileRatio": 7350,
+        "_pureRatio": 7350,
+        "_coolRatio": 7350,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 6,
+        "_exp": 1454,
+        "_hpRatio": 10000,
+        "_smileRatio": 7380,
+        "_pureRatio": 7380,
+        "_coolRatio": 7380,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 7,
+        "_exp": 1889,
+        "_hpRatio": 10000,
+        "_smileRatio": 7410,
+        "_pureRatio": 7410,
+        "_coolRatio": 7410,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 8,
+        "_exp": 2332,
+        "_hpRatio": 10000,
+        "_smileRatio": 7440,
+        "_pureRatio": 7440,
+        "_coolRatio": 7440,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 9,
+        "_exp": 2787,
+        "_hpRatio": 10000,
+        "_smileRatio": 7470,
+        "_pureRatio": 7470,
+        "_coolRatio": 7470,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 10,
+        "_exp": 3254,
+        "_hpRatio": 10000,
+        "_smileRatio": 7500,
+        "_pureRatio": 7500,
+        "_coolRatio": 7500,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 11,
+        "_exp": 3739,
+        "_hpRatio": 10000,
+        "_smileRatio": 7530,
+        "_pureRatio": 7530,
+        "_coolRatio": 7530,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 12,
+        "_exp": 4244,
+        "_hpRatio": 10000,
+        "_smileRatio": 7560,
+        "_pureRatio": 7560,
+        "_coolRatio": 7560,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 13,
+        "_exp": 4773,
+        "_hpRatio": 10000,
+        "_smileRatio": 7590,
+        "_pureRatio": 7590,
+        "_coolRatio": 7590,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 14,
+        "_exp": 5330,
+        "_hpRatio": 10000,
+        "_smileRatio": 7620,
+        "_pureRatio": 7620,
+        "_coolRatio": 7620,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 15,
+        "_exp": 5920,
+        "_hpRatio": 10000,
+        "_smileRatio": 7650,
+        "_pureRatio": 7650,
+        "_coolRatio": 7650,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 16,
+        "_exp": 6549,
+        "_hpRatio": 10000,
+        "_smileRatio": 7680,
+        "_pureRatio": 7680,
+        "_coolRatio": 7680,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 17,
+        "_exp": 7220,
+        "_hpRatio": 10000,
+        "_smileRatio": 7710,
+        "_pureRatio": 7710,
+        "_coolRatio": 7710,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 18,
+        "_exp": 7939,
+        "_hpRatio": 10000,
+        "_smileRatio": 7740,
+        "_pureRatio": 7740,
+        "_coolRatio": 7740,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 19,
+        "_exp": 8714,
+        "_hpRatio": 10000,
+        "_smileRatio": 7770,
+        "_pureRatio": 7770,
+        "_coolRatio": 7770,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 20,
+        "_exp": 9548,
+        "_hpRatio": 10000,
+        "_smileRatio": 7800,
+        "_pureRatio": 7800,
+        "_coolRatio": 7800,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 21,
+        "_exp": 10450,
+        "_hpRatio": 10000,
+        "_smileRatio": 7830,
+        "_pureRatio": 7830,
+        "_coolRatio": 7830,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 22,
+        "_exp": 11426,
+        "_hpRatio": 10000,
+        "_smileRatio": 7860,
+        "_pureRatio": 7860,
+        "_coolRatio": 7860,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 23,
+        "_exp": 12484,
+        "_hpRatio": 10000,
+        "_smileRatio": 7890,
+        "_pureRatio": 7890,
+        "_coolRatio": 7890,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 24,
+        "_exp": 13630,
+        "_hpRatio": 10000,
+        "_smileRatio": 7920,
+        "_pureRatio": 7920,
+        "_coolRatio": 7920,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 25,
+        "_exp": 14873,
+        "_hpRatio": 10000,
+        "_smileRatio": 7950,
+        "_pureRatio": 7950,
+        "_coolRatio": 7950,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 26,
+        "_exp": 16221,
+        "_hpRatio": 10000,
+        "_smileRatio": 7980,
+        "_pureRatio": 7980,
+        "_coolRatio": 7980,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 27,
+        "_exp": 17683,
+        "_hpRatio": 10000,
+        "_smileRatio": 8010,
+        "_pureRatio": 8010,
+        "_coolRatio": 8010,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 28,
+        "_exp": 19267,
+        "_hpRatio": 10000,
+        "_smileRatio": 8040,
+        "_pureRatio": 8040,
+        "_coolRatio": 8040,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 29,
+        "_exp": 20983,
+        "_hpRatio": 10000,
+        "_smileRatio": 8070,
+        "_pureRatio": 8070,
+        "_coolRatio": 8070,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 30,
+        "_exp": 22840,
+        "_hpRatio": 10000,
+        "_smileRatio": 8100,
+        "_pureRatio": 8100,
+        "_coolRatio": 8100,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 31,
+        "_exp": 24848,
+        "_hpRatio": 10000,
+        "_smileRatio": 8130,
+        "_pureRatio": 8130,
+        "_coolRatio": 8130,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 32,
+        "_exp": 27018,
+        "_hpRatio": 10000,
+        "_smileRatio": 8160,
+        "_pureRatio": 8160,
+        "_coolRatio": 8160,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 33,
+        "_exp": 29359,
+        "_hpRatio": 10000,
+        "_smileRatio": 8190,
+        "_pureRatio": 8190,
+        "_coolRatio": 8190,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 34,
+        "_exp": 31884,
+        "_hpRatio": 10000,
+        "_smileRatio": 8220,
+        "_pureRatio": 8220,
+        "_coolRatio": 8220,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 35,
+        "_exp": 34603,
+        "_hpRatio": 10000,
+        "_smileRatio": 8250,
+        "_pureRatio": 8250,
+        "_coolRatio": 8250,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 36,
+        "_exp": 37528,
+        "_hpRatio": 10000,
+        "_smileRatio": 8280,
+        "_pureRatio": 8280,
+        "_coolRatio": 8280,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 37,
+        "_exp": 40670,
+        "_hpRatio": 10000,
+        "_smileRatio": 8310,
+        "_pureRatio": 8310,
+        "_coolRatio": 8310,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 38,
+        "_exp": 44043,
+        "_hpRatio": 10000,
+        "_smileRatio": 8340,
+        "_pureRatio": 8340,
+        "_coolRatio": 8340,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 39,
+        "_exp": 47658,
+        "_hpRatio": 10000,
+        "_smileRatio": 8370,
+        "_pureRatio": 8370,
+        "_coolRatio": 8370,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 40,
+        "_exp": 51528,
+        "_hpRatio": 10000,
+        "_smileRatio": 8400,
+        "_pureRatio": 8400,
+        "_coolRatio": 8400,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 41,
+        "_exp": 55668,
+        "_hpRatio": 10000,
+        "_smileRatio": 8430,
+        "_pureRatio": 8430,
+        "_coolRatio": 8430,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 42,
+        "_exp": 60089,
+        "_hpRatio": 10000,
+        "_smileRatio": 8460,
+        "_pureRatio": 8460,
+        "_coolRatio": 8460,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 43,
+        "_exp": 64807,
+        "_hpRatio": 10000,
+        "_smileRatio": 8490,
+        "_pureRatio": 8490,
+        "_coolRatio": 8490,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 44,
+        "_exp": 69836,
+        "_hpRatio": 10000,
+        "_smileRatio": 8520,
+        "_pureRatio": 8520,
+        "_coolRatio": 8520,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 45,
+        "_exp": 75190,
+        "_hpRatio": 10000,
+        "_smileRatio": 8550,
+        "_pureRatio": 8550,
+        "_coolRatio": 8550,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 46,
+        "_exp": 80884,
+        "_hpRatio": 10000,
+        "_smileRatio": 8580,
+        "_pureRatio": 8580,
+        "_coolRatio": 8580,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 47,
+        "_exp": 86934,
+        "_hpRatio": 10000,
+        "_smileRatio": 8610,
+        "_pureRatio": 8610,
+        "_coolRatio": 8610,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 48,
+        "_exp": 93355,
+        "_hpRatio": 10000,
+        "_smileRatio": 8640,
+        "_pureRatio": 8640,
+        "_coolRatio": 8640,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 49,
+        "_exp": 100163,
+        "_hpRatio": 10000,
+        "_smileRatio": 8670,
+        "_pureRatio": 8670,
+        "_coolRatio": 8670,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 50,
+        "_exp": 107374,
+        "_hpRatio": 10000,
+        "_smileRatio": 8700,
+        "_pureRatio": 8700,
+        "_coolRatio": 8700,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 51,
+        "_exp": 115005,
+        "_hpRatio": 10000,
+        "_smileRatio": 8730,
+        "_pureRatio": 8730,
+        "_coolRatio": 8730,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 52,
+        "_exp": 123073,
+        "_hpRatio": 10000,
+        "_smileRatio": 8760,
+        "_pureRatio": 8760,
+        "_coolRatio": 8760,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 53,
+        "_exp": 131596,
+        "_hpRatio": 10000,
+        "_smileRatio": 8790,
+        "_pureRatio": 8790,
+        "_coolRatio": 8790,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 54,
+        "_exp": 140590,
+        "_hpRatio": 10000,
+        "_smileRatio": 8820,
+        "_pureRatio": 8820,
+        "_coolRatio": 8820,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 55,
+        "_exp": 150074,
+        "_hpRatio": 10000,
+        "_smileRatio": 8850,
+        "_pureRatio": 8850,
+        "_coolRatio": 8850,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 56,
+        "_exp": 160067,
+        "_hpRatio": 10000,
+        "_smileRatio": 8880,
+        "_pureRatio": 8880,
+        "_coolRatio": 8880,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 57,
+        "_exp": 170586,
+        "_hpRatio": 10000,
+        "_smileRatio": 8910,
+        "_pureRatio": 8910,
+        "_coolRatio": 8910,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 58,
+        "_exp": 181651,
+        "_hpRatio": 10000,
+        "_smileRatio": 8940,
+        "_pureRatio": 8940,
+        "_coolRatio": 8940,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 59,
+        "_exp": 193282,
+        "_hpRatio": 10000,
+        "_smileRatio": 8970,
+        "_pureRatio": 8970,
+        "_coolRatio": 8970,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 60,
+        "_exp": 205497,
+        "_hpRatio": 10000,
+        "_smileRatio": 9000,
+        "_pureRatio": 9000,
+        "_coolRatio": 9000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 61,
+        "_exp": 218317,
+        "_hpRatio": 10000,
+        "_smileRatio": 9050,
+        "_pureRatio": 9050,
+        "_coolRatio": 9050,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 62,
+        "_exp": 231762,
+        "_hpRatio": 10000,
+        "_smileRatio": 9100,
+        "_pureRatio": 9100,
+        "_coolRatio": 9100,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 63,
+        "_exp": 245853,
+        "_hpRatio": 10000,
+        "_smileRatio": 9150,
+        "_pureRatio": 9150,
+        "_coolRatio": 9150,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 64,
+        "_exp": 260610,
+        "_hpRatio": 10000,
+        "_smileRatio": 9200,
+        "_pureRatio": 9200,
+        "_coolRatio": 9200,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 65,
+        "_exp": 276056,
+        "_hpRatio": 10000,
+        "_smileRatio": 9250,
+        "_pureRatio": 9250,
+        "_coolRatio": 9250,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 66,
+        "_exp": 292212,
+        "_hpRatio": 10000,
+        "_smileRatio": 9300,
+        "_pureRatio": 9300,
+        "_coolRatio": 9300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 67,
+        "_exp": 309099,
+        "_hpRatio": 10000,
+        "_smileRatio": 9350,
+        "_pureRatio": 9350,
+        "_coolRatio": 9350,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 68,
+        "_exp": 326740,
+        "_hpRatio": 10000,
+        "_smileRatio": 9400,
+        "_pureRatio": 9400,
+        "_coolRatio": 9400,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 69,
+        "_exp": 345159,
+        "_hpRatio": 10000,
+        "_smileRatio": 9450,
+        "_pureRatio": 9450,
+        "_coolRatio": 9450,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 70,
+        "_exp": 364377,
+        "_hpRatio": 10000,
+        "_smileRatio": 9500,
+        "_pureRatio": 9500,
+        "_coolRatio": 9500,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 71,
+        "_exp": 384418,
+        "_hpRatio": 10000,
+        "_smileRatio": 9550,
+        "_pureRatio": 9550,
+        "_coolRatio": 9550,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 72,
+        "_exp": 405307,
+        "_hpRatio": 10000,
+        "_smileRatio": 9600,
+        "_pureRatio": 9600,
+        "_coolRatio": 9600,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 73,
+        "_exp": 427066,
+        "_hpRatio": 10000,
+        "_smileRatio": 9650,
+        "_pureRatio": 9650,
+        "_coolRatio": 9650,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 74,
+        "_exp": 449720,
+        "_hpRatio": 10000,
+        "_smileRatio": 9700,
+        "_pureRatio": 9700,
+        "_coolRatio": 9700,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 75,
+        "_exp": 473295,
+        "_hpRatio": 10000,
+        "_smileRatio": 9750,
+        "_pureRatio": 9750,
+        "_coolRatio": 9750,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 76,
+        "_exp": 497814,
+        "_hpRatio": 10000,
+        "_smileRatio": 9800,
+        "_pureRatio": 9800,
+        "_coolRatio": 9800,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 77,
+        "_exp": 523304,
+        "_hpRatio": 10000,
+        "_smileRatio": 9850,
+        "_pureRatio": 9850,
+        "_coolRatio": 9850,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 78,
+        "_exp": 549790,
+        "_hpRatio": 10000,
+        "_smileRatio": 9900,
+        "_pureRatio": 9900,
+        "_coolRatio": 9900,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 79,
+        "_exp": 577298,
+        "_hpRatio": 10000,
+        "_smileRatio": 9950,
+        "_pureRatio": 9950,
+        "_coolRatio": 9950,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_level": 80,
+        "_exp": 605854,
+        "_hpRatio": 10000,
+        "_smileRatio": 10000,
+        "_pureRatio": 10000,
+        "_coolRatio": 10000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 1,
+        "_exp": 0,
+        "_hpRatio": 10000,
+        "_smileRatio": 6630,
+        "_pureRatio": 6630,
+        "_coolRatio": 6630,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 2,
+        "_exp": 100,
+        "_hpRatio": 10000,
+        "_smileRatio": 6660,
+        "_pureRatio": 6660,
+        "_coolRatio": 6660,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 3,
+        "_exp": 300,
+        "_hpRatio": 10000,
+        "_smileRatio": 6690,
+        "_pureRatio": 6690,
+        "_coolRatio": 6690,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 4,
+        "_exp": 600,
+        "_hpRatio": 10000,
+        "_smileRatio": 6720,
+        "_pureRatio": 6720,
+        "_coolRatio": 6720,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 5,
+        "_exp": 1025,
+        "_hpRatio": 10000,
+        "_smileRatio": 6750,
+        "_pureRatio": 6750,
+        "_coolRatio": 6750,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 6,
+        "_exp": 1454,
+        "_hpRatio": 10000,
+        "_smileRatio": 6780,
+        "_pureRatio": 6780,
+        "_coolRatio": 6780,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 7,
+        "_exp": 1889,
+        "_hpRatio": 10000,
+        "_smileRatio": 6810,
+        "_pureRatio": 6810,
+        "_coolRatio": 6810,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 8,
+        "_exp": 2332,
+        "_hpRatio": 10000,
+        "_smileRatio": 6840,
+        "_pureRatio": 6840,
+        "_coolRatio": 6840,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 9,
+        "_exp": 2787,
+        "_hpRatio": 10000,
+        "_smileRatio": 6870,
+        "_pureRatio": 6870,
+        "_coolRatio": 6870,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 10,
+        "_exp": 3254,
+        "_hpRatio": 10000,
+        "_smileRatio": 6900,
+        "_pureRatio": 6900,
+        "_coolRatio": 6900,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 11,
+        "_exp": 3739,
+        "_hpRatio": 10000,
+        "_smileRatio": 6930,
+        "_pureRatio": 6930,
+        "_coolRatio": 6930,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 12,
+        "_exp": 4244,
+        "_hpRatio": 10000,
+        "_smileRatio": 6960,
+        "_pureRatio": 6960,
+        "_coolRatio": 6960,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 13,
+        "_exp": 4773,
+        "_hpRatio": 10000,
+        "_smileRatio": 6990,
+        "_pureRatio": 6990,
+        "_coolRatio": 6990,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 14,
+        "_exp": 5330,
+        "_hpRatio": 10000,
+        "_smileRatio": 7020,
+        "_pureRatio": 7020,
+        "_coolRatio": 7020,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 15,
+        "_exp": 5920,
+        "_hpRatio": 10000,
+        "_smileRatio": 7050,
+        "_pureRatio": 7050,
+        "_coolRatio": 7050,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 16,
+        "_exp": 6549,
+        "_hpRatio": 10000,
+        "_smileRatio": 7080,
+        "_pureRatio": 7080,
+        "_coolRatio": 7080,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 17,
+        "_exp": 7220,
+        "_hpRatio": 10000,
+        "_smileRatio": 7110,
+        "_pureRatio": 7110,
+        "_coolRatio": 7110,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 18,
+        "_exp": 7939,
+        "_hpRatio": 10000,
+        "_smileRatio": 7140,
+        "_pureRatio": 7140,
+        "_coolRatio": 7140,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 19,
+        "_exp": 8714,
+        "_hpRatio": 10000,
+        "_smileRatio": 7170,
+        "_pureRatio": 7170,
+        "_coolRatio": 7170,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 20,
+        "_exp": 9548,
+        "_hpRatio": 10000,
+        "_smileRatio": 7200,
+        "_pureRatio": 7200,
+        "_coolRatio": 7200,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 21,
+        "_exp": 10450,
+        "_hpRatio": 10000,
+        "_smileRatio": 7230,
+        "_pureRatio": 7230,
+        "_coolRatio": 7230,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 22,
+        "_exp": 11426,
+        "_hpRatio": 10000,
+        "_smileRatio": 7260,
+        "_pureRatio": 7260,
+        "_coolRatio": 7260,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 23,
+        "_exp": 12484,
+        "_hpRatio": 10000,
+        "_smileRatio": 7290,
+        "_pureRatio": 7290,
+        "_coolRatio": 7290,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 24,
+        "_exp": 13630,
+        "_hpRatio": 10000,
+        "_smileRatio": 7320,
+        "_pureRatio": 7320,
+        "_coolRatio": 7320,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 25,
+        "_exp": 14873,
+        "_hpRatio": 10000,
+        "_smileRatio": 7350,
+        "_pureRatio": 7350,
+        "_coolRatio": 7350,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 26,
+        "_exp": 16221,
+        "_hpRatio": 10000,
+        "_smileRatio": 7380,
+        "_pureRatio": 7380,
+        "_coolRatio": 7380,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 27,
+        "_exp": 17683,
+        "_hpRatio": 10000,
+        "_smileRatio": 7410,
+        "_pureRatio": 7410,
+        "_coolRatio": 7410,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 28,
+        "_exp": 19267,
+        "_hpRatio": 10000,
+        "_smileRatio": 7440,
+        "_pureRatio": 7440,
+        "_coolRatio": 7440,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 29,
+        "_exp": 20983,
+        "_hpRatio": 10000,
+        "_smileRatio": 7470,
+        "_pureRatio": 7470,
+        "_coolRatio": 7470,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 30,
+        "_exp": 22840,
+        "_hpRatio": 10000,
+        "_smileRatio": 7500,
+        "_pureRatio": 7500,
+        "_coolRatio": 7500,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 31,
+        "_exp": 24848,
+        "_hpRatio": 10000,
+        "_smileRatio": 7530,
+        "_pureRatio": 7530,
+        "_coolRatio": 7530,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 32,
+        "_exp": 27018,
+        "_hpRatio": 10000,
+        "_smileRatio": 7560,
+        "_pureRatio": 7560,
+        "_coolRatio": 7560,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 33,
+        "_exp": 29359,
+        "_hpRatio": 10000,
+        "_smileRatio": 7590,
+        "_pureRatio": 7590,
+        "_coolRatio": 7590,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 34,
+        "_exp": 31884,
+        "_hpRatio": 10000,
+        "_smileRatio": 7620,
+        "_pureRatio": 7620,
+        "_coolRatio": 7620,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 35,
+        "_exp": 34603,
+        "_hpRatio": 10000,
+        "_smileRatio": 7650,
+        "_pureRatio": 7650,
+        "_coolRatio": 7650,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 36,
+        "_exp": 37528,
+        "_hpRatio": 10000,
+        "_smileRatio": 7680,
+        "_pureRatio": 7680,
+        "_coolRatio": 7680,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 37,
+        "_exp": 40670,
+        "_hpRatio": 10000,
+        "_smileRatio": 7710,
+        "_pureRatio": 7710,
+        "_coolRatio": 7710,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 38,
+        "_exp": 44043,
+        "_hpRatio": 10000,
+        "_smileRatio": 7740,
+        "_pureRatio": 7740,
+        "_coolRatio": 7740,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 39,
+        "_exp": 47658,
+        "_hpRatio": 10000,
+        "_smileRatio": 7770,
+        "_pureRatio": 7770,
+        "_coolRatio": 7770,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 40,
+        "_exp": 51528,
+        "_hpRatio": 10000,
+        "_smileRatio": 7800,
+        "_pureRatio": 7800,
+        "_coolRatio": 7800,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 41,
+        "_exp": 55668,
+        "_hpRatio": 10000,
+        "_smileRatio": 7830,
+        "_pureRatio": 7830,
+        "_coolRatio": 7830,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 42,
+        "_exp": 60089,
+        "_hpRatio": 10000,
+        "_smileRatio": 7860,
+        "_pureRatio": 7860,
+        "_coolRatio": 7860,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 43,
+        "_exp": 64807,
+        "_hpRatio": 10000,
+        "_smileRatio": 7890,
+        "_pureRatio": 7890,
+        "_coolRatio": 7890,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 44,
+        "_exp": 69836,
+        "_hpRatio": 10000,
+        "_smileRatio": 7920,
+        "_pureRatio": 7920,
+        "_coolRatio": 7920,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 45,
+        "_exp": 75190,
+        "_hpRatio": 10000,
+        "_smileRatio": 7950,
+        "_pureRatio": 7950,
+        "_coolRatio": 7950,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 46,
+        "_exp": 80884,
+        "_hpRatio": 10000,
+        "_smileRatio": 7980,
+        "_pureRatio": 7980,
+        "_coolRatio": 7980,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 47,
+        "_exp": 86934,
+        "_hpRatio": 10000,
+        "_smileRatio": 8010,
+        "_pureRatio": 8010,
+        "_coolRatio": 8010,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 48,
+        "_exp": 93355,
+        "_hpRatio": 10000,
+        "_smileRatio": 8040,
+        "_pureRatio": 8040,
+        "_coolRatio": 8040,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 49,
+        "_exp": 100163,
+        "_hpRatio": 10000,
+        "_smileRatio": 8070,
+        "_pureRatio": 8070,
+        "_coolRatio": 8070,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 50,
+        "_exp": 107374,
+        "_hpRatio": 10000,
+        "_smileRatio": 8100,
+        "_pureRatio": 8100,
+        "_coolRatio": 8100,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 51,
+        "_exp": 115005,
+        "_hpRatio": 10000,
+        "_smileRatio": 8130,
+        "_pureRatio": 8130,
+        "_coolRatio": 8130,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 52,
+        "_exp": 123073,
+        "_hpRatio": 10000,
+        "_smileRatio": 8160,
+        "_pureRatio": 8160,
+        "_coolRatio": 8160,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 53,
+        "_exp": 131596,
+        "_hpRatio": 10000,
+        "_smileRatio": 8190,
+        "_pureRatio": 8190,
+        "_coolRatio": 8190,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 54,
+        "_exp": 140590,
+        "_hpRatio": 10000,
+        "_smileRatio": 8220,
+        "_pureRatio": 8220,
+        "_coolRatio": 8220,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 55,
+        "_exp": 150074,
+        "_hpRatio": 10000,
+        "_smileRatio": 8250,
+        "_pureRatio": 8250,
+        "_coolRatio": 8250,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 56,
+        "_exp": 160067,
+        "_hpRatio": 10000,
+        "_smileRatio": 8280,
+        "_pureRatio": 8280,
+        "_coolRatio": 8280,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 57,
+        "_exp": 170586,
+        "_hpRatio": 10000,
+        "_smileRatio": 8310,
+        "_pureRatio": 8310,
+        "_coolRatio": 8310,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 58,
+        "_exp": 181651,
+        "_hpRatio": 10000,
+        "_smileRatio": 8340,
+        "_pureRatio": 8340,
+        "_coolRatio": 8340,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 59,
+        "_exp": 193282,
+        "_hpRatio": 10000,
+        "_smileRatio": 8370,
+        "_pureRatio": 8370,
+        "_coolRatio": 8370,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 60,
+        "_exp": 205497,
+        "_hpRatio": 10000,
+        "_smileRatio": 8400,
+        "_pureRatio": 8400,
+        "_coolRatio": 8400,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 61,
+        "_exp": 218317,
+        "_hpRatio": 10000,
+        "_smileRatio": 8430,
+        "_pureRatio": 8430,
+        "_coolRatio": 8430,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 62,
+        "_exp": 231762,
+        "_hpRatio": 10000,
+        "_smileRatio": 8460,
+        "_pureRatio": 8460,
+        "_coolRatio": 8460,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 63,
+        "_exp": 245853,
+        "_hpRatio": 10000,
+        "_smileRatio": 8490,
+        "_pureRatio": 8490,
+        "_coolRatio": 8490,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 64,
+        "_exp": 260610,
+        "_hpRatio": 10000,
+        "_smileRatio": 8520,
+        "_pureRatio": 8520,
+        "_coolRatio": 8520,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 65,
+        "_exp": 276056,
+        "_hpRatio": 10000,
+        "_smileRatio": 8550,
+        "_pureRatio": 8550,
+        "_coolRatio": 8550,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 66,
+        "_exp": 292212,
+        "_hpRatio": 10000,
+        "_smileRatio": 8580,
+        "_pureRatio": 8580,
+        "_coolRatio": 8580,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 67,
+        "_exp": 309099,
+        "_hpRatio": 10000,
+        "_smileRatio": 8610,
+        "_pureRatio": 8610,
+        "_coolRatio": 8610,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 68,
+        "_exp": 326740,
+        "_hpRatio": 10000,
+        "_smileRatio": 8640,
+        "_pureRatio": 8640,
+        "_coolRatio": 8640,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 69,
+        "_exp": 345159,
+        "_hpRatio": 10000,
+        "_smileRatio": 8670,
+        "_pureRatio": 8670,
+        "_coolRatio": 8670,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 70,
+        "_exp": 364377,
+        "_hpRatio": 10000,
+        "_smileRatio": 8700,
+        "_pureRatio": 8700,
+        "_coolRatio": 8700,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 71,
+        "_exp": 384418,
+        "_hpRatio": 10000,
+        "_smileRatio": 8730,
+        "_pureRatio": 8730,
+        "_coolRatio": 8730,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 72,
+        "_exp": 405307,
+        "_hpRatio": 10000,
+        "_smileRatio": 8760,
+        "_pureRatio": 8760,
+        "_coolRatio": 8760,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 73,
+        "_exp": 427066,
+        "_hpRatio": 10000,
+        "_smileRatio": 8790,
+        "_pureRatio": 8790,
+        "_coolRatio": 8790,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 74,
+        "_exp": 449720,
+        "_hpRatio": 10000,
+        "_smileRatio": 8820,
+        "_pureRatio": 8820,
+        "_coolRatio": 8820,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 75,
+        "_exp": 473295,
+        "_hpRatio": 10000,
+        "_smileRatio": 8850,
+        "_pureRatio": 8850,
+        "_coolRatio": 8850,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 76,
+        "_exp": 497814,
+        "_hpRatio": 10000,
+        "_smileRatio": 8880,
+        "_pureRatio": 8880,
+        "_coolRatio": 8880,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 77,
+        "_exp": 523304,
+        "_hpRatio": 10000,
+        "_smileRatio": 8910,
+        "_pureRatio": 8910,
+        "_coolRatio": 8910,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 78,
+        "_exp": 549790,
+        "_hpRatio": 10000,
+        "_smileRatio": 8940,
+        "_pureRatio": 8940,
+        "_coolRatio": 8940,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 79,
+        "_exp": 577298,
+        "_hpRatio": 10000,
+        "_smileRatio": 8970,
+        "_pureRatio": 8970,
+        "_coolRatio": 8970,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 80,
+        "_exp": 605854,
+        "_hpRatio": 10000,
+        "_smileRatio": 9000,
+        "_pureRatio": 9000,
+        "_coolRatio": 9000,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 81,
+        "_exp": 635486,
+        "_hpRatio": 10000,
+        "_smileRatio": 9050,
+        "_pureRatio": 9050,
+        "_coolRatio": 9050,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 82,
+        "_exp": 666220,
+        "_hpRatio": 10000,
+        "_smileRatio": 9100,
+        "_pureRatio": 9100,
+        "_coolRatio": 9100,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 83,
+        "_exp": 698083,
+        "_hpRatio": 10000,
+        "_smileRatio": 9150,
+        "_pureRatio": 9150,
+        "_coolRatio": 9150,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 84,
+        "_exp": 731104,
+        "_hpRatio": 10000,
+        "_smileRatio": 9200,
+        "_pureRatio": 9200,
+        "_coolRatio": 9200,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 85,
+        "_exp": 765311,
+        "_hpRatio": 10000,
+        "_smileRatio": 9250,
+        "_pureRatio": 9250,
+        "_coolRatio": 9250,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 86,
+        "_exp": 800731,
+        "_hpRatio": 10000,
+        "_smileRatio": 9300,
+        "_pureRatio": 9300,
+        "_coolRatio": 9300,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 87,
+        "_exp": 837393,
+        "_hpRatio": 10000,
+        "_smileRatio": 9350,
+        "_pureRatio": 9350,
+        "_coolRatio": 9350,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 88,
+        "_exp": 875328,
+        "_hpRatio": 10000,
+        "_smileRatio": 9400,
+        "_pureRatio": 9400,
+        "_coolRatio": 9400,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 89,
+        "_exp": 914563,
+        "_hpRatio": 10000,
+        "_smileRatio": 9450,
+        "_pureRatio": 9450,
+        "_coolRatio": 9450,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 90,
+        "_exp": 955129,
+        "_hpRatio": 10000,
+        "_smileRatio": 9500,
+        "_pureRatio": 9500,
+        "_coolRatio": 9500,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 91,
+        "_exp": 997056,
+        "_hpRatio": 10000,
+        "_smileRatio": 9550,
+        "_pureRatio": 9550,
+        "_coolRatio": 9550,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 92,
+        "_exp": 1040374,
+        "_hpRatio": 10000,
+        "_smileRatio": 9600,
+        "_pureRatio": 9600,
+        "_coolRatio": 9600,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 93,
+        "_exp": 1085113,
+        "_hpRatio": 10000,
+        "_smileRatio": 9650,
+        "_pureRatio": 9650,
+        "_coolRatio": 9650,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 94,
+        "_exp": 1131306,
+        "_hpRatio": 10000,
+        "_smileRatio": 9700,
+        "_pureRatio": 9700,
+        "_coolRatio": 9700,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 95,
+        "_exp": 1178984,
+        "_hpRatio": 10000,
+        "_smileRatio": 9750,
+        "_pureRatio": 9750,
+        "_coolRatio": 9750,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 96,
+        "_exp": 1228177,
+        "_hpRatio": 10000,
+        "_smileRatio": 9800,
+        "_pureRatio": 9800,
+        "_coolRatio": 9800,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 97,
+        "_exp": 1278919,
+        "_hpRatio": 10000,
+        "_smileRatio": 9850,
+        "_pureRatio": 9850,
+        "_coolRatio": 9850,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 98,
+        "_exp": 1331242,
+        "_hpRatio": 10000,
+        "_smileRatio": 9900,
+        "_pureRatio": 9900,
+        "_coolRatio": 9900,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 99,
+        "_exp": 1385178,
+        "_hpRatio": 10000,
+        "_smileRatio": 9950,
+        "_pureRatio": 9950,
+        "_coolRatio": 9950,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3,
+        "_level": 100,
+        "_exp": 1440761,
+        "_hpRatio": 10000,
+        "_smileRatio": 10000,
+        "_pureRatio": 10000,
+        "_coolRatio": 10000,
+        "_masterReleaseLabelId": 1
+    }
+]

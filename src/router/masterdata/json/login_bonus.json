@@ -1,0 +1,4370 @@
+[
+    {
+        "_id": 1,
+        "_name": "デイリーログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 1,
+        "_priority": 0,
+        "_prefabName": "DailyLoginBonus",
+        "_boardSpriteName": "loginbonus_daily",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2,
+        "_name": "スタートダッシュログインボーナス",
+        "_type": {
+            "value__": 2
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_startdash_0001",
+        "_boardSpriteName": "loginbonus_startdash_0001",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223041502
+    },
+    {
+        "_id": 3,
+        "_name": "スタートダッシュログインボーナス[恒常]",
+        "_type": {
+            "value__": 2
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_startdash_0002",
+        "_boardSpriteName": "loginbonus_startdash_0002",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223071501
+    },
+    {
+        "_id": 10001,
+        "_name": "感謝祭10日間",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0001",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223061402
+    },
+    {
+        "_id": 10002,
+        "_name": "感謝祭DAY1",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0002",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223062401
+    },
+    {
+        "_id": 10003,
+        "_name": "感謝祭DAY2",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0003",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223062501
+    },
+    {
+        "_id": 10004,
+        "_name": "ヨハネ1",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223062502
+    },
+    {
+        "_id": 10005,
+        "_name": "ヨハネ2",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223070201
+    },
+    {
+        "_id": 10006,
+        "_name": "ヨハネ3",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223070901
+    },
+    {
+        "_id": 10007,
+        "_name": "ヨハネ4",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223071601
+    },
+    {
+        "_id": 10008,
+        "_name": "ヨハネ5",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223072301
+    },
+    {
+        "_id": 10009,
+        "_name": "ヨハネ6",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223073001
+    },
+    {
+        "_id": 10010,
+        "_name": "ヨハネ7",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223080601
+    },
+    {
+        "_id": 10011,
+        "_name": "ヨハネ8",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223081301
+    },
+    {
+        "_id": 10012,
+        "_name": "ヨハネ9",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223082001
+    },
+    {
+        "_id": 10013,
+        "_name": "ヨハネ10",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223082701
+    },
+    {
+        "_id": 10014,
+        "_name": "ヨハネ11",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223090301
+    },
+    {
+        "_id": 10015,
+        "_name": "ヨハネ12",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223091001
+    },
+    {
+        "_id": 10016,
+        "_name": "ヨハネ13",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0004",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223091701
+    },
+    {
+        "_id": 10017,
+        "_name": "虹ヶ咲OVA 公開記念ログボ",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0017",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223062302
+    },
+    {
+        "_id": 10018,
+        "_name": "お盆",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_campaign07day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0018",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223081001
+    },
+    {
+        "_id": 10019,
+        "_name": "アニサマログボ_1",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0019",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223082501
+    },
+    {
+        "_id": 10020,
+        "_name": "アニサマログボ_2",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0020",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223082702
+    },
+    {
+        "_id": 10021,
+        "_name": "コミケログボ",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0021",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223081201
+    },
+    {
+        "_id": 10022,
+        "_name": "Liella!千葉",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0022",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223081903
+    },
+    {
+        "_id": 10023,
+        "_name": "Liella!愛知",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0023",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223082602
+    },
+    {
+        "_id": 10024,
+        "_name": "Liella!東京",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0024",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223090901
+    },
+    {
+        "_id": 10025,
+        "_name": "アイス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0025",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223091601
+    },
+    {
+        "_id": 10026,
+        "_name": "",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0026",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223100501
+    },
+    {
+        "_id": 10027,
+        "_name": "",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common03day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0027",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223100701
+    },
+    {
+        "_id": 10028,
+        "_name": "ハロウィン",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0028",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102501
+    },
+    {
+        "_id": 10029,
+        "_name": "蓮ノ空＜福岡公演＞",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0029",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102103
+    },
+    {
+        "_id": 10030,
+        "_name": "蓮ノ空＜東京公演＞",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0030",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111801
+    },
+    {
+        "_id": 10031,
+        "_name": "蓮ノ空＜愛知公演＞",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0031",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112501
+    },
+    {
+        "_id": 10034,
+        "_name": "異次元フェス アイドルマスター★♥ラブライブ！歌合戦開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0034",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120902
+    },
+    {
+        "_id": 10037,
+        "_name": "秋まつり",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_campaign07day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0037",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111103
+    },
+    {
+        "_id": 10035,
+        "_name": "ログボ_幻日のヨハネ -The Story of the Sound of Heart-　開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common03day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0035",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121504
+    },
+    {
+        "_id": 10036,
+        "_name": "ラブライブ！虹ヶ咲学園スクールアイドル同好会 6th Live! I love You ⇆ You love Me　愛知公演開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0036",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122302
+    },
+    {
+        "_id": 10038,
+        "_name": "スノーホワイトクリスマスキャンペーン前半",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0038",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120105
+    },
+    {
+        "_id": 10039,
+        "_name": "お正月！みらくるキャンペーンログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0039",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122804
+    },
+    {
+        "_id": 10040,
+        "_name": "スノーホワイトクリスマスキャンペーン後半",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0038",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121204
+    },
+    {
+        "_id": 10041,
+        "_name": "ラブライブ！虹ヶ咲学園スクールアイドル同好会 6th Live! I love You ⇆ You love Me　神奈川公演開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0041",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011302
+    },
+    {
+        "_id": 10042,
+        "_name": "スクールアイドルミュージカル＜2024年公演＞開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0042",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011104
+    },
+    {
+        "_id": 10043,
+        "_name": "3週連続ライブ応援！いっぱいシャンシャンしようキャンペーンログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0043",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120802
+    },
+    {
+        "_id": 10044,
+        "_name": "「ラブライブ！スーパースター!! Liella! 5th LoveLive! ～Twinkle Triangle～＜福岡公演＞」開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0044",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012004
+    },
+    {
+        "_id": 10045,
+        "_name": "「ラブライブ！スーパースター!! Liella! 5th LoveLive! ～Twinkle Triangle～＜東京公演＞」開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0045",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021001
+    },
+    {
+        "_id": 10046,
+        "_name": "ハッピーバレンタインデーキャンペーンログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0046",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020104
+    },
+    {
+        "_id": 10047,
+        "_name": "冬休み！いっぱいシャンシャンしようキャンペーンログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0047",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020106
+    },
+    {
+        "_id": 10050,
+        "_name": "カラフルスプリングキャンペーンログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0050",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030113
+    },
+    {
+        "_id": 10051,
+        "_name": "大感謝！最後までいっぱいシャンシャンしようキャンペーンログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common10day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0051",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030115
+    },
+    {
+        "_id": 10054,
+        "_name": "ラブライブ！TVアニメ放送10周年記念　LoveLive! Special Talk Session開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0054",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022302
+    },
+    {
+        "_id": 10055,
+        "_name": "LoveLive! Series Presents ユニット甲子園 2024　開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0055",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030902
+    },
+    {
+        "_id": 10056,
+        "_name": "ラブライブ！TVアニメ放送10周年記念　LoveLive! Orchestra Concert　開催記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_common02day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0056",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224033002
+    },
+    {
+        "_id": 10057,
+        "_name": "スクフェス2 大感謝ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_event30day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0057",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030117
+    },
+    {
+        "_id": 10058,
+        "_name": "スクフェス2 大感謝ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "LoginBonus_event30day_0001",
+        "_boardSpriteName": "loginbonus_campaign_0058",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030117
+    },
+    {
+        "_id": 10059,
+        "_name": "スペシャル勧誘記念ログインボーナス～桜坂しずく～",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "ThanksLoginBonus_03003_01",
+        "_boardSpriteName": "loginbonus_campaign_0059",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031605
+    },
+    {
+        "_id": 10060,
+        "_name": "スペシャル勧誘記念ログインボーナス～桜小路きな子～",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "ThanksLoginBonus_04006_01",
+        "_boardSpriteName": "loginbonus_campaign_0060",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031702
+    },
+    {
+        "_id": 10061,
+        "_name": "スペシャル勧誘記念ログインボーナス～渡辺 曜～",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "ThanksLoginBonus_02005_01",
+        "_boardSpriteName": "loginbonus_campaign_0061",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031802
+    },
+    {
+        "_id": 10062,
+        "_name": "スペシャル勧誘記念ログインボーナス～西木野真姫～",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 1,
+        "_prefabName": "ThanksLoginBonus_01006_01",
+        "_boardSpriteName": "loginbonus_campaign_0062",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031902
+    },
+    {
+        "_id": 20000,
+        "_name": "サブスク用ログインボーナス",
+        "_type": {
+            "value__": 6
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "",
+        "_boardSpriteName": "",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 20001,
+        "_name": "スランプ脱出大作戦！ ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 101,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0101",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_id": 20002,
+        "_name": "23年04月：イベント_μ's_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 102,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0102",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_id": 20003,
+        "_name": "23年05月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 103,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0103",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223051101
+    },
+    {
+        "_id": 20004,
+        "_name": "23年05月：イベント_Aqours_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 104,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0104",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_id": 20005,
+        "_name": "23年05月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 105,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0103",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223052601
+    },
+    {
+        "_id": 20006,
+        "_name": "23年06月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 106,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0106",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_id": 20007,
+        "_name": "23年06月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 107,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event07day_0002",
+        "_boardSpriteName": "loginbonus_event_0107",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223061101
+    },
+    {
+        "_id": 20008,
+        "_name": "23年06月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 108,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0108",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_id": 20009,
+        "_name": "23年07月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 109,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0109",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_id": 20010,
+        "_name": "23年07月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 110,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0110",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223071101
+    },
+    {
+        "_id": 20011,
+        "_name": "23年07月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 111,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0111",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_id": 20012,
+        "_name": "23年07月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 112,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0112",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223072601
+    },
+    {
+        "_id": 20013,
+        "_name": "23年08月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 113,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0113",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_id": 20014,
+        "_name": "23年08月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 114,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0114",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223081101
+    },
+    {
+        "_id": 20015,
+        "_name": "23年08月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 115,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0115",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_id": 20016,
+        "_name": "23年08月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 116,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0116",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223082601
+    },
+    {
+        "_id": 20017,
+        "_name": "23年09月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 117,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0117",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_id": 20018,
+        "_name": "23年09月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 118,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0118",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223091101
+    },
+    {
+        "_id": 20019,
+        "_name": "23年09月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 119,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0119",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_id": 20020,
+        "_name": "23年09月：イベント_簡易",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 120,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0120",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223092601
+    },
+    {
+        "_id": 20021,
+        "_name": "23年10月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 121,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0121",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_id": 20022,
+        "_name": "23年10月：イベント_簡易(上旬)",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 122,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0122",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101101
+    },
+    {
+        "_id": 20023,
+        "_name": "23年10月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 123,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0123",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_id": 20024,
+        "_name": "23年10月：イベント_簡易(下旬)",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 124,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0124",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102601
+    },
+    {
+        "_id": 20025,
+        "_name": "23年11月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 125,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0125",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_id": 20026,
+        "_name": "23年11月：イベント_簡易(上旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 126,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0126",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111101
+    },
+    {
+        "_id": 20027,
+        "_name": "23年11月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 127,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0127",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_id": 20028,
+        "_name": "23年11月：イベント_簡易(下旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 128,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0128",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112601
+    },
+    {
+        "_id": 20029,
+        "_name": "23年12月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 129,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0129",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_id": 20030,
+        "_name": "23年12月：イベント_簡易(上旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 130,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0130",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121102
+    },
+    {
+        "_id": 20031,
+        "_name": "23年12月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 131,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0131",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_id": 20032,
+        "_name": "23年12月：イベント_簡易(下旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 132,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0132",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122603
+    },
+    {
+        "_id": 20033,
+        "_name": "24年01月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 133,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0133",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_id": 20034,
+        "_name": "24年01月：イベント_簡易(上旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 134,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0134",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011106
+    },
+    {
+        "_id": 20035,
+        "_name": "24年01月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 135,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0135",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_id": 20036,
+        "_name": "24年01月：イベント_簡易(下旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 136,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0136",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012702
+    },
+    {
+        "_id": 20037,
+        "_name": "24年02月：イベントA_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 137,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0137",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_id": 20038,
+        "_name": "24年02月：イベント_簡易(上旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 138,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event04day_0001",
+        "_boardSpriteName": "loginbonus_event_0138",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021006
+    },
+    {
+        "_id": 20039,
+        "_name": "24年02月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 139,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event9day_0001",
+        "_boardSpriteName": "loginbonus_event_0139",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_id": 20040,
+        "_name": "24年02月：イベント_簡易(下旬)_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 140,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event07day_0002",
+        "_boardSpriteName": "loginbonus_event_0140",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022305
+    },
+    {
+        "_id": 20041,
+        "_name": "24年03月：イベントB_ログインボーナス",
+        "_type": {
+            "value__": 5
+        },
+        "_masterEventId": 141,
+        "_loop": 0,
+        "_priority": 3,
+        "_prefabName": "LoginBonus_event10day_0001",
+        "_boardSpriteName": "loginbonus_event_0141",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030104
+    },
+    {
+        "_id": 30001,
+        "_name": "穂乃果ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01001_01",
+        "_boardSpriteName": "loginbonus_birthday_01001_01",
+        "_masterVoiceId": 40001097,
+        "_masterReleaseLabelId": 123080301
+    },
+    {
+        "_id": 30002,
+        "_name": "絵里ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01002_01",
+        "_boardSpriteName": "loginbonus_birthday_01002_01",
+        "_masterVoiceId": 40002097,
+        "_masterReleaseLabelId": 123102101
+    },
+    {
+        "_id": 30003,
+        "_name": "ことりちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01003_01",
+        "_boardSpriteName": "loginbonus_birthday_01003_01",
+        "_masterVoiceId": 40003099,
+        "_masterReleaseLabelId": 123091201
+    },
+    {
+        "_id": 30004,
+        "_name": "海未ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01004_01",
+        "_boardSpriteName": "loginbonus_birthday_01004_01",
+        "_masterVoiceId": 40004100,
+        "_masterReleaseLabelId": 124031501
+    },
+    {
+        "_id": 30005,
+        "_name": "凛ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01005_01",
+        "_boardSpriteName": "loginbonus_birthday_01005_01",
+        "_masterVoiceId": 40005100,
+        "_masterReleaseLabelId": 123110101
+    },
+    {
+        "_id": 30007,
+        "_name": "希ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01007_01",
+        "_boardSpriteName": "loginbonus_birthday_01007_01",
+        "_masterVoiceId": 40007102,
+        "_masterReleaseLabelId": 123060901
+    },
+    {
+        "_id": 30008,
+        "_name": "花陽ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01008_01",
+        "_boardSpriteName": "loginbonus_birthday_01008_01",
+        "_masterVoiceId": 40008103,
+        "_masterReleaseLabelId": 124011701
+    },
+    {
+        "_id": 30009,
+        "_name": "にこちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_01009_01",
+        "_boardSpriteName": "loginbonus_birthday_01009_01",
+        "_masterVoiceId": 40009104,
+        "_masterReleaseLabelId": 123072201
+    },
+    {
+        "_id": 30010,
+        "_name": "千歌ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02001_01",
+        "_boardSpriteName": "loginbonus_birthday_02001_01",
+        "_masterVoiceId": 40010097,
+        "_masterReleaseLabelId": 123080101
+    },
+    {
+        "_id": 30011,
+        "_name": "梨子ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02002_01",
+        "_boardSpriteName": "loginbonus_birthday_02002_01",
+        "_masterVoiceId": 40011098,
+        "_masterReleaseLabelId": 123091901
+    },
+    {
+        "_id": 30012,
+        "_name": "果南ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02003_01",
+        "_boardSpriteName": "loginbonus_birthday_02003_01",
+        "_masterVoiceId": 40012099,
+        "_masterReleaseLabelId": 124021001
+    },
+    {
+        "_id": 30013,
+        "_name": "ダイヤちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02004_01",
+        "_boardSpriteName": "loginbonus_birthday_02004_01",
+        "_masterVoiceId": 40013100,
+        "_masterReleaseLabelId": 124010101
+    },
+    {
+        "_id": 30015,
+        "_name": "善子ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02006_01",
+        "_boardSpriteName": "loginbonus_birthday_02006_01",
+        "_masterVoiceId": 40015102,
+        "_masterReleaseLabelId": 123071301
+    },
+    {
+        "_id": 30016,
+        "_name": "花丸ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02007_01",
+        "_boardSpriteName": "loginbonus_birthday_02007_01",
+        "_masterVoiceId": 40016103,
+        "_masterReleaseLabelId": 124030401
+    },
+    {
+        "_id": 30017,
+        "_name": "鞠莉ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02008_01",
+        "_boardSpriteName": "loginbonus_birthday_02008_01",
+        "_masterVoiceId": 40017104,
+        "_masterReleaseLabelId": 123061301
+    },
+    {
+        "_id": 30018,
+        "_name": "ルビィちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02009_01",
+        "_boardSpriteName": "loginbonus_birthday_02009_01",
+        "_masterVoiceId": 40018105,
+        "_masterReleaseLabelId": 123092101
+    },
+    {
+        "_id": 30019,
+        "_name": "歩夢ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03001_01",
+        "_boardSpriteName": "loginbonus_birthday_03001_01",
+        "_masterVoiceId": 40019095,
+        "_masterReleaseLabelId": 124030101
+    },
+    {
+        "_id": 30020,
+        "_name": "かすみちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03002_01",
+        "_boardSpriteName": "loginbonus_birthday_03002_01",
+        "_masterVoiceId": 40020096,
+        "_masterReleaseLabelId": 124012301
+    },
+    {
+        "_id": 30022,
+        "_name": "果林ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03004_01",
+        "_boardSpriteName": "loginbonus_birthday_03004_01",
+        "_masterVoiceId": 40022098,
+        "_masterReleaseLabelId": 123062901
+    },
+    {
+        "_id": 30023,
+        "_name": "愛ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03005_01",
+        "_boardSpriteName": "loginbonus_birthday_03005_01",
+        "_masterVoiceId": 40023099,
+        "_masterReleaseLabelId": 123053001
+    },
+    {
+        "_id": 30024,
+        "_name": "彼方ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03006_01",
+        "_boardSpriteName": "loginbonus_birthday_03006_01",
+        "_masterVoiceId": 40024100,
+        "_masterReleaseLabelId": 123121601
+    },
+    {
+        "_id": 30025,
+        "_name": "せつ菜ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03007_01",
+        "_boardSpriteName": "loginbonus_birthday_03007_01",
+        "_masterVoiceId": 40025101,
+        "_masterReleaseLabelId": 123080801
+    },
+    {
+        "_id": 30026,
+        "_name": "エマちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03008_01",
+        "_boardSpriteName": "loginbonus_birthday_03008_01",
+        "_masterVoiceId": 40026102,
+        "_masterReleaseLabelId": 124020501
+    },
+    {
+        "_id": 30027,
+        "_name": "璃奈ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03009_01",
+        "_boardSpriteName": "loginbonus_birthday_03009_01",
+        "_masterVoiceId": 40027103,
+        "_masterReleaseLabelId": 123111301
+    },
+    {
+        "_id": 30028,
+        "_name": "栞子ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03010_01",
+        "_boardSpriteName": "loginbonus_birthday_03010_01",
+        "_masterVoiceId": 40028104,
+        "_masterReleaseLabelId": 123100501
+    },
+    {
+        "_id": 30029,
+        "_name": "ミアちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03011_01",
+        "_boardSpriteName": "loginbonus_birthday_03011_01",
+        "_masterVoiceId": 40029105,
+        "_masterReleaseLabelId": 123120601
+    },
+    {
+        "_id": 30030,
+        "_name": "嵐珠ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_03012_01",
+        "_boardSpriteName": "loginbonus_birthday_03012_01",
+        "_masterVoiceId": 40030106,
+        "_masterReleaseLabelId": 124021501
+    },
+    {
+        "_id": 30031,
+        "_name": "かのんちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04001_01",
+        "_boardSpriteName": "loginbonus_birthday_04001_01",
+        "_masterVoiceId": 40031095,
+        "_masterReleaseLabelId": 123050101
+    },
+    {
+        "_id": 30032,
+        "_name": "可可ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04002_01",
+        "_boardSpriteName": "loginbonus_birthday_04002_01",
+        "_masterVoiceId": 40032096,
+        "_masterReleaseLabelId": 123071701
+    },
+    {
+        "_id": 30033,
+        "_name": "千砂都ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04003_01",
+        "_boardSpriteName": "loginbonus_birthday_04003_01",
+        "_masterVoiceId": 40033097,
+        "_masterReleaseLabelId": 124022501
+    },
+    {
+        "_id": 30034,
+        "_name": "すみれちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04004_01",
+        "_boardSpriteName": "loginbonus_birthday_04004_01",
+        "_masterVoiceId": 40034098,
+        "_masterReleaseLabelId": 123092801
+    },
+    {
+        "_id": 30035,
+        "_name": "恋ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04005_01",
+        "_boardSpriteName": "loginbonus_birthday_04005_01",
+        "_masterVoiceId": 40035099,
+        "_masterReleaseLabelId": 123112401
+    },
+    {
+        "_id": 30037,
+        "_name": "メイちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04007_01",
+        "_boardSpriteName": "loginbonus_birthday_04007_01",
+        "_masterVoiceId": 40037101,
+        "_masterReleaseLabelId": 123102901
+    },
+    {
+        "_id": 30038,
+        "_name": "四季ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04008_01",
+        "_boardSpriteName": "loginbonus_birthday_04008_01",
+        "_masterVoiceId": 40038102,
+        "_masterReleaseLabelId": 123061701
+    },
+    {
+        "_id": 30039,
+        "_name": "夏美ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04009_01",
+        "_boardSpriteName": "loginbonus_birthday_04009_01",
+        "_masterVoiceId": 40039103,
+        "_masterReleaseLabelId": 123080701
+    },
+    {
+        "_id": 30040,
+        "_name": "梨子ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_02002_01",
+        "_boardSpriteName": "loginbonus_birthday_02002_01",
+        "_masterVoiceId": 40011098,
+        "_masterReleaseLabelId": 123091903
+    },
+    {
+        "_id": 30041,
+        "_name": "マルガレーテちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04010_01",
+        "_boardSpriteName": "loginbonus_birthday_04010_01",
+        "_masterVoiceId": 40040104,
+        "_masterReleaseLabelId": 124012001
+    },
+    {
+        "_id": 30042,
+        "_name": "冬毬ちゃんお誕生日記念ログインボーナス",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "BirthdayLoginBonus_04011_01",
+        "_boardSpriteName": "loginbonus_birthday_04011_01",
+        "_masterVoiceId": 40041105,
+        "_masterReleaseLabelId": 123122801
+    },
+    {
+        "_id": 40001,
+        "_name": "毎日ログボ_1",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231011",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101102
+    },
+    {
+        "_id": 40002,
+        "_name": "毎日ログボ_2",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231012",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101201
+    },
+    {
+        "_id": 40003,
+        "_name": "毎日ログボ_3",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231013",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101302
+    },
+    {
+        "_id": 40004,
+        "_name": "毎日ログボ_4",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231014",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101401
+    },
+    {
+        "_id": 40005,
+        "_name": "毎日ログボ_5",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231015",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101511
+    },
+    {
+        "_id": 40006,
+        "_name": "毎日ログボ_6",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231016",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101606
+    },
+    {
+        "_id": 40007,
+        "_name": "毎日ログボ_7",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231017",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101703
+    },
+    {
+        "_id": 40008,
+        "_name": "毎日ログボ_8",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231018",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101802
+    },
+    {
+        "_id": 40009,
+        "_name": "毎日ログボ_9",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231019",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223101901
+    },
+    {
+        "_id": 40010,
+        "_name": "毎日ログボ_10",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231020",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102001
+    },
+    {
+        "_id": 40011,
+        "_name": "毎日ログボ_11",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231021",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102105
+    },
+    {
+        "_id": 40012,
+        "_name": "毎日ログボ_12",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231022",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102201
+    },
+    {
+        "_id": 40013,
+        "_name": "毎日ログボ_13",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231023",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102301
+    },
+    {
+        "_id": 40014,
+        "_name": "毎日ログボ_14",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231024",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102403
+    },
+    {
+        "_id": 40015,
+        "_name": "毎日ログボ_15",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231025",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102503
+    },
+    {
+        "_id": 40016,
+        "_name": "毎日ログボ_16",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231026",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102602
+    },
+    {
+        "_id": 40017,
+        "_name": "毎日ログボ_17",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231027",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102701
+    },
+    {
+        "_id": 40018,
+        "_name": "毎日ログボ_18",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231028",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102801
+    },
+    {
+        "_id": 40019,
+        "_name": "毎日ログボ_19",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231029",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223102904
+    },
+    {
+        "_id": 40020,
+        "_name": "毎日ログボ_20",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231030",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223103002
+    },
+    {
+        "_id": 40021,
+        "_name": "毎日ログボ_21",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231031",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223103110
+    },
+    {
+        "_id": 40022,
+        "_name": "毎日ログボ_22",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231101",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110105
+    },
+    {
+        "_id": 40023,
+        "_name": "毎日ログボ_23",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231102",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110201
+    },
+    {
+        "_id": 40024,
+        "_name": "毎日ログボ_24",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231103",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110301
+    },
+    {
+        "_id": 40025,
+        "_name": "毎日ログボ_25",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231104",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110401
+    },
+    {
+        "_id": 40026,
+        "_name": "毎日ログボ_26",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231105",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110501
+    },
+    {
+        "_id": 40027,
+        "_name": "毎日ログボ_27",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231106",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110601
+    },
+    {
+        "_id": 40028,
+        "_name": "毎日ログボ_28",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231107",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110703
+    },
+    {
+        "_id": 40029,
+        "_name": "毎日ログボ_29",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231108",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110802
+    },
+    {
+        "_id": 40030,
+        "_name": "毎日ログボ_30",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231109",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223110901
+    },
+    {
+        "_id": 40031,
+        "_name": "毎日ログボ_31",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231110",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111002
+    },
+    {
+        "_id": 40032,
+        "_name": "毎日ログボ_32",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231111",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111102
+    },
+    {
+        "_id": 40033,
+        "_name": "毎日ログボ_33",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231112",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111201
+    },
+    {
+        "_id": 40034,
+        "_name": "毎日ログボ_34",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231113",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111303
+    },
+    {
+        "_id": 40035,
+        "_name": "毎日ログボ_35",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231114",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111403
+    },
+    {
+        "_id": 40036,
+        "_name": "毎日ログボ_36",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231115",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111509
+    },
+    {
+        "_id": 40037,
+        "_name": "毎日ログボ_37",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231116",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111601
+    },
+    {
+        "_id": 40038,
+        "_name": "毎日ログボ_38",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231117",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111701
+    },
+    {
+        "_id": 40039,
+        "_name": "毎日ログボ_39",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231118",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111803
+    },
+    {
+        "_id": 40040,
+        "_name": "毎日ログボ_40",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231119",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223111901
+    },
+    {
+        "_id": 40041,
+        "_name": "毎日ログボ_41",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231120",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112001
+    },
+    {
+        "_id": 40042,
+        "_name": "毎日ログボ_42",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231121",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112103
+    },
+    {
+        "_id": 40043,
+        "_name": "毎日ログボ_43",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231122",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112201
+    },
+    {
+        "_id": 40044,
+        "_name": "毎日ログボ_44",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231123",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112301
+    },
+    {
+        "_id": 40045,
+        "_name": "毎日ログボ_45",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231124",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112403
+    },
+    {
+        "_id": 40046,
+        "_name": "毎日ログボ_46",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231125",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112503
+    },
+    {
+        "_id": 40047,
+        "_name": "毎日ログボ_47",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231126",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112602
+    },
+    {
+        "_id": 40048,
+        "_name": "毎日ログボ_48",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231127",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112701
+    },
+    {
+        "_id": 40049,
+        "_name": "毎日ログボ_49",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231128",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112803
+    },
+    {
+        "_id": 40050,
+        "_name": "毎日ログボ_50",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231129",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223112901
+    },
+    {
+        "_id": 40051,
+        "_name": "毎日ログボ_51",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231130",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223113007
+    },
+    {
+        "_id": 40052,
+        "_name": "毎日ログボ_52",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231201",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120102
+    },
+    {
+        "_id": 40053,
+        "_name": "毎日ログボ_53",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231202",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120201
+    },
+    {
+        "_id": 40054,
+        "_name": "毎日ログボ_54",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231203",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120301
+    },
+    {
+        "_id": 40055,
+        "_name": "毎日ログボ_55",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231204",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120401
+    },
+    {
+        "_id": 40056,
+        "_name": "毎日ログボ_56",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231205",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120503
+    },
+    {
+        "_id": 40057,
+        "_name": "毎日ログボ_57",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231206",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120603
+    },
+    {
+        "_id": 40058,
+        "_name": "毎日ログボ_58",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231207",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120701
+    },
+    {
+        "_id": 40059,
+        "_name": "毎日ログボ_59",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231208",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120801
+    },
+    {
+        "_id": 40060,
+        "_name": "毎日ログボ_60",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231209",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223120901
+    },
+    {
+        "_id": 40061,
+        "_name": "毎日ログボ_61",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231210",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121001
+    },
+    {
+        "_id": 40062,
+        "_name": "毎日ログボ_62",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231211",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121101
+    },
+    {
+        "_id": 40063,
+        "_name": "毎日ログボ_63",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231212",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121203
+    },
+    {
+        "_id": 40064,
+        "_name": "毎日ログボ_64",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231213",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121301
+    },
+    {
+        "_id": 40065,
+        "_name": "毎日ログボ_65",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231214",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121401
+    },
+    {
+        "_id": 40066,
+        "_name": "毎日ログボ_66",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231215",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121501
+    },
+    {
+        "_id": 40067,
+        "_name": "毎日ログボ_67",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231216",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121603
+    },
+    {
+        "_id": 40068,
+        "_name": "毎日ログボ_68",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231217",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121701
+    },
+    {
+        "_id": 40069,
+        "_name": "毎日ログボ_69",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231218",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121801
+    },
+    {
+        "_id": 40070,
+        "_name": "毎日ログボ_70",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231219",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223121903
+    },
+    {
+        "_id": 40071,
+        "_name": "毎日ログボ_71",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231220",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122001
+    },
+    {
+        "_id": 40072,
+        "_name": "毎日ログボ_72",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231221",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122101
+    },
+    {
+        "_id": 40073,
+        "_name": "毎日ログボ_73",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231222",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122201
+    },
+    {
+        "_id": 40074,
+        "_name": "毎日ログボ_74",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231223",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122301
+    },
+    {
+        "_id": 40075,
+        "_name": "毎日ログボ_75",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231224",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122401
+    },
+    {
+        "_id": 40076,
+        "_name": "毎日ログボ_76",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231225",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122501
+    },
+    {
+        "_id": 40077,
+        "_name": "毎日ログボ_77",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231226",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122601
+    },
+    {
+        "_id": 40078,
+        "_name": "毎日ログボ_78",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231227",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122701
+    },
+    {
+        "_id": 40079,
+        "_name": "毎日ログボ_79",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231228",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122803
+    },
+    {
+        "_id": 40080,
+        "_name": "毎日ログボ_80",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231229",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223122901
+    },
+    {
+        "_id": 40081,
+        "_name": "毎日ログボ_81",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231230",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223123001
+    },
+    {
+        "_id": 40082,
+        "_name": "毎日ログボ_82",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_231231",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 223123101
+    },
+    {
+        "_id": 40083,
+        "_name": "毎日ログボ_83",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240101",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010101
+    },
+    {
+        "_id": 40084,
+        "_name": "毎日ログボ_84",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240102",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010201
+    },
+    {
+        "_id": 40085,
+        "_name": "毎日ログボ_85",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240103",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010301
+    },
+    {
+        "_id": 40086,
+        "_name": "毎日ログボ_86",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240104",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010401
+    },
+    {
+        "_id": 40087,
+        "_name": "毎日ログボ_87",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240105",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010501
+    },
+    {
+        "_id": 40088,
+        "_name": "毎日ログボ_88",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240106",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010601
+    },
+    {
+        "_id": 40089,
+        "_name": "毎日ログボ_89",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240107",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010701
+    },
+    {
+        "_id": 40090,
+        "_name": "毎日ログボ_90",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240108",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010801
+    },
+    {
+        "_id": 40091,
+        "_name": "毎日ログボ_91",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240109",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224010901
+    },
+    {
+        "_id": 40092,
+        "_name": "毎日ログボ_92",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240110",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011001
+    },
+    {
+        "_id": 40093,
+        "_name": "毎日ログボ_93",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240111",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011101
+    },
+    {
+        "_id": 40094,
+        "_name": "毎日ログボ_94",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240112",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011201
+    },
+    {
+        "_id": 40095,
+        "_name": "毎日ログボ_95",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240113",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011301
+    },
+    {
+        "_id": 40096,
+        "_name": "毎日ログボ_96",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240114",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011401
+    },
+    {
+        "_id": 40097,
+        "_name": "毎日ログボ_97",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240115",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011501
+    },
+    {
+        "_id": 40098,
+        "_name": "毎日ログボ_98",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240116",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011601
+    },
+    {
+        "_id": 40099,
+        "_name": "毎日ログボ_99",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240117",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011701
+    },
+    {
+        "_id": 40100,
+        "_name": "毎日ログボ_00",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240118",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011801
+    },
+    {
+        "_id": 40101,
+        "_name": "毎日ログボ_01",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240119",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224011901
+    },
+    {
+        "_id": 40102,
+        "_name": "毎日ログボ_02",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240120",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012001
+    },
+    {
+        "_id": 40103,
+        "_name": "毎日ログボ_03",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240121",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012101
+    },
+    {
+        "_id": 40104,
+        "_name": "毎日ログボ_04",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240122",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012201
+    },
+    {
+        "_id": 40105,
+        "_name": "毎日ログボ_05",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240123",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012301
+    },
+    {
+        "_id": 40106,
+        "_name": "毎日ログボ_06",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240124",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012401
+    },
+    {
+        "_id": 40107,
+        "_name": "毎日ログボ_07",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240125",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012501
+    },
+    {
+        "_id": 40108,
+        "_name": "毎日ログボ_08",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240126",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012601
+    },
+    {
+        "_id": 40109,
+        "_name": "毎日ログボ_09",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240127",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012701
+    },
+    {
+        "_id": 40110,
+        "_name": "毎日ログボ_10",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240128",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012801
+    },
+    {
+        "_id": 40111,
+        "_name": "毎日ログボ_11",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240129",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224012902
+    },
+    {
+        "_id": 40112,
+        "_name": "毎日ログボ_12",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240130",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224013001
+    },
+    {
+        "_id": 40113,
+        "_name": "毎日ログボ_13",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240131",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224013101
+    },
+    {
+        "_id": 40114,
+        "_name": "毎日ログボ_14",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240201",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020101
+    },
+    {
+        "_id": 40115,
+        "_name": "毎日ログボ_15",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240202",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020201
+    },
+    {
+        "_id": 40116,
+        "_name": "毎日ログボ_16",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240203",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020301
+    },
+    {
+        "_id": 40117,
+        "_name": "毎日ログボ_17",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240204",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020401
+    },
+    {
+        "_id": 40118,
+        "_name": "毎日ログボ_18",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240205",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020501
+    },
+    {
+        "_id": 40119,
+        "_name": "毎日ログボ_19",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240206",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020601
+    },
+    {
+        "_id": 40120,
+        "_name": "毎日ログボ_20",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240207",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020701
+    },
+    {
+        "_id": 40121,
+        "_name": "毎日ログボ_21",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240208",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020801
+    },
+    {
+        "_id": 40122,
+        "_name": "毎日ログボ_22",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240209",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224020901
+    },
+    {
+        "_id": 40123,
+        "_name": "毎日ログボ_23",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240210",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021003
+    },
+    {
+        "_id": 40124,
+        "_name": "毎日ログボ_24",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240211",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021101
+    },
+    {
+        "_id": 40125,
+        "_name": "毎日ログボ_25",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240212",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021201
+    },
+    {
+        "_id": 40126,
+        "_name": "毎日ログボ_26",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240213",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021301
+    },
+    {
+        "_id": 40127,
+        "_name": "毎日ログボ_27",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240214",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021401
+    },
+    {
+        "_id": 40128,
+        "_name": "毎日ログボ_28",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240215",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021501
+    },
+    {
+        "_id": 40129,
+        "_name": "毎日ログボ_29",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240216",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021601
+    },
+    {
+        "_id": 40130,
+        "_name": "毎日ログボ_30",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240217",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021701
+    },
+    {
+        "_id": 40131,
+        "_name": "毎日ログボ_31",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240218",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021801
+    },
+    {
+        "_id": 40132,
+        "_name": "毎日ログボ_32",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240219",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224021901
+    },
+    {
+        "_id": 40133,
+        "_name": "毎日ログボ_33",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240220",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022001
+    },
+    {
+        "_id": 40134,
+        "_name": "毎日ログボ_34",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240221",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022101
+    },
+    {
+        "_id": 40135,
+        "_name": "毎日ログボ_35",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240222",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022201
+    },
+    {
+        "_id": 40136,
+        "_name": "毎日ログボ_36",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240223",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022301
+    },
+    {
+        "_id": 40137,
+        "_name": "毎日ログボ_37",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240224",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022401
+    },
+    {
+        "_id": 40138,
+        "_name": "毎日ログボ_38",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240225",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022501
+    },
+    {
+        "_id": 40139,
+        "_name": "毎日ログボ_39",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240226",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022601
+    },
+    {
+        "_id": 40140,
+        "_name": "毎日ログボ_40",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240227",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022701
+    },
+    {
+        "_id": 40141,
+        "_name": "毎日ログボ_41",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240228",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022801
+    },
+    {
+        "_id": 40142,
+        "_name": "毎日ログボ_42",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240229",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224022901
+    },
+    {
+        "_id": 40143,
+        "_name": "毎日ログボ_43",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240301",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030101
+    },
+    {
+        "_id": 40144,
+        "_name": "毎日ログボ_44",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240302",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030201
+    },
+    {
+        "_id": 40145,
+        "_name": "毎日ログボ_45",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240303",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030301
+    },
+    {
+        "_id": 40146,
+        "_name": "毎日ログボ_46",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240304",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030401
+    },
+    {
+        "_id": 40147,
+        "_name": "毎日ログボ_47",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240305",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030501
+    },
+    {
+        "_id": 40148,
+        "_name": "毎日ログボ_48",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240306",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030601
+    },
+    {
+        "_id": 40149,
+        "_name": "毎日ログボ_49",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240307",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030701
+    },
+    {
+        "_id": 40150,
+        "_name": "毎日ログボ_50",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240308",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030801
+    },
+    {
+        "_id": 40151,
+        "_name": "毎日ログボ_51",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240309",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224030901
+    },
+    {
+        "_id": 40152,
+        "_name": "毎日ログボ_52",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240310",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031001
+    },
+    {
+        "_id": 40153,
+        "_name": "毎日ログボ_53",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240311",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031101
+    },
+    {
+        "_id": 40154,
+        "_name": "毎日ログボ_54",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240312",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031201
+    },
+    {
+        "_id": 40155,
+        "_name": "毎日ログボ_55",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240313",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031301
+    },
+    {
+        "_id": 40156,
+        "_name": "毎日ログボ_56",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240314",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031401
+    },
+    {
+        "_id": 40157,
+        "_name": "毎日ログボ_57",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240315",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031501
+    },
+    {
+        "_id": 40158,
+        "_name": "毎日ログボ_58",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240316",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031601
+    },
+    {
+        "_id": 40159,
+        "_name": "毎日ログボ_59",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240317",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031701
+    },
+    {
+        "_id": 40160,
+        "_name": "毎日ログボ_60",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240318",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031801
+    },
+    {
+        "_id": 40161,
+        "_name": "毎日ログボ_61",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240319",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224031901
+    },
+    {
+        "_id": 40162,
+        "_name": "毎日ログボ_62",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240320",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032001
+    },
+    {
+        "_id": 40163,
+        "_name": "毎日ログボ_63",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240321",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032101
+    },
+    {
+        "_id": 40164,
+        "_name": "毎日ログボ_64",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240322",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032201
+    },
+    {
+        "_id": 40165,
+        "_name": "毎日ログボ_65",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240323",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032301
+    },
+    {
+        "_id": 40166,
+        "_name": "毎日ログボ_66",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240324",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032401
+    },
+    {
+        "_id": 40167,
+        "_name": "毎日ログボ_67",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240325",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032501
+    },
+    {
+        "_id": 40168,
+        "_name": "毎日ログボ_68",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240326",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032601
+    },
+    {
+        "_id": 40169,
+        "_name": "毎日ログボ_69",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240327",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032701
+    },
+    {
+        "_id": 40170,
+        "_name": "毎日ログボ_70",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240328",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032801
+    },
+    {
+        "_id": 40171,
+        "_name": "毎日ログボ_71",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240329",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224032901
+    },
+    {
+        "_id": 40172,
+        "_name": "毎日ログボ_72",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240330",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224033001
+    },
+    {
+        "_id": 40173,
+        "_name": "毎日ログボ_73",
+        "_type": {
+            "value__": 1
+        },
+        "_masterEventId": 0,
+        "_loop": 0,
+        "_priority": 0,
+        "_prefabName": "LoginBonus_common01day_0001",
+        "_boardSpriteName": "loginbonus_everyday_240331",
+        "_masterVoiceId": 0,
+        "_masterReleaseLabelId": 224033101
+    }
+]

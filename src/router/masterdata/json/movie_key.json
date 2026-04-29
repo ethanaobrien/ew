@@ -1,0 +1,137 @@
+[
+    {
+        "_key": "Live_Bg_Muse",
+        "_masterMovieId": 10000001,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Live_Bg_Aqours",
+        "_masterMovieId": 10000002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Live_Bg_Niji",
+        "_masterMovieId": 10000003,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Live_Bg_Liella",
+        "_masterMovieId": 10000004,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Group_Render_Muse",
+        "_masterMovieId": 10001001,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Group_Render_Aqours",
+        "_masterMovieId": 10001002,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Group_Render_Niji",
+        "_masterMovieId": 10001003,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Group_Render_Liella",
+        "_masterMovieId": 10001004,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Group_Render_Hasu",
+        "_masterMovieId": 10001005,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Group_Render_Yohane",
+        "_masterMovieId": 10001006,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Group_Render_Others",
+        "_masterMovieId": 10001007,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_HomePreset",
+        "_masterMovieId": 20001006,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_DeckEdit",
+        "_masterMovieId": 20001007,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Member",
+        "_masterMovieId": 20001008,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Shop",
+        "_masterMovieId": 20001010,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Exchange",
+        "_masterMovieId": 20001011,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Profile",
+        "_masterMovieId": 20001012,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Friend",
+        "_masterMovieId": 20001013,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Gps",
+        "_masterMovieId": 20001014,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Item",
+        "_masterMovieId": 20001015,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_Comic",
+        "_masterMovieId": 20001004,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "Common_MultiPlay",
+        "_masterMovieId": 20001016,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "GachaPlay_CardIn_R",
+        "_masterMovieId": 90000201,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "GachaPlay_CardIn_SR",
+        "_masterMovieId": 90000202,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "GachaPlay_CardIn_UR",
+        "_masterMovieId": 90000203,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "GachaPlay_Serif",
+        "_masterMovieId": 90000301,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_key": "GachaPlay_Serif_Evolution",
+        "_masterMovieId": 90000302,
+        "_masterReleaseLabelId": 1
+    }
+]

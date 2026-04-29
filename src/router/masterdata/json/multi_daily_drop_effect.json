@@ -1,0 +1,51 @@
+[
+    {
+        "_dayOfWeek": {
+            "value__": 0
+        },
+        "_text": "ゴールド獲得量",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_dayOfWeek": {
+            "value__": 1
+        },
+        "_text": "ハートトークン獲得確率",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_dayOfWeek": {
+            "value__": 2
+        },
+        "_text": "ダイヤトークン獲得確率",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_dayOfWeek": {
+            "value__": 3
+        },
+        "_text": "スペードトークン獲得確率",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_dayOfWeek": {
+            "value__": 4
+        },
+        "_text": "クラブトークン獲得確率",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_dayOfWeek": {
+            "value__": 5
+        },
+        "_text": "ハート＆ダイヤトークン獲得確率",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_dayOfWeek": {
+            "value__": 6
+        },
+        "_text": "スペード＆クラブトークン獲得確率",
+        "_masterReleaseLabelId": 1
+    }
+]

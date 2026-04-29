@@ -1,0 +1,37 @@
+[
+    {
+        "_comboNum": 0,
+        "_scoreUpRate": 0.0,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_comboNum": 51,
+        "_scoreUpRate": 0.10000000149011612,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_comboNum": 101,
+        "_scoreUpRate": 0.15000000596046448,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_comboNum": 201,
+        "_scoreUpRate": 0.20000000298023224,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_comboNum": 401,
+        "_scoreUpRate": 0.25,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_comboNum": 601,
+        "_scoreUpRate": 0.30000001192092896,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_comboNum": 800,
+        "_scoreUpRate": 0.3499999940395355,
+        "_masterReleaseLabelId": 1
+    }
+]

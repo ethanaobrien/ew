@@ -1,0 +1,42 @@
+[
+    {
+        "_id": 1010001,
+        "_tabName": "ショップ",
+        "_name": "ラブカショップ",
+        "_priority": 10,
+        "_shopType": 1,
+        "_spriteName": "shop_banner_gem",
+        "_masterShopRewardId": 0,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4010001,
+        "_tabName": "LP回復ショップ",
+        "_name": "LP回復ショップ",
+        "_priority": 10,
+        "_shopType": 4,
+        "_spriteName": "shop_banner_gem",
+        "_masterShopRewardId": 0,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 5010001,
+        "_tabName": "会員証",
+        "_name": "会員証",
+        "_priority": 5,
+        "_shopType": 5,
+        "_spriteName": "shop_banner_subscription",
+        "_masterShopRewardId": 0,
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3040001,
+        "_tabName": "特別ショップ",
+        "_name": "リリース記念ショップ",
+        "_priority": 99,
+        "_shopType": 3,
+        "_spriteName": "shop_banner_paid",
+        "_masterShopRewardId": 0,
+        "_masterReleaseLabelId": 1
+    }
+]

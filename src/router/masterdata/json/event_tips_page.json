@@ -1,0 +1,1283 @@
+[
+    {
+        "_masterEventId": 101,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_masterEventId": 101,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_masterEventId": 101,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_masterEventId": 101,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_masterEventId": 101,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_masterEventId": 101,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223041903
+    },
+    {
+        "_masterEventId": 102,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_masterEventId": 102,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_masterEventId": 102,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_masterEventId": 102,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_masterEventId": 102,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_masterEventId": 102,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223043004
+    },
+    {
+        "_masterEventId": 103,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223051101
+    },
+    {
+        "_masterEventId": 103,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223051101
+    },
+    {
+        "_masterEventId": 104,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_masterEventId": 104,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_masterEventId": 104,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_masterEventId": 104,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_masterEventId": 104,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_masterEventId": 104,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223051504
+    },
+    {
+        "_masterEventId": 105,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223052601
+    },
+    {
+        "_masterEventId": 105,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223052601
+    },
+    {
+        "_masterEventId": 106,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_masterEventId": 106,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_masterEventId": 106,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_masterEventId": 106,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_masterEventId": 106,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_masterEventId": 106,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223053104
+    },
+    {
+        "_masterEventId": 107,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223061101
+    },
+    {
+        "_masterEventId": 107,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223061101
+    },
+    {
+        "_masterEventId": 108,
+        "_spriteName": "SubTutorial_multievent_01",
+        "_message": "きょうりょくライブでは最大4人まで協力して同時にライブをプレイ！<br>合計スコアが高いほど、獲得できるイベントptが多くなるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 108,
+        "_spriteName": "SubTutorial_multievent_02",
+        "_message": "きょうりょくライブでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 108,
+        "_spriteName": "SubTutorial_multievent_03",
+        "_message": "選抜メンバーを編成に加えてライブをプレイするとスコアがアップ！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 108,
+        "_spriteName": "SubTutorial_multievent_04",
+        "_message": "イベント毎に選ばれる選抜メンバーを編成に加えて<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 108,
+        "_spriteName": "SubTutorial_multievent_05",
+        "_message": "きょうりょくライブでは、一定の条件を満たすと<br>おたすけメンバーとして他のプレイヤーのライブを手助けできるよ！<br>おたすけメンバーで参加したライブ回数に応じて、課題から報酬を獲得できるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 109,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 109,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 109,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 109,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 109,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 109,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223063004
+    },
+    {
+        "_masterEventId": 110,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223071101
+    },
+    {
+        "_masterEventId": 110,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223071101
+    },
+    {
+        "_masterEventId": 111,
+        "_spriteName": "SubTutorial_multievent_01",
+        "_message": "きょうりょくライブでは最大4人まで協力して同時にライブをプレイ！<br>合計スコアが高いほど、獲得できるイベントptが多くなるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_spriteName": "SubTutorial_multievent_02",
+        "_message": "きょうりょくライブでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_spriteName": "SubTutorial_multievent_03",
+        "_message": "選抜メンバーを編成に加えてライブをプレイするとスコアがアップ！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_spriteName": "SubTutorial_multievent_04",
+        "_message": "イベント毎に選ばれる選抜メンバーを編成に加えて<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_spriteName": "SubTutorial_multievent_05",
+        "_message": "きょうりょくライブでは、一定の条件を満たすと<br>おたすけメンバーとして他のプレイヤーのライブを手助けできるよ！<br>おたすけメンバーで参加したライブ回数に応じて、課題から報酬を獲得できるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 112,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223072601
+    },
+    {
+        "_masterEventId": 112,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223072601
+    },
+    {
+        "_masterEventId": 113,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 113,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 113,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 113,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 113,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 113,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223073104
+    },
+    {
+        "_masterEventId": 115,
+        "_spriteName": "SubTutorial_multievent_01",
+        "_message": "きょうりょくライブでは最大4人まで協力して同時にライブをプレイ！<br>合計スコアが高いほど、獲得できるイベントptが多くなるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_spriteName": "SubTutorial_multievent_02",
+        "_message": "きょうりょくライブでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_spriteName": "SubTutorial_multievent_03",
+        "_message": "選抜メンバーを編成に加えてライブをプレイするとスコアがアップ！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_spriteName": "SubTutorial_multievent_06",
+        "_message": "選抜メンバーの「ログインアイテム獲得ボーナス」は<br>イベントログインボーナスの期限付きLPキャンディ[小]獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_spriteName": "SubTutorial_multievent_04",
+        "_message": "イベント毎に選ばれる選抜メンバーを編成に加えて<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_spriteName": "SubTutorial_multievent_05",
+        "_message": "きょうりょくライブでは、一定の条件を満たすと<br>おたすけメンバーとして他のプレイヤーのライブを手助けできるよ！<br>おたすけメンバーで参加したライブ回数に応じて、課題から報酬を獲得できるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 114,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223081101
+    },
+    {
+        "_masterEventId": 114,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223081101
+    },
+    {
+        "_masterEventId": 116,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223082601
+    },
+    {
+        "_masterEventId": 116,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223082601
+    },
+    {
+        "_masterEventId": 117,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 117,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 117,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 117,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 117,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 117,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223083104
+    },
+    {
+        "_masterEventId": 118,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223091101
+    },
+    {
+        "_masterEventId": 118,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223091101
+    },
+    {
+        "_masterEventId": 119,
+        "_spriteName": "SubTutorial_multievent_01",
+        "_message": "きょうりょくライブでは最大4人まで協力して同時にライブをプレイ！<br>合計スコアが高いほど、獲得できるイベントptが多くなるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_spriteName": "SubTutorial_multievent_02",
+        "_message": "きょうりょくライブでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_spriteName": "SubTutorial_multievent_03",
+        "_message": "選抜メンバーを編成に加えてライブをプレイするとスコアがアップ！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_spriteName": "SubTutorial_multievent_06",
+        "_message": "選抜メンバーの「ログインアイテム獲得ボーナス」は<br>イベントログインボーナスの期限付きLPキャンディ[小]獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_spriteName": "SubTutorial_multievent_04",
+        "_message": "イベント毎に選ばれる選抜メンバーを編成に加えて<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_spriteName": "SubTutorial_multievent_05",
+        "_message": "きょうりょくライブでは、一定の条件を満たすと<br>おたすけメンバーとして他のプレイヤーのライブを手助けできるよ！<br>おたすけメンバーで参加したライブ回数に応じて、課題から報酬を獲得できるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 120,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223092601
+    },
+    {
+        "_masterEventId": 120,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223092601
+    },
+    {
+        "_masterEventId": 121,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 121,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 121,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 121,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 121,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 121,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223093004
+    },
+    {
+        "_masterEventId": 122,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223101101
+    },
+    {
+        "_masterEventId": 122,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223101101
+    },
+    {
+        "_masterEventId": 123,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 123,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 123,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 123,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 123,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 123,
+        "_spriteName": "SubTutorial_miraclecollection_07",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223101508
+    },
+    {
+        "_masterEventId": 124,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223102601
+    },
+    {
+        "_masterEventId": 124,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223102601
+    },
+    {
+        "_masterEventId": 125,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 125,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 125,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 125,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 125,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 125,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223103104
+    },
+    {
+        "_masterEventId": 126,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223111101
+    },
+    {
+        "_masterEventId": 126,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223111101
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_01",
+        "_message": "スターチャレンジは腕前・メンバーの育成など<br>あらゆるスクフェス2のプレイが試される総合イベント！<br>実力を見せつけてより高みを目指そう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_02",
+        "_message": "ランダムな課題曲の目標スコアを全てクリアするとスターLvがアップ！<br>スターLvがアップすると豪華報酬がゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_03",
+        "_message": "スターチャレンジ専用のシステム「スターアシスト」を使うと<br>HP無限・特技発動率アップなど様々な効果を発揮！<br>普段出せない超ハイスコアを狙おう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_11",
+        "_message": "さらに「スターアシスト」を使うと、加入している部員のレベルや特技レベルに応じてスコアにボーナス！<br>いろんな部員を育成してボーナススコアをアップしよう！<br>※ユニット編成していない部員も含めて、全ての部員が対象になります",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_04",
+        "_message": "スターチャレンジでは、スターLvをアップしたり<br>イベントptを貯めることで様々な報酬がゲットできるよ！<br>またイベントランキングにランクインするとさらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_05",
+        "_message": "選ばれた課題曲の目標スコアをすべてクリアするとスターLvがアップ！<br>スターLvがアップすると豪華報酬がゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_06",
+        "_message": "スターチャレンジのランキングはスターLvが高いほど上位に！<br>スターLvが同じ場合、イベントpt数で上位が決まるよ！<br>スターLvをアップして目指せ、上位ランクイン！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_07",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_08",
+        "_message": "選抜メンバーが加入するとイベント楽曲のスコアがアップ！<br>スターチャレンジでは編成しなくてもボーナス効果を発揮！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_09",
+        "_message": "選抜メンバーの「ログインアイテム獲得ボーナス」は<br>イベントログインボーナスのスターアシストチケットの獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 127,
+        "_spriteName": "SubTutorial_starevent_10",
+        "_message": "イベント中、毎日5回までライブをクリアするごとに追加される「継続ボーナス」や<br>ライブをクリアする毎にスコアにボーナスが増えていく「プレイボーナス」を活用して<br>目標スコアの限界を突破しよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223111504
+    },
+    {
+        "_masterEventId": 128,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223112601
+    },
+    {
+        "_masterEventId": 128,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223112601
+    },
+    {
+        "_masterEventId": 129,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 129,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 129,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 129,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 129,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 129,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223113004
+    },
+    {
+        "_masterEventId": 130,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223121102
+    },
+    {
+        "_masterEventId": 130,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223121102
+    },
+    {
+        "_masterEventId": 131,
+        "_spriteName": "SubTutorial_multievent_01",
+        "_message": "きょうりょくライブでは最大4人まで協力して同時にライブをプレイ！<br>合計スコアが高いほど、獲得できるイベントptが多くなるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_spriteName": "SubTutorial_multievent_02",
+        "_message": "きょうりょくライブでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_spriteName": "SubTutorial_multievent_03",
+        "_message": "選抜メンバーを編成に加えてライブをプレイするとスコアがアップ！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_spriteName": "SubTutorial_multievent_06",
+        "_message": "選抜メンバーの「ログインアイテム獲得ボーナス」は<br>イベントログインボーナスの期限付きLPキャンディ[小]獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_spriteName": "SubTutorial_multievent_04",
+        "_message": "イベント毎に選ばれる選抜メンバーを編成に加えて<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_spriteName": "SubTutorial_multievent_05",
+        "_message": "きょうりょくライブでは、一定の条件を満たすと<br>おたすけメンバーとして他のプレイヤーのライブを手助けできるよ！<br>おたすけメンバーで参加したライブ回数に応じて、課題から報酬を獲得できるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 132,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223122603
+    },
+    {
+        "_masterEventId": 132,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 223122603
+    },
+    {
+        "_masterEventId": 133,
+        "_spriteName": "SubTutorial_miraclecollection_01",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインすると<br>さらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 133,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 133,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 133,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 133,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 133,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 223123104
+    },
+    {
+        "_masterEventId": 134,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224011106
+    },
+    {
+        "_masterEventId": 134,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224011106
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_01",
+        "_message": "スターチャレンジは腕前・メンバーの育成など<br>あらゆるスクフェス2のプレイが試される総合イベント！<br>実力を見せつけてより高みを目指そう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_02",
+        "_message": "ランダムな課題曲の目標スコアを全てクリアするとスターLvがアップ！<br>スターLvがアップすると豪華報酬がゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_03",
+        "_message": "スターチャレンジ専用のシステム「スターアシスト」を使うと<br>HP無限・特技発動率アップなど様々な効果を発揮！<br>普段出せない超ハイスコアを狙おう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_11",
+        "_message": "さらに「スターアシスト」を使うと、加入している部員のレベルや特技レベルに応じてスコアにボーナス！<br>いろんな部員を育成してボーナススコアをアップしよう！<br>※ユニット編成していない部員も含めて、全ての部員が対象になります",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_04",
+        "_message": "スターチャレンジでは、スターLvをアップしたり<br>イベントptを貯めることで様々な報酬がゲットできるよ！<br>またイベントランキングにランクインするとさらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_05",
+        "_message": "選ばれた課題曲の目標スコアをすべてクリアするとスターLvがアップ！<br>スターLvがアップすると豪華報酬がゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_06",
+        "_message": "スターチャレンジのランキングはスターLvが高いほど上位に！<br>スターLvが同じ場合、イベントpt数で上位が決まるよ！<br>スターLvをアップして目指せ、上位ランクイン！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_07",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_08",
+        "_message": "選抜メンバーが加入するとイベント楽曲のスコアがアップ！<br>スターチャレンジでは編成しなくてもボーナス効果を発揮！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_09",
+        "_message": "選抜メンバーの「ログインアイテム獲得ボーナス」は<br>イベントログインボーナスのスターアシストチケットの獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 135,
+        "_spriteName": "SubTutorial_starevent_10",
+        "_message": "イベント中、毎日5回までライブをクリアするごとに追加される「継続ボーナス」や<br>ライブをクリアする毎にスコアにボーナスが増えていく「プレイボーナス」を活用して<br>目標スコアの限界を突破しよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224011504
+    },
+    {
+        "_masterEventId": 136,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224012702
+    },
+    {
+        "_masterEventId": 136,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224012702
+    },
+    {
+        "_masterEventId": 137,
+        "_spriteName": "SubTutorial_miraclecollection_08",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインするとさらに豪華報酬をゲット！<br>※今回、イチ推しランキングはありません",
+        "_category": "",
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 137,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 137,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 137,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 137,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 137,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 224013104
+    },
+    {
+        "_masterEventId": 138,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224021006
+    },
+    {
+        "_masterEventId": 138,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224021006
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_01",
+        "_message": "スターチャレンジは腕前・メンバーの育成など<br>あらゆるスクフェス2のプレイが試される総合イベント！<br>実力を見せつけてより高みを目指そう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_02",
+        "_message": "ランダムな課題曲の目標スコアを全てクリアするとスターLvがアップ！<br>スターLvがアップすると豪華報酬がゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_03",
+        "_message": "スターチャレンジ専用のシステム「スターアシスト」を使うと<br>HP無限・特技発動率アップなど様々な効果を発揮！<br>普段出せない超ハイスコアを狙おう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_11",
+        "_message": "さらに「スターアシスト」を使うと、加入している部員のレベルや特技レベルに応じてスコアにボーナス！<br>いろんな部員を育成してボーナススコアをアップしよう！<br>※ユニット編成していない部員も含めて、全ての部員が対象になります",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_04",
+        "_message": "スターチャレンジでは、スターLvをアップしたり<br>イベントptを貯めることで様々な報酬がゲットできるよ！<br>またイベントランキングにランクインするとさらに豪華報酬をゲット！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_05",
+        "_message": "選ばれた課題曲の目標スコアをすべてクリアするとスターLvがアップ！<br>スターLvがアップすると豪華報酬がゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_06",
+        "_message": "スターチャレンジのランキングはスターLvが高いほど上位に！<br>スターLvが同じ場合、イベントpt数で上位が決まるよ！<br>スターLvをアップして目指せ、上位ランクイン！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_07",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_08",
+        "_message": "選抜メンバーが加入するとイベント楽曲のスコアがアップ！<br>スターチャレンジでは編成しなくてもボーナス効果を発揮！<br>覚醒すると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_09",
+        "_message": "選抜メンバーの「ログインアイテム獲得ボーナス」は<br>イベントログインボーナスのスターアシストチケットの獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 139,
+        "_spriteName": "SubTutorial_starevent_10",
+        "_message": "イベント中、毎日5回までライブをクリアするごとに追加される「継続ボーナス」や<br>ライブをクリアする毎にスコアにボーナスが増えていく「プレイボーナス」を活用して<br>目標スコアの限界を突破しよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224021404
+    },
+    {
+        "_masterEventId": 140,
+        "_spriteName": "SubTutorial_freetour_01",
+        "_message": "イベントptを集めることで、累計イベントpt報酬が入手できます。<br>イベントptはライブをクリアすることで入手できます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224022305
+    },
+    {
+        "_masterEventId": 140,
+        "_spriteName": "SubTutorial_freetour_02",
+        "_message": "イベント課題をクリアすると豪華アイテムをゲットできます。",
+        "_category": "",
+        "_masterReleaseLabelId": 224022305
+    },
+    {
+        "_masterEventId": 141,
+        "_spriteName": "SubTutorial_miraclecollection_09",
+        "_message": "ミラクルコレクションでは、イベントptを集めると様々な報酬をゲットできるよ！<br>またイベント内のランキングにランクインするとさらに豪華報酬をゲット！<br>※今回、イベントptランキングはありません",
+        "_category": "",
+        "_masterReleaseLabelId": 224030104
+    },
+    {
+        "_masterEventId": 141,
+        "_spriteName": "SubTutorial_miraclecollection_02",
+        "_message": "通常曲をプレイして、ミラクルスターを集めよう！<br>集めたミラクルスターを使って、イベント曲に挑戦！<br>イベント楽曲では通常曲と比べてイベントptを大量にゲットできるよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224030104
+    },
+    {
+        "_masterEventId": 141,
+        "_spriteName": "SubTutorial_miraclecollection_03",
+        "_message": "イベントごとに選ばれる選抜メンバーを加入・編成して<br>イベントを有利に進めよう！",
+        "_category": "",
+        "_masterReleaseLabelId": 224030104
+    },
+    {
+        "_masterEventId": 141,
+        "_spriteName": "SubTutorial_miraclecollection_04",
+        "_message": "ボーナス効果「イベントptボーナス」の選抜メンバーを<br>編成してライブをプレイするとイベントpt獲得量がアップ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224030104
+    },
+    {
+        "_masterEventId": 141,
+        "_spriteName": "SubTutorial_miraclecollection_05",
+        "_message": "選抜メンバーの「ミラクルスター獲得ボーナス」は<br>イベントログインボーナスのミラクルスター獲得量がアップするよ！<br>選抜メンバーを覚醒させると、ボーナス効果がさらに上昇するよ！",
+        "_category": "",
+        "_masterReleaseLabelId": 224030104
+    },
+    {
+        "_masterEventId": 141,
+        "_spriteName": "SubTutorial_miraclecollection_06",
+        "_message": "イベント課題をクリアすると様々な報酬をゲットできるよ！<br>また獲得したイベントptに応じて、イベントストーリーが解放！",
+        "_category": "",
+        "_masterReleaseLabelId": 224030104
+    }
+]

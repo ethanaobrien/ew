@@ -1,0 +1,398 @@
+[
+    {
+        "_id": 1,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "事前登録50万人達成記念のプレゼント",
+        "_masterNoticeRewardId": 250000001,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223041503
+    },
+    {
+        "_id": 2,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "23年04月：事前登録・放送CP",
+        "_masterNoticeRewardId": 250000002,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223041503
+    },
+    {
+        "_id": 3,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "23年04月：謎解報酬CP",
+        "_masterNoticeRewardId": 250000003,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223041701
+    },
+    {
+        "_id": 4,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "23年04月：配信CP",
+        "_masterNoticeRewardId": 250000004,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223042801
+    },
+    {
+        "_id": 5,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "23年05月：GW CP",
+        "_masterNoticeRewardId": 250000005,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223050105
+    },
+    {
+        "_id": 6,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "",
+        "_masterNoticeRewardId": 250000006,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223052604
+    },
+    {
+        "_id": 7,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "",
+        "_masterNoticeRewardId": 250000007,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223062701
+    },
+    {
+        "_id": 8,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "メンテナンスご協力のお礼",
+        "_masterNoticeRewardId": 250000008,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223061509
+    },
+    {
+        "_id": 9,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "不具合のお詫びです",
+        "_masterNoticeRewardId": 250000009,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223061510
+    },
+    {
+        "_id": 10,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "感謝祭ステージプレゼント",
+        "_masterNoticeRewardId": 250000010,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223062603
+    },
+    {
+        "_id": 11,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "感謝祭開催記念プレゼント",
+        "_masterNoticeRewardId": 250000011,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223063009
+    },
+    {
+        "_id": 12,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "プレゼント",
+        "_masterNoticeRewardId": 250000012,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223072602
+    },
+    {
+        "_id": 13,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/15のプレゼント",
+        "_masterNoticeRewardId": 250000013,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223121501
+    },
+    {
+        "_id": 14,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/16のプレゼント",
+        "_masterNoticeRewardId": 250000014,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223121603
+    },
+    {
+        "_id": 15,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/17のプレゼント",
+        "_masterNoticeRewardId": 250000015,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223121701
+    },
+    {
+        "_id": 16,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/18のプレゼント",
+        "_masterNoticeRewardId": 250000016,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223121801
+    },
+    {
+        "_id": 17,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/19のプレゼント",
+        "_masterNoticeRewardId": 250000017,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223121903
+    },
+    {
+        "_id": 18,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/20のプレゼント",
+        "_masterNoticeRewardId": 250000018,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223122001
+    },
+    {
+        "_id": 19,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/21のプレゼント",
+        "_masterNoticeRewardId": 250000019,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223122101
+    },
+    {
+        "_id": 20,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/22のプレゼント",
+        "_masterNoticeRewardId": 250000020,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223122201
+    },
+    {
+        "_id": 21,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/23のプレゼント",
+        "_masterNoticeRewardId": 250000021,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223122301
+    },
+    {
+        "_id": 22,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "アドベントカレンダー12/24のプレゼント",
+        "_masterNoticeRewardId": 250000022,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223122401
+    },
+    {
+        "_id": 23,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "異次元フェス アイドルマスター★♥ラブライブ！歌合戦開催記念プレゼント",
+        "_masterNoticeRewardId": 250000023,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223120805
+    },
+    {
+        "_id": 24,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "異次元フェス アイドルマスター★♥ラブライブ！歌合戦開催記念プレゼント",
+        "_masterNoticeRewardId": 250000024,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223120905
+    },
+    {
+        "_id": 25,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "異次元フェス アイドルマスター★♥ラブライブ！歌合戦開催記念プレゼント",
+        "_masterNoticeRewardId": 250000025,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223121002
+    },
+    {
+        "_id": 26,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "お正月みらくるキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000026,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224010110
+    },
+    {
+        "_id": 27,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "お正月みらくるキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000027,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224010101
+    },
+    {
+        "_id": 28,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "お正月みらくるキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000028,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224010201
+    },
+    {
+        "_id": 29,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "お正月みらくるキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000029,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224010301
+    },
+    {
+        "_id": 30,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "お正月みらくるキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000030,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224010401
+    },
+    {
+        "_id": 31,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "お正月みらくるキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000031,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224010501
+    },
+    {
+        "_id": 32,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "お正月みらくるキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000032,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224010402
+    },
+    {
+        "_id": 33,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "スクフェス2サンタにお願い！キャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000033,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 223122503
+    },
+    {
+        "_id": 34,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "ハッピーバレンタインデーキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000034,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224021407
+    },
+    {
+        "_id": 35,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "カラフルスプリングキャンペーンのプレゼント",
+        "_masterNoticeRewardId": 250000035,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224031402
+    },
+    {
+        "_id": 36,
+        "_phase": {
+            "value__": 0
+        },
+        "_navigationTitle": "ラブライブ！TVアニメ放送10周年記念 LoveLive! Orchestra Concert",
+        "_masterNoticeRewardId": 250000036,
+        "_displayableTime": 0,
+        "_displayableExpireTime": 0,
+        "_masterReleaseLabelId": 224033003
+    }
+]

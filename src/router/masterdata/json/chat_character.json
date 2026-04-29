@@ -1,0 +1,296 @@
+[
+    {
+        "_id": 1001,
+        "_characterId": 1001,
+        "_group": 100,
+        "_name": "穂乃果",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1002,
+        "_characterId": 1002,
+        "_group": 100,
+        "_name": "絵里",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1003,
+        "_characterId": 1003,
+        "_group": 100,
+        "_name": "ことり",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1004,
+        "_characterId": 1004,
+        "_group": 100,
+        "_name": "海未",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1005,
+        "_characterId": 1005,
+        "_group": 100,
+        "_name": "凛",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1006,
+        "_characterId": 1006,
+        "_group": 100,
+        "_name": "真姫",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1007,
+        "_characterId": 1007,
+        "_group": 100,
+        "_name": "希",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1008,
+        "_characterId": 1008,
+        "_group": 100,
+        "_name": "花陽",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 1009,
+        "_characterId": 1009,
+        "_group": 100,
+        "_name": "にこ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2001,
+        "_characterId": 2001,
+        "_group": 200,
+        "_name": "千歌",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2002,
+        "_characterId": 2002,
+        "_group": 200,
+        "_name": "梨子",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2003,
+        "_characterId": 2003,
+        "_group": 200,
+        "_name": "果南",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2004,
+        "_characterId": 2004,
+        "_group": 200,
+        "_name": "ダイヤ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2005,
+        "_characterId": 2005,
+        "_group": 200,
+        "_name": "曜",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2006,
+        "_characterId": 2006,
+        "_group": 200,
+        "_name": "善子",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2007,
+        "_characterId": 2007,
+        "_group": 200,
+        "_name": "花丸",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2008,
+        "_characterId": 2008,
+        "_group": 200,
+        "_name": "鞠莉",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 2009,
+        "_characterId": 2009,
+        "_group": 200,
+        "_name": "ルビィ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3001,
+        "_characterId": 3001,
+        "_group": 300,
+        "_name": "歩夢",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3002,
+        "_characterId": 3002,
+        "_group": 300,
+        "_name": "かすみ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3003,
+        "_characterId": 3003,
+        "_group": 300,
+        "_name": "しずく",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3004,
+        "_characterId": 3004,
+        "_group": 300,
+        "_name": "果林",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3005,
+        "_characterId": 3005,
+        "_group": 300,
+        "_name": "愛",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3006,
+        "_characterId": 3006,
+        "_group": 300,
+        "_name": "彼方",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3007,
+        "_characterId": 3007,
+        "_group": 300,
+        "_name": "せつ菜",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3008,
+        "_characterId": 3008,
+        "_group": 300,
+        "_name": "エマ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3009,
+        "_characterId": 3009,
+        "_group": 300,
+        "_name": "璃奈",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3010,
+        "_characterId": 3010,
+        "_group": 300,
+        "_name": "栞子",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3011,
+        "_characterId": 3011,
+        "_group": 300,
+        "_name": "ミア",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3012,
+        "_characterId": 3012,
+        "_group": 300,
+        "_name": "嵐珠",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 3099,
+        "_characterId": 0,
+        "_group": 300,
+        "_name": "侑",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4001,
+        "_characterId": 4001,
+        "_group": 400,
+        "_name": "かのん",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4002,
+        "_characterId": 4002,
+        "_group": 400,
+        "_name": "可可",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4003,
+        "_characterId": 4003,
+        "_group": 400,
+        "_name": "千砂都",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4004,
+        "_characterId": 4004,
+        "_group": 400,
+        "_name": "すみれ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4005,
+        "_characterId": 4005,
+        "_group": 400,
+        "_name": "恋",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4006,
+        "_characterId": 4006,
+        "_group": 400,
+        "_name": "きな子",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4007,
+        "_characterId": 4007,
+        "_group": 400,
+        "_name": "メイ",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4008,
+        "_characterId": 4008,
+        "_group": 400,
+        "_name": "四季",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4009,
+        "_characterId": 4009,
+        "_group": 400,
+        "_name": "夏美",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": 4010,
+        "_characterId": 0,
+        "_group": 400,
+        "_name": "マルガレーテ",
+        "_masterReleaseLabelId": 223121502
+    },
+    {
+        "_id": 4011,
+        "_characterId": 0,
+        "_group": 400,
+        "_name": "冬毬",
+        "_masterReleaseLabelId": 223121502
+    }
+]

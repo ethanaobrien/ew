@@ -1,0 +1,515 @@
+[
+    {
+        "_masterEventId": 108,
+        "_targetId": 20030013,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            5,
+            10,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 108,
+        "_targetId": 20040013,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            5,
+            10,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 108,
+        "_targetId": 20090013,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            5,
+            10,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223061504
+    },
+    {
+        "_masterEventId": 111,
+        "_targetId": 30010010,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_targetId": 30100009,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_targetId": 30020009,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_targetId": 20030013,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_targetId": 20040013,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 111,
+        "_targetId": 20090013,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223071505
+    },
+    {
+        "_masterEventId": 115,
+        "_targetId": 40070010,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_targetId": 40080010,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_targetId": 40010011,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_targetId": 30010010,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_targetId": 30100009,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 115,
+        "_targetId": 30020009,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223081504
+    },
+    {
+        "_masterEventId": 119,
+        "_targetId": 10060015,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_targetId": 10070017,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_targetId": 10080016,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_targetId": 40070010,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_targetId": 40080010,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 119,
+        "_targetId": 40010011,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223091504
+    },
+    {
+        "_masterEventId": 131,
+        "_targetId": 40010014,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_targetId": 40020012,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_targetId": 40080011,
+        "_pointBonusRatioList": [
+            1000,
+            2000,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_targetId": 30050013,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_targetId": 30070013,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223121507
+    },
+    {
+        "_masterEventId": 131,
+        "_targetId": 30040012,
+        "_pointBonusRatioList": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "_eventBonusAmountList": [
+            10,
+            20,
+            0,
+            0,
+            0
+        ],
+        "_masterReleaseLabelId": 223121507
+    }
+]

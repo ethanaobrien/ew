@@ -1,0 +1,37 @@
+[
+    {
+        "_penaltyCount": 1,
+        "_penaltySec": 0,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_penaltyCount": 2,
+        "_penaltySec": 0,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_penaltyCount": 3,
+        "_penaltySec": 0,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_penaltyCount": 4,
+        "_penaltySec": 0,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_penaltyCount": 5,
+        "_penaltySec": 300,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_penaltyCount": 6,
+        "_penaltySec": 600,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_penaltyCount": 7,
+        "_penaltySec": 86400,
+        "_masterReleaseLabelId": 223061303
+    }
+]

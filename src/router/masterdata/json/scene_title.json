@@ -1,0 +1,530 @@
+[
+    {
+        "_id": "DeckTop",
+        "_mainTitle": "ユニット編成",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DeckEdit",
+        "_mainTitle": "ユニット編成",
+        "_mainMasterNavigationId": "SubTutorial_Composition",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DeckCharaSelect",
+        "_mainTitle": "部員選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Classmate",
+        "_mainTitle": "部員一覧",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CostumeCharaList",
+        "_mainTitle": "衣装変更",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Practice",
+        "_mainTitle": "レッスン",
+        "_mainMasterNavigationId": "SubTutorial_Practice",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SkillPractice",
+        "_mainTitle": "スキルレッスン",
+        "_mainMasterNavigationId": "SubTutorial_SkillPractice",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Training",
+        "_mainTitle": "覚醒",
+        "_mainMasterNavigationId": "SubTutorial_Training",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MemberList",
+        "_mainTitle": "部員リスト",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "WaitingMemberList",
+        "_mainTitle": "控え室",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CardDetail",
+        "_mainTitle": "部員詳細",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MemberIllustrateList",
+        "_mainTitle": "アルバム",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MemberCharaTop",
+        "_mainTitle": "メンバー詳細",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "AreaTalkList",
+        "_mainTitle": "ダミー",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Album",
+        "_mainTitle": "ダミー",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MovieCollection",
+        "_mainTitle": "コレクション",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CardAlbum",
+        "_mainTitle": "カードアルバム",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DeckConfirm",
+        "_mainTitle": "ライブ準備",
+        "_mainMasterNavigationId": "SubTutorial_LiveReady",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Profile",
+        "_mainTitle": "プロフィール",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RecommendList",
+        "_mainTitle": "お気に入り選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Friend",
+        "_mainTitle": "友達リスト",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LiveSelect",
+        "_mainTitle": "ライブ選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MusicSelect",
+        "_mainTitle": "楽曲選択",
+        "_mainMasterNavigationId": "SubTutorial_FreeLive",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CooperationLive",
+        "_mainTitle": "セッション選択",
+        "_mainMasterNavigationId": "SubTutorial_MultiLive",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CooperationLiveMatching",
+        "_mainTitle": "マッチング",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiMusicSelect",
+        "_mainTitle": "楽曲選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MusicDecision",
+        "_mainTitle": "楽曲シャッフル",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MusicDifficulty",
+        "_mainTitle": "難易度選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiConfirm",
+        "_mainTitle": "最終確認",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "StampSetting",
+        "_mainTitle": "お気に入り設定",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Warehouse",
+        "_mainTitle": "ルームパーツ",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TitleListSelect",
+        "_mainTitle": "称号選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TitleListView",
+        "_mainTitle": "称号リスト",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SealExchange",
+        "_mainTitle": "交換所",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BadgeExchange",
+        "_mainTitle": "交換所",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventTop",
+        "_mainTitle": "イベント",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventStoryTop",
+        "_mainTitle": "イベントストーリーTOP",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventStory",
+        "_mainTitle": "イベント選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventScoreRanking",
+        "_mainTitle": "イベントランキング",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventReward",
+        "_mainTitle": "イベント報酬",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ItemList",
+        "_mainTitle": "アイテムリスト",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ExchangeTop",
+        "_mainTitle": "交換所",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventMusicSelect",
+        "_mainTitle": "楽曲選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventChallengeLiveMusicSelect",
+        "_mainTitle": "楽曲選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventLiveTryMusicSelect",
+        "_mainTitle": "楽曲選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventDeckConfirm",
+        "_mainTitle": "デッキ準備",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventChallengeLiveDeckConfirm",
+        "_mainTitle": "デッキ準備",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "EventLiveTryDeckConfirm",
+        "_mainTitle": "デッキ準備",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ExchangeItemList",
+        "_mainTitle": "交換所",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BirthdayTop",
+        "_mainTitle": "バースデー",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MapScene",
+        "_mainTitle": "エリア選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiLiveEventCooperationLive",
+        "_mainTitle": "ルーム選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiLiveEventCooperationLiveMatching",
+        "_mainTitle": "マッチング",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiLiveEventMultiMusicSelect",
+        "_mainTitle": "楽曲選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiLiveEventMusicDecision",
+        "_mainTitle": "楽曲シャッフル",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiLiveEventMusicDifficulty",
+        "_mainTitle": "難易度選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MultiLiveEventMultiConfirm",
+        "_mainTitle": "最終確認",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LimitedLiveTop",
+        "_mainTitle": "イベントライブ",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LimitedLiveLottery",
+        "_mainTitle": "楽曲シャッフル",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TeacherLiveMusicSelect",
+        "_mainTitle": "楽曲選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TeacherLiveDeckConfirm",
+        "_mainTitle": "デッキ準備",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "TeacherLiveTop",
+        "_mainTitle": "ライブ選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CharacterEpisodeLevel",
+        "_mainTitle": "エピソード確認",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BoxGardenTop",
+        "_mainTitle": "カスタマイズルーム",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "GachaTop",
+        "_mainTitle": "勧誘",
+        "_mainMasterNavigationId": "MainTutorial_Gacha",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "GachaResult",
+        "_mainTitle": "勧誘結果",
+        "_mainMasterNavigationId": "MainTutorial_GachaReslt",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BandEnrichTop",
+        "_mainTitle": "バンド強化TOP",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BandEnrich",
+        "_mainTitle": "バンド強化",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "StoryTop",
+        "_mainTitle": "ストーリーTOP",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "StoryMainTop",
+        "_mainTitle": "ストーリー",
+        "_mainMasterNavigationId": "SubTutorial_Story",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "StoryCardMemberTop",
+        "_mainTitle": "メンバー選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "StoryCardEpisodeTop",
+        "_mainTitle": "エピソード選択",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Shop",
+        "_mainTitle": "ショップ",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BeginnerMission",
+        "_mainTitle": "初心者課題",
+        "_mainMasterNavigationId": "SubTutorial_BeginnerMission",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "GuestSelect",
+        "_mainTitle": "ゲスト選択",
+        "_mainMasterNavigationId": "SubTutorial_Guest",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MusicRanking",
+        "_mainTitle": "曲別ランキング",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "MusicRecommend",
+        "_mainTitle": "おすすめリスト",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ChatTop",
+        "_mainTitle": "",
+        "_mainMasterNavigationId": "SubTutorial_Chat",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ComicList",
+        "_mainTitle": "1コマ漫画",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PresentBox",
+        "_mainTitle": "プレゼントボックス",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Mission",
+        "_mainTitle": "課題",
+        "_mainMasterNavigationId": "SubTutorial_Mission",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ProfileMemberSelect",
+        "_mainTitle": "プロフィール編集",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "FriendGestDetail",
+        "_mainTitle": "ゲスト詳細",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "FriendGestMemberSelect",
+        "_mainTitle": "ゲスト編集",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "LocationInformation",
+        "_mainTitle": "おでかけプレゼント",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 223062001
+    },
+    {
+        "_id": "MusicLibrary",
+        "_mainTitle": "楽曲辞典",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 223081401
+    },
+    {
+        "_id": "SerialCodeDisplay",
+        "_mainTitle": "シリアルコード確認",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "StarEventRanking",
+        "_mainTitle": "スターLvランキング",
+        "_mainMasterNavigationId": "",
+        "_masterReleaseLabelId": 1
+    }
+]

@@ -1,0 +1,50 @@
+[
+    {
+        "_id": "Tutorial_Clear",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQAQ",
+        "_achievementIdIos": "tutorial",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Rank_3_Arrival",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQAg",
+        "_achievementIdIos": "rank3",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Rank_5_Arrival",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQAw",
+        "_achievementIdIos": "rank5",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Rank_10_Arrival",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQBA",
+        "_achievementIdIos": "rank10",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Rank_15_Arrival",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQBQ",
+        "_achievementIdIos": "rank15",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Rank_20_Arrival",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQBg",
+        "_achievementIdIos": "rank20",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Rank_25_Arrival",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQBw",
+        "_achievementIdIos": "rank25",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "Rank_30_Arrival",
+        "_achievementIdAndroid": "CgkI58KMzscDEAIQCA",
+        "_achievementIdIos": "rank30",
+        "_masterReleaseLabelId": 1
+    }
+]

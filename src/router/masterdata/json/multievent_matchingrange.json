@@ -1,0 +1,17 @@
+[
+    {
+        "_id": 1,
+        "_matchingDiffPer": 1000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_id": 2,
+        "_matchingDiffPer": 2000,
+        "_masterReleaseLabelId": 223061303
+    },
+    {
+        "_id": 3,
+        "_matchingDiffPer": 3000,
+        "_masterReleaseLabelId": 223061303
+    }
+]

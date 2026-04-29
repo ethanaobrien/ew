@@ -1,0 +1,142 @@
+[
+    {
+        "_id": "CloseButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Close",
+        "_masterTextIdColor": "Common_BlackText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "OkButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Ok",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CancelButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Cancel",
+        "_masterTextIdColor": "Common_BlackText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "CloseOkButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Ok",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "UpdateButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Update",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RetryButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Retry",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "DownloadButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Download",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "VoiceOnButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_VoiceOn",
+        "_masterTextIdColor": "Common_GrayText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "VoiceOffButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_VoiceOff",
+        "_masterTextIdColor": "Common_GrayText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ReturnButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Return",
+        "_masterTextIdColor": "Common_BlackText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ResumeButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Resume",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SuspendButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Suspend",
+        "_masterTextIdColor": "Common_BlackText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "SkipButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Skip",
+        "_masterTextIdColor": "Common_BlackText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "RestartButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Restart",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ShopButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Shop",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "HomeButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Home",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "BuyGemButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_BuyGem",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "PresentBoxButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_PresentBox",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ChatButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Chat",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    },
+    {
+        "_id": "ReleaseButton",
+        "_spriteName": "common_img_white",
+        "_masterTextId": "Button_Release",
+        "_masterTextIdColor": "Common_WhiteText",
+        "_masterReleaseLabelId": 1
+    }
+]
