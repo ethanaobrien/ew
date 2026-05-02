@@ -277,7 +277,7 @@ fn _a_sha1(t: &str) -> String {
     let mut hasher = Sha1::new();
     hasher.update(t.as_bytes());
     let result = hasher.finalize();
-    format!("{:X}", result)
+    hex::encode_upper(result)
 }
 
 fn generate_passcode_sha1(transfer_id: String, transfer_code: String) -> String {

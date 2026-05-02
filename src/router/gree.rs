@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use sha1::Sha1;
 use substring::Substring;
 use jzon::{object, JsonValue};
-use hmac::{Hmac, Mac};
+use hmac::{Hmac, Mac, KeyInit};
 use rusqlite::params;
 use lazy_static::lazy_static;
 
