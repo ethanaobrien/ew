@@ -1,0 +1,2435 @@
+﻿_id,_textJa,_textEn,_masterReleaseLabelId
+Common_Dash,-,-,1
+Common_Comma,、,",,",1
+Common_Amount,{0}×{1},{0} x {1},1
+Common_IconAmount,×{0},× {0},1
+Common_IconAmountOverLimit,x{0}+,x {0}+,1
+Common_ItemHasAmount,所持数：{0},Number of possession: {0},1
+Common_ItemGetAmount,{0},{0},1
+Common_PossessionNumber,所持数,The number of possession,1
+Common_Possession,所持,Possession,1
+Common_Lack,不足,Shortage,1
+Common_Gem,ラブカ,Labka,1
+Common_KizunaPoint,キズナ,Kizuna,1
+Common_ChargeGem,ラブカ(有償),Loveka (paid),1
+Common_Point_Coin,ゴールド,gold,1
+Common_Point_Seal,勧誘ポイント,Solicitation point,1
+Common_Point_LiveStamp,（ダミー）ライブスタンプ,(Dummy) Live stamp,1
+Common_NormalColor,<color=#494949>{0}</color>,<color =#494949> {0} </color>,1
+Common_RedText,<color=#C70F01>{0}</color>,<color =#c70f01> {0} </color>,1
+Common_GreenText,<color=#00B985>{0}</color>,<color =#00b985> {0} </color>,1
+Common_WhiteText,<color=#F5FFFF>{0}</color>,<color =#f5fffff> {0} </color>,1
+Common_BlackText,<color=#191919>{0}</color>,<color =#191919> {0} </color>,1
+Common_GrayText,<color=#4B413C>{0}</color>,<color =#4b413c> {0} </color>,1
+Common_BlueText,<color=#0064AA>{0}</color>,<color =#0064aa> {0} </color>,1
+Common_NavyBlueText,<color=#216EA4>{0}</color>,<color =#216ea4> {0} </color>,1
+Common_YellowText,<color=#D6AF53>{0}</color>,<color =#d6af53> {0} </color>,1
+Common_OrangeText,<color=#EA9C03>{0}</color>,<color =#EA9C03> {0} </color>,1
+Common_PinkText,<color=#F93981>{0}</color>,<color =#f93981> {0} </color>,1
+Common_LightPinkText,<color=#FF94BC>{0}</color>,<color =#ff94bc> {0} </color>,1
+Common_PositiveGlow,"<font=""FOT-TsukuGoPr5-M SDF"" material=""FOT-TsukuGoPr5-M SDF PositiveGlow"">{0}</font>",<font = 'fot-tsukugopr5-m SDF' Material = 'fot-tsukugopr5-m SDF positiveGlow'> {0} </font>,1
+Common_OwnedAndCostAmount,{0}/{1},{0}/{1},1
+Common_Rank,ランク,Rank,1
+Common_PlayerRank,プレイヤーランク,Player rank,1
+Common_GroupRank,グループランク,Glue plank,1
+Common_GroupRankWithGroupName,{0}ランク,{0} rank,1
+Common_ExpToNextRankLabel,あと,After,1
+Common_ExpMax,MAX,MAX,1
+Common_Exp,EXP,EXP,1
+Common_Level,レベル,level,1
+Common_MusicLevel,楽曲レベル,Song level,1
+Common_OrderBy,昇順,ascending order,1
+Common_OrderByDescending,降順,descending order,1
+Common_Day,{0}日,{0} day,1
+Common_Month,{0}月,{0} Month,1
+Common_Year,{0}年,{0} year,1
+Common_Hour,{0}時間,{0} time,1
+Common_Minute,{0}分,{0} minutes,1
+Common_Second,{0}秒,{0} seconds,1
+Common_ExpireDateUntil,{0},{0},1
+Common_Until,まで,to,1
+Common_ExpireDateFew,わずか！,Slight!,1
+Common_ExpireDateRemaining,残り,rest,1
+Common_ExpireDateInfinity,無期限,Indefinite period,1
+Common_ExpireDateExpired,期限切れ,Expired,1
+Common_Period,{0} ～ {1},{0} to {1},1
+Common_Remaining,残り,rest,1
+Common_Exchange,交換,exchange,1
+Common_Filter,絞り込み,Narrow down,1
+Common_Sort,並べ替え,Sorting,1
+Common_AllSelect,すべて,all,1
+Common_AllRelease,全解除,All cancellation,1
+Common_Sunday,日曜日,Sunday,1
+Common_Monday,月曜日,Monday,1
+Common_Tuesday,火曜日,Tuesday,1
+Common_Wednesday,水曜日,Wednesday,1
+Common_Thursday,木曜日,Thursday,1
+Common_Friday,金曜日,Friday,1
+Common_Saturday,土曜日,Saturday,1
+Common_Daily,デイリー,daily,1
+Common_Weekly,ウィークリー,Weekly,1
+Common_MusicArtistLabel,歌,song,1
+Common_MusicLyricistLabel,作詞,Lyrics,1
+Common_MusicComposerLabel,作曲,Composition,1
+Common_MusicArrangerLabel,編曲,Arrangement,1
+Common_MusicArtistFormat,歌：{0},Song: {0},1
+Common_MusicLyricistFormat,作詞：{0},Lyrics: {0},1
+Common_MusicComposerFormat,作曲：{0},Composition: {0},1
+Common_MusicArrangerFormat,編曲：{0},Arrangement: {0},1
+Common_MusicDetail,作詞：{0}<br>作曲：{1},Lyrics: {0}<br>Composition: {1},1
+Common_CardFullName,[{0}]{1},[{0}] {1},1
+Common_CardFullName2Line,[{0}]<br>{1},[{0}] <br> {1},1
+Common_Rare1,R,R,1
+Common_Rare2,SR,Sr,1
+Common_Rare3,UR,UR,1
+Common_Rare4,UR,UR,1
+Common_Present,プレゼント,present,1
+Common_Reward,報酬,Reward,1
+Common_Receive,{0}を受け取りました,I received {0},1
+Common_Nothing,なし,none,1
+Common_RoleVocal,ボーカル,vocal,1
+Common_RoleGuitar,ボーカル,vocal,1
+Common_RoleBass,ベース,base,1
+Common_RoleDrum,ドラム,drum,1
+Common_RoleKeyboard,キーボード,keyboard,1
+Common_RoleSupport,サポート,support,1
+Common_TypeHeart,スマイル,Smile,1
+Common_TypeDiamond,ピュア,pure,1
+Common_TypeClover,,#VALUE!,1
+Common_TypeSpade,クール,cool,1
+Common_MainStory,メインストーリー,Main story,1
+Common_SubStory,サブストーリー,Substory,1
+Common_EventStory,イベントストーリー,Event story,1
+Common_EventPoint,{0}pt,{0} pt,1
+Common_EventCurrency_ChallengeLive,{0}個,{0} pieces,1
+Common_EventCurrency_LiveTry,{0}個,{0} pieces,1
+Common_EventCurrency_VsLive,{0}人,{0} person,1
+Common_EventCurrency_MultiLive,{0}人,{0} person,1
+Common_RankingRank,{0}位,{0} position,1
+Common_RankingRankOut,圏外,Outside the area,1
+Common_CountBadge,{0},{0},1
+Common_CountBadgeOverLimit,{0}+,{0}+,1
+Common_SkipUntilNextDay_Zero,翌日0時まで、このウィンドウを表示しない,Do not display this window until 0:00 the next day,1
+Common_SkipUntilNextDay_Login,翌日4時まで、このウィンドウを表示しない,Do not display this window until 4:00 the next day,1
+Common_DoNotDisplayAfter,今後は、このウィンドウを表示しない,"In the future, this window will not be displayed",1
+Common_Percent,{0}%,{0}%,1
+Common_Piece,{0}個,{0} pieces,1
+Common_All,ALL,All,1
+Common_Other,Liella!,Liella!,1
+Common_XJAPAN,μ’s,μ's,1
+Common_LUNASEA,Aqours,Aqours,1
+Common_GLAY,虹ヶ咲,Rainbowzaki,1
+Common_GroupOther,その他,others,1
+Common_Grade,{0}年生,{0} grade,1
+Common_DifficultyNormal,NORMAL,NORMAL,1
+Common_DifficultyHard,HARD,Hard,1
+Common_DifficultyExpert,EXPERT,Expert,1
+Common_DifficultyMaster,MASTER,Master,1
+Common_StatusOfAchievement,達成状況,Progress,1
+Common_Achieved,達成済み,Already achieved,1
+Common_NotAchieved,未達成,Not Achieved,1
+Common_ExpirationDate,有効期限,date of expiry,1
+Button_Close,閉じる,close,1
+Button_Ok,OK,OK,1
+Button_Next,次へ,to the next,1
+Button_Cancel,キャンセル,cancel,1
+Button_Decide,決定,Decision,1
+Button_Update,アップデートする,Update,1
+Button_Retry,リトライ,retry,1
+Button_Return,戻る,return,1
+Button_VoiceOn,ボイスあり,There is voice,1
+Button_VoiceOff,ボイスなし,No voice,1
+Button_Resume,ライブを再開,Resume live,1
+Button_Suspend,ライブを終了,End the live,1
+Button_Skip,スキップ,skip,1
+Button_Restart,ライブをリスタート,Restart live,1
+Button_Shop,ショップ,shop,1
+Button_Home,ホームへ,home,1
+Button_BuyGem,ラブカ購入へ,To the purchase of Loveka,1
+Button_PresentBox,プレゼントへ,To the present,1
+Button_Chat,チャットへ,To the chat,1
+Button_Release,解放,release,1
+Button_Apply,適用,Application,1
+Button_Edit,編集,edit,1
+DueDate_DialogTitle_PresentBox,受け取り期限,Deadline for receipt,1
+DueDate_DialogCaution_PresentBox,※受け取れない場合、アイテムは消失します,"* If you cannot receive it, the items will disappear",1
+DueDate_Dialog_ItemNum,個数：{0},Number: {0},1
+DueDate_DialogTitle_Item,使用期限の近いアイテム,Items near the expiration date,1
+GachaTop_PeriodTime,{0} {1}まで,Until {0} {1},1
+GachaTop_PriceTitle,{0}回勧誘する,{0} Solicow,1
+GachaTop_PriceTitleChargeGem,{0}回勧誘する(有償),{0} Solicow (paid),1
+GachaTop_PriceTitleFree,無料で{0}回勧誘する,Free {0} recruitment for free,1
+GachaTop_Price_Free,無料,free,1
+GachaTop_BuyButton_Balloon_Daily,<color=#f93981>1日{0}回</color><br>毎日0時更新,<color =#f93981> 1 day {0} times </color> <br> Updated every day,1
+GachaTop_BuyButton_Balloon_ReritySR,<color=#f93981>SR以上</color><br>1人確定！,<COLOR =#f93981> SR or more </color> <br> One person is confirmed!,1
+GachaTop_BuyButton_Balloon_RerityUR,<color=#f93981>UR 1人確定！</color>,<color =#f93981> UR one person is confirmed! </color>,1
+GachaTop_BuyButton_Balloon_BonusItem,アイテム<br>おまけつき！,Items <br> With bonus!,1
+GachaTop_BuyButton_Balloon_Free,{0}連無料！,{0} free!,1
+GachaTop_BuyButton_Balloon_Limit,期間中{0}回のみ！,Only during the period {0} times!,1
+GachaTop_LimitDailyOnce,1日1回限定,Limited once a day,1
+GachaTop_LimitDailyAny,<color=#FD8E18>1日{0}回</color><br>毎日0時更新,<color =#fd8e18> 1 day {0} times </color> <br> Updated every day,1
+GachaTop_LimitCountOnce,1回限定,One -time limited,1
+GachaTop_LimitCountAny,あと{0}回,And {0} times,1
+GachaTop_LimitDailyOnceCountAny,あと{0}回<br><color=#FD8E18>(1日1回限定)</color>,And {0} times <br> <color =#fd8e18> (only once a day) </color>,1
+GachaTop_LimitDailyAnyCountAny,あと{0}回<br><color=#FD8E18>(本日あと{1}回)</color>,And {0} times <br> <color =#fd8e18> (today and {1} times </color>,1
+GachaTop_EnsureRareOnly,{0} {1}人確定！,{0} {1}},1
+GachaTop_EnsureRareOverContains,{0}以上 {1}人確定！,{0} or more {1} person confirmed!,1
+GachaTop_LimitOver,上限回数に達しています,The upper limit has reached,1
+GachaTop_LimitOverDailyRepeat,0時に更新<br>されます,It will be updated <br>,1
+GachaTop_LimitEnd,引き終わっています,It's over,1
+GachaTop_LimitStepup,ステップ上限回数に達しています,The number of steps is reached,1
+GachaTop_MemberDetailCaution,※各ステータスは最大覚醒・レベル最大時の値を表示しています<br>※特技は特技レベル最大時の効果を表示しています,* Each status shows the maximum awakening and the maximum level value.<br>* Special skills indicate the maximum effects of the special skill level.,1
+GachaTop_GachaDetailCaution,,,1
+GachaTop_MemberDetailPhotoButtonEvolveBefore,覚醒前に変更,Change before awakening,1
+GachaTop_MemberDetailPhotoButtonEvolveAfter,覚醒後に変更,Change after awakening,1
+GachaTop_BannerRemainTimeFormat,<size=85%>あと<size=100%>{0},<Size = 85%> And <size = 100%> {0},1
+GachaTop_RateFormat,{0}%,{0}%,1
+GachaTop_MemberRateFormat,f4,f4,1
+GachaTop_RarityRateFormat,f2,f2,1
+GachaTop_Step,STEP {0},STEP {0},1
+GachaTop_StepCount,<size=59><color=#f93981>{0}</color><size=32>/{1},<size = 59> <color =#f93981> {0} </color> <size = 32>/{1},1
+GachaTop_BonusCount,<size=35><color=#f93981>{0}</color>,<size = 35> <color =#f93981> {0} </color>,1
+GachaTop_BonusCount_Dialog,<size=40><color=#f93981>{0}</color>,<size = 40> <color =#f93981> {0} </color>,1
+GachaTop_HasAmount,(所持 {0}),(Possession {0}),1
+GachaTop_LimitDailyOnceChargeGem,有償ラブカ限定！毎日0時に更新,Paid Loveka Limited! Updated every day at midnight,1
+GachaTop_BonusReward,{0}おまけつき！,{0} with bonus!,1
+GachaTop_RunButtonText,<size=50>{0}<size=32>回勧誘,<size = 50> {0} <size = 32> recruitment,1
+GachaTop_RunButtonDialog_Title,勧誘チケット,Solicitation ticket,1
+GachaTop_RunButtonDialog_TopButton,チケット,ticket,1
+GachaTop_RunButtonDialog_Caution,※チケットの有効期限が切れた場合には、勧誘を行うことはできません<br>※現在選択している勧誘を行うことができます<br>※ラブカを使用して勧誘する場合と同じ内容で勧誘を行えます（10回勧誘チケットの場合、10回勧誘と同じ内容が適用されます）,"* If the ticket expires, solicitation cannot be made.<br>* You can make a solicitation you are currently selecting<br>* You can solicit it with the same content as when you use Labka (10 times solicitation tickets are applied to the same as 10 times).",1
+GachaPlay_DialogOk,OK,OK,1
+GachaPlay_DialogInfomation,※所持上限を超えて獲得したアイテムはプレゼントに送られます,* The items acquired beyond the upper limit of the possession will be sent to the gift.,1
+GachaConfirm_DialogTitle,確認,confirmation,1
+GachaConfirm_Period,開催期間：,Holding period:,1
+GachaConfirm_Count,{0}回,{0} times,1
+GachaConfirm_TicketText,「{0}」{1}枚を消費して<br>{2}で{3}回勧誘しますか？,Do you want to solicit {{0} '{1} sheets and recruit {3} times with {2}?,1
+GachaConfirm_GemText,{0}ラブカを使用して<br>{1}で{2}回勧誘しますか？,Do you use {0} Loveka to solicit {2} times with {1}?,1
+GachaConfirm_InfoText,{1}{0}を使用して<br>{2}回勧誘しますか？,Do you use {1} {0} to solicit {2} times?,1
+GachaConfirm_ConsumeLackText,{0}が不足しています。,{0} is insufficient.,1
+GachaConfirm_Buy,購入しますか？,Do you want to buy?,1
+GachaConfirm_Gem,ラブカ,Labka,1
+GachaConfirm_ChargeGem,有償ラブカ,Paid Loveka,1
+GachaConfirm_BuyButton,購入する,Purchase,1
+GachaConfirm_GachaButton,勧誘する,Solicit,1
+GachaResult_RemainingAny,あと　 回,After a while,1
+GachaResult_RemainingDailyAny,本日あと　 回,Today's left,1
+GachaResult_TutorialSelectPhoto,好きな部員をタッチしてください,Please touch your favorite members,1
+GachaResult_GetPoint,"{0}pt<font=""FOT-TsukuGoPr5-M SDF"">獲得</font>",{0} pt <font = 'fot-tsukugopr5-m SDF'> acquisition </font>,1
+GachaResult_ResultPoint,{0} → {1},{0} → {1},1
+GachaResult_Exchange,交換所,Exchange,1
+GachaResult_GetOverMemberMessage,すでに加入している部員の場合、<br>部員の代わりにペンライトが獲得できます,If the members have already joined<br>You can get a penlight instead of a member,1
+GachaResult_LimitBreakNoteText,※新しい部員が加入しました！,* A new member has joined!,1
+GachaDetail_TabTitle,勧誘詳細,Solicitation details,1
+GachaDetail_DialogTitle,勧誘詳細,Solicitation details,1
+GachaDetail_Help,注意事項,Notes,1
+GachaDetail_GachaInfo,勧誘概要,Solicitation outline,1
+GachaDetail_Terms,開催期間,Period,1
+GachaDetail_NewMember,新部員紹介,Introducing new members,1
+GachaDetail_Step,STEP {0},STEP {0},1
+GachaRateDetail_TabTitle,登場割合,Appearance ratio,1
+GachaRateDetail_DialogTitle,勧誘詳細,Solicitation details,1
+GachaRateDetail_Help,注意事項,Notes,1
+GachaRateDetail_RarityRate,レアリティ別登場割合,Appearance by rarity,1
+GachaRateDetail_RarityRateUnensure,登場割合{0},Appearance ratio {0},1
+GachaRateDetail_RarityRateEnsure,確定登場割合{0},Confirmed appearance ratio {0},1
+GachaRateDetail_Main,ライブ担当,Live in charge,1
+GachaRateDetail_Support,サポート担当,Support charge,1
+GachaRateDetail_RarityRateMember,登場部員一覧,List of appear members,1
+GachaRateDetail_RarityRateUnensureMember,登場部員一覧{0},List of appear members {0},1
+GachaRateDetail_RarityRateEnsureMember,登場部員一覧{0},List of appear members {0},1
+GachaFixedRateDetail_TabTitle,10回勧誘の10枠目登場割合,10th frame appearance ratio of 10 times,1
+GachaFixedRateDetail_TabTitleStepup,10回勧誘の10枠目登場割合,10th frame appearance ratio of 10 times,1
+GachaPickUpMemberDetail_TabTitle,部員詳細,Details of the members,1
+GachaPickUpMemberDetail_DialogTitle,ピックアップ部員詳細,Pickup member details,1
+Consume_HasConsumeName,所持数,The number of possession,1
+Consume_UseConsumeName,必要数,Required number,1
+Consume_PriceTitleChargeGem,{0}回引く<br>(有償のみ),{0} deducted <br> (paid only),1
+Consume_InfoOnConsumeMedal ,※無償ラブカから優先的に消費されます,* Preliminary consumed from Loveka free of charge,1
+WaitingMemberList_SealNumWordText,勧誘ポイント所持,Having a solicitation point,1
+WaitingMemberList_SealReplacementShopButton,交換所,Exchange,1
+WaitingMemberList_AllSelectButton,全選択,Select all,1
+WaitingMemberList_SelectCharaNumWord,選択中,choosing,1
+WaitingMemberList_SealChangeButton,転部,Portion,1
+WaitingMemberList_EmptyChara,転部できる部員がいません,There is no member who can switch,1
+WaitingMemberList_ItemGetNum,獲得数,Number of acquisitions,1
+WaitingMemberList_CanGetItem,獲得できるアイテム,Items that can be acquired,1
+WaitingMemberList_ChangeResultShortMessage,ペンライトを{0}個獲得しました,I got the penlight {0} individual,1
+WaitingMemberList_ChangeDialogTitle,確認,confirmation,1
+WaitingMemberList_ChangeDialogConfirm,控え室の部員を{0}人転部して、ペンライトを{1}個獲得します,The reception room member is {0} and the penlight is acquired by {1},1
+WaitingMemberList_ChangeDialogCharaNumWord,枚,Sheet,1
+WaitingMemberList_ChangeDialogSealNumWord,個,Individual,1
+WaitingMemberList_ChangeDialogTotalSealWord,♪シール,♪ Seal,1
+CardIcon_LvWord,Lv.,Lv.,1
+CardIcon_NumWord,x,x,1
+CardIcon_SkillLvWord,Skill Lv.,Skill Lv.,1
+CardIcon_HpWord,HP:,HP:,1
+CardIcon_EventBonusWord,ボーナス:,Bonus:,1
+CardIcon_EventBonusParam,+{0}%,+{0}%,1
+CardIcon_BonusParam,<size=20>+</size>{0}%,<size = 20>+</size> {0}%,1
+CardIcon_UnlockNotJoin,未加入,Not joining,1
+Practice_EmptyItem,レッスンノートを<br>所持していません,Lesson notes<br>I don't have it,1
+Practice_ExpWord,あと,After,1
+Practice_ResetButton,リセット,reset,1
+Practice_RecommendButton,おまかせ,Random,1
+Practice_Max,MAX,MAX,1
+Practice_Gold,{0},{0},1
+Practice_ItemSelect,アイテム選択,Item selection,1
+Practice_NeedItem,必要アイテム,Required item,1
+Practice_ItemShortageAlert,必要アイテムが不足しています,There is a shortage of items,1
+Practice_LevelMaxAlert,レベルが最大になっています,The level is the maximum,1
+SkillPractice_EmptyChara,控え室の部員{0}人と<br>ペンライト{1}枚を交換します<br>よろしいですか？,The waiting room member {0} will be replaced with a person <br> Penlight {1} sheet <br> Are you sure?,1
+SkillPractice_EmptyItem,スキルブックを<br>所持していません,Skill book<br>I don't have it,1
+SkillPractice_SamePhotoBonus,同部員ボーナス,The same department bonus,1
+SkillPractice_SameItemBonus,一致ボーナス,A matching bonus,1
+SkillPractice_PhotoTab,控え室,waiting room,1
+SkillPractice_ItemTab,券,ticket,1
+SkillPractice_HavingTextLavel,所持：{0},Possession: {0},1
+Training_ConfirmDialogTitle,確認,confirmation,1
+Training_ItemConfirmDialogMessage,選択したペンライトを使用して覚醒をします<br>よろしいですか？,Wake up using the selected penlight <br> Are you sure?,1
+Training_CardConfirmDialogMessage,選択したペンライトを使用して覚醒をします<br>よろしいですか？,Wake up using the selected penlight <br> Are you sure?,1
+Training_LackCoinConfirmDialogMessage,[{0}]{1}の覚醒には<br><color=#D73C55>ゴールドが足りません</color>,[{0}] {1} awakening <br> <color =#d73C55> Gold is not enough </color>,1
+Training_ItemSettingDialogTitle,消費アイテム設定,Consumer item setting,1
+Training_ItemSettingDialogMessage,必要アイテムの消費数を設定してください,Set the number of consumption of the required items,1
+Training_NeedCount,必要数,Required number,1
+Training_NeedItem,必要なアイテム,Necessary items,1
+Training_NoSetting,未設定,Unanimed,1
+Training_MaxLevelAndStatus,最大レベルとステータス値,Maximum level and status value,1
+Training_EmptyChara,覚醒可能な部員はいません,There is no member who can awaken,1
+Training_ItemConfirmDialogLimitNumNote,※覚醒できるのは{0}回までです,* You can awaken until {0} times,1
+Training_ItemAmount,{0},{0},1
+Training_ItemAmountOverLimit,{0}+,{0}+,1
+Training_SelectThisWay,この方法を選択,Select this method,1
+Training_GoldLack,ゴールドが不足しています,Lack of gold,1
+Training_LevelLack,レベルが最大ではありません,Level is not the largest,1
+Training_AwakeningBefore,覚醒前,Before awakening,1
+Training_AwakeningAfter,覚醒後,After awakening,1
+Training_MaxLv,MAX Lv,Max Lv,1
+Training_AwakenedMaxShortMessage,最大まで覚醒されています,Awakened to the maximum,1
+Training_CardEvolveItem,ペンライト,Penlight,1
+Training_CardEvolveItemSub1,覚醒アイテム,Awakening item,1
+Training_CardEvolveItemSub2,覚醒アイテム,Awakening item,1
+Training_CardEvolveItemSub3,覚醒アイテム,Awakening item,1
+TrainingResult_TrainingTitle,覚醒完了,Awakening completion,1
+TrainingResult_TrainingMessage,覚醒が完了しました,Awakening has been completed,1
+TrainingResult_EpisodeTitle,ストーリー達成ボーナス,Story achievement bonus,1
+TrainingResult_EpisodeMessage,[{0}]{1}の<br>ストーリー解放に成功しました,[{0}] I succeeded in releasing the story of {1},1
+TrainingResult_ReleaseMovieTitle,,,1
+TrainingResult_ReleaseMovieMessage,,,1
+StatusUpResult_EpisodeTitle,ストーリー達成ボーナス,Story achievement bonus,1
+StatusUpResult_Message,{0}の<br>ステータスがアップしました,The status of {0} has been uploaded,1
+CardDetail_EpisodeUnlockConfirm,以下のアイテムを消費して、ストーリー「{0}」を解放しますか？,Do you use the following items and release the story '{0}'?,1
+CardDetail_EpisodeUnlockLevel,解放条件：部員Lv{0}以上,Liberation Conditions: Member Lv {0} or higher,1
+CardDetail_EpisodeUnlockNeedNum,必要数：{0},Necessary number: {0},1
+CardDetail_EpisodeUnlockHaveNum,所持数：{0},Number of possession: {0},1
+CardDetail_EpisodeUnlockLackMaterial,<color=#D73C55>素材アイテムが不足しております</color>,<color =#d73C55> Lack of material items </color>,1
+CardDetail_EpisodeUnlockLackLevel,<color=#D73C55>部員レベルが足りません<br>現在 Lv.{0} / 必要 Lv.{1}</color>,<color =#d73C55> The level level is not enough <br> Currently lv. {0} / Required Lv. {1} < / color>,1
+CardDetail_EpisodeUnlockLackGold,<color=#D73C55>必要ゴールドが不足しております</color>,<color =#d73C55> There is a lack of necessary gold </color>,1
+CardDetail_UnlockEpisodePlayConfirmDialogTitle,ストーリー解放完了,Story release is completed,1
+CardDetail_UnlockEpisodePlayConfirmDialogMessage,ストーリー「{0}」を<br>解放しました<br>このまま読みますか？,The story '{0}' has been released <br> <br> Do you read as it is?,1
+CardDetail_EpisodePlayConfirmDialogTitle,ストーリー,story,1
+CardDetail_EpisodePlayConfirmDialogMessage,ストーリー「{0}」を<br>読みますか？,Do you read the story '{0}'?,1
+CardDetail_ChangeIllustButton,イラスト変更,Illustration change,1
+CardDetail_ExpansionButton,拡大,expansion,1
+CardDetail_LevelWord,レベル,level,1
+CardDetail_ExpWord,あと,After,1
+CardDetail_Max,MAX,MAX,1
+CardDetail_MemberDetailButton,部員詳細,Details of the members,1
+CardDetail_PracticeButton,レッスン,lesson,1
+CardDetail_TrainingButton,覚醒,Awakening,1
+CardDetail_SkillPracticeButton,スキルレッスン,Skill lesson,1
+CardDetail_CardNormal,通常,usually,1
+CardDetail_Favorite,お気に入り,favorite,1
+CardDetail_Animation,アニメ,anime,1
+CardDetail_Effect,演出,Directing,1
+CardDetail_Status,ステータス,status,1
+CardDetail_Profile,プロフィール,profile,1
+CardDetail_LevelStatus,レベルステータス値,Level status value,1
+CardDetail_CenterSkill,センタースキル,Center skill,1
+CardDetail_Skill,特技,Special skill,1
+CardDetail_SkillLv,特技Lv,Special skill Lv,1
+CardDetail_GachaButton,勧誘へ,To solicit,1
+CardDetail_SchoolYear,学年,School year,1
+CardDetail_Birthday,誕生日,birthday,1
+CardDetail_BloodType,血液型,blood type,1
+CardDetail_Height,身長,height,1
+CardDetail_CharaVoice,CV,CV,1
+CardDetail_SchoolYearInput,{0}年生,,1
+CardDetail_EpisodeUnlockConfirmDialogTitle,ストーリー解放確認,Story release confirmation,1
+CardDetail_EpisodeRewardDialogTitle,ストーリー報酬,Story reward,1
+CardDetail_SpecialEpisodeRewardDialogTitle,スペシャルストーリー報酬,Special story reward,1
+CardDetail_EpisodeRewardDialogMessage,報酬を獲得しました！<br><color=#D73C55>報酬はプレゼントから受け取れます</color>,I got a reward! <color =#d73C55> Rewards can be received from the present </color>,1
+CardDetail_EpisodePlayDialogUseVoiceButton,ボイスあり,There is voice,1
+CardDetail_EpisodePlayDialogNoVoiceButton,ボイスなし,No voice,1
+CardDetail_CharacterEpisodeLevel,ストーリーLv.{0},Story Lv. {0},1
+CardDetail_CardGetCategoryGacha,勧誘,Solicitation,1
+CardDetail_CardGetCategoryEvent,イベント,event,1
+CardDetail_CardGetCategoryExchange,交換所,Exchange,1
+CardDetail_CardGetCategoryStory,ストーリー,story,1
+CardDetail_CardGetCategoryMission,ミッション,Mission,1
+CardDetail_CardGetDetailGacha,勧誘『{0}』で入手可能！,Available with solicitation '{0}'!,1
+CardDetail_CardGetDetailEvent,イベント『{0}』で入手可能！,Available at the event '{0}'!,1
+CardDetail_CardGetDetailExchange,交換所『{0}』で入手可能！,Available at the exchange '{0}'!,1
+CardDetail_CardGetDetailStory,ストーリー『{0}』で入手可能！,Available in the story '{0}'!,1
+CardDetail_CardGetDetailMission,ミッションで入手可能！,Available in mission!,1
+CardDetail_NoticeLevelMaxDisplay,覚醒段階・レベルが最大時のステータスが表示されています,The status at the maximum of the awakening stage / level is displayed,1
+Album_NotCanGet,現在は加入できません,I can't join now,1
+Album_GachaCanGet,<color=#DF4444>勧誘</color>で加入可能な部員です,<COLOR =#DF4444> A member who can join by solicitation </color>,1
+Album_EventCanGet,<color=#DF4444>イベント</color>で加入可能な部員です,<COLOR =#DF4444> A member who can join at the event </color>,1
+Album_ExchangeCanGet,<color=#DF4444>交換所</color>で加入可能な部員です,<COLOR =#df4444> A member who can join with an exchange </color>,1
+Album_CampaignCanGet,,#VALUE!,1
+Album_LoginbonusCanGet,<color=#DF4444>ログインボーナス</color>で加入可能な部員です,<COLOR =#DF4444> Login bonus </color>.,1
+Album_StoryCanGet,<color=#DF4444>ストーリー</color>で加入可能な部員です,<Color =#df4444> Story </color> is a member who can join,1
+Album_TrainingCanGet,,#VALUE!,1
+Album_MissionCanGet,<color=#DF4444>ミッション</color>で加入可能な部員です,<Color =#df4444> Mission </color>.,1
+Album_BeginnerMissionCanGet,<color=#DF4444>初心者ミッション</color>で加入可能な部員です,<COLOR =#DF4444> A member who can join with a beginner mission </color>,1
+Album_GachaCanNotGet,「{0}」の新部員です<br>現在開催中の勧誘では加入できません,It is a new member of '{0}' <br> I can not join with a solicitation currently being held.,1
+Album_EventCanNotGet,イベント「{0}」の新部員です<br>現在、開催中のイベント、及び交換所では加入できません,It is a new member of the event '{0}'.,1
+Album_CampaignCanNotGet,「{0}」のキャンペーン部員です<br>現在は加入できません,I'm a campaign member of '{0}' <br> I can't join now,1
+Album_GachaOkButton,勧誘へ,To solicit,1
+Album_EventOkButton,イベントTOPへ,To the event TOP,1
+Album_ExchangeOkButton,交換所へ,To the exchange,1
+Album_StoryOkButton,ストーリーへ,To the story,1
+Album_TrainingOkButton,部員詳細へ,To the details of the member,1
+Album_MissionOkButton,ミッションへ,To the mission,1
+Album_DefaultOkButton,OK,OK,1
+Album_Empty,アルバムがありません,No album,1
+Album_DialogTitle,アルバム並べ替え,Album sorting,1
+Album_DialogGetTypeWord,加入状態,Status of joining,1
+Album_DialogTrainingTypeWord,覚醒状態,Awakening state,1
+Album_DialogGetTypeAll,すべて,all,1
+Album_DialogGetTypeTitle,所持,Possession,1
+Album_DialogGetTypeUnlock,所持,Possession,1
+Album_DialogGetTypeLock,未所持,Unpalated,1
+Album_DialogMovieTypeTitle,動画,movie,1
+Album_DialogMovieTypeHas,動画付き,With a video,1
+Album_DialogMovieTypeNot,動画なし,No video,1
+Album_DialogEpisodeTypeTitle,ストーリー,story,1
+Album_DialogEpisodeTypeHas,ストーリー付き,With a story,1
+Album_DialogEpisodeTypeNot,ストーリーなし,No story,1
+Album_DialogSpPhotoTypeTitle,SPフォト,SP photo,1
+Album_DialogSpPhotoTypeHas,SPフォト付き,With SP photo,1
+Album_DialogSpPhotoTypeNot,SPフォトなし,No SP photo,1
+Album_DialogEvolveTypeAll,すべて,all,1
+Album_DialogEvolveTypeNotEvolved,覚醒前,Before awakening,1
+Album_DialogEvolveTypeEvolved,覚醒後,After awakening,1
+Album_DialogSortTypeId,デフォルト,Default,1
+Album_DialogSortTypeUnlock,入手順,Obtaining procedure,1
+Album_DialogSortTypeRarity,レアリティ,Rarity,1
+Album_SIF1_CardSeries,シリーズ,series,1
+Album_SIF1_CardOther,その他,others,1
+Album_SIF1_CardTypeNormal,通常,usually,1
+Album_SIF1_CardTypeAwakening,覚醒,Awakening,1
+Album_SIF1_HeightExt,{0}cm,{0} cm,1
+Album_SIF2_AcquiredStatus,加入状況,Joji status,1
+Album_SIF2_AcquiredPercent,{0}%({1}/{2}),{0}%({1}/{2}),1
+Album_SIF2_MemberSummary,部員一覧,List of members,1
+Album_SIF2_Profile,プロフィール,profile,1
+Album_SIF2_NonJoining,未加入,Not joining,1
+Album_SIF2_NonJoiningToCard,加入している部員はいません,No member has joined,1
+Album_SIF2_NothingToCard,対象の部員はいません,There are no target members,1
+AreaTalkList_AreaOnly,発生場所,place of occurrence,1
+AreaTalkList_AreaAndItem,発生条件,Condition of occurrence,1
+AreaTalkList_Empty,ミニストーリーがありません,There is no ministory,1
+AreaTalkList_HaveAlbum,見たことがあるミニストーリーをふりかえろう！,Let's look back on the miniard tries you have seen!,1
+AreaTalkList_PlayButton,見る,look,1
+CostumeSelect_DeckTitle,★編成フォトの衣装★,★ Costume of formation photo ★,1
+CostumeSelect_DeckInfo,※こちらを設定するとデフォルト衣装<br>「{0}」になります,"* If you set this, the default costume will be '{0}'.",1
+CostumeSelect_SetButton,設定,setting,1
+CostumeSelect_SelectedButton,設定中,setting up,1
+CostumeSelect_UnLockInfoButton,解放条件,Release condition,1
+CostumeSelect_UnLockInfoByFot,[{0}]{1} を獲得,[{0}] Acquired {1},1
+CostumeSelect_UnLockInfoByCampaign,{0} を受け取る,Receive {0},1
+CostumeSelect_NotSelected,未設定,Unanimed,1
+OrnamentShop_EmptyData,購入できるアイテムがありません,There are no items that can be purchased,1
+OrnamentShop_ScrollItemBuyText,購入,purchase,1
+OrnamentShop_ScrollItemLevelUpText,レベルアップ,Level up,1
+OrnamentShop_ScrollItemUnlockText,解放条件,Release condition,1
+OrnamentShop_BuyConfirmDialog_ConditionLabel,必要条件,Requirements,1
+OrnamentShop_BuyResultDialogTitle_Buy,アイテム購入,Item purchase,1
+OrnamentShop_BuyResultDialogTitle_LevelUp,アイテムレベルアップ,Item level up,1
+OrnamentShop_BuyResultDialogMessage_DoesNotPlace,※購入したアイテムを物置に送りました,* The purchased items were sent to the storeroom,1
+Chat_NoticeReceive,メッセージが届きました,The message arrived,1
+Chat_TabChatSummary,サマリー,summary,1
+Chat_TabChatSolo,チャット,chat,1
+Chat_TabChatGroup,グループチャット,Group chat,1
+Chat_TabCollectionStamp,スタンプ,stamp,1
+Chat_TabCollectionAttachment,写真,photograph,1
+Chat_AvailableStamp,選択したスタンプが使えるチャット,You can use the selected stamp,1
+Chat_AcquiredStamp,楽曲クリア時にランダムで獲得できます,You can get randomly when you clear the song,1
+Chat_TalkTagVoice,#ボイス,#voice,1
+Chat_TalkInputWait,{0}が入力中…,{0} is input ...,1
+Chat_TalkItemReceive,受け取る,receive,1
+Chat_TalkItemReceived,受け取り済,Receiving,1
+Chat_TalkItemGet,{0}を入手しました,I got {0},1
+Chat_TalkLookback,この会話を振り返る,Looking back on this conversation,1
+Chat_OrderOfArrival,着信順,Adhesion,1
+Chat_OrderOfPrecedence,並び順,Arrangement,1
+Chat_NotYetOpen,チャットに参加していません<br>連絡先を交換するとチャットに参加できます,I don't participate in the chat <br> You can participate in the chat by exchanging contacts,1
+Chat_NotYetAvailable,該当のスタンプが使えるチャットはまだありません,There is no chat that can use the relevant stamp yet,1
+MusicShop_EmptyData,購入できる楽曲がありません,There is no song that can be purchased,1
+MusicShop_AlreadyBought,購入済みです,It has already been purchased,1
+MusicShop_DetailDialogTitle,楽曲詳細,Music details,1
+MusicShop_BuyConfirmDialogTitle,購入確認,Purchase confirmation,1
+MusicShop_BuyConfirmDialogMessage,この楽曲を購入しますか？,Do you buy this song?,1
+MusicShop_BuyConfirmDialogCostItem,★必要アイテム★,★ Required items ★,1
+MusicShop_BuyResultDialogTitle,購入完了,Purchase completion,1
+Warehouse_BatchReplaceDialogDecideButton,決定,Decision,1
+Warehouse_BatchReplaceDialogTitle,おすすめ編成,Recommended organization,1
+Warehouse_BatchReplaceDialogCardTypePriority,優先する属性,Priority attribute,1
+Warehouse_BatchReplaceDialogDeckRolePriority,優先する楽器,Priority instruments,1
+Help_DialogTitle,ヘルプ,help,1
+Help_Faq,FAQ,FAQ,1
+Help_GameProgress,ゲーム進行・動作全般,Game progress / movement in general,1
+Help_BuyGem,ラブカ購入,Loveka purchase,1
+Help_TakeOver,引き継ぎをする,Take over,1
+Help_Opinions,ご意見・ご要望,Opinions and requests,1
+Help_ButtonFaq,よくあるお問い合わせ,frequently asked Questions,1
+Help_ButtonBuyGem,ラブカ購入エラー,Loveka purchase error,1
+Help_ButtonRegardProblems,不具合に関する<br>お問い合わせ,Inquiries regarding problems,1
+Help_ButtonDataRecovery,データ復旧の<br>お問い合わせ,Data recovery <br> Inquiries,1
+Help_ButtonOther,その他のお問い合わせ,Other inquiries,1
+Help_Notes,注意事項,Notes,1
+Help_JumpButton,サイトへ飛ぶ,Fly to the site,1
+Help_ContactFormCaution,・ご意見/ご要望に関しまして、原則返信は行っておりません。<br>・ご質問の内容によっては、調査、返答、対応にお時間をいただく場合がございます。<br>・お問い合わせの前にヘルプ、運営からのお知らせ、よくあるお問い合わせをご確認ください。<br>・データ復旧に関するお問い合わせは、お問い合わせフォームからご連絡ください。<br>・お客様同士のトラブル等に関しましては、一切関与致しておりません。<br>・当サポートは日本語のみ対応とさせていただきます。<br>・ゲームの攻略情報につきましては、お答えいたしかねます。<br>・24時間をすぎても問い合わせ受領メールが届かない場合は、メールの受信設定をご確認ください。<br>・[@bushimo.jp]からのメールが届くよう、設定変更をお願いいたします。,"・ We do not reply in principle for your opinions/requests.<br>・ Depending on the content of the question, it may take time to investigate, respond, and respond.<br>・ Please check the help, notification from the operation, and frequently inquired before inquiries.<br>・ For inquiries regarding data recovery, please contact us from the inquiry form.<br>・ We are not involved in any problems between customers.<br>・ This support will be supported only in Japanese.<br>・ We cannot answer the capture information of the game.<br>・ If you do not receive an inquiry email after 24 hours, please check the email reception settings.<br>・ Please change the settings so that you can receive an email from [@bushimo.jp].",1
+TermsOfService_DialogTitle,利用規約,terms of service,1
+TermsOfService_Terms,利用規約,terms of service,1
+TermsOfService_Rights,権利表記,Right notation,1
+TermsOfService_PrivacyPolicy,プライバシー<br>ポリシー,Privacy <br> Policy,1
+TermsOfServiceAgree_Agree,同意する,agree,1
+TermsOfServiceAgree_NoAgree,同意しない,Disagree,1
+TermsOfServiceAgree_Terms,利用規約 / プライバシーポリシー / 権利表記,Terms of Use / Privacy Policy / Right notation,1
+TermsOfServiceAgree_PrivacyPolicy,プライバシーポリシー,privacy policy,1
+TermsOfServiceAgree_Title,利用規約同意確認,Confirmation of consent to the Terms of Use,1
+TermsOfServiceAgree_Message,このゲームをプレイするためには、<br>利用規約およびプライバシーポリシーに<br>同意していただく必要があります<br><br>ご確認の上、「同意する」をタップしてください,"In order to play this game, you need to agree with the <BR> Terms of Use and Privacy Policy <br> <br> Please check 'I agree'.",1
+TermsOfServiceAgree_DataCaution,故意、不注意による端末からのアプリ削除やアプリデータ消失の際には<br>データの復元が困難となる場合がありますのでご注意ください,Please note that it may be difficult to restore the data when deleting an application from a terminal due to intentional or careless terminals or disappearing application data.,1
+CacheClear_ConfirmTitle,キャッシュクリア確認,Cash clear confirmation,1
+CacheClear_ClearingTitle,キャッシュクリア中,During cash,1
+CacheClear_ResultTitle,キャッシュクリア完了,Cash clear completion,1
+CacheClear_ConfirmMassage,キャッシュクリアします<br>よろしいでしょうか,I will clear the cash <br> Are you sure?,1
+CacheClear_ClearingMassage,キャッシュクリア中です<br>完了までしばらくお待ちください,Cash is being cleared <br> Please wait for a while until completion,1
+CacheClear_ResultMassage,キャッシュクリアが完了しました,Cash clear is completed,1
+Mission_Title,課題,assignment,1
+Mission_MainTitle,課題一覧,Assignment list,1
+Mission_SubTitle,課題,assignment,1
+Mission_Progress,{0}<size=-10>/{1}</size>,{0} <size = -10>/{1} </size>,1
+Mission_TabMain,通算,total,1
+Mission_TabDaily,デイリー,daily,1
+Mission_TabLimited,期間限定,Limited time,1
+Mission_MissionNotFound,現在、挑戦可能な課題はありません,"Currently, there are no challenges that can be challenged",1
+Mission_MissionNotFoundDaily,現在、挑戦可能な<br>デイリー課題はありません,"Currently, there is no daily task that can be challenged",1
+Mission_MissionNotFoundLimited,現在、挑戦可能な<br>期間限定課題はありません,"Currently, there are no limited -time issues that can be challenged",1
+Mission_ChallengeButton_AcceptReward,受け取る,receive,1
+Mission_ChallengeButton_Challenge,挑戦,challenge,1
+Mission_ChallengeButton_Ornament,物置へ,To the storeroom,1
+Mission_ChallengeButton_CardDetail,部員詳細へ,To the details of the member,1
+Mission_ChallengeButton_CardDetail_NotHave,対象部員未所持,Unpalated member,1
+Mission_ChallengeButton_CardReinforce,レッスンへ,To the lesson,1
+Mission_ChallengeButton_CardReinforceSkill,スキルレッスンへ,To the skill lesson,1
+Mission_ChallengeButton_CardEvolve,覚醒へ,To awaken,1
+Mission_ChallengeButton_Costume,衣装変更へ,To change costumes,1
+Mission_ChallengeButton_DeckEdit,ユニット編成へ,To the unit formation,1
+Mission_ChallengeButton_DeckTop,グループTOPへ,To Group TOP,1
+Mission_ChallengeButton_EventTop,イベントTOPへ,To the event TOP,1
+Mission_ChallengeButton_Friend,友達一覧へ,To the list of friends,1
+Mission_ChallengeButton_GachaTop,勧誘へ,To solicit,1
+Mission_ChallengeButton_MainStory,メインストーリーへ,To the main story,1
+Mission_ChallengeButton_Migration,データ引き継ぎ,Data transfer,1
+Mission_ChallengeButton_MusicSelect,楽曲選択へ,To the song selection,1
+Mission_ChallengeButton_Line,友達追加,Adding a friend,1
+Mission_ChallengeButton_LiveSelect,ライブ選択へ,To live selection,1
+Mission_ChallengeButton_Photo,部員一覧へ,To the list of members,1
+Mission_ChallengeButton_Profile,プロフィールへ,To your profile,1
+Mission_ChallengeButton_Shop,ショップへ,To the shop,1
+Mission_ChallengeButton_SubStory,サブストーリーへ,To the substory,1
+Mission_ChallengeButton_TargetMission,対象ミッションへ,To the target mission,1
+Mission_ChallengeButton_Twitter,フォロー,Follow -up,1
+Mission_DetailDialog_NoTimeLimit,制限時間 なし,No time limit,1
+Mission_CompleteMisssionGuide,※内容は詳細で確認してください,* Please check the contents in detail.,1
+Friend_MyFriendTab,友達一覧へ,To the list of friends,1
+Friend_RequestTab,申請中,Applying,1
+Friend_PendingTab,承認待ち,Approval pending,1
+Friend_FriendSearchTab,友達検索,Friend search,1
+Friend_LastLogin,最終ログイン,Final login,1
+Friend_RefineFavoriteFriendButton,お気に入り友達のみ表示,Only favorite friends are displayed,1
+Friend_DeleteButton,友達解除,Release of a friend,1
+Friend_RequestCancelButton,申請取り消し,Cancellation of application,1
+Friend_PendingButton,承認,Approval,1
+Friend_RejectButton,拒否,rejection,1
+Friend_MyFriendEmpty,友達のプレイヤーはいません,I don't have a friend player,1
+Friend_RequestEmpty,申請中のプレイヤーはいません,No player is applying,1
+Friend_PendingEmpty,承認待ちのプレイヤーはいません,No player is waiting for approval,1
+Friend_FriendSearchEmpty,プレイヤーが見つかりません,I can't find a player,1
+Friend_SearchButton,ID検索,ID search,1
+Friend_SortLastLoginButton,最終ログイン,Final login,1
+Friend_SortRankButton,ランク,Rank,1
+Friend_IconLeaderTypeButton,リーダー,leader,1
+Friend_IconRecommendTypeButton,お気に入り,favorite,1
+Friend_SearchDialogTitle,ID検索,ID search,1
+Friend_SearchDialogMassage,IDを入力してください,Enter your ID,1
+Friend_SearchDialogSearchButton,検索,search,1
+Friend_Secret,非公開,private,1
+Friend_LastLoginMinutes,{0}分前,{0} minutes before,1
+Friend_LastLoginHour,{0}時間前,{0} Time before,1
+Friend_LastLoginDay,{0}日前,{0} day ago,1
+Friend_LastLoginOverMonth,31日以上前,More than 31 days ago,1
+Friend_DialogTitle,ID検索,ID search,1
+Friend_DialogMessage,プレイヤーのIDを入力してください,Enter the player's ID,1
+Friend_DialogLimitNum,12文字以内,Within 12 characters,1
+Title_AppliVersion,Ver {0},Ver {0},1
+Title_JasracApple,JASRAC許諾<br>第9014302035Y45112号,JASRAC license <br> 9014302035Y45112,1
+Title_JasracGoogle,JASRAC許諾<br>第9014302036Y45112号,JASRAC license <br> 9014302036Y45112,1
+Title_NexTone,NexTone,NEXTONE,1
+Title_Company,©2013 プロジェクトラブライブ！<br>©2017 プロジェクトラブライブ！サンシャイン!!<br>©2022 プロジェクトラブライブ！虹ヶ咲学園スクールアイドル同好会<br>©2022 プロジェクトラブライブ！スーパースター!! ©bushiroad,© 2013 Project Rive Live!<br>© 2017 Project Rive Live! Sunshine !!<br>© 2022 Project Rive Live! Nijigasaki Gakuen School Idol Club<br>© 2022 Project Rive Live! Superstar !! © BUSHIROAD,1
+Title_UserId,ID:{0},ID: {0},1
+Title_MenuTitle,メニュー,menu,1
+Title_MenuExternalSite,外部サイト,External site,1
+Title_MenuCacheClear,キャッシュクリア,Cache clear,1
+Title_MenuGameDataDelete,ゲームデータ削除,Game data deletion,1
+NameInput_DefaultName,,#VALUE!,1
+NameInput_Name,氏名,full name,1
+NameInput_Ok,OK,OK,1
+NameInput_Title,取材許可申請書,Coverage permit application form,1
+NameInput_Permit1,ミラクルライブ実行委員会　御中,Miracle Live Executive Committee,1
+NameInput_Petmit2,私は、ミラクルライブにおいて取材要項の記載事項を遵守することを誓い、<br>ここに取材許可を申請いたします。,"I vowed to comply with the items described in the interview guidelines at Miracle Live,<br>We will apply for an interview permission here.",1
+NameInput_Note1,※プレイヤー名は最大10文字までです,* Up to 10 player names,1
+NameInput_Note2,※ゲーム内の他のプレイヤーにも公開される名前です,* It is a name published to other players in the game.,1
+NameInput_Note3,※プレイヤー名は後で変更できます,* The player name can be changed later,1
+NameInput_ProfileNameInputTitle,プレイヤー名入力,Player name input,1
+NameInput_ProfileNameInputMessage,プレイヤー名を入力してください,Please enter the player name,1
+NameInput_ProfileNameInputNote,※プレイヤー名は最大１０文字です<br>※ゲーム内で他のプレイヤーに公開される名前です<br>※プレイヤー名は後で変更することができます,* The player name is up to 10 characters <br> * The name will be published to other players in the game <br> * The player name can be changed later.,1
+Profile_Secret,非公開,private,1
+Profile_SecretLong,非公開設定になります,It will be a private setting,1
+Profile_DefaultComment,よろしくお願いします！,thank you!,1
+Profile_RankTitle,<size=24>R</size>ANK,<Size = 24> R </size> Ank,1
+Profile_ExpTitle,<size=24>E</size>xp,<Size = 24> E </size> XP,1
+Profile_CommentTitle,コメント,comment,1
+Profile_RecommenderSelectButton,お気に入り選択,Favorite choice,1
+Profile_TitleSelectButton,称号選択,Title selection,1
+Profile_PublicSelectButton,公開設定,Publishing Settings,1
+Profile_CopyButton,コピー,copy,1
+Profile_CopyMessage,IDをコピーしました,I copied my ID,1
+Profile_PhotoButton,部員表示,Member labeling,1
+Profile_FriendRequestButton,友達申請,Friend Request,1
+Profile_FriendCanNotRequestButton,申請不可,No application,1
+Profile_FriendTitleListButton,称号一覧,List of titles,1
+Profile_LastLoginTime,最終ログイン時間：,Final login time:,1
+Profile_OpenDialogTitle,プロフィール公開設定,Profile public setting,1
+Profile_OpenDialogMainDeckParam,ユニット総合力,Unit comprehensive power,1
+Profile_OpenDialogGroupRank,グループランク,Glue plank,1
+Profile_OpenDialogClearLiveNumber,クリア楽曲数,Number of clear songs,1
+Profile_OpenDialogFullComboLiveNumber,フルコンボ楽曲数,Number of songs in full combo,1
+Profile_OpenDialogAllPerfectLiveNumber,ALL PERFECT楽曲数,ALL Perfect number,1
+Profile_OpenDialogHighScoreRate,ハイスコアレート,High -core rate,1
+Profile_OpenDialogLastLoginDate,最終ログイン時間,Final login time,1
+Profile_OpenDialogUserId,プレイヤーID,Player ID,1
+Profile_OpenDialogGuestMember,ゲスト部員,Guest member,1
+Profile_OpenDialogCaution,チェックを外すと非公開になります,"If you uncheck it, it will be private",1
+Profile_OpenDialogOpenButton,公開,Release,1
+Profile_OpenDialogSecretButton,非公開,private,1
+Profile_OpenDialogPendingButton,受付中,Accepting,1
+Profile_OpenDialogRejectButton,拒否,rejection,1
+Profile_RankDialogTitle,ランク詳細,Rank details,1
+Profile_RankMax,ランクが最大になりました,The rank is maximum,1
+Profile_CommentSettingDialogTitle,コメント設定,Comment setting,1
+Profile_CommentSettingDialogMassage,コメントを入力してください,Please enter the comment,1
+Profile_CommentSettingDialogLimitNum,{0}文字以内,{0} within the letters,1
+Profile_HighScoreRateDialogTitle,詳細ハイスコアレート,Detailed high -core rate,1
+Profile_HighScoreRateDialogTotalHighScore,総合ハイスコアレート,Comprehensive high -core rate,1
+Profile_HighScoreRateDialogValue,ハイスコアレート,High -core rate,1
+Profile_HighScoreRateDialogEmpty,楽曲のプレイデータが存在しません,There is no play data of the song,1
+Profile_RankListScrollItemGem,報酬：ラブカ {0},Reward: Labka {0},1
+Profile_RankListScrollItemNone,報酬：未対応 {0},Reward: Not supported {0},1
+Profile_ScoreTitle,達成楽曲数,Number of achievements,1
+Profile_ClearMusicTitle,CLEAR,Clear,1
+Profile_FullComboTitle,FULL COMBO,Full Combo,1
+Profile_ClimaxPerfectTitle,CLIMAX<br>PERFECT,Climax <br> Perfect,1
+Profile_AllPerfectTitle,ALL PERFECT,All Perfect,1
+Profile_TeacherPointTitle,ハイスコアレート,High -core rate,1
+Profile_ScoreConfirm,クリア楽曲,Clear music,1
+Profile_GuestMember,ゲスト部員,Guest member,1
+Profile_GuestDetail,ゲスト詳細,Guest details,1
+Profile_SettingMember,設定部員,Setting department,1
+Profile_Share,シェア,share,1
+Profile_ShareMessage,私たちと一緒にスクールアイドルはじめませんか♪,Why don't you start a school idol with us ♪,1
+Profile_CardEmpty,部員がいません,There are no members,1
+Profile_Birthday,誕生日,birthday,1
+Profile_NoBirthday,未設定,Unanimed,1
+Profile_BirthdaySettingDialogTitle,お誕生日設定,Birthday setting,1
+Profile_BirthdaySettingDialogMessage,あなたのお誕生日を入力してください,Please enter your birthday,1
+Profile_BirthdaySettingDialogNote,※お誕生日はあとから変更することができません<br>※お誕生日には特別チャットが届きます<br>※購入上限確認時の生年月日と同じでなくても大丈夫です,* Birthday cannot be changed later<br>* Special chat will arrive on your birthday<br>* It doesn't have to be the same as the date of birth when checking the purchase upper limit.,1
+TitleList_TitleChangeDialogTitle,確認,confirmation,1
+TitleList_TitleChangeDialogText,この称号を設定,Set this title,1
+TitleList_TitleNoDetailText,称号の説明なし,No explanation of the title,1
+TitleList_TitleListTabNormal,通常,usually,1
+TitleList_TitleListTabEvent,イベント,event,1
+TitleList_TitleListTabMember,メンバー,member,1
+TitleList_TitleListTabMigration,データ連携,Data cooperation,1
+TitleList_NoMigrationMessage,データ連携の称号を所持していません,I do not have the title of data linkage,1
+TitleList_TitleListEmpty,称号がありません,There is no title,1
+Exchange_Tab_Main,メイン,Main,1
+Exchange_Tab_Tea,紅茶,Black tea,1
+Exchange_ExpireDateLabel,交換期限,Expiration date,1
+Exchange_ExchangeSelectMessageText,★交換所を選択してください★,★ Please select the exchange ★,1
+Exchange_SealExchangeHeaderMainTitle,勧誘ポイント交換所,Solicary point exchange,1
+Exchange_PickExchangeHeaderMainTitle,交換所,Exchange,1
+Exchange_TicketExchangeHeaderMainTitle,チケット交換所,Ticket exchange,1
+Exchange_SoldOutMessage,交換上限に達しています,The exchange limit has reached,1
+Exchange_ExchangeLimitMessage,所持上限に達しているため交換できません,It cannot be replaced because it has reached the upper limit,1
+Exchange_GetSeal,勧誘ポイントを獲得,Get solicitation points,1
+Exchange_ShopResetMessage_Daily,毎日0時に更新,Updated every day at midnight,1
+Exchange_ShopResetMessage_Weekly,毎週{0}に更新,Updated to {0} every week,1
+Exchange_ShopResetMessage_Monthly,毎月1日に更新,Updated on the 1st of every month,1
+Exchange_ResetDayDaily,本日,today,1
+Exchange_ResetDayWeekly,今週,this week,1
+Exchange_ResetDayMonthly,今月,this month,1
+Exchange_RemainCount,あと{0}回,And {0} times,1
+Exchange_ResultMesseage,{0} {1}個を交換しました！,{0} {1},1
+Exchange_ResultCardMesseage,[{1}]{0}を{2}人勧誘しました！,[{1}] {0} solicited {2} people!,1
+Exchange_FilterDialogTitle,交換所絞り込み,Exchange squeezing,1
+Exchange_FilterDialogCategoryLabel,カテゴリ絞り込み,Category aperture,1
+Exchange_FilterDialogSoldOutLabel,獲得済み絞り込み,Acquired narrowed down,1
+Exchange_FilterDialogCategoryAll,すべて,all,1
+Exchange_FilterDialogCategoryStamp,スタンプ,stamp,1
+Exchange_FilterDialogCategoryPrimaryItem,主要アイテム,Main item,1
+Exchange_FilterDialogCategoryPhotoSeal,部員,Member,1
+Exchange_FilterDialogCategoryTicket,チケット,ticket,1
+_FilterDialogDefaultButtonText,デフォルトに<br>戻す,Return to the default,1
+Exchange_Name_Exchange,交換,exchange,1
+Exchange_Name_Purchase,購入,purchase,1
+Exchange_Name_LevelUp,レベルアップ,Level up,1
+Exchange_EmptyData,{0}できる商品がありません,There is no product that can be {0},1
+Exchange_AmountLabel,{0}数,{0} number,1
+Exchange_AmountDialogTitle,いくつ{0}しますか,How many {0} do you want,1
+Exchange_AmountDialogMessage,※初めて加入する部員以外はペンライトに変換されます,"* Except for members who join for the first time, it will be converted to penlight.",1
+Exchange_ConfirmDialogTitle_Countable,{0}数確認,{0} number confirmation,1
+Exchange_ConfirmDialogTitle_Uncountable,{0}しますか,{0}?,1
+Exchange_ResultDialogTitle,{0}しました,{0},1
+DeckEdit_RecommendDialogTitle,おすすめ編成,Recommended organization,1
+DeckEdit_RecommendPriorityType,属性,attribute,1
+DeckEdit_RecommendPriorityGroup,グループ,group,1
+DeckEdit_RecommendPrioritySkill,特技,Special skill,1
+DeckEdit_RecommendTypeAll,指定なし,unspecified,1
+DeckEdit_RecommendGroupAll,指定なし,unspecified,1
+DeckEdit_RecommendGroupOther,その他,others,1
+DeckEdit_RecommendTypeBonus,属性ボーナス,Attribute bonus,1
+DeckEdit_RecommendCharacterBonus,メンバーボーナス,Member bonus,1
+DeckEdit_RecommendEventBonus,イベントボーナス,Event bonus,1
+DeckEdit_RecommendSkillAll,指定なし,unspecified,1
+DeckEdit_RecommendSkillScore,スコアアップ,Score -up,1
+DeckEdit_RecommendSkillScoreCondition,条件付きスコアアップ,Conditional score up,1
+DeckEdit_RecommendSkillRecovery,体力回復,Recovery of physical strength,1
+DeckEdit_RecommendSkillEnhanced,判定強化,Strengthening of the decision,1
+DeckEdit_RecommendSkillOther,その他,others,1
+DeckEdit_RecommendCheckCenterFixed,センターポジションを固定,Fix the center position,1
+DeckEdit_RecommendCheckBonusApply,選抜メンバーを優先,Priority for selected members,1
+DeckEdit_RecommendGroupSelectDialogTitle,グループ選択,Group selection,1
+DeckEdit_DefaultBandName,ユニット{0},Unit {0},1
+DeckEdit_TabName,ユニット{0},Unit {0},1
+DeckEdit_StatusPower,LP,LP,1
+DeckEdit_StatusTotal,ユニット総合力,Unit comprehensive power,1
+DeckEdit_StatusSoul,スマイル,Smile,1
+DeckEdit_StatusTechnic,ピュア,pure,1
+DeckEdit_StatusAppeal,クール,cool,1
+DeckEdit_StatusOrnamentBouns,アイテム,item,1
+DeckEdit_StatusEventBouns,イベント,event,1
+DeckEdit_StatusTypetBouns,属性ボーナス,Attribute bonus,1
+DeckEdit_MainUnitSetButton,メインユニット設定,Main unit settings,1
+DeckEdit_RecommendEditButton,おすすめ編成,Recommended organization,1
+DeckEdit_ResetButton,リセット,reset,1
+DeckEdit_OrnamentButton,アイテム,item,1
+DeckEdit_TotalParamDetailButton,総合力詳細,Comprehensive power details,1
+DeckEdit_EventNothing,イベント開催期間外のため<br>ボーナスはありません,There is no bonus because it is outside the event period,1
+DeckEdit_UnitNameDialogTitle,ユニット名,Unit name,1
+DeckEdit_UnitNameDialogMessage,ユニット名を入力してください,Please enter the unit name,1
+DeckEdit_UnitNameDialogLimitNum,8 文字以内,Within 8 characters,1
+DeckEdit_ClassmateButton,（ダミー）,(dummy),1
+DeckEdit_ClassmateTotalParam,（ダミー）,(dummy),1
+DeckEdit_PassiveSkillTotalParam,（ダミー）,(dummy),1
+DeckEdit_EventBonusMessage,イベントptボーナスは、編成中の選抜メンバー全員の合計値が適用されます,Event PT bonuses apply the total value of all selected members in the formation.,1
+DeckEdit_EventBonusEventPointUp_ChallengeLive,ミラクルコレクションでイベントpt{0}%アップ,Event Pt {0}%Up with Miracle Collection,1
+DeckEdit_EventBonusTotalPointUp_ChallengeLive,ミラクルコレクションで<br>対象部員の総合力アップ,In the Miracle Collection <br> Improve the overall power of the target member,1
+DeckEdit_EventBonusEventPointUp_LiveTry,ミラクルコレクションでイベントpt{0}%アップ,Event Pt {0}%Up with Miracle Collection,1
+DeckEdit_EventBonusTotalPointUp_LiveTry,ミラクルコレクションで<br>対象部員の総合力アップ,In the Miracle Collection <br> Improve the overall power of the target member,1
+DeckEdit_EventBonusEventPointUp_MultiLive,,,1
+DeckEdit_EventBonusTotalPointUp_MultiLive,,,1
+DeckEdit_EventBonusTotalPointUp,メンバーボーナス     (部員総合力),Member bonus (comprehensive power),1
+DeckEdit_EventBonusEventPointUp,(イベントpt),(Event PT),1
+DeckEdit_EventBonusNoRate,---,---,1
+DeckEdit_EventBonusRate,{0}%x{1}人,{0}%x {1} person,1
+DeckEdit_EventBonusRateUp,UP!,UP!,1
+DeckEdit_EventBonusInvalidMessage1,イベントボーナス,Event bonus,1
+DeckEdit_EventBonusInvalidMessage2,対象メンバーはいません,There are no target members,1
+DeckEdit_Passive,パッシブスキル,Passive skill,1
+DeckEdit_LiveRole,（ダミー）,(dummy),1
+DeckEdit_SupportRole,（ダミー）,(dummy),1
+DeckEdit_SelectEventDialogTitle,対象イベント選択,Target event selection,1
+DeckEdit_SelectEventDialogText,選択したイベントの<br>イベントボーナス情報を表示します,Displays the event bonus information of the selected event,1
+DeckEdit_SelectEventDialogCaution,イベントボーナスのないイベントは表示されません,Events without event bonuses are not displayed,1
+DeckEdit_ClassmateDisp,全部員表示,All members display,1
+DeckEdit_TotalParamDetailDialogTitle,ユニット詳細,Unit details,1
+DeckEdit_CenterSkillRiseValue,センタースキル上昇値,Center skill rise value,1
+DeckEdit_EventBonusRiseValue,イベントボーナス上昇値,Event bonus rise value,1
+DeckEdit_UpperArrowValue,↑{0},↑ {0},1
+DeckEdit_SkillLvValue,Lv {0},Lv {0},1
+DeckEdit_EventPt,イベントpt,Event PT,1
+DeckEdit_IconBonus,ミラクルスター,Miracle star,1
+DeckEdit_StatusTotalAttention,ユニット総合値はセンタースキル上昇値を合算して表記しています,The comprehensive unit value is described in combination of the increase in the center skill.,1
+DeckEdit_PositionEditMessage,部員をドラッグして配置を変更してください,Drag the members and change the arrangement,1
+DeckEditCharaSelect_PhotoTotalParam,部員総合力,Comprehensive power,1
+LiveMission_DialogTitle,{0} の達成報酬一覧,List of achievement rewards of {0},1
+LiveMission_DialogScoreRank,スコアランク,Score rank,1
+LiveMission_DialogComboCount,コンボ数,Number of combo,1
+LiveMission_DialogFullCombo,フルコンボ,Full combo,1
+LiveMission_DialogClearCount,クリア回数,Number of clears,1
+ShopCommon_FreeGem,無償ラブカ,Free Loveka,1
+ShopCommon_ChargeGem,有償ラブカ,Paid Loveka,1
+ShopCommon_Price,価格,price,1
+GemShop_FundSettlement,資金決済法<br>に基づく表示,Fund Settlement Law<br>Display based on,1
+GemShop_ServiceGuidelines,サービス内通貨ガイドライン,In -service currency guidelines,1
+GemShop_MedalGuidelines,ラブカ利用規約,Loveka Terms of Use,1
+GemShop_SpecifiedCommercialTransactions,特定商取引法<br>に基づく表示,Specified Commercial Transaction Law<br>Display based on,1
+GemShop_SpecifiedCommercialTransactions_DialogTitle,特定商取引法に基づく表示,Display based on the Specified Commercial Transactions Law,1
+GemShop_FundSettlement_DialogTitle,資金決済法に基づく表示,Display based on the Fund Settlement Law,1
+GemShop_SpecifiedCommercialTransactions_FundSettlement,特商法/資金決済法に基づく表示,Display based on the Special Commercial Code/Fund Settlement Law,1
+GemShop_BuyComplete,購入完了,Purchase completion,1
+GemShop_BuyCompleteMessage,{0}を{1}購入しました,I purchased {0} {1},1
+GemShop_Confirm,確認,confirmation,1
+GemShop_BuyStaminaMessage,ラブカを{0}消費してLPを{1}回復します<br>よろしいですか？,We consume {0} {0} and recover LP {1} <br> Is that OK?,1
+GemShop_BuyStaminaCompleteTitle,LP回復ウインドウ,LP recovery window,1
+GemShop_BuyStaminaCompleteMessage,LPを{0}回復しました！,LP has recovered {0}!,1
+GemShop_AgeConfirm,年齢確認,Age confirmation,1
+GemShop_AgeMessage,年齢確認のため、生年月日を入力してください,Please enter your date of birth to confirm your age,1
+GemShop_AgeNote,※生年月日は後から変更することはできません,* The date of birth cannot be changed later.,1
+GemShop_AgeMaxMessage,※16歳未満：月額5000円(税込)まで<br>※16歳以上18歳未満：月額10000円(税込)まで<br>※18歳以上：上限なし ,"* Up to 5000 yen (tax included) per month (tax included) under 16 years old<br>* 16 years old or older under 18 years old: Up to 10,000 yen (tax included) per month<br>* 18 years old or older: No upper limit",1
+GemShop_AgeNote1617,16～17歳：,16-17 years old:,1
+GemShop_AgeNote16,16歳未満：,Under 16 years old:,1
+GemShop_LimitOverMessage,ご利用可能額の上限に達したため、今月は購入できません,We cannot purchase this month because we have reached the upper limit of the available amount.,1
+GemShop_LimitAlertOver,既に一ヶ月のラブカの購入額が<br>{0}円を超えています,The purchase amount of Labka for one month has already exceeded {0} yen,1
+GemShop_LimitAlert,この購入を行う事で一ヶ月の<br>ラブカの購入額が{0}円を超えます,"By purchasing this purchase, the purchase amount of Loveka for one month exceeds {0} yen.",1
+GemShop_PurchaseConfirm,{0}を購入しますか？,Do you buy {0}?,1
+GemShop_AgeSelectedTitle,年齢登録確認,Age registration confirmation,1
+GemShop_AgeSelectedContents,あなたの生年月日は以下でよろしいでしょうか？,Is your date of birth:,1
+GemShop_AgeSelectedConfirm,※生年月日は後から変更することはできません,* The date of birth cannot be changed later.,1
+GemShop_AgeDecisionContents,年齢を確認しました,I checked the age,1
+GemShop_AgeDecisionContentsFormat,年齢を確認しました,I checked the age,1
+GemShop_AgeDecisionLimitLabel,{0}：月額 ¥{1} まで,{0}: Until monthly ¥ {1},1
+GemShop_AgeDecision,設定が完了しました,The setting is complete,1
+GemShop_Monthly,月額,Monthly amount,1
+GemShop_AlertMessage,今月の利用額が{0}円を超えますが、このまま購入を続けますか？,"The amount used this month exceeds {0} yen, but do you continue to buy it as it is?",1
+GemShopItem_LimitBuyAmount,残り{0},Remaining {0},1
+GemShopItem_LimitDate,{0}まで,Until {0},1
+GemShopItem_Amount,{0}個,{0} pieces,1
+GemShopItem_LimitAmount,あと{0}個,And {0} pieces,1
+GemShopItem_GemAmount,ラブカ {0}個,Loveka {0},1
+GemShopItem_Omake,<br><size=22><color=#F93981>+無償ラブカ{0}個,<br> <size = 22> <color =#f93981>+Free Loveka {0},1
+GemShopItem_Charge,有償ラブカ×{0},Paid Loveka x {0},1
+GemShopItem_Free,無償ラブカ×{0},Free Loveka x {0},1
+GemShopItem_Money,¥{0},\ {0},1
+GemShopItem_Increase,増量{0},Increased {0},1
+GemShopItem_Period,販売期間,Sales period,1
+GemShopItem_Season,{0} 〜 {1},{0} ~ {1},1
+GemShopItem_TicketInfo,※ログインしなかった日はラブカを受け取れません<br>※ラブカ以外のアイテムはプレゼントへ送られます<br>※ログインした時に直接付与されて所持数に反映されます<br>※ログインボーナスは購入日の翌0:00から受け取れます,* You cannot receive Loveka on the day you did not log in<br>* Items other than Loveka will be sent to the present<br>* It is given directly when logged in and is reflected in the number of possession.<br>* You can receive the login bonus from 0:00 the following day of the purchase date.,1
+GemShopItem_TicketBuyInfo,<color=#D73C55>購入済み</color><br>有効期限：{0},<color =#d73C55> Purchased </color><br>Expiration date: {0},1
+GemShopItem_TicketRemainPresent,1日1回プレゼント<br><color=#D73C55>のこり{0}回</color>,Gift once a day<br><COLOR =#D73C55> Dust {0} times </color>,1
+GemShopItem_ChargeGemComfirm,ラブカを{0}消費して{1}を購入します<br>この商品は有償ラブカでのみ購入できます,We consume {0} and purchase {1} <br> This product can be purchased only with a paid Labka,1
+GemShopItem_FreeGemComfirm,ラブカを{0}消費して{1}を購入します<br>ラブカは無償分から消費されます,We consume {0} and buy {1} <br> Loveka is consumed from free,1
+GemShopItem_SubscriptionButton_MembersCard,会員証を見る,See your membership card,1
+GemShopItem_SubscriptionButton_Buy,購入,purchase,1
+GemShopItem_SubscriptionButton_Info,内容詳細,Details,1
+GemShopItem_SubscriptionRemainingText,{0},{0},1
+GemShopItem_Membership_CardNo,会員NO,Member NO,1
+GemShopItem_Membership_CardStart,入会日,Join Date,1
+GemShopItem_Membership_CardChangeButton,デザイン<br>変更,Design <br> Change,1
+GemShopItem_Membership_WallpaperTitle,会員証デザイン変更,Membership card design change,1
+GemShopItem_Membership_WallpaperAlert,※決定ボタンをタップしないと反映されません,* It will not be reflected unless you tap the decision button,1
+GemShopItem_Membership_WallpaperSelected,選択中,choosing,1
+GemShopItem_Membership_WallpaperUsing,使用中,in use,1
+GemShopItem_Membership_WallpaperDecide,決定,Decision,1
+GemShopItem_Membership_WallpaperNotice,会員証のデザインを変更しました,Changed the design of the membership card,1
+GemShopItem_Membership_InfoTitle,内容詳細,Details,1
+GemShopItem_Membership_InfoTabSummary,概要,overview,1
+GemShopItem_Membership_InfoTabLoginBonus,ログインボーナス,Login bonus,1
+GemShopItem_Membership_InfoTabMission,課題,assignment,1
+GemShopItem_Membership_InfoSummaryTitle,MIRACLEパス会員 概要,Miracle Pass Member Overview,1
+GemShopItem_Membership_InfoSummaryUnsubscribe,解約する,Cancel,1
+GemShopItem_Membership_InfoLoginBonusTitle,MIRACLEパス会員 特別ログインボーナス！,Miracle Pass Member Special Login Bonus!,1
+GemShopItem_Membership_InfoLoginBonusDescription,MIRACLEパス加入で獲得！20日間ログインして、最大で無償1000ラブカGET！<br>※加入した翌日よりお受け取りいただけます,Acquired by joining Miracle pass! Log in for 20 days and get a maximum of 1000 Loveka GET!<br>* You can receive it from the day after you join.,1
+GemShopItem_Membership_InfoLoginBonusDayCount,日数,Number of days,1
+GemShopItem_Membership_InfoLoginBonusDayCountFormat,{0}日目,{0} Day,1
+GemShopItem_Membership_InfoLoginBonusGotItem,獲得アイテム,Acquired items,1
+GemShopItem_Membership_InfoLoginBonusStatus,獲得状況,Acquisition status,1
+GemShopItem_Membership_InfoLoginBonusClear,獲得済み,Already acquired,1
+GemShopItem_Membership_InfoLoginBonusNotClear,未達成,Not Achieved,1
+GemShopItem_Membership_InfoMissionTitle,MIRACLEパス会員 特別課題！,MIRACLE Pass Member Special Assignment!,1
+GemShopItem_Membership_InfoMissionDescription,全ての課題をクリアして、最大で無償1500ラブカGET！<br>※期間終了の48時間前までにクリア頂くようお願いします,Clear all issues and get a maximum of 1500 Loveka GET!<br>* Please clear at 48 hours before the end of the period.,1
+GemShopItem_Membership_InfoMissionClearCount,楽曲クリア回数,Number of music clears,1
+GemShopItem_Membership_InfoMissionClearCountFormat,{0}回クリア,{0} Clear,1
+GemShopItem_Membership_InfoMissionGotItem,獲得アイテム,Acquired items,1
+GemShopItem_Membership_InfoMissionStatusProgress,進行中,in progress,1
+GemShopItem_Membership_InfoMissionStatusClear,クリア,clear,1
+GemShopItem_Membership_InfoMissionStatusReceived,報酬受取済,Reward received,1
+GemShopItem_Membership_InfoMissionButton,課題へ,To the challenge,1
+ConfirmMedal_Gem,所持ラブカ確認,Confirmation of possession Loveka,1
+ConfirmMedal_Log,ラブカ詳細,Loveka details,1
+ConfirmMedal_ChargeGemReason,[{0}]を購入しました,I purchased [{0}],1
+DeckConfirm_LiveStartWarning,ライブを開始するにはユニットに部員を9人設定する必要があります<br>部員を編成してください,"To start the live, you need to set nine members in the unit<br>Please organize the members",1
+DeckConfirm_StaminaUse,{0}消費,{0} consumption,1
+DeckConfirm_AutoBurstDialogTitle,消費オートチケット設定,Consumer auto ticket setting,1
+DeckConfirm_LiveBurstDialogTitle,消費LP設定,Consumption LP settings,1
+DeckConfirm_UseBurstDialogTitle,使用バースト設定,Used burst settings,1
+DeckConfirm_UseBurstDialogBurstSetting,基本の使用バースト設定,Basic use burst settings,1
+DeckConfirm_UseBurstDialogThisTimeBurst,今回使用されるバースト,Burst used this time,1
+DeckConfirm_UseBurstDialogAutoDescription,スキップチケットを使用するとスキッププレイになります,Using a skip ticket will be a skip play,1
+DeckConfirm_UseBurstDialogBurstWarning,※スキップチケットは使用期限が早いものから使用されます<br>※スキップチケットはクリアした楽曲・難易度にのみ使用できます,* Skip tickets are used from those with early use. <br> * Skip tickets can only be used for clear songs and difficulty levels.,1
+DeckConfirm_UseBurstDialogAutoWarning,※スキップチケットは使用期限が早いものから使用されます<br>※スキップチケットはクリアした楽曲・難易度にのみ使用できます,* Skip tickets are used from those with early use. <br> * Skip tickets can only be used for clear songs and difficulty levels.,1
+DeckConfirm_NoBurst,未所持,Unpalated,1
+DeckConfirm_CanNotUsedNoBurst,未所持のため使用不可,Cannot be used because it is not possessed,1
+DeckConfirm_CanNotUsedNoClear,選択中の楽曲が未クリアのため使用不可,Cannot be used because the selected song is not cleared,1
+DeckConfirm_CanNotUsedNoClearShort,未クリア時使用不可,Not available when clearing,1
+DeckConfirm_LiveParam,ライブ用数値,Live numerical value,1
+DeckConfirm_AutoParam,オート用数値,Auto numerical value,1
+DeckConfirm_EventPointGet,イベントpt,Event PT,1
+DeckConfirm_EventGachaPointGet,勧誘（ボックス）P獲得,Solicary (Box) P acquisition,1
+DeckConfirm_ItemAndExpGet,報酬・EXP,Reward / EXP,1
+DeckConfirm_Magni,倍,Doubling,1
+DeckConfirm_StaminaBoostNotSelect,設定,setting,1
+DeckConfirm_StaminaBoostSelect,設定中,setting up,1
+DeckConfirm_StaminaBoostWarning,※消費数が設定消費数に満たない場合、所持数すべてを消費します,"* If the number of consumption is less than the set consumption, consume all the number of possessions.",1
+DeckConfirm_StaminaBoostAutoWarning,※オートの場合はハイスコア、達成報酬は記録されません,"* In the case of auto, high score and achievement reward are not recorded.",1
+DeckConfirm_Note,LPが0のため、<br>スキップができません<br>LPを回復する場合は、<br>回復方法を選択してください,"Since the LP is 0, you cannot skip <br> If you recover LP, select the recovery method.",1
+DeckConfirm_OptionButton,オプション,option,1
+DeckConfirm_HealthyBoostButton,LP,LP,1
+DeckConfirm_StartButton,ライブ開始,Live start,1
+DeckConfirm_AutoOn,オート：ON,Auto: ON,1
+DeckConfirm_AutoOff,オート：OFF,Auto: OFF,1
+DeckConfirm_Passive,パッシブスキル,Passive skill,1
+DeckConfirm_LiveRole,ライブ担当,Live in charge,1
+DeckConfirm_SupportRole,サポート担当,Support charge,1
+DeckConfirm_EventBonusTotalPointUp,メンバーボーナス     (部員総合力),Member bonus (comprehensive power),1
+DeckConfirm_EventBonusEventPointUp,(イベントpt),(Event PT),1
+DeckConfirm_EventBonusNoRate,---,---,1
+DeckConfirm_EventBonusRate,{0}%,{0}%,1
+DeckConfirm_EventBonusRateUp,UP!,UP!,1
+DeckConfirm_EventBonusInvalidMessage1,イベントボーナス,Event bonus,1
+DeckConfirm_EventBonusInvalidMessage2,対象メンバーはいません,There are no target members,1
+DeckConfirm_LiveBonusTypePointUp,属性ボーナス     (部員総合力),Attribute bonus (comprehensive power),1
+DeckConfirm_LiveBonusRate,{0}%x{1}枚,{0}%x {1} sheets,1
+DeckConfirm_LiveBonusRateUp,UP!,UP!,1
+DeckConfirm_EventCandyAmount,{0}/{1},{0}/{1},1
+DeckConfirm_LiveConditionButton,ライブ条件有り,Live conditions,1
+DeckConfirm_LiveConditionDialogTitle,ライブ条件,Live conditions,1
+DeckConfirm_LiveConditionDialogCondition,ライブ参加条件,Live participation conditions,1
+DeckConfirm_LiveConditionDialogRule,ライブルール,Live rule,1
+DeckConfirm_LiveConditionDialogErrorMessage,<color=#ff0000>ライブ参加条件</color>を満たしていないため<br>参加できませんでした,<COLOR =#ff0000> Live participation conditions </color> did not meet <br> I could not participate,1
+Story_MainStoryFirstSeason,First Season,First season,1
+Story_MainStorySecondSeason,Second Season,Second season,1
+Story_SeasonChapterNumberFormat,#{0}-{1},#{0}-{1},1
+Story_ChapterNumberFormat,#{0},#{0},1
+Story_TitleWithChapterNumberFormat,{0}{1}話「{2}」,{0} {1} story '{2}',1
+Story_ReleaseTitleWithChapterNumberFormat,{0}<br>{1}話「{2}」,{0} <br> {1} story '{2}',1
+Story_StoryTopHeaderMainTitle,ストーリーTOP,Story TOP,1
+Story_StoryTopHeaderSubTitle,ストーリー,story,1
+Story_MainStoryListHeaderMainTitle,ストーリー選択,Story selection,1
+Story_MainStoryListHeaderSubTitle,メインストーリー,Main story,1
+Story_SubStoryTopHeaderMainTitle,グループ選択,Group selection,1
+Story_SubStoryTopHeaderSubTitle,サブストーリー,Substory,1
+Story_SubStoryListHeaderMainTitle,ストーリー選択,Story selection,1
+Story_SubStoryListHeaderSubTitle,サブストーリー,Substory,1
+Story_EventStoryTopHeaderMainTitle,イベント選択,Event selection,1
+Story_EventStoryTopHeaderSubTitle,イベントストーリー,Event story,1
+Story_EventStoryListHeaderMainTitle,ストーリー選択,Story selection,1
+Story_EventStoryListHeaderSubTitle,イベントストーリー,Event story,1
+Story_CardStoryTopHeaderMainTitle,メンバー選択,Member selection,1
+Story_CardStoryTopHeaderSubTitle,ストーリー,story,1
+Story_CardStoryListHeaderMainTitle,ストーリー選択,Story selection,1
+Story_CardStoryListHeaderSubTitle,ストーリー,story,1
+StoryPart_NumberFormat,{0}話,{0} story,1
+StoryPart_TitleWithNumberFormat,{0}話「{1}」,{0} story '{1}',1
+StoryPart_TitleWithNumberTranslucentFormat,<color=#804B413C>{0}話「{1}」</color>,<color =#804b413c> {0} story '{1} </color>,1
+StoryPart_TitleListWithNumberFormat,{0}話～{1}話,{0} story ~ {1} story,1
+StoryPart_SeasonChapterNumberFormat,#{0}-{1}-{2},#{0}-{1}-{2},1
+StoryPart_ChapterNumberFormat,#{0}-{1},#{0}-{1},1
+StoryPart_TitleWithChapterNumberFormat,{0}話「{1}」,{0} story '{1}',1
+StoryPart_RankReleaseDetailFormat,ランクを{0}にする,Set the rank to {0},1
+StoryPart_GroupRankReleaseDetailFormat,総合グループランクを{0}にする,Make the comprehensive glue planck into {0},1
+StoryPart_LiveReleaseDetailFormat,{0}を<br>  スコア{1}以上でクリアする,Clear {0} with <br> score {1} or more,1
+StoryPart_MissionReleaseDetailFormat,ミッション「{0}」クリアする,Clear the mission '{0}',1
+StoryPart_ReleaseInfo,ゲームを遊んでRANKをあげよう！,Play the game and give Rank!,1
+StoryPart_NotRelease,未解放または前のストーリーを読んでいません,I haven't been released or read the previous story,1
+SubStory_GroupRankRewardDialogTitle,グループランク報酬一覧,List of glue plank rewards,1
+SubStory_GroupRankRewardDialogUntilRankUp,ランクアップまで,Until the ranking up,1
+SubStory_GroupRankRewardDialogTotalExp,累計EXP,Cumulative EXP,1
+SubStory_GroupRankRewardDialogRank,ランク,Rank,1
+SubStory_GroupRankRewardDialogMax,MAX,MAX,1
+ConfirmMedal_DialogTitle,所持ラブカ確認,Confirmation of possession Loveka,1
+ConfirmMedal_ChargeMedal,有償,Paid,1
+ConfirmMedal_FreeMedal,無償,Free of charge,1
+ConfirmMedal_TotalMedal,合計ラブカ,Total Loveka,1
+ConfirmMedal_Warning,※無償ラブカから先に消費されます,* It is consumed first from the free Loveka,1
+ConfirmMedal_UpdateHistory,更新,update,1
+ConfirmMedal_HistoryTitle,ラブカ詳細,Loveka details,1
+ConfirmMedal_UsedHistoryTitle,利用履歴,Usage history,1
+ConfirmMedal_AcquiredHistoryTitle,獲得履歴,Acquisition history,1
+ConfirmMedal_HistoryDate,利用日時,Date and time,1
+ConfirmMedal_HistoryReason,用途,Use,1
+ConfirmMedal_HistoryNote,※ラブカの獲得・消費履歴は最大3ヶ月分表示されます,* The acquisition and consumption history of Loveka will be displayed for up to 3 months.,1
+ConfirmMedal_HistoryFreeMedal,無償,Free of charge,1
+ConfirmMedal_HistoryChargeMedal,有償,Paid,1
+Ornament_EffectValueFormat,<color=#D73C55>{0:0.##}%</color>,<color =#d73C55> {0: 0. ##}%</color>,1
+Ornament_UnlockDetail_None,-,-,1
+Ornament_UnlockDetail_GroupLevelReward,{0}グループランク{1}で解放されます。,It will be released with {0} glue plank {1}.,1
+Ornament_UnlockDetail_StoryPartReward,ストーリー<br>{0}<br>の閲覧で解放されます,story<br>{0}<br>Will be released by browsing,1
+Ornament_UnlockDetail_MissionReward,ミッション<br>{0}<br>を達成すると解放されます,Mission<br>{0}<br>Will be released when achieved,1
+Ornament_PlaceButton,設置,Installation,1
+Ornament_CannnotPlace,設置できません,Cannot be installed,1
+Ornament_TalkCharacterNameSeparator,×,×,1
+Ornament_TalkUnlockLevel,レベル<color=#D73C55>{0}</color>で解放,Level <color =#d73C55> {0} </color>,1
+Ornament_TeaSetLevelUpConditionLabel,▼レベルアップ条件,▼ Level up conditions,1
+Ornament_ReplaceDialog_OrnamentType,★{0}★,★ {0} ★,1
+Ornament_EventEffectDetail,「{2}」の「{3}」プレイ時に{0}<br>（対象ライブ以外では{1}）,{0} when playing '{2}' in '{3}'<br>({1} except for the target live),1
+StaminaCharge_NoChargeItem,※LPキャンディを所持していません,* I do not have an LP candy,1
+StaminaCharge_RecoveryConfirmDialogTitle,LP回復確認,LP recovery confirmation,1
+StaminaCharge_RecoveryConfirmDialogMessage,選択したアイテムを使用して、LPを{0}回復しますか？,Do you use the selected item to recover LP {0}?,1
+StaminaCharge_RecoveryConfirmDialogWarningNoItem,※LP回復アイテムを所持していません,* We do not have LP recovery items,1
+StaminaCharge_RecoveryConfirmDialogWarningOverLimit1,※現在LPが最大LPを超えている場合、LP回復はできません,* LP recovery cannot be recovered if the LP is currently exceeding the maximum LP.,1
+StaminaCharge_RecoveryConfirmDialogWarningOverLimit2,※LPが999を超えると999+と表示されます,"* If the LP exceeds 999, it will be displayed as 999+.",1
+StaminaCharge_Special_Commercial_Code,特商法/資金決済法に基づく表示,Display based on the Special Commercial Code/Fund Settlement Law,1
+StaminaCharge_RecoveryFrequency,{0}回復,{0} recovery,1
+StaminaCharge_StaminaLabel,LP,LP,1
+StampTab_DefaultStamp,基本スタンプ,Basic stamp,1
+StampTab_RareStamp,限定スタンプ,Limited stamp,1
+StampTab_HistoryStamp,履歴,history,1
+StampTab_FavoriteStamp,お気に入り,favorite,1
+NotExistsStamp_DefaultStamp,通常スタンプが存在しません！,Normally there is no stamp!,1
+NotExistsStamp_RareStamp,限定スタンプを所持していません,I do not have a limited stamp,1
+NotExistsStamp_HistoryStamp,スタンプ履歴がありません,No stamp history,1
+NotExistsStamp_FavoriteStamp,お気に入りスタンプがありません,I don't have a favorite stamp,1
+NotExistsStamp_RareStampSub,限定スタンプはイベント等で取得する事ができます,Limited stamps can be obtained at events etc.,1
+NotExistsStamp_HistoryStampSub,スタンプを使うと履歴が保存されます,"If you use a stamp, the history will be saved",1
+NotExistsStamp_FavoriteStampSub,ライブ選択画面でお気に入りスタンプを設定する事ができます,You can set your favorite stamp on the live selection screen,1
+MemberIllustrateList_SelectCharaMessage,★メンバーを選択してください★,★ Please select the member ★,1
+MemberCharaTop_CostumeChange,衣装変更,Change of costumes,1
+MemberCharaTop_Profile,プロフィール,profile,1
+MemberCharaTop_AriaTalk,ミニストーリー,Ministory,1
+MemberCharaTop_Album,アルバム,album,1
+LiveSelect_UseStaminaBoost,{0}でライブ,Live in {0},1
+LiveSelect_NoneStaminaBoost,0でライブ,Live at 0,1
+LiveSelect_Note,LPを回復する場合は、<br>回復方法を選択してください,"If you want to recover LP, select the recovery method",1
+LiveSelect_Title,LP確認,LP confirmation,1
+LiveSelect_SettingStaminaNum,消費LP,Consumption LP,1
+LiveSelect_HasStaminaNum,所持数,The number of possession,1
+LiveSelect_NoItem,所持していません,I don't have it,1
+LiveSelect_PenaltyTitle,機能制限,Functional restriction,1
+LiveSelect_PenaltyMessage,きょうりょくライブにおいて、他のお客様へ迷惑のかかる行為が確認されました<br>一時的に機能を制限させて頂いております<br>解除されるまでお待ちください,"In today's live, we have confirmed an annoying act for other customers. <br> We have temporarily restrict the functions <br> Please wait until it is released.",1
+LiveSelect_PenaltyUnlockTime,解除まで,Until the cancellation,1
+LiveSelect_Belonging,持ちもの,Holding,1
+LiveSelect_Medal,ラブカ,Labka,1
+LiveSelect_ConsumEventStamina,ミラクルスター消費{0}個,Miracle Star consumption {0},1
+LiveSelect_EventTerm,開催期間：,Holding period:,1
+LiveSelect_EventRankingAll,全体,whole,1
+LiveSelect_EventRankingGroup,組別,Consolidation,1
+LiveSelect_EventRank,位,Position,1
+LiveSelect_HasEventCandy,所持ミラクルスター,Miracle star in possession,1
+LiveSelect_HasEventPick,所持,Possession,1
+LiveSelect_HasEventTicket,所持,Possession,1
+LiveSelect_EventCurrencyCandy,個,Individual,1
+LiveSelect_EventCurrencyPick,個,Individual,1
+LiveSelect_EventCurrencyTicket,枚,Sheet,1
+LiveSelect_EventAcquisitionCandy,（ダミー）取得可能！,(Dummy) Acquired!,1
+LiveSelect_EventAcquisitionPick,（ダミー）取得可能！,(Dummy) Acquired!,1
+LiveSelect_EventAcquisitionTicket,（ダミー）取得可能！,(Dummy) Acquired!,1
+LiveSelect_EventCandyInfo,を集めてイベントライブをプレイしよう！,Gather and play the event live!,1
+LiveSelect_EventPickInfo,（ダミー）を集めて交換所へ！,Collect (dummy) and go to the exchange!,1
+LiveSelect_EventTopPickInfo,ビンゴシートを確認しよう！,Let's check the bingo seat!,1
+LiveSelect_EventTicketInfo,（ダミー）を集めてがらがらを回そう！,Collect (dummy) and turn around!,1
+LiveSelect_EventTopTicketInfo,協力ミッションを確認しよう！,Let's check the cooperation mission!,1
+LiveSelect_TeacherLive,（ダミー）ライブ,(Dummy) Live,1
+LiveSelect_EventTermTitle,開催期間：,Holding period:,1
+LiveSelect_EventResultTermTitle,結果発表期間：,Result announcement period:,1
+LiveSelect_EventOpenLabel,イベント開催中,Event now being held,1
+LiveSelect_EventCloseLabel,イベント終了,End of event,1
+LiveSelect_EventRemainDay,イベント終了まであと{0}日,Until the end of the event {0} day,1
+LiveSelect_EventRemainTime,イベント終了まであと{0}:{1:D2},Until the end of the event {0}: {1: D2},1
+LiveSelect_EventRankingAggregate,ランキング集計中・・・,Under the ranking ...,1
+LiveSelect_Aggregate,集計中,During the aggregation,1
+LiveSelect_NowRankingAgreegating,現在ランキング集計中です,Currently under the ranking,1
+LiveSelect_EventRewardGetTime,報酬受け取り期間；{0},Reward receipt period; {0},1
+LiveSelect_EventClose,イベントは終了しました,The event is over,1
+Migration_TakeOver,データ引き継ぎ,Data transfer,1
+Migration_IssueInfo,以下のデータ引き継ぎ準備を行うことで機種変更時にデータを引き継ぐことができます<br>アプリ削除によるデータ消失の備えとしても使用できます,The data can be taken over when the model is changed by preparing the following data inherited.,1
+Migration_IssueInfoNote,※引き継ぎ前に必ず手順をご確認ください,* Be sure to check the procedure before taking over,1
+Migration_Details,引き継ぎ詳細,Inheritance details,1
+Migration_IssueNote,異なるOS間で引き継ぎを行う場合、有償ラブカは無償ラブカに変換されます。<br>同OS間での引き継ぎの場合は、そのまま引き継がれます。<br>異なるOSまたは異なるストアアカウントへ引き継ぎ時、事前にご自身でMIRACLEパス解約をお願いします。<br>MIRACLEパスに複数/重複加入が行われた場合、特典を重複して受け取ることはできません。,"If you take over between different OSs, paid Loveka will be converted to a free Loveka.<br>In the case of takeover between the OS, it will be taken over as it is.<br>When taking over to a different OS or different store account, please cancel the Miracle path yourself in advance.<br>If multiple/duplicate subscription is performed on the Miracle path, the benefits cannot be duplicated.",1
+Migration_IssueNote2,データ引き継ぎを実施すると、本端末のゲームデータが削除され、引き継ぎ元のゲームデータが上書きされます。<br>異なるOS間で引き継ぎを行う場合、有償ラブカは無償ラブカに変換されます。<br>同OS間での引き継ぎの場合は、そのまま引き継がれます。<br>異なるOSまたは異なるストアアカウントへ引き継ぎ時、事前にご自身でMIRACLEパス解約をお願いします。<br>MIRACLEパスに複数/重複加入が行われた場合、特典を重複して受け取ることはできません。,"When the data is taken over, the game data of the terminal is deleted and the takeover game data is overwritten.<br>If you take over between different OSs, paid Loveka will be converted to a free Loveka.<br>In the case of takeover between the OS, it will be taken over as it is.<br>When taking over to a different OS or different store account, please cancel the Miracle path yourself in advance.<br>If multiple/duplicate subscription is performed on the Miracle path, the benefits cannot be duplicated.",1
+Migration_Process,引き継ぎ詳細,Inheritance details,1
+Migration_Setting,データ引き継ぎ設定,Data transfer settings,1
+Migration_SettingsInfo,データ引き継ぎ用のパスワードを設定してください,Please set the password for data transfer,1
+Migration_ID,引き継ぎID,Handover ID,1
+Migration_Password,パスワード,password,1
+Migration_PasswordNote,※8文字以上32文字以下の半角英数字,* 8 characters or less 32 characters or less half -width alphanumeric characters,1
+Migration_DispPassword,入力中のパスワードを表示する,Display the password input,1
+Migration_SettingsButton,設定する,Set,1
+Migration_Complete,引き継ぎ設定完了,Completed inheritance settings,1
+Migration_CompleteInfo,データ引き継ぎ準備が完了しました<br>引き継ぎ先の端末にアプリをダウンロードした後、タイトル画面右上のメニューの<br>「データ引き継ぎ」から引き継ぎIDとパスワードを入力してください,"Ready to take over the data. <br> After downloading the app to the tip of the tip, please enter the handover ID and password from 'Data transfer' in the menu at the top right of the title screen.",1
+Migration_IDCopy,コピーしました,Copy,1
+Migration_CompleteNote,※大切な情報ですので第三者には教えないでください<br>※メモやスクリーンショットを保存してください<br>※パスワードは後から変更することも可能です,* Please do not tell a third party because it is an important information <br> * Please save memos and screenshots <br> * You can change your password later.,1
+Migration_Migration,データ引き継ぎ実行,Data transfer execution,1
+Migration_MigrationInfo,設定した引き継ぎ方法を選択してください,Please select the settling method,1
+Migration_MigrationInfo2,引き継ぎIDとパスワードを入力してください,Enter your takeover ID and password,1
+Migration_MigrationInfo3,以下の引き継ぎ設定を行う事で機種変更時にデータを引き継ぐことができます<br>アプリ削除によるデータ消失の備えとしても使用できます,You can take over the data when you change the model by setting the following handover settings.,1
+Migration_MigrationNote,<color=#C12424>異なるOS間で引き継ぎを行う場合、有償ラブカは無償ラブカに変換されます。<br>同OS間での引き継ぎの場合は、そのまま引き継がれます。<br>異なるOSまたは異なるストアアカウントへ引き継ぎ時、事前にご自身でMIRACLEパス解約をお願いします。<br>MIRACLEパスに複数/重複加入が行われた場合、特典を重複して受け取ることはできません。</color>,"<COLOR =#c12424> If you take over between different OSs, a paid Loveka is converted to a free Loveka.<br>In the case of takeover between the OS, it will be taken over as it is.<br>When taking over to a different OS or different store account, please cancel the Miracle path yourself in advance.<br>If multiple/duplicate subscription is performed on the Miracle path, the benefits cannot be duplicated. </color>",1
+Migration_MigrationNote2,データ引き継ぎを実施すると、本端末のゲームデータが削除され、引き継ぎ元のゲームデータが上書きされます。<br><color=#C12424>異なるOS間で引き継ぎを行う場合、有償ラブカは無償ラブカに変換されます。<br>同OSでの引き継ぎの場合は、そのまま引き継がれます。<br>異なるOSまたは異なるストアアカウントへ引き継ぎ時、事前にご自身でMIRACLEパス解約をお願いします。<br>MIRACLEパスに複数/重複加入が行われた場合、特典を重複して受け取ることはできません。</color>,"When the data is taken over, the game data of the terminal is deleted and the takeover game data is overwritten.<br><COLOR =#c12424> If you take over between different OSs, a paid Loveka is converted to a free Loveka.<br>In the case of handing over with the OS, it will be taken over as it is.<br>When taking over to a different OS or different store account, please cancel the Miracle path yourself in advance.<br>If multiple/duplicate subscription is performed on the Miracle path, the benefits cannot be duplicated. </color>",1
+Migration_MigrationNoteConfirm,データ引き継ぎを実施すると、本端末のゲームデータが削除され、引き継ぎ元のゲームデータが上書きされます。<br><color=#C12424>異なるOS間で引き継ぎを行う場合、有償ラブカは無償ラブカに変換されます。<br>同OSでの引き継ぎの場合は、そのまま引き継がれます。<br>異なるOSまたは異なるストアアカウントへ引き継ぎ時、事前にご自身でMIRACLEパス解約をお願いします。<br>MIRACLEパスに複数/重複加入が行われた場合、特典を重複して受け取ることはできません。</color>,"When the data is taken over, the game data of the terminal is deleted and the takeover game data is overwritten.<br><COLOR =#c12424> If you take over between different OSs, a paid Loveka is converted to a free Loveka.<br>In the case of handing over with the OS, it will be taken over as it is.<br>When taking over to a different OS or different store account, please cancel the Miracle path yourself in advance.<br>If multiple/duplicate subscription is performed on the Miracle path, the benefits cannot be duplicated. </color>",1
+Migration_MigrationConfirm,引き継ぎ内容確認,Confirmation of the takeover content,1
+Migration_MigrationData,引き継ぐゲームデータ,Game data to take over,1
+Migration_MigrationDeleteData,本端末のデータ,Data of the terminal,1
+Migration_UserID,ユーザーID,User ID,1
+Migration_UserName,ユーザー名,username,1
+Migration_Rank,ユーザーランク,User Rank,1
+Migration_ChargeMedal,有償ラブカ,Paid Loveka,1
+Migration_FreeMedal,無償ラブカ,Free Loveka,1
+Migration_MigrationButton,データを引き継ぐ,Data inherit,1
+Migration_MigrationFinalConfirm,最終確認,final confirmation,1
+Migration_MigrationFinalConfirmInfo,データ引き継ぎを実施すると、本端末のゲームデータが削除され、<br>引き継ぎ元のゲームデータが上書きされます<size=29><br><br><color=#C12424>異なるOS間で引き継ぎを行う場合、有償ラブカは無償ラブカに変換されます<br>同OS間での引き継ぎの場合は、そのまま引き継がれます<br>異なるOSまたは異なるストアアカウントへ引き継ぎ時、事前にご自身でMIRACLEパス解約をお願いします<br>MIRACLEパスに複数/重複加入が行われた場合、特典を重複して受け取ることはできません</size></color>,"When the data transfer is implemented, the game data of the terminal is deleted,<br>The original game data is overwritten <size = 29><br><br><COLOR =#c12424> If you take over between different OSs, a paid Loveka will be converted to a free Loveka.<br>If it is taken over between the OS, it will be taken over as it is.<br>When taking over to a different OS or a different store account, please cancel the Miracle path yourself in advance.<br>If multiple/duplication is enrolled in the Miracle path, the benefits cannot be duplicated </size> </color>",1
+Migration_MigrationFinalConfirmNote,<color=#C12424>本当に引き継ぎますか？</color>,<color =#c12424> Do you really take over? </color>,1
+MemberList_DialogTitle,イチ推しメンバーの変更,Change of recommended members,1
+MemberList_DialogConfirm,イチ推しメンバーを変更しますか？,Would you like to change the members?,1
+MemberList_ChangeButton,はい,yes,1
+MemberList_PhotoBoxButton,控え室,waiting room,1
+MemberList_TypeBonus,属性ボーナス,Attribute bonus,1
+MemberList_MemberBonus,メンバーボーナス,Member bonus,1
+MemberList_TypeAndMemberBonus,属性・メンバーボーナス,Attribute / Member Bonus,1
+MemberList_FilteringButton,絞り込み,Narrow down,1
+MemberList_SortButton,並べ替え,Sorting,1
+MemberList_ThumbnailSize,サムネイルサイズ,Thumbnail size,1
+MemberList_Change,変更,change,1
+MemberList_Small,小,small,1
+MemberList_Big,大,Big,1
+MemberList_SizeChangeDialogTitle,サムネイルサイズ変更,Changed thumbnail size,1
+MemberList_SizeChangeDialogMessage,お好みのサムネイルサイズ表示を選択してください,Please select your favorite thumbnail size display,1
+Option_ResetToDefaultButton,デフォルト設定,Default configuration,1
+Option_LiveScreenPreview,ライブ画面プレビュー,Live screen preview,1
+Option_Live_Title,ライブ設定,Live settings,1
+Option_Live_ConfirmBeforeLive,ライブ前のオプション確認表示,Optional confirmation display before live,1
+Option_Live_RhythmIconSpeed_Title,リズムアイコンの速度,Speed ​​of rhythm icon,1
+Option_Live_RhythmIconSize_Title,リズムアイコンの大きさ,The size of the rhythm icon,1
+Option_Live_LaneLength,リズムアイコンの位置,Position of rhythm icon,1
+Option_Live_ComboPosition,COMBO表示の位置,COMBO display position,1
+Option_Live_InputResultPosition,判定表示の位置,Position of judgment display,1
+Option_Live_SkillEffectTextView,スキル効果の表示,Display of skill effects,1
+Option_Live_CenterIcon,中央アイコンの小型化,Small central icon,1
+Option_Live_PositonCenter,中央,Center,1
+Option_Live_PosiionUpper,上部,Upper part,1
+Option_Live_BluetoothConnectionState_Title,Bluetooth™,Bluetooth ™,1
+Option_Live_BluetoothConnectionState_On,接続中,connecting,1
+Option_Live_BluetoothConnectionState_Off,未接続,disconnected,1
+Option_Live_TapTiming_Title,判定調整,Judgment adjustment,1
+Option_Live_TapTiming_Left_Title,画面左側,The left side of the screen,1
+Option_Live_TapTiming_Right_Title,画面右側,Right side of the screen,1
+Option_Live_TapTiming_Center_Title,中央のアイコン,Central icon,1
+Option_Live_TapTiming_Left_Button,左側に合わせる,Match to the left,1
+Option_Live_TapTiming_Right_Button,右側に合わせる,Match to the right,1
+Option_Live_TapTiming_Normal_Title,通常時,Normal time,1
+Option_Live_TapTiming_Bluetooth_Title,Bluetooth™接続時,When connecting to Bluetooth ™,1
+Option_Live_TapTiming_Button,タップ調整,Tap adjustment,1
+Option_Live_TapTiming_TestLive,テストライブ,Test live,1
+Option_Live_LongPressLineDepth_Title,長押しラインの濃さ,Long press line depth,1
+Option_Live_SameTimePressLine_Title,同時押しラインの表示,Display of simultaneous pressing line,1
+Option_Live_SliderSameTimePressLine_Title,スイングアイコンの同時押しラインの表示,Display of simultaneous pushing line of swing icon,1
+Option_Live_Skill_Effect_Title,特技カットイン,Special skill cut -in,1
+Option_Live_TapTiming_Effect_Title,タイミング表示,Timing display,1
+Option_Live_RhythmIconMovePos_Title,リズムアイコンの減速,Rhythm icon deceleration,1
+Option_Live_RhythmIconMovePos_Type1,最後に減速,Finally deceleration,1
+Option_Live_RhythmIconMovePos_Type2,最初に減速,First deceleration,1
+Option_Live_ComboUITransparent_Type3,等速,Constant velocity,1
+Option_Live_ComboTransparent,コンボ表示の濃さ,Combo display darkness,1
+Option_Live_ComboSize,コンボ表示の大きさ,The size of the combo display,1
+Option_Live_InputResultTransparent,判定表示の濃さ,Density of judgment display,1
+Option_Live_InputResultSize,判定表示の大きさ,The size of the judgment display,1
+Option_Live_RhythmIconPos,リズムアイコンの高さ,The height of the rhythm icon,1
+Option_Live_RhythmIconStartPos,中央アイコンの高さ,The height of the central icon,1
+Option_Live_FpsSetting,ライブ中のFPS,Live FPS,1
+Option_Live_Mirror_Title,ノーツ配置の反転,Inverted notes,1
+Option_Live_LaneEffect_Title,レーンエフェクト,Lane effect,1
+Option_Live_FillsUpLivePosition_Title,追加メンバー参加,Participated in additional members,1
+Option_Live_Bluetooth_Caution,Bluetooth™機器の接続は<br>各端末の設定に従ってください,"To connect to Bluetooth ™ devices, please follow the settings of each terminal.",1
+Option_Live_Movie_Disp,ライブ動画,Live video,1
+Option_Live_Movie_Brightness,ライブ動画の明るさ,Live video brightness,1
+Option_Live_Movie_Caution,デフォルトは[ON]です,The default is [ON],1
+Option_LiveSkin_Title,ライブアイコン設定,Live icon setting,1
+Option_LiveSkin_Lane_Title,レーン・タップライン,Lane tap line,1
+Option_LiveSkin_LaneBrightness_Title,レーンの明るさ,Lane brightness,1
+Option_LiveSkin_TapEffect_Title,タップエフェクト,Tap effect,1
+Option_LiveSkin_RhythmIcon_Title,ノーツデザイン,Notes design,1
+Option_LiveSkin_SE_Title,タップ音,Tapping sound,1
+Option_LiveSkin_SE_TapButton,タップ音テスト,Tap sound test,1
+Option_LiveSkin_SE_FlickButton,フリック音テスト,Flick sound test,1
+Option_LiveProduction_Title,音量設定,Volume setting,1
+Option_LiveProduction_Production_Title,ライブ演出,Live production,1
+Option_LiveProduction_ActionMode_Title,動作モード,action mode,1
+Option_LiveProduction_ActionMode_Regular,標準,standard,1
+Option_LiveProduction_LiveEffect,ライブエフェクト,Live effect,1
+Option_LiveProduction_ActionMode_Light,軽量,lightweight,1
+Option_LiveProduction_ActionMode_Full,高品質,high quality,1
+Option_LiveProduction_LiveMonitor,ライブモニター,Live monitor,1
+Option_LiveProduction_TapEffectSize,タップエフェクトサイズ,Tap effect size,1
+Option_LiveProduction_MemberCutIn_Title,（ダミー）,(dummy),1
+Option_LiveProduction_ShowSkillEffect_Title,特技効果表示,Special skill effect display,1
+Option_LiveProduction_PlayClimaxMovie_Title,（ダミー）演出,(Dummy) Direction,1
+Option_LiveProduction_Volume_Title,ライブ音量,Live volume,1
+Option_LiveProduction_Volume_Music,楽曲,Music,1
+Option_LiveProduction_Volume_SE,SE,SE,1
+Option_LiveProduction_Volume_Tap,操作音,Manipulation noise,1
+Option_LiveProduction_Volume_Voice,ボイス,voice,1
+Option_Volume_Title,音量設定,Volume setting,1
+Option_Volume_LiveSettings,ライブ時の音量設定,Live volume setting,1
+Option_Volume_MusicVolume,楽曲音量,Volume of music,1
+Option_Volume_SEVolume,効果音量,Sound effects,1
+Option_Volume_OtherSettings,その他の音量設定,Other volume setting,1
+Option_Volume_BGMVolume,BGM音量,BGM volume,1
+Option_System_Title,システム設定,System setting,1
+Option_System_Volume_Title,システム音量,System volume,1
+Option_System_Volume_BGM,楽曲音量,Volume of music,1
+Option_System_Volume_SE,効果音量,Sound effects,1
+Option_System_Volume_Voice,ボイス,voice,1
+Option_System_Download_Title,ダウンロード,download,1
+Option_System_Download_Button,事前<br>ダウンロード,Prior <br> Download,1
+Option_System_Download_LiveMember,ライブ中メンバー演出,Directed by members during the live,1
+Option_System_Notification_Title,通知設定,Notification settings,1
+Option_System_Notification_Stamina_Full,全回復,Full recovery,1
+Option_System_Notification_Midnight,深夜帯通知,Midnight band notification,1
+Option_System_Notification_Detail,端末設定により通知をOFFにしていた場合、アプリからの通知はされませんのでご注意ください<br>深夜帯は(0：00～5：59)です,"Please note that if the notification is turned off by setting the terminal, the application will not be notified.",1
+Option_System_Alert_Title,アラート設定,Alert setting,1
+Option_System_Alert_UseTooMuch,利用額アラート,Used alert,1
+Option_System_Alert_Detail,※一ヶ月の利用額が10万円を越える際に確認画面が表示されます,"* The confirmation screen will be displayed when the monthly usage exceeds 100,000 yen.",1
+Option_System_Others_Title,その他の設定,Other settings,1
+Option_System_FixScreenDirection,画面回転を固定,Fix screen rotation,1
+Option_System_StaminaConfirm,LP不足確認,LP deficiency confirmation,1
+Option_System_AutoBurstConfirm,スキップチケット不足確認,Skip ticket shortage confirmation,1
+Option_System_BatteryConfirm,バッテリー警告,Battery warning,1
+Option_System_BluetoothConfirm,Bluetooth™接続確認,Bluetooth ™ connection confirmation,1
+Option_System_HomeSceneMoviePlay,ホーム画面動画演出,Home screen video production,1
+Option_System_IgnoreGachaUrEffect,URのみ演出をスキップしない,Only UR does not skip the production,1
+Option_System_Live2D_Character_Title,表示メンバー,Display member,1
+Option_System_Live2D_Character_UseRecommend,イチ推しメンバー,Ichi recommended member,1
+Option_System_Live2D_Character_UseDeck,グループメンバー,Group member,1
+Option_System_Live2D_Character_Detail,※表示メンバーは画面を切り替えた時に更新されます,* The display members will be updated when the screen is switched.,1
+PresentBox_Scroll_AcquiredDateTimeLabel,獲得日時,Acquisition date and time,1
+PresentBox_Scroll_ReceivedDateTimeLabel,受取日時,Date and time,1
+PresentBox_Scroll_ExpireDateTimeLabel,受取期限,Deadline for receipt,1
+PresentBox_Tab_Receivable,未受取,Unconcerned,1
+PresentBox_Tab_Received,受取履歴,Reception history,1
+PresentBox_Title,プレゼント,present,1
+PresentBox_MainTitle,プレゼント一覧,Present list,1
+PresentBox_SubTitle,プレゼント,present,1
+PresentBox_Receive,受け取る,receive,1
+PresentBox_AllReceive,一括受取,Collective receipt,1
+PresentBox_EmptyReceivable,表示するプレゼントがありません,There is no present to display,1
+PresentBox_EmptyReceived,表示するプレゼントがありません,There is no present to display,1
+PrivateEnter_Title,ライブ検索,Live search,1
+PrivateEnter_ConfirmTitle,ライブ参加確認,Live participation confirmation,1
+PrivateEnter_Message,※6桁のライブIDを入力してください,* Please enter a 6 -digit live ID,1
+PrivateEnter_RoomID,ライブID,Live ID,1
+PrivateEnter_EnterButton,参加,Participation,1
+PrivateEnter_SearchButton,検索,search,1
+PrivateEnter_ConfirmRoom,きょうりょくライブ　{0},Kyoroku Live {0},1
+PrivateEnter_ConfirmEventRoom,イベント　（ダミー）ライブ,Event (dummy) live,1
+PrivateEnter_ConfirmRoomID,RoomID　{0},ROOMID {0},1
+PrivateEnter_ConfirmJoinMessage,ライブIDの一致するライブが見つかりました<br>ライブに参加しますか？,I found a live performance with a live ID <br> Would you like to participate in the live?,1
+PrivateEnter_ConfirmJoinNotConditionMessage,このライブの参加条件を満たしていません<br><br>ライブ参加条件<br>{0},It does not meet the participation conditions of this live<br><br>Live participation conditions<br>{0},1
+PrivateEnter_ConfirmJoinNotTotalPowerMessage,総合力が不足しているため参加できません,I can't participate because I lack overall power,1
+PrivateEnter_ConfirmUserName,ユーザー名,username,1
+PrivateCreate_Title,ライブ作成,Live performance,1
+PrivateCreate_RoomCompleteTitle,ライブ作成完了,Live creation completed,1
+PrivateCreate_Message,最大{0}文字で入力！,Enter the maximum {0} character!,1
+PrivateCreate_RoomTypeTitle,ライブ報酬,Live reward,1
+PrivateCreate_RoomTypeNormal,通常,usually,1
+PrivateCreate_RoomTypeSpecial,曜日,day of week,1
+PrivateCreate_RoomConditionTitle,ライブ名,Live name,1
+PrivateCreate_RoomConditionFree,FREE PASS,Free pass,1
+PrivateCreate_RoomConditionBasic,BASIC PASS,Basic Pass,1
+PrivateCreate_RoomConditionElite,ELITE PASS,Elite pass,1
+PrivateCreate_RoomConditionMaster,MASTER PASS,Master Pass,1
+PrivateCreate_RoomIDTitle,ライブID,Live ID,1
+PrivateCreate_CommentTitle,一言コメント,One comment,1
+PrivateCreate_CommentInput,※10文字以内で入力してください,* Please enter within 10 characters,1
+PrivateCreate_IDCopyButton,IDをコピー,Copy your ID,1
+PrivateCreate_CreateButton,作成,create,1
+PrivateCreate_EnterButton,参加,Participation,1
+PrivateCreate_RoomIdCopy,ライブIDをコピーしました,I copied the live ID,1
+PrivateCreate_ConfirmMessage,ライブを作成しました<br>ライブに参加しますか？,Created a live <br> Do you want to participate in the live?,1
+FriendInviteReceive_Title,友達招待,Invitation to friends,1
+FriendInviteReceive_Check,友達招待の確認中です…,I'm checking my friend invitation ...,1
+FriendInviteReceive_NotMessage,現在、きょうりょくライブの友達招待はありません<BR>プライベートライブを作成する事で友達を招待することが可能です,"Currently, there is no invitation to a live show <br> You can invite friends by creating a private live.",1
+FriendInviteSend_Title,友達招待,Invitation to friends,1
+FriendInviteReceive_SubTitle,友達よりきょうりょくライブの招待をされています<br>参加したいライブを選択してください,I am invited to live a live show from my friends <br> Please select the live you want to participate,1
+FriendInviteSend_Message,全ての友達へ招待を送りますか？,Would you like to send an invitation to all your friends?,1
+FriendInviteSend_CheckMessage,お気に入り友達だけに送る,Send only to your favorite friends,1
+DeckTop_DeckEditTag,ユニット<br>編成,Unit <br> Organization,1
+DeckTop_CostumeTag,衣装変更,Change of costumes,1
+DeckTop_PracticeTag,レッスン,lesson,1
+DeckTop_SkillPracticeTag,スキル<br>レッスン,Skill <br> Lesson,1
+DeckTop_TrainingTag,覚醒,Awakening,1
+DeckTop_MemberListTag,部員<br>リスト,List <BR>,1
+DeckTop_ExchangeTag,交換所,Exchange,1
+DeckTop_CharacterIllustrateTag,メンバー図鑑,Member picture book,1
+DeckCharaSelect_LeaderChangeButton,リーダー設定,Leader setting,1
+DeckCharaSelect_ParamNothing,---,---,1
+DeckCharaSelect_SubDeckNoSkill,サブユニットの部員は、スキルは発動しません,Subunit members do not activate their skills,1
+SortDialog_Title,部員並べ替え,Sorting,1
+SortDialog_FilteringTitle,絞り込み,Narrow down,1
+SortDialog_SortTitle,並べ替え,Sorting,1
+SortDialog_DefaultButton,全解除,All cancellation,1
+SortDialog_AllSelectButton,全選択,Select all,1
+SortDialog_AllReleaseButton,全解除,All cancellation,1
+SortDialog_LiveSkillWord,特技,Special skill,1
+SortDialog_LiveSkillScoreUp,スコアアップ,Score -up,1
+SortDialog_LiveSkillConditionalScoreUp,条件付き<br>スコアアップ,Conditional <br> Score -up,1
+SortDialog_LiveSkillScoreUpAndLifeHeal,スコアアップ付き<br>体力回復,With score improvement <br> Physical strength recovery,1
+SortDialog_LiveSkillScoreUpAndResultUp,スコアアップ付き<br>判定強化,With score improvement <br> Judgment enhancement,1
+SortDialog_LiveSkillPowerHeal,体力回復,Recovery of physical strength,1
+SortDialog_LiveSkillEnhance,判定強化,Strengthening of the decision,1
+SortDialog_LiveSkillOther,その他,others,1
+SortDialog_LiveSkillConditionalOnlyScoreUp,特定条件のみ<br>スコアアップ,Only specific conditions <br> Score -up,1
+SortDialog_LiveSkillEnergyConditionalLifeHealScoreUp,体力条件<br>スコアアップor回復,Physical strength conditions <br> Score -up or recovery,1
+SortDialog_FilterGroup,グループ,group,1
+SortDialog_FilterType,属性,attribute,1
+SortDialog_FilterAwakening,覚醒,Awakening,1
+SortDialog_AwakeningAll,全て,all,1
+SortDialog_Awakened,覚醒済み,Awakened,1
+SortDialog_Unawakened,未覚醒,Unconventional,1
+SortDialog_PassiveSkillWord,パッシブスキル,Passive skill,1
+SortDialog_PassiveSkillEffectWord,効果対象,Effect,1
+SortDialog_PassiveSkillEffectPart,楽器担当,Instrument in charge,1
+SortDialog_PassiveSkillEffectPartRole,パート担当,Part -time job,1
+SortDialog_PassiveSkillEffectPartAndPartRole,両方,both,1
+SortDialog_PassiveSkillPartWord,◆効果対象楽器パート◆,◆ Effective instrument part ◆,1
+SortDialog_PassiveSkillSuitWord,◆効果対象部員属性◆,◆ Effect target department attribute ◆,1
+SortDialog_PassiveSkillMatchBothWord,◆複合条件◆,◆ Complex conditions ◆,1
+SortDialog_PassiveSkillSubPartWord,◆その他◆,◆ Others ◆,1
+SortDialog_PassiveSkillSubPartWordPowerUp,初期体力アップ,Initial physical fitness up,1
+SortDialog_EpisodeReadAll,全て,all,1
+SortDialog_EpisodeReadNotEpisode,ストーリー未読,Unread story,1
+SortDialog_EpisodeReadNotSpecialEpisode,スペシャル<br>ストーリー未読,Special <br> Story unread,1
+SortDialog_SortAllStatus,総合力,Comprehensive force,1
+SortDialog_SortSoul,スマイル,Smile,1
+SortDialog_SortTechnic,ピュア,pure,1
+SortDialog_SortAppeal,クール,cool,1
+SortDialog_SortUnlock,入手順,Obtaining procedure,1
+SortDialog_SortRarity,レアリティ,Rarity,1
+SortDialog_SortLevel,レベル,level,1
+SortDialog_SortSkillLevel,特技レベル,Special skill level,1
+SortDialog_SortSkill,特技順,Special skill order,1
+SortDialog_SortMember,メンバー,member,1
+SortDialog_SortFavorite,お気に入り,favorite,1
+SortDialog_SortHp,HP,HP,1
+SortDialog_Kizuna,キズナ,Kizuna,1
+SortDialog_EventPtBonus,イベント ptボーナス,Event PT bonus,1
+SortDialog_TypeAll,全対象,All targets,1
+SortDialog_PassiveSkillMatchBothAnd,楽器パート、属性の両方が一致しているときに効果発生,Effective when both musical instrument parts and attributes match,1
+SortDialog_PassiveSkillMatchBothOr,楽器パート、属性のどちらかが一致しているときに効果発生,Effective when either musical instrument part or attribute matches,1
+CostumeSelectPortrait_Top,この画面をタップすると<br>全画面モードが解除されます,Tap this screen <br> The full screen mode will be released.,1
+CostumeSelectPortrait_Selected,選択中,choosing,1
+LocalNotification_Title,スクフェス2,Sukufes 2,1
+LocalNotification_Ticker,LPが全回復しました,LP has been fully recovered,1
+LocalNotification_Message,LPが全回復しました,LP has been fully recovered,1
+LocalNotification_Description,通知,notification,1
+LiveDownload_State_Downloading,Now Loading...,Now Loading ...,1
+LiveDownload_State_Complete,準備完了！,Ready!,1
+LiveScene_Dialog_ContinueTitle,ライブを再開,Resume live,1
+LiveScene_Dialog_ContinueMessage,ラブカを<color=#C12424>{0}個</color>消費し、HPを全回復してライブを再開しますか？,Do you want to <color =#c12424> {0} </color> of Loveka and restart the live to restart the HP?,1
+LiveScene_Dialog_ContinueGemShortageTitle,ラブカ不足,Loveka shortage,1
+LiveScene_Dialog_ContinueGemShortageMessage,ラブカが不足しているため、<br>ライブを再開することができません,I can't resume the live because there is a shortage of Loveka,1
+LiveScene_Dialog_FailureTitle,ライブ失敗,Live failure,1
+LiveScene_Dialog_FailureMessage,HPがなくなってしまいました<br><br>ラブカを<color=#C12424>{0}個</color>消費することで、<br>HPを全回復して再開できます,"The HP has disappeared <br> <br> By consuming Loveka <color =#c12424> {0} individual </color>, you can recover and restart HP.",1
+LiveScene_Dialog_FailureMessage_EventSpirit,HPがなくなってしまいました<br><br>ラブカを<color=#C12424>{0}個</color>消費することで、<br>HPを全回復して再開できます,"The HP has disappeared <br> <br> By consuming Loveka <color =#c12424> {0} individual </color>, you can recover and restart HP.",1
+LiveScene_Dialog_PauseTitle,一時停止,pause,1
+LiveScene_Dialog_PauseMessage,ライブを終了して楽曲選択に戻りますか？<br><br><color=#C12424>※終了した場合には、LPは消費しません</color>,Will you end the live and return to the song selection? <br> <COLOR =#c12424> * LP is not consumed if it ends </color>,1
+LiveScene_Dialog_PauseMessage_EventChallenge,ライブを終了して楽曲選択に戻りますか？<br><br><color=#C12424>※終了した場合にはミラクルスターは消費しません</color>,Will you end the live and return to the song selection? <br> <br> <COLOR =#c12424> * Miracle Star is not consumed when finished </color>,1
+LiveScene_Dialog_PauseMessage_CannotRetire,,#VALUE!,1
+LiveScene_Dialog_RetireConfirmTitle,ライブを終了,End the live,1
+LiveScene_Dialog_RetireConfirmMessage,ライブを終了すると報酬を獲得できません。<br>ライブに戻ってプレイを続けますか？<br><br><color=#C12424>※終了した場合には、LPは消費しません</color>,"When you end the live, you will not be able to get a reward. <br> Do you want to go back to the live and continue playing? <br> <COLOR =#c12424> * LP is not consumed if it ends </color>",1
+LiveScene_Dialog_RetireConfirmMessage_EventChallenge,ライブを終了すると報酬を獲得できません。<br>ライブに戻ってプレイを続けますか？<br><br><color=#C12424>※終了した場合には、ミラクルスターは消費しません</color>,"When you end the live, you will not be able to get a reward. <br> Do you want to go back to the live and continue playing? <br> <br> <COLOR =#c12424> * Miracle Star does not consume </color>",1
+LiveScene_Dialog_SuspendButton,ライブを終了,,1
+LiveScene_Dialog_CancelButton,一時停止へ,,1
+LiveScene_Dialog_ReheasalRetryConfirmMessage,ライブを終了して最初からやり直しますか？,Do you want to start the live and start over from the beginning?,1
+LiveScene_Dialog_ReheasalRetireConfirmMessage,ライブを終了して楽曲選択に戻りますか？,Will you end the live and return to the song selection?,1
+LiveScene_MultiWaitOtherPlayerLoading,メンバー準備中…,Members are preparing ...,1
+LiveScene_MultiWaitOtherPlayerPlaying,メンバーライブ中…,Members live ...,1
+LiveScene_MultiUserIntroduction_Vs,このプレイヤーとライブ,Live with this player,1
+LiveScene_MultiUserIntroduction_EventHomework,このプレイヤーとライブ,Live with this player,1
+LiveScene_SkillBoard_Trigger,特技発動,Special skill activation,1
+LiveScene_VoltageGaugeLv1,(ダミー) LV 1,(Dummy) Lv 1,1
+LiveScene_VoltageGaugeLv2,(ダミー) LV 2,(Dummy) Lv 2,1
+LiveScene_VoltageGaugeLv3,(ダミー) LV 3,(Dummy) Lv 3,1
+LiveScene_VoltageGaugeLv4,(ダミー) LV 4,(Dummy) Lv 4,1
+LiveScene_VoltageGaugeLvMax_ClimaxReady,CLIMAXタイム準備中,Climax time preparing,1
+LiveScene_VoltageGaugeLvMax_ClimaxPlaying,CLIMAXタイム発動中！！,CLIMAX time is activating! !,1
+LiveScene_VoltageGaugeLvMax_ClimaxEnd,CLIMAXタイム終了,Climax time is over,1
+LiveScene_VoltageGaugeLvMax_ClimaxPerfect,CLIMAX PERFECT！！,Climax Perfect! !,1
+LiveScene_AutoPlayComment,オートプレイなのでハイスコアが適用されます,"Since it is an auto play, a high score is applied",1
+LiveScene_Dialog_RestartConfirmTitle,最初からやりなおす,Remove from the beginning,1
+LiveScene_Dialog_RestartConfirmMessage,ライブを終了して最初からやりなおしますか？<br><br><color=#C12424>※終了した場合に、LPは消費しません</color>,Do you finish the live and start over from the beginning? <br> <br> <COLOR =#c12424> * LP does not consume </color>,1
+LiveScene_Dialog_RestartConfirmMessage_EventSpirit,ライブを終了して最初からやりなおしますか？<br><br><color=#C12424>※終了した場合に、ミラクルスターは消費しません</color><br><br>,Do you finish the live and start over from the beginning? <br> <COLOR =#c12424> * Miracle star does not consume </color> <br> </color> <br> </color> <br>,1
+LiveScene_Dialog_ContinueSpiritShortageTitle,ミラクルスター不足,Miracle star shortage,1
+LiveScene_Dialog_ContinueSpiritShortageMessage,ミラクルスターが不足しています<br><br>ミラクルスターは通常曲をプレイすることで<br>獲得可能です<br><br>,Miracle Star is lacking <br> <br> Miracle Star can be acquired by playing normal songs <br> <br>,1
+CooperationLive_BlueText,<color=#0064AA>{0}</color>,<color =#0064aa> {0} </color>,1
+CooperationLive_GreenText,<color=#328C00>{0}</color>,<color =#328c00> {0} </color>,1
+CooperationLive_PurpleText,<color=#8644C6>{0}</color>,<color =#8644C6> {0} </color>,1
+CooperationLive_RedText,<color=#D73C55>{0}</color>,<color =#d73C55> {0} </color>,1
+CooperationLive_OrangeText,<color=#FF9831>{0}</color>,<color =#ff9831> {0} </color>,1
+CooperationLive_RoomRestriction,ライブ制限,Live restriction,1
+CooperationLive_NormalRoom,通常,usually,1
+CooperationLive_SpecialRoom,曜日,day of week,1
+CooperationLive_EventRoom,イベント,event,1
+Notice_DialogTitle,楽曲追加！,Added songs!,1
+Notice_DialogSchool,（ダミー）,(dummy),1
+Notice_DialogWordsDefault,作詞：,Lyrics:,1
+Notice_DialogCompositionDefault,作曲：,Composition:,1
+Notice_DialogArrangerDefault,編曲：,Arrangement:,1
+MultiConfirm_EasyColorText,<color=#0096C8>{0}</color>,<color =#0096c8> {0} </color>,1
+MultiConfirm_NormalColorText,<color=#78B400>{0}</color>,<color =#78b400> {0} </color>,1
+MultiConfirm_HardColorText,<color=#F57873>{0}</color>,<color =#f57873> {0} </color>,1
+MultiConfirm_ExpertColorText,<color=#F28E00>{0}</color>,<color =#f28e00> {0} </color>,1
+MusicDetail_DialogTitle,楽曲詳細,Music details,1
+MusicDetail_RecievedLabel,獲得済み,Already acquired,1
+MusicDetail_RemainLabel,あと{0}回,And {0} times,1
+MusicDetail_FirstLabel,初回報酬,First reward,1
+MusicDetail_ClearReward,確定クリア報酬,Confirmed clear reward,1
+MusicDetail_RandomReward,ランダムクリア報酬,Random clear reward,1
+MusicDetail_DetailTab,楽曲情報,Music information,1
+MusicDetail_RewardTab,達成報酬,Achievement reward,1
+MusicDetail_Reference,出典：{0},Source: {0},1
+MusicSelect_HighScore,ハイスコア,High score,1
+MusicSelect_MyRankingHighScore,あなたの<br>（ダミー）,Your <br> (dummy),1
+MusicSelect_ClearRamp,クリア状況,Clear status,1
+MusicSelect_TeacherPoint,ハイスコアレート,High -core rate,1
+MusicSelect_TeacherPointSum,総合ハイスコアレート,Comprehensive high -core rate,1
+MusicSelect_CategoryButton,ジャンル,Genre,1
+MusicSelect_SortButton,絞り込み,Narrow down,1
+MusicSelect_ClearBonusButton,達成報酬,Achievement reward,1
+MusicSelect_RandomButton,おまかせ,Random,1
+MusicSelect_SortApplyDataBar,適用中,During the application,1
+MusicSelect_ObtainTypeShopMessage,楽曲ショップで購入する,Buy at the music shop,1
+MusicSelect_ObtainTypeShopButton,楽曲ショップへ,To the music shop,1
+MusicSelect_ObtainTypeMissionMessage,ミッション<br>「{0}」<br>を達成する,Achieve mission <br> '{0}' <br>,1
+MusicSelect_ObtainTypeMissionButton,ミッションへ,To the mission,1
+MusicSelect_ObtainTypeStoryMessage,メインストーリー<br>「{0}」<br>の閲覧報酬,Main story <br> '{0}' <br> browsing reward,1
+MusicSelect_ObtainTypeStoryButton,ストーリーへ,To the story,1
+MusicSelect_ObtainTypePlayerRankMessage,ランクを{0}にする,Set the rank to {0},1
+MusicSelect_ObtainTypeNoneMessage,解放条件が設定されていません,Liberation conditions are not set,1
+MusicSelect_ObtainTypeNoneButton,未定義,undefined,1
+MusicSelect_UnlockTitle,解放条件,Release condition,1
+MusicSelect_SortDialogTitle,並べ替え,Sorting,1
+MusicSelect_RefineDialogTitle,絞り込み,Narrow down,1
+MusicSelect_FilterCategoryTitle,ジャンル,Genre,1
+MusicSelect_FilterOtherTitle,その他,others,1
+MusicSelect_SortTitle,ソート順,Sort order,1
+MusicSelect_FilterCategoryAll,すべて,all,1
+MusicSelect_FilterCategoryCharacterSong,（ダミー）,(dummy),1
+MusicSelect_FilterCategoryCoupling,（ダミー）,(dummy),1
+MusicSelect_FilterCategorySongWithinPlay,（ダミー）,(dummy),1
+MusicSelect_FilterCategoryOther,その他,others,1
+MusicSelect_FilteRefineNone,指定なし,unspecified,1
+MusicSelect_FilterRefineFavorite,お気に入り,favorite,1
+MusicSelect_FilterRefineNotClear,未クリア,Uncontrolled,1
+MusicSelect_FilterRefineNotScoreSS,未スコアランクSS,Not score rank SS,1
+MusicSelect_FilterRefineNotFullCombo,未フルコンボ,Non -full combo,1
+MusicSelect_FilterRefineNotAllPerfect,未オールPERFECT,Not all perfect,1
+MusicSelect_SortDefault,デフォルト,Default,1
+MusicSelect_SortMusicName,楽曲名順,Song name order,1
+MusicSelect_SortReleaseTime,配信順,Order of distribution,1
+MusicSelect_SortMusicLevel,レベル順,Level order,1
+MusicSelect_SortHighScore,ハイスコア順,High score order,1
+MusicSelect_Ranking,ランキング,Ranking,1
+MusicSelect_AllTab,全て,all,1
+MusicSelect_NoClearRate,--:--%,-:-%,1
+MusicRanking_Score,SCORE,Score,1
+MusicRanking_Rank,RANK,Rank,1
+MusicRecommend_RecommendList,おすすめリスト,Recommended list,1
+MusicRecommend_RecommendListCancel,おすすめリスト解除,Recommended list cancellation,1
+MusicRecommend_UseThisList,このリストを使用,Use this list,1
+MusicFilterAutoSort_DialogTitle,おまかせ選曲,Omakase song selection,1
+MusicFilterAutoSort_Random,ランダム,random,1
+MusicFilterAutoSort_NonPlay,まだプレイしたことがない曲,A song that I haven't played yet,1
+MusicFilterAutoSort_RecentPlay,最近プレイした曲,The song I played recently,1
+MusicFilterAutoSort_RecentRelease,最近配信された曲,Recently distributed songs,1
+MusicGoal_DialogTitle,楽曲目標,Music goal,1
+MusicGoal_ScoreLabel,SCORE |,Score |,1
+MusicGoal_HighScore,HIGH SCORE,High score,1
+MusicGoal_ComboLabel,COMBO |,Combo |,1
+MusicGoal_Combo,COMBO,Combo,1
+MusicGoal_MaxCombo,MAX COMBO,Max Combo,1
+MusicGoal_FullComboLabel,FULL COMBO |,Full Combo |,1
+MusicGoal_ClearLabel,CLEAR |,Clear |,1
+MusicGoal_ClearCount,クリア回数,Number of clears,1
+MusicGoal_Count,回,times,1
+MusicGoal_Achievement,達成,Achievement,1
+MusicGoal_AchievementRate,全プレイヤー間<br>クリア率,All players <br> Clear rate,1
+MusicGoal_Percent,%,%,1
+MusicGoal_HighOrder,上位,Top position,1
+MusicGoal_UnPlayed,未プレイ,Not played,1
+CooperationLive_TotalPower,メインユニットの総合力：,Overall power of the main unit:,1
+CooperationLive_NormaType,通常,usually,1
+CooperationLive_SpecialType,曜日,day of week,1
+CooperationLive_StampSettingButton,スタンプ設定,Stamp settings,1
+CooperationLive_PrivateButton,プライベート,private,1
+CooperationLive_FriendsInviteButton,友達招待,Invitation to friends,1
+CooperationLive_DeckEditButton,ユニット編成,Unit formation,1
+CooperationLive_InviteIcon,！,!,1
+CooperationLive_MatchingDialogTitle,マッチング中,During matching,1
+CooperationLive_MatchingDialogMessage,ライブを検索してます,I'm searching for live,1
+CooperationLive_CreateRoomDialogTitle,ライブ作成中,Under live performance,1
+CooperationLive_CreateRoomDialogMessage,ライブを作成しています,I am creating a live performance,1
+CooperationLive_MatchingDialogAnnotation,※混雑時、時間が掛かることがあります,* It may take time when crowded,1
+CooperationLive_PrivateSelectDialogTitle,プライベートライブ,Private live,1
+CooperationLive_PrivateSelectDialogEnterMessage,ライブIDを入力して<br>入室します,Enter the live ID and enter the room,1
+CooperationLive_PrivateSelectDialogEnterButton,入室,Entering the room,1
+CooperationLive_PrivateSelectDialogCreateMessage,条件を指定して<br>ライブを作成します,Create a live performance by specifying the conditions,1
+CooperationLive_PrivateSelectDialogCreateButton,作成,create,1
+CooperationLive_RoomTypeRewardInfo,{0}アップ！,{0} Up!,1
+CooperationLive_RoomTypeRewardWeekMonday,月曜限定,Monday only,1
+CooperationLive_RoomTypeRewardWeekTuesday,火曜限定,Tuesday only,1
+CooperationLive_RoomTypeRewardWeekWednesday,水曜限定,Wednesday only,1
+CooperationLive_RoomTypeRewardWeekThursday,木曜限定,Thursday only,1
+CooperationLive_RoomTypeRewardWeekFriday,金曜限定,Limited to Friday,1
+CooperationLive_RoomTypeRewardWeekSaturday,土曜限定,Saturday only,1
+CooperationLive_RoomTypeRewardWeekSunday,日曜限定,Sunday only,1
+FriendInviteItem_RoomCreater,ユーザー名,username,1
+FriendInviteItem_RoomType,ライブ属性,Live attribute,1
+FriendInviteItem_RoomCondition,ライブ制限,Live restriction,1
+FriendInviteItem_RoomComment,一言コメント,One comment,1
+FriendInviteItem_RoomName,ライブ名,Live name,1
+FriendInviteItem_RoomReward,ライブ報酬,Live reward,1
+FriendInviteItem_RoomSessionID,ライブID,Live ID,1
+FriendInviteItem_JoinButton,入室,Entering the room,1
+LiveMatching_PrivateRoomTitle,ID：,ID:,1
+LiveMatching_RoomConditionTitle,ライブ名：,Live name:,1
+LiveMatching_RoomTypeInfoTitle,ライブ報酬：,Live Reward:,1
+LiveMatching_PlayerTitle,{0}P,{0} p,1
+LiveMatching_Support,サポート,support,1
+LiveMatching_WaitMessage,マッチング中・・・メンバーがそろうまでお待ちください,During matching ... Please wait until the members are together,1
+LiveMatching_WaitMessageInfo,※2人以上でライブを開始可能です,* Live can be started with 2 or more people,1
+LiveMatching_RoomTypeNormal,通常,usually,1
+LiveMatching_RoomTypeEvent,曜日,day of week,1
+LiveMatching_MatchedMessage,メンバー決定！選曲に移行します,Member decision! I will move to the song selection,1
+LiveMatching_RoomOpenButton,ライブ解放,Live release,1
+LiveMatching_InviteFriendButton,友達招待,Invitation to friends,1
+LiveMatching_DecideButton,メンバー確定,Members confirmed,1
+MatchingPlayer_Wait,募集中...,Recruitment ...,1
+LoginBonus_HoldingPeriod,開催期間：,Holding period:,1
+LoginBouns_Season,{0} {1} 〜 {2} {3},{0} {1} ~ {2} {3},1
+LoginBouns_Days,{0}日目,{0} Day,1
+LoginBouns_EventBonusValue, +{0}, +{0},1
+MultiConfirm_LevelLabel,楽曲レベル,Song level,1
+MultiConfirm_OptionButton,各種設定,various settings,1
+MultiConfirm_HealthyBoostButton,LP設定,LP setting,1
+MultiConfirm_StartButton,準備完了,Ready,1
+MultiConfirm_Waiting,待機中,Waiting,1
+CooperationLiveInfo_Title,ライブ報酬,Live reward,1
+CooperationLiveInfo_MessageFormat,{0}<br><br>{1}<br><br>{2},{0} <br> <br> {1} <br> <br> {2},1
+CooperationLiveInfo_Message1,「曜日」ライブでは曜日毎に決まった報酬を<br>獲得しやすくなります<br>※「通常」ライブでは通常の報酬になります                                                                                                ,"In the 'day of the week' live, it will be easier to get a fixed reward for each day of the week <br> * 'Normal' live will be a normal reward.",1
+CooperationLiveInfo_Message2,月 {0}<br>火 {1}<br>水 {2}<br>木 {3}<br>金 {4}<br>土 {5}<br>日 {6},Month {0} <br> Tuesday {1} <br> Water {2} <br> Thursday {3} <br> Gold {4},1
+CooperationLiveInfo_Message3,※報酬アップ対象のアイテム以外は<br>獲得量を調整しています,"* Except for items to be rewarded, <br> the acquisition amount is adjusted.",1
+CooperationLiveInfo_dailyEffect,{0}の割合アップ！,{0} ratio up!,1
+Stamp_FavoriteTitle,お気に入り,favorite,1
+Stamp_RemoveButton,はずす,Remove,1
+Stamp_ResetButton,リセット,reset,1
+Profile_RankStory,{0}{1},{0} {1},1
+Profile_RankFriend,友達最大数 {0} → {1},Maximum number of friends {0} → {1},1
+Profile_RankReward,{0} {1}個,{0} {1},1
+GachaTop_PickUpPhotoDetailTitle,部員詳細,Details of the members,1
+GachaTop_PhotoDetailTitle,部員詳細,Details of the members,1
+Ornament_OrnamentListTitle,アイテム一覧,Item List,1
+OrnamentShop_OrnamentReplaceTitle,設置中のアイテムと置き換えますか？,Do you want to replace it with the items in installation?,1
+GachaTop_PickUpPhotoDetailButton,部員詳細,Details of the members,1
+GachaTop_InfoDetailButton,勧誘詳細,Solicitation details,1
+GachaTop_ExchangeButton,交換所,Exchange,1
+Notice_GroupExpNoticeWindowTitle,グループランク,Glue plank,1
+Button_Download,ダウンロード,download,1
+Mission_AcceptAllButtonText,一括受け取り,Collective receipt,1
+MusicDecision_MusicLevelArea,{0}~{1},{0} ~ {1},1
+MusicDecision_RandomMusicTitle,おまかせ,Random,1
+MusicDecision_RandomMusicLevel,？？,? ?,1
+MusicDecision_LiveLevelReselectButton,再選択,Re-selection,1
+MusicDecision_ShuffleMessage,楽曲を抽選します,Lottery for songs,1
+MusicDecision_DifficultySelectMessage,プレイする難易度を選択してください,Please select the difficulty level to play,1
+EventTop_ScoreRanking,全体スコアランキング,Overall score ranking,1
+EventTop_GroupScoreRanking,組別スコアランキング,Competition score ranking,1
+EventTop_Season,{0}まで,Until {0},1
+EventTop_UntilRewardPoint,まであと{0}pt,Until {0} pt,1
+EventTop_NextEventPoint,あと                                   P,And p,1
+EventTop_NextEventHomeworkPoint,あと,After,1
+EventTop_TotalEventPoint,累計イベントpt,Cumulative event PT,1
+EventTop_HasHomeworkPoint,協力ミッション達成数：,Number of cooperation missions:,1
+EventTop_HasStamina,所持ミラクルスター,Miracle star in possession,1
+EventTop_HasBadge,所持ピック：,Packing Pick:,1
+EventTop_HasMedal,所持ラブカ：,Possession Loveka:,1
+EventTop_HasTicket,所持がらがら券：,Purchased ticket:,1
+EventTop_NextStory,★次のストーリー,★ Next story,1
+EventTop_NextReward,★次の報酬,★ Next reward,1
+EventTop_NowHomework,★現在の課題,★ Current issues,1
+EventTop_AllGetReward,すべて獲得済み,All have been acquired,1
+EventTop_AllGetStory,すべて解放済み,All have been released,1
+EventTop_ExchangeButton,交換所,Exchange,1
+EventTop_BingoButton,BINGO,Bingo,1
+EventTop_BoxGachaButton,勧誘（ボックス）,Solicary (box),1
+EventTop_ChangeHomeworkButton,課題変更,Assignment change,1
+EventTop_HomeworkMusicLevel,楽曲難易度,Music difficulty,1
+EventTop_HomeworkMusicLevelValue,以上,that's all,1
+EventTop_CloseExchangeShopTerm,交換所は{0}まで,The exchange is up to {0},1
+EventTop_CloseBoxGachaTerm,（ダミー）は{0}まで,(Dummy) up to {0},1
+EventTop_StoryButtonNextPoint,あと　　　  P,And p,1
+EventTop_StoryButtonNextPointHomework,あと,After,1
+EventTop_TermTitle,開催期間：,Holding period:,1
+EventTop_ResultTermTitle,結果発表期間：,Result announcement period:,1
+EventTop_EmotionalMemberSelectTermTitle,【メンバー選択期間】,[Member selection period],1
+EventTop_EmotionalBandSelectTermTitle,【グループ選択期間】,[Group selection period],1
+EventTop_Multi_HelpterBonus,おたすけ報酬,Otasuke reward,223061303
+EventTop_Multi_TodayHelpterCount,本日のおたすけ回数,Today's number of times,223061303
+EventTop_Multi_AlreadyPlayedHelper,本日のおたすけ回数をプレイ済,I've played today's number of times,223061303
+EventTop_Multi_UnitSettings,イベント専用<br>ユニット編成,Event only<br>Unit formation,223061303
+EventTop_Multi_Live,みんなでライブ,Live together,223061303
+EventTop_Multi_LiveEx,みんなでライブ！,Live together!,223061303
+EventTop_Multi_FreeMatching,フリーマッチング,Free matching,223061303
+EventTop_Multi_FreeMatching_Info,ほかのプレイヤーと気軽にプレイ！,Feel free to play with other players!,223061303
+EventTop_Multi_PrivateMatching,プライベートマッチング,Private matching,223061303
+EventTop_Multi_PrivateMatching_Info,友達を誘ってワイワイプレイ！,Invite your friends to play!,223061303
+EventTop_Multi_Join,参加,Participation,223061303
+EventTop_Multi_HelperJoin,おたすけ参加,Participation,223061303
+EventTop_Multi_HelperCondition,難易度{0}以上をクリアし、{1}pが{2}以上でおたすけ参加できます,"Clear the difficulty level {0} or more, and you can participate in {1} p with {2} or more.",223061303
+EventTop_Multi_Room,ルームを,The room,223061303
+EventTop_Multi_Room2,ルームに,In the room,223061303
+EventTop_Multi_RoomCreate,作成,create,223061303
+EventTop_Multi_RoomJoin,参加,Participation,223061303
+EventTop_Multi_HelperToday,本日,today,223061303
+EventTop_Multi_HelperCount,{0}/{1},{0}/{1},223061303
+EventTop_Multi_MatchingTitle,難易度選択,Difficulty selection,223061303
+EventTop_Multi_MatchingTitleHelper,おたすけメンバー参加,Participate in Otasuke,223061303
+EventTop_Multi_RoomCreateDialog_Info,難易度を選択してください,Please select the difficulty level,223061303
+EventTop_Multi_RoomCreateDialog_Info2,※複数の難易度を選択できます<br>※複数選択した場合は選択した難易度からランダムでマッチングします,"* You can choose multiple difficulties<br>* If you select multiple, it will be randomly matched from the selected difficulty level.",223061303
+EventTop_Multi_RoomCreateDialog_Info3,難易度を1つ選択してください,Please select one difficulty level,223061303
+EventTop_Multi_RoomCreateDialog_Info4,※選択した難易度でライブをプレイできます,* You can play live with the selected difficulty level,223061303
+EventTop_Multi_RoomCreateDialog_Error,難易度が選択されていません,Difficulty level is not selected,223061303
+EventTop_Multi_RoomCreateDialog_Start,マッチング開始,Start matching,223061303
+EventTop_Multi_RoomSearchDialog_Info,ルームIDを入力してください,Enter your room ID,223061303
+EventTop_Multi_RoomSearch_NotFindRoom,ルームがIDが誤っているか、ルームが満員です,The room is incorrect or the room is full,223061303
+EventTop_Multi_PenaltyInfo,接続切断、もしくは不正行為が連続して検出されたため<br>本イベントにおけるライブプレイを一時的に制限させていただきます,Because connection cuts or misconduct were continuously detected<br>We will temporarily limit live play in this event,223061303
+EventTop_Multi_RemainPenalty,制限解除まで,Until the restriction is canceled,223061303
+EventTop_Multi_Confirmation,確認,confirmation,223061303
+EventTop_Multi_NotEnoughPower,ステータスがおたすけに必要な値を超えていません,The status does not exceed the required value,223061303
+EventLive__Multi_PointPenalty,獲得イベントpt半減,Acquisition event PT halved,223061303
+EventLive__Multi_NotSelectedLevel,難易度が選択されていません,Difficulty level is not selected,223061303
+EventLive__Multi_Matching,マッチング中({0}/{1}),Matching ({0}/{1}),223061303
+EventLive__Multi_JoiningRoom,ルーム参加中,Participating in the room,223061303
+EventLive__Multi_FailedToJoinRoom,ルーム参加に失敗しました。,I failed to participate in the room.,223061303
+EventLive__Multi_NotFoundRoom,ルームがIDが誤っているか、ルームが満員です,The room is incorrect or the room is full,223061303
+EventLive__Multi_CreatingRoom,ルーム作成中,Under a room,223061303
+EventLive__Multi_FailedToCreateRoom,ルーム作成に失敗しました。しばらく時間をあけてもう一度お試しください,I failed to create a room. Please open it for a while and try it again,223061303
+EventLive__Multi_NotFoundHelperRoom,おたすけで参加できるルームがありませんでした,There was no room to participate in Otasuke,223061303
+EventLive__Multi_ConnectingToMatchingServer,マッチングサーバー接続中,Matching server connection,223061303
+EventResult_Multi_Helper,おたすけ,help,223061303
+EventResult_Multi_Disconnected,通信が切断されました,Communication has been disconnected,223061303
+EventResult_Multi_ConfirmingResult,ライブ結果確認中,Live results are being confirmed,223061303
+EventResult_Multi_LeaveRoom,退出...,Leave ...,223061303
+EventResult_Multi_Retry,もう一度プレイ,Play again,223061303
+EventMusicSelect_HighScore,イベント<br>ハイスコア,Event <br> High score,1
+EventMusicSelect_ScoreRanking,スコアランキング,Score ranking,1
+EventMusicSelect_StaminaUseDialogTitle,ミラクルスター使用確認,Miracle star use confirmation,1
+EventMusicSelect_StaminaUseDialogMessage,ミラクルスター×{0}を使用しライブを開始しますか？<br>※LPは消費しません,Do you start live using Miracle Star x {0}? <br> * LP does not consume,1
+EventMusicSelect_StaminaUseDialogHasStamina,ミラクルスター {0}個,Miracle Star {0},1
+EventMusicSelect_StaminaConfirmCheck,本イベント終了までミラクルスター使用の確認はしない,Do not confirm the use of miracle stars until the end of this event,1
+EventStory_NextEventPoint,イベントpt,Event PT,1
+EventStory_NextEventHomework,累計課題達成数,Cumulative issues achievement,1
+EventStory_ReleaseInfoEventPoint,ライブでイベントptをあつめよう！,Let's collect event PT live!,1
+EventStory_ReleaseInfoEventHomework,イベントをあそんで課題をクリアしよう！,Let's play the event by playing the event!,1
+EventStory_EndReleaseStory,イベントは終了しています<br>このシナリオは{0}に解放予定です,The event has ended <br> This scenario will be released to {0},1
+EventRanking_TabScoreRanking,楽曲スコアランキング,Song score ranking,1
+EventRanking_TabGroupScoreRanking,組別スコアランキング,Competition score ranking,1
+EventRanking_TabPointRanking,イベントptランキング,Event PT ranking,1
+EventRanking_TabEmotionalRanking,ランキングTOP100,Ranking TOP100,1
+EventRanking_TotalScore,合計スコア,Total score,1
+EventRanking_ScoreRanking,合計スコアランキング,Total score ranking,1
+EventRanking_ChangeButton,切り替え,switching,1
+EventRanking_InfoMessage,{0}までにプレイした結果が反映されます,The result of playing by {0} is reflected,1
+EventRanking_TopRanking,上位者,Top player,1
+EventRanking_YourRanking,あなた,you,1
+EventRanking_ScoreRankingTitle,楽曲スコア,Music score,1
+EventRanking_PointRankingTitle,累計イベントpt,Cumulative event PT,1
+EventRanking_EmotionalRankingBandSelectTitle,グループ選択,Group selection,1
+EventRanking_EmotionalRankingMemberSelectTitle,メンバー選択,Member selection,1
+EventRanking_LookEmotionalRankingOtherBands,他グループを見る,See other groups,1
+EventRanking_LookEmotionalRankingOtherMembers,他のメンバーを見る,See other members,1
+EventReward_TotalEventPointReward,累計イベントpt報酬,Cumulative event PT reward,1
+EventReward_ScoreRankingReward,全体スコアランキング,Overall score ranking,1
+EventReward_GroupScoreRankingReward,組別スコアランキング,Competition score ranking,1
+EventReward_MusicScoreRankingReward,イベント曲スコア<br>ランキング,Event song score<br>Ranking,1
+EventReward_EventPointRankingReward,イベントpt<br>ランキング,Event PT<br>Ranking,1
+EventReward_EmotionalRankingReward,イチ推し<br>ランキング,Ichi<br>Ranking,1
+EventReward_TotalEventPoint,累計イベントpt,Cumulative event PT,1
+EventReward_YourRank,あなたの順位,Your rank,1
+EventReward_RankingButton,ランキングを見る,See the ranking,1
+EventReward_EmotionalRankingJoinText,{0}参加中,{0} participation,1
+EventReward_RankingFromTo,{0}～{1}位,{0} to {1} rank,1
+EventReward_RankingFromToEnd,{0}位～,{0} position ~,1
+EventReward_RankingInfoMessage,ランキング報酬はイベント終了後に付与されます,The ranking reward will be given after the event,1
+EventReward_BingoReward,BINGO,Bingo,1
+EventReward_BingoSheetLineReward,[シート{0}]{1}ライン達成報酬,[Seat {0}] {1} line achievement reward,1
+EventReward_BingoSheetCompleteReward,[シート{0}]コンプリート報酬,[Seat {0}] Complete reward,1
+EventReward_BingoAllSheetCompleteReward,全シートコンプリート報酬,All seat complete remuneration,1
+EventReward_RankingRewardDialogTitle,報酬一覧,Reward list,1
+EventReward_EventPointInfo,※累計イベントptには上限があります<br>※上限は報酬とともに追加される場合があります,* There is an upper limit on the cumulative event PT <br> * The upper limit may be added with the reward.,1
+EventResult_BaseEventPoint,基本イベントpt,Basic event PT,1
+EventResult_ScoreBonus,スコアボーナス,Score bonus,1
+EventResult_EventBonus,イベントボーナス,Event bonus,1
+EventResult_ClearBonus,クリアボーナス,Clear bonus,1
+EventResult_GetEventPoint,獲得イベントpt,Acquisition event PT,1
+EventResult_GetStamina,獲得イベントアイテム,Acquisition event items,1
+EventResult_GetBadge,獲得（ダミー）,Acquisition (dummy),1
+EventResult_GetMedal,獲得ラブカ,Acquisition Loveka,1
+EventResult_TotalEventPoint,累計イベントpt,Cumulative event PT,1
+EventResult_TotalStamina,累計イベントアイテム,Cumulative event item,1
+EventResult_TotalBadge,累計（ダミー）,Cumulative (dummy),1
+EventResult_TotalMedal,累計ラブカ,Cumulative Loveka,1
+EventResult_NextStory,次のストーリー,Next story,1
+EventResult_NextReward,次の報酬,Next reward,1
+EventResult_CompleteReward,全ての報酬を獲得しました,I got all the rewards,1
+EventResult_EventStaminaBoostValue,{0}倍,{0} double,1
+EventResult_MemberBonus,イベント対象部員,Event target member,1
+EventResult_MemberBonusInfoMessage,注意文言メンバーボーナス,Caution words members bonus,1
+EventResult_StaminaInfoMessage,注意文言キャンディ,Caution statement candy,1
+EventResult_NextPoint,あと,After,1
+EventResult_RewardDialogTitleClearCell,BINGOマスクリア報酬,BINGO Mask Clear Reward,1
+EventResult_RewardDialogTitleBingo,BINGO報酬,Bingo reward,1
+EventResult_RewardDialogSheetClear,シートクリア報酬,Seat clear reward,1
+EventResult_RewardDialogAllSheetComplete,コンプリート報酬,Complete reward,1
+EventResult_RewardDialogInfoClearCell,BINGOマスのクリア報酬です,Bingo mass clear reward,1
+EventResult_RewardDialogInfoBingo,BINGOの報酬です,Bingo's reward,1
+EventResult_RewardDialogInfoSheetClear,シートクリアの報酬です,It is a reward for clearing the seat,1
+EventResult_RewardDialogInfoAllSheetComplete,コンプリートの報酬です,Complete reward,1
+EventResult_BaseTicket,勧誘チケット枚数,Number of solicitation tickets,1
+EventResult_GetTicket,獲得勧誘チケット,Acquisition and solicitation ticket,1
+EventResult_TotalTicket,累計勧誘チケット,Cumulative solicitation ticket,1
+EventResult_ClearHomweork,今回の課題達成数,Number of issues achievement this time,1
+EventResult_TotalHomework,累計課題達成数,Cumulative issues achievement,1
+EventResult_NextHomeworkPoint,課題達成,Achieving issues,1
+EventResult_ReStartConfirmTitle,もう一度プレイ,Play again,1
+EventResult_ReStartConfirmSpiritMessage,ミラクルスター {0}を消費して<br>もう一度ライブをプレイしますか？,Spend Miracle Star {0} and play live again?,1
+EventResult_ReStartConfirmSpiritAutoMessage,ミラクルスター {0}とオートチケット{1}を消費して<br>もう一度ライブをプレイしますか？,Spend Miracle Star {0} and auto ticket {1} <br> Do you want to play live again?,1
+EventResult_ReStartConfirmAutoMessage,オートチケット{0}を消費して<br>もう一度ライブをプレイしますか？,Spend an auto ticket {0} and play the live again?,1
+EventBingoSheet_Title,BINGOシート({0}/{1}),Bingo sheet ({0}/{1}),1
+EventBingoSheet_TotalOpend,達成数,Number of achievements,1
+EventBingoSheet_TotalOpendValue,<color=#d73c55>{0}</color>/{1},<color =#d73C55> {0} </color>/{1},1
+EventBingoSheet_TotalSheet,シート,Seat,1
+EventBingoSheet_TotalSheetValue,<color=#d73c55>{0}</color>/{1},<color =#d73C55> {0} </color>/{1},1
+EventBingoSheet_TotalSheetValueCurrent,<color=#d73c55>{0}</color>/{1},<color =#d73C55> {0} </color>/{1},1
+EventBingoSheet_BingoClearScore,スコア<color=#d73c55>{0}</color>以上で{1}回クリア,Score <color =#d73C55> {0} </color> Clear {1} times,1
+EventBingoSheet_BingoClearLife,POWER<color=#d73c55>{0}</color>以上で{1}回クリア,Power <color =#d73c55> {0} </color> Clear {1} times,1
+EventBingoSheet_BingoClearJudge,GREAT以下を<color=#d73c55>{0}</color>以内で{1}回クリア,GREAT below <color =#d73c55> {0} </color> clear {1} times,1
+EventBingoSheet_BingoClearCombo,MAXコンボ<color=#d73c55>{0}</color>以上で{1}回クリア,MAX combo <color =#d73C55> {0} </color> Clear {1} times,1
+EventBingoSheet_BingoClearFullCombo,フルコンボで{0}回クリア,Clear {0} times with full combo,1
+EventBingoSheet_BingoClearMultiScoreRank,みんなでライブを<color=#d73c55>{0}</color>ランク以上で{1}回クリア,<COLOR =#d73C55> {0} </color> Clear the live with everyone.,1
+EventBingoSheet_BingoClearDeckCharacter,<color=#d73c55>{0}</color>を編成して{1}回クリア,Organize <color =#d73C55> {0} </color> and clear {1} times,1
+EventBingoSheet_BingoClearDeckType,<color=#d73c55>{0}</color>属性を{1}人以上編成して{2}回クリア,<COLOR =#d73C55> {0} </color> Clear {1} people or more and clear {2} times.,1
+EventBingoSheet_BingoClearMusicName,楽曲名：{0},Song name: {0},1
+EventBingoSheet_BingoClearEventMusicName,楽曲名：ランキングライブ {0},Music name: Ranking Live {0},1
+EventBingoSheet_BingoClearMusicLevel,レベル：{0},Level: {0},1
+EventBingoSheet_BingoClearMusicNameValue,{0},{0},1
+EventBingoSheet_BingoClearMusicLevelValue,{0}以上,{0} or higher,1
+EventBingoSheet_BingoRewardButton,報酬,Reward,1
+EventBingoSheet_BingoRewardDialogTitle,報酬一覧,Reward list,1
+EventBingoSheet_BingoSheetCompleteRewardNumber,{0}枚目,{0},1
+EventMemberBonus_TipsTitle,イベントボーナスについて,About event bonus,1
+BirthdayScene_PlayButtonNameText,お祝いを観る,Watch the celebration,1
+BirthdayScene_AreaButtonNameText,お誕生日会場,Birthday venue,1
+EventHomework_HomeworkConfirmButton,課題確認,Issues confirmation,1
+EventHomework_MissionNormalText,ノーマルミッション,Normal mission,1
+EventHomework_MissionRareText,レアミッション,Rare mission,1
+EventHomework_MissionSuperRareText,超レアミッション,Super rare mission,1
+EventHomework_LotteryDialogTitle,協力ミッション抽選,Cooperation mission lottery,1
+EventHomework_LotteryDialogRareMissionText,レアミッション例,Rare mission example,1
+EventHomework_LotteryDialogRareMissionInfoText,※協力ミッションにはノーマル、レア、超レアの3つのレアリティがあり、<br>レアリティが高くなる程より良い報酬になります,"* The cooperative mission has three rarity: normal, rare, and super rare.",1
+EventHomework_LotteryDialogLotteryButtonText,抽選する,Lottery,1
+EventHomework_MissionChangeDialogTitle,協力ミッション変更,Cooperation mission change,1
+EventHomework_MissionChangeDialogChangeMessage,現在の協力ミッションを変更しますか？<br>※変更すると、1度ライプをプレイするまで現在の協力ミッションの変更はできません,"Do you change your current cooperation mission? <BR> * If you change it, you will not be able to change the current cooperation mission until you play a lipe.",1
+EventHomework_MissionChangeDialogUnChangeMessage,現在の協力ミッションにチャレンジしてみよう！<br>※ライブプレイ後、現在の協力ミッションの変更が可能になります,"Let's challenge the current cooperation mission! <BR> * After live play, you will be able to change the current cooperative mission.",1
+EventHomework_GetMissionDialogTitle,協力ミッション獲得,Acquisition of cooperation mission,1
+EventHomework_GetMissionDialogMessage,※現在の協力ミッションとして設定されました,* Set as the current cooperative mission,1
+EventHomework_MissionDetailDialogTitle,協力ミッション,Cooperation mission,1
+EventHomeworkBoxGacha_Title,（ダミー）,(dummy),1
+EventHomeworkBoxGacha_NowBox,（ダミー）{0}箱目,(Dummy) {0} Box,1
+EventHomeworkBoxGacha_Remaining,のこり {0}/{1},Rumpy {0}/{1},1
+EventHomeworkBoxGacha_NextBoxButton,次のくじへ,To the next lottery,1
+EventHomeworkBoxGacha_PlayBoxGacha,{0}回まわす,{0} Turn,1
+EventHomeworkBoxGacha_UsedTicket,x{0},X {0},1
+EventHomeworkBoxGacha_HasTicket,所持チケット,Holding ticket,1
+EventHomeworkBoxGacha_BoxInfoButton,（ダミー）の中身,(Dummy) contents,1
+EventHomeworkBoxGachaInfo_Title,（ダミー）の中身（{0}箱目）,(Dummy) contents ({0} box),1
+EventHomeworkBoxGachaInfo_Page,{0}/{1},{0}/{1},1
+EventHomeworkBoxGachaResult_Title,アイテム獲得！,Get items!,1
+EventHomeworkBoxGachaResult_Message,※プレゼントから受け取れます,* You can receive it from the present,1
+EventHomeworkRoomSelect_RoomTitleEvent,{0}ライブ,{0} Live,1
+EventHomeworkRoomSelect_RoomTitleEveryone,イベント（ダミー）,Event (dummy),1
+EventHomeworkRoomSelect_RankingTarget,ハイスコアランキング対象,High score ranking target,1
+EventHomeworkRoomSelect_RankingExcluded,ハイスコアランキング対象外,Not eligible for high score ranking,1
+EventHomeworkRoomSelect_RankingExcludedInfo,ランキング対象外説明文,Explanation not eligible for ranking,1
+EventHomeworkRoomSelect_EventHighScore,イベントハイスコア,Event high score,1
+EventHomeworkRoomSelect_EventGroupRanking,組別ハイスコアランキング,Concentration high score ranking,1
+EventHomeworkMatching_HomeworkMusicLevel,楽曲難易度,Music difficulty,1
+EventHomeworkMatching_MusicLevel,{0}以上,{0} or higher,1
+EventHomeworkMatching_HomeworkInfo,課題内容,Assignment content,1
+EventHomeworkMatching_Reward,報酬,Reward,1
+EventHomeworkLiveResult_HomeworkResult,課題結果,Assignment result,1
+EventHomeworkLiveResult_HomeworkResultReward,獲得報酬,Acquisition reward,1
+EventHomeworkLiveResult_RewardBonus,報酬{0}倍！,Reward {0} doubles!,1
+EventHomeworkLiveResult_RewardBonusValue,x{0},X {0},1
+EventHomeworkLiveResult_MyClear,自分で達成,Achieve yourself,1
+EventHomeworkLiveResult_OtherClear,他の人が達成,Others achieve,1
+EventHomeworkLiveResult_NoClear,未達成,Not Achieved,1
+EventHomeworkLiveResultNewHomework_Title,新規課題発生！,New assignment!,1
+EventHomeworkLiveResult_MusicLevel,楽曲難易度：{0},Music Difficulty: {0},1
+EventHomeworkLiveResult_Homework,課題：{0},Assignment: {0},1
+EventHomeworkLiveResult_Reward,報酬アイテム,Reward item,1
+EventBonus_PointUpBonus,ポイントアップボーナス,Point -up bonus,1
+EventBonus_TotalPowerBonus,総合力アップボーナス,Overall power up bonus,1
+EventBonus_PickUpMemberBonus,ピックアップ部員ボーナス,Pickup staff bonus,1
+EventBonus_PointUpTotal,ポイントアップ合計値,Total values ​​of point -ups,1
+EventBonus_PowerUpTotal,総合力アップ合計値,Total value of overall power,1
+EventBonus_PowerUpAddValue,(総合力 +{0}),(Overall strength +{0}),1
+EventBonus_BonusPercentUp,{0}%アップ,{0}%Up,1
+EventBonus_PowerUpTotalValue,＋{0}アップ,+ {0} Up,1
+EventBonus_BonusCaution,・ライブでは総合力アップボーナスが発動しません。<br>・複数のボーナス対象となる部員は、効果値が最も高い一つのボーナスしか発動しません。<br>・「部員+」ボーナスを所持している部員がユニット内に複数枚存在している場合、総合力とイベントポイントでそれぞれ最も効果が高くなる部員1枚がボーナスを発動させることが可能です。<br>　<color=#C12424>※</color>総合力の「部員+」ボーナスは、部員の総合力と「部員+」ボーナスの効果値を乗算した際、値がもっとも高くなる部員一枚のみ効果を発動します。<br>　<color=#C12424>※</color>イベントポイントの「部員+」ボーナスは、最もイベントポイントアップの効果が高い部員一枚のみ効果を発動します。<br>　<color=#C12424>※</color>総合力とイベントポイントの「部員ボーナス＋」はそれぞれ別の部員が発動する可能性があります。<br>　<color=#C12424>※</color>「部員+」ボーナスを所持しているが、発動できなかった部員は別のボーナスの発動が可能です。<br>・「部員ボーナス」と「部員ボーナス+」は同時に効果を発動することが出来ます。,"・ In the live, the overall power up bonus does not activate.<br>・ Multiple bonus members are activated only one bonus with the highest effect value.<br>・ If there are multiple members who have a “member+” bonus in the unit, it is possible for one member who is the most effective for comprehensive power and event points to activate the bonus.<br><COLOR =#c12424> * </color> The 'member+' bonus of the overall force is only one member who has the highest value when multiplied by the comprehensive power of the member and the effect value of the 'member+' bonus. Activate.<br><COLOR =#c12424> * </color> The 'member+' bonus of the event point activates only one member who has the highest effect of event points.<br><COLOR =#c12424> * </color> Overall power and event point 'member bonus +' may be activated by different members.<br><COLOR =#c12424> * </color> 'member+' Bonus, but not activated members can activate another bonus.<br>・ 'Service bonus' and 'member bonus+' can be activated at the same time.",1
+EventIncentive_CheckTicketTitle,抽選チケット確認,Lottery ticket confirmation,1
+EventIncentive_CheckTicketMessage,イベントおつかれさまでした<br>チケットを確認しますか？<br><br>{0}　　　{1}枚,Would you like to check the ticket that you've done with the event? <br> <br> {0} {1} sheets,1
+EventIncentive_CheckTicketWarning,<color=#C12424>※抽選チケットは分割して使用することはできません<br>※期間中に使用しなかった場合、抽選チケットは削除されるためご注意ください</color>,"<color =#c12424> * Lottery tickets cannot be used separately <br> * Please note that if you do not use it during the period, the lottery ticket will be deleted </color>.",1
+EventIncentive_LostTitle,抽選結果,Lottery result,1
+EventIncentive_LostMessage,残念賞のアイテムをプレゼントに付与いたしました<br>またのご参加をお待ちしております,"Unfortunately, we have given the prize items to the present <br> We look forward to your participation again.",1
+EventIncentive_LostGoToPresentBoxScene,プレゼントへ,To the present,1
+EventIncentive_ApplicationTitle,応募に必要な情報,Information required for application,1
+EventIncentive_ApplicationId,ID：,ID:,1
+EventIncentive_ApplicationPassword,パスワード：,password:,1
+EventIncentive_ApplicationUrlTitle,応募URL：,Application URL:,1
+EventIncentive_ApplicationNote,※応募注意事項（後日追記予定）,* Application precautions (scheduled to be added later),1
+EventIncentive_IdCopy,コピーしました,Copy,1
+EventIncentive_PasswordCopy,コピーしました,Copy,1
+EventIncentive_TermTitle,イベント利用規約,Event Terms of Use,1
+EventEmotionalSetting_SelectBand,ランキングに参加するグループを選択してください,Please select the group to participate in the ranking,1
+EventEmotionalSetting_ChangeBand,変更するグループを選択してください,Please select the group to change,1
+EventEmotionalSetting_SelectMember,ランキングに参加するメンバーを選択してください,Please select the members who participate in the ranking,1
+EventEmotionalSetting_ChangeMember,変更するメンバーを選択してください,Please select the member to change,1
+LimitedLive_Name_1101001,限定ライブ名1,Limited live name 1,1
+LimitedLive_Name_1101002,限定ライブ名2,Limited live name 2,1
+LimitedLive_Name_1301001,限定ライブ名3,Limited live name 3,1
+LimitedLive_Name_1401001,限定ライブ名4,Limited live name 4,1
+LimitedLive_Name_1501001,限定ライブ名5,Limited live name 5,1
+LimitedLive_Name_1502001,限定ライブ名6,Limited live name 6,1
+LimitedLive_Name_1601001,限定ライブ名7,Limited live name 7,1
+LimitedLive_Name_1801001,限定ライブ名8,Limited live name 8,1
+LimitedLive_Name_1802001,限定ライブ名9,Limited live name 9,1
+LimitedLive_Name_1803001,限定ライブ名10,Limited live name 10,1
+LimitedLive_Name_1804001,限定ライブ名11,Limited live name 11,1
+LimitedLive_Name_1805001,限定ライブ名12,Limited live name 12,1
+LimitedLive_Name_1806001,限定ライブ名13,Limited live name 13,1
+LimitedLive_Name_1807001,限定ライブ名14,Limited live name 14,1
+LimitedLive_Name_1808001,限定ライブ名15,Limited live name 15,1
+LimitedLive_Name_1892001,限定ライブ名16,Limited live name 16,1
+LimitedLive_Name_1893001,限定ライブ名17,Limited live name 17,1
+LimitedLive_Name_1894001,限定ライブ名18,Limited live name 18,1
+LimitedLive_Name_1895001,限定ライブ名19,Limited live name 19,1
+LimitedLive_Name_1896001,限定ライブ名20,Limited live name 20,1
+LimitedLive_Name_1701001,限定ライブ名21,Limited live name 21,1
+LimitedLive_BonusEffect_1101001,クリア報酬アップ！,Clear reward up!,1
+LimitedLive_Period,開催期間　{0} ~ {1}まで,From the event period {0} to {1},1
+LimitedLive_FreePlayLabel,フリープレイ,Free play,1
+LimitedLive_TicketLabel,所持チケット,Holding ticket,1
+LimitedLive_FreePlayCountLabel,あと,After,1
+LimitedLive_FreePlayCountValue,{0}回,{0} times,1
+LimitedLive_TicketAmountValue,{0}枚,{0} sheets,1
+LimitedLive_LiveIsChosen,楽曲決定済み,The song has been decided,1
+LimitedLive_DetailDialog_RuleSection,◆ルール,◆ Rules,1
+LimitedLive_DetailDialog_RuleSection_ResetDaily,1日{0}回,1 day {0} times,1
+LimitedLive_DetailDialog_RuleSection_ResetWeekly,週{0}回,Weekly {0} times,1
+LimitedLive_DetailDialog_RuleSection_Rule_1,一定確率で{0}が獲得できるライブです<br>{1}プレイ可能です<br>※お食事券を消費してプレイも可能です<br>当たり楽曲の場合、報酬が増加します,"It is a live where {0} can be obtained with a certain probability<br>{1} Playable<br>* You can also play by consuming meal tickets<br>In the case of a hit song, the reward will increase",1
+LimitedLive_DetailDialog_RuleSection_Rule_2,{1}プレイ可能です<br>※お食事券を消費してプレイも可能です<br>当たり楽曲の場合、報酬が増加します,"{1} Playable<br>* You can also play by consuming meal tickets<br>In the case of a hit song, the reward will increase",1
+LimitedLive_DetailDialog_RewardSection,◆報酬,◆ Reward,1
+LimitedLive_DetailDialog_BonusLiveSection,◆当たり楽曲<br>　{0},◆ Hit song<br>{0},1
+LimitedLive_DetailDialog_PeriodSection,◆開催期間<br>　{0} ~ {1},◆ Hall period<br>{0} ~ {1},1
+LimitedLive_UnlockDialog_NotEnouchTicketDaily,<color=#D73C55>お食事券が不足しています</color><br>※翌日4時以降にフリープレイが可能になります,<color =#d73C55> Lack of meal tickets </color><br>* Free play is possible after 4:00 the next day,1
+LimitedLive_UnlockDialog_NotEnouchTicketWeekly,<color=#D73C55>お食事券が不足しています</color><br>※月曜日の4時以降にフリープレイが可能になります,<color =#d73C55> Lack of meal tickets </color><br>* Free play is possible after 4:00 on Monday,1
+LiveCondition_Label,ライブ参加条件,Live participation conditions,1
+LiveCondition_CompareType_EQ,に,On,1
+LiveCondition_CompareType_GE,以上,that's all,1
+LiveCondition_CompareType_LE,以下,below,1
+LiveCondition_Detail_Character,(仮){0}を{1}人{2}編成,(Tentative) {0} is {1} person {2} formation,1
+LiveCondition_Detail_Group,(仮){0}を{1}人{2}編成,(Tentative) {0} is {1} person {2} formation,1
+LiveCondition_Detail_CardType,(仮){0}を{1}人{2}編成,(Tentative) {0} is {1} person {2} formation,1
+LiveCondition_Detail_DeckRole,(仮){0}を{1}人{2}編成,(Tentative) {0} is {1} person {2} formation,1
+LiveCondition_Detail_Card,(仮){0}を編成,(Temporary) Organize {0},1
+LiveCondition_Detail_UserRank,(仮)ユーザーランク{0}{1},(Tentative) User rank {0} {1},1
+LiveCondition_Detail_Title,(仮)称号「{0}」を設定,(Temporary) Title '{0}' is set,1
+LiveCondition_Detail_Item,(仮)アイテム「{0}」を使用,(Tentative) Use the item '{0}',1
+LiveCondition_CannotCreateMultiPlayRoomSinceNotSatisfy,参加条件を満たしていないため作成できません,It cannot be created because it does not meet the participation conditions,1
+LiveRule_Label,ライブルール,Live rule,1
+LiveRule_Notes_Judgement_EQ,(仮){0}以外MISS,(Temporary) Miss other than {0},1
+LiveRule_Notes_Judgement_GE,(仮){0}以下MISS,(Tentative) {0} Miss below,1
+BeginnerMission_BingoTitle,初心者ミッション({0}/{1}),Beginner Mission ({0}/{1}),1
+BeginnerMission_BingoSheetClear,BINGO{0}クリア報酬,Bingo {0} clear reward,1
+BeginnerMission_BingoLineClear,LINEクリア報酬,LINE clear reward,1
+BeginnerMission_BingoNotStarted,未達成のシートがあります,There is an unsuited seat,1
+BeginnerMission_BingoMissionDetailTitle,課題詳細,Issues details,1
+BeginnerMission_BingoMissionReward,クリア報酬,Clear reward,1
+BeginnerMission_BingoMissionChallenge,挑戦する,To challenge,1
+BeginnerMission_BingoMissionAcheved,達成度,Level of achievement,1
+BeginnerMission_BingoMissionOverview,ミッション概要,Mission Overview,1
+BeginnerMission_BingoMissionItemOverview,概要,overview,1
+BeginnerMission_BingoMissionRewardItemNum,x{0},X {0},1
+TeacherLiveTop_NowMission,今回のミッション,This mission,1
+TeacherLiveTop_EndEvent,このイベントは終了しました,This event has ended,1
+TeacherLiveTop_ExchangeButton,交換所,Exchange,1
+TeacherLiveTop_LiveButton,ライブへ,To live,1
+TeacherLiveTop_InfoButton,説明,explanation,1
+TeacherLiveTop_LiveCondition,ライブ条件有り,Live conditions,1
+TeacherLiveTop_LiveRule,ライブルール,Live rule,1
+TeacherLiveTop_RemainingMission,残りミッション数 <color=#D73C55>{0}</color>/{1},Number of remaining missions <color =#d73C55> {0} </color>/{1},1
+TeacherLiveTop_RemainingMissionValue,{0}/{1},{0}/{1},1
+TeacherLiveTop_GoGoTime,（ダミー）,(dummy),1
+TeacherLiveTop_GoGoTimeRemainingTime,{0},{0},1
+TeacherLiveTop_GoGoTimeRemainingCount,{0}回,{0} times,1
+TeacherLiveTop_ExchangeTerm,交換所は{0}まで,The exchange is up to {0},1
+TeacherLiveTop_LiveConditionDialogTitle,ライブ条件,Live conditions,1
+TeacherLiveTop_LiveConditionDialogCondition,ライブ参加条件,Live participation conditions,1
+TeacherLiveTop_LiveConditionDialogRule,ライブルール,Live rule,1
+TeacherLiveLiveResult_GoGoTime,ダミーテキスト,Dummy text,1
+TeacherLiveLiveResult_MissionClearTitle,（ダミー）ミッション達成！,(Dummy) Achieved mission!,1
+TeacherLiveLiveResult_CurrentMission,（ダミー）今回のミッション,(Dummy) This mission,1
+TeacherLiveLiveResult_NextMission,（ダミー）次のミッション,(Dummy) Next mission,1
+TeacherLiveLiveResult_RemainingMission,（ダミー）残りミッション数 {0}/{1},(Dummy) Number of remaining missions {0}/{1},1
+CharacterEpisodeLevel_TotalTabName,総合,Comprehensive,1
+CharacterEpisodeLevel_TotalEpisodeStar,(累計ストーリースター★×{0}),(Cumulative story star ★ × {0}),1
+CharacterEpisodeLevel_RemainingExp,★{0},★ {0},1
+ItemList_Tab_Enhancement,育成アイテム,Training item,1
+ItemList_Tab_Boost,LP回復,LP recovery,1
+ItemList_Tab_Ticket,チケット,ticket,1
+ItemList_Tab_Stamp,スタンプ,stamp,1
+ItemList_Tab_Other,その他,others,1
+ItemList_Empty,現在該当のアイテムを所持していません,I do not have the item currently,1
+ItemList_LimitDate,{0}まで,Until {0},1
+MusicVideo_Conform_title,MV再生確認,MV playback confirmation,1
+MusicVideo_Conform_Message,{0}<br>のミュージックビデオを再生しますか？<br>MVモードでは、ライブの報酬は獲得できません,Do you play a music video of {0}? <BR> Live rewards cannot be obtained in MV mode,1
+MusicVideo_Conform_Supplement,今後はこのウィンドウを表示しない,Do not display this window in the future,1
+MusicShop_Title,楽曲ショップ,Music shop,1
+MusicShop_Exchange,交換,exchange,1
+MusicShop_Replaced,交換済み,Replaced,1
+MusicShop_Lack,素材不足,Lack of material,1
+MusicShop_ExchangeListEmpty,交換できる楽曲がありません,There is no song that can be exchanged,1
+MusicShop_DetailTitle,楽曲詳細,Music details,1
+MusicShop_ExchangeTitle,楽曲交換,Exchanging songs,1
+MusicShop_RequiredValue,必要数,Required number,1
+MusicShop_ExchangeMessage,{0}を交換しますか？,Do you want to replace {0}?,1
+MusicShop_ExchangeResultTitle,楽曲交換完了,The song exchange is completed,1
+Announcement_DialogTitle,お知らせ,notice,1
+RankUp_UserRankUpDialogTitle,ランクアップ！,rank up!,1
+RankUp_BandRankUpDialogTitle,グループランクアップ,Glue Plank Up,1
+RankUp_BandRank,グループランク,Glue plank,1
+RankUp_TotalBandRank,総合グループランク,Overall glue plank,1
+RankUp_DeckPower,Deck Power +,Deck Power +,1
+RankUp_LpRecoverText,LPが{0}回復しました,LP has recovered {0},1
+RankUp_LpMaxUpText,LPの最大値が上昇しました,The maximum value of LP has risen,1
+Shop_ResetDaily,(毎日0時更新),(Updated 0:00 every day),1
+Shop_ResetWeekly,(月曜0時更新),(Updated Monday 0:00),1
+Shop_Monthly,(1日0時更新),(Updated at midnight a day),1
+Shop_BuyRemain,あと：{0}個,And: {0} pieces,1
+Shop_BuyLimit,{0}まで,Until {0},1
+Shop_AllBuy,購入済み,Purchased,1
+Shop_ItemDetaiTitle,商品詳細,Product Details,1
+Shop_AllItemDetaiTitle,完売報酬,Sold out,1
+Shop_AllItemCompleteTitle,完売報酬獲得,Get sold out,1
+MovieCollection_TabMovieTypeShort,ショートムービー,short film,1
+MovieCollection_TabMovieTypeLong,ロングムービー,Long movie,1
+MovieCollection_TabMovieTypeSpPhoto,SPフォト,SP photo,1
+MovieCollection_HomeSettings,ホーム設定中,Home setting,1
+MovieCollection_EmptyMovie,動画がありません,There is no video,1
+MovieCollection_EmptySpPhoto,SPフォトがありません,There is no SP photo,1
+MovieCollection_DetailTitle,動画詳細,Video details,1
+MovieCollection_DetailHomeSettings,ホーム背景に設定する,Set for home background,1
+MovieCollection_DetailHomeSettingsMessage,ホーム背景動画はオプション画面で有効化する必要があります,Home background videos must be enabled on the option screen,1
+MovieCollection_RefineBandTitle,グループ,group,1
+MovieCollection_RefineBandOther,OTHER,Other,1
+MovieCollection_RefineMemberTitle,メンバー,member,1
+MovieCollection_RefineGetCategoryTitle,入手カテゴリ,Obtained category,1
+MovieCollection_RefineGetCategoryEvent,イベント,event,1
+MovieCollection_RefineGetCategoryCard,部員,Member,1
+MovieCollection_RefineGetCategoryStory,ストーリー,story,1
+MovieCollection_RefineGetCategoryEtc,その他,others,1
+LiveResult_FriendApplyButton,友達申請,Friend Request,1
+LiveResult_FriendStatusRequest,友達申請済み,Friend application,1
+LiveResult_FriendStatusFriend,友達登録済み,Friends registered,1
+LiveResult_ScoreDetailButton,スコア内訳,Score breakdown,1
+LiveResult_ScoreDetailTitle,スコア内訳,Score breakdown,1
+LiveResult_SessionSelectButton,ライブ選択へ,To live selection,1
+LiveResult_HomeButton,ホームへ,home,1
+LiveResult_MusicSelectButton,楽曲選択へ,To the song selection,1
+LiveResult_RestartButton,もう一度同じ曲で<br>ライブ開始,Live starts with the same song again,1
+LiveResult_GuestSelectButton,この曲で<br>ライブ開始,Live starts with this song,1
+LiveResult_RecommendLiveTitle,あなたにおすすめ,Recommended for you,1
+LiveResult_BackMusicSelectTitle,別の曲で遊ぶ,Play with another song,1
+LiveResult_BackMusicSelectButton,楽曲選択へ戻る,Return to the song selection,1
+LiveResult_RestartDialogTitle,リスタート確認,Restart confirmation,1
+LiveResult_RestartDialog_EventPtRewardGotAll,すべてのイベントpt達成報酬を<br>獲得済み,All event PT achievement rewards have been obtained,1
+LiveResult_RestartDialog_EventPtRewardTitle,イベント達成報酬,Event achievement reward,1
+LiveResult_RestartDialog_EventScoreRank,イベントスコア順位,Event score ranking,1
+LiveResult_RestartDialog_EventTotalPtRank,累計イベントpt順位,Cumulative event PT ranking,1
+LiveResult_LiveClear,LIVE CLEAR!!,Live Clear !!,1
+LiveResult_LiveClear2,ライブ クリア!!,Live clear !!,1
+LiveResult_TapScreen,画面をタッチしてください,Please touch the screen,1
+LiveResult_Score,SCORE,Score,1
+LiveResult_Combo,COMBO,Combo,1
+LiveResult_HighScore,HIGH SCORE,High score,1
+LiveResult_NewReacord,NEW REACORD!!,New Reacord !!,1
+LiveResult_PerfectCount,PERFECT数,Number of Perfect,1
+LiveResult_Perfect,PERFECT,Perfect,1
+LiveResult_Great,GREAT,Great,1
+LiveResult_Good,GOOD,Good,1
+LiveResult_Bad,BAD,BAD,1
+LiveResult_Miss,MISS,Miss,1
+LiveResult_Normal,通常,usually,1
+LiveResult_SyncTap,同時押し,Simultaneous pressing,1
+LiveResult_LongTap,長押し,Long press,1
+LiveResult_Swing,スイング,swing,1
+LiveResult_GetExp,獲得EXP,Acquired EXP,1
+LiveResult_NextRank,次のRankまで,To the next Rank,1
+LiveResult_GetGold,獲得G,Acquired G,1
+LiveResult_GetFriendPoint,獲得キズナ,Acquired Kizuna,1
+LiveResult_GetFriendPointWindow,キズナ詳細,Kizuna details,1
+LiveResult_TotalScore,合計SCORE,Total score,1
+GuestSelect_Title,ゲスト選択,Guest selection,1
+BandEnrich_ItemEmpty,グループ強化アイテムを所持していません,I do not have a group enhanced item,1
+BandEnrich_All,総合,Comprehensive,1
+BandEnrich_X,μ’s,μ's,1
+BandEnrich_L,Aqours,Aqours,1
+BandEnrich_G,虹ヶ咲,Rainbowzaki,1
+GemShort_NeedChargeGemLabel,必要有償ラブカ,Required paid rabika,1
+GemShort_HaveChargeGemLabel,所持有償ラブカ,Palace Loveka,1
+GemShort_NeedGemLabel,必要ラブカ,Required Loveka,1
+GemShort_HaveGemLabel,所持ラブカ,Possessed Loveka,1
+CollectionChara_Profile,プロフィール,profile,1
+CollectionChara_CardList,カード一覧,Card list,1
+StorySort_TitleBand,グループ,group,1
+StorySort_TitleStory,ストーリー,story,1
+StorySort_StoryRead,既読,Already read,1
+StorySort_StoryUnread,未読,Unread,1
+StoryList_EmptyText,閲覧できるストーリーがありません,There is no story that can be viewed,1
+MemberList_EmptyText,対象の部員が存在しません,There is no target member,1
+CollectionReleaseConfirm_DialogTitle,コレクション解放確認,Collection release confirmation,1
+CollectionReleaseConfirm_Conditions,解放条件：必要覚醒数 {0}/{1},Liberation Conditions: Needless number {0}/{1},1
+CollectionReleaseConfirm_Reward,解放報酬,Release reward,1
+CollectionReleaseReward_DialogTitle,コレクション解放,Collection release,1
+CollectionReleaseReward_SpPhotoReleaseMessage,SPフォトが解放されました<br>SPフォトは部員詳細またはSPフォトコレクションより確認することが出来ます,The SP photo has been released <br> SP photos can be checked from the member details or the SP photo collection.,1
+CollectionReleaseReward_MovieReleaseMessage,動画「{0}」が解放されました<br>動画は部員詳細またはムービーコレクションより確認することが出来ます,The video '{0}' has been released <br> You can check the video from the member details or the movie collection.,1
+CollectionReleaseReward_GetReward,解放報酬として{0}を受け取りました,I received {0} as a release reward,1
+CollectionReleaseReward_CardInfoButton,部員詳細へ,To the details of the member,1
+CollectionReleaseReward_CollectionButton,コレクション詳細へ,To the collection details,1
+GachaLotteryExchangeItemConfirm_Title,勧誘ポイント変換,Solicary point conversion,1
+GachaLotteryExchangeItemConfirm_Info,期限切れの「勧誘ポイント」が「スキルブック（中）」に変換されました,The expired 'solicitation point' has been converted to 'Skill Book (middle)',1
+Migration_TopTitle,データ引き継ぎ・アカウント連携,Data transfer / account cooperation,1
+Migration_SnsLink,アカウント連携,Account cooperation,1
+Migration_EnableSnsLink,※連携可能アカウント,* Cooperable account,1
+Migration_EnableSnsLink_iOS,Twitter/Apple,Twitter/Apple,1
+Migration_EnableSnsLink_Android,Twitter/Google,Twitter/Google,1
+Migration_SelectSnsLink,連携するアカウントを選択してください,Please select the collaborative account,1
+Migration_Twitter,Twitterで連携,Cooperation on Twitter,1
+Migration_Apple,Sign in with Apple,Sign in with Apple,1
+Migration_Google,Sign in with Google,Sign in with Google,1
+Migration_SignIn,未設定,Unanimed,1
+Migration_SignOut,連携済み,Coordinated,1
+Migration_CompleteSnsLink,アカウント連携完了,Account cooperation completed,1
+Migration_CompleteSnsSignOut,アカウント連携解除,Unraveled account cooperation,1
+Migration_SnsLinkMessage,データの連携が完了しました<br>引き継ぎ先の端末にアプリをダウンロードした後、<br>タイトル画面の【MENU】 ＞【データ引き継ぎ】よりアカウント連携をおこなってください,"Data linkage has been completed. <br> After downloading the application to the terminal of the takeover destination, please cooperate with [MENU]> [Data transfer] on the title screen.",1
+Migration_SignOutMessage,データの連携を解除しました,Data cooperation has been canceled,1
+Migration_TakeOverButton,引き継ぎ,Takeover,1
+RewardDetailDialog_CanBeAcquired,獲得可能数,Acquired number,1
+RewardDetailDialog_Acquired,獲得数,Number of acquisitions,1
+RewardDetailDialog_Possession,所持数,The number of possession,1
+MusicSelect_NoData,該当する楽曲がありませんでした,There was no corresponding song,1
+MusicSelect_NoDataAndResetFilter,楽曲がないため絞り込みを解除しました,"Since there is no song, the narrowed down has been released",1
+MusicSelect_ResetFilterToSelectData,指定楽曲を選択するために絞り込みを解除しました,Unlocked to select the specified song,1
+MusicSelect_FilterAttribute,属性,attribute,1
+MusicSelect_FilterAttributeSmile,スマイル,Smile,1
+MusicSelect_FilterAttributePure,ピュア,pure,1
+MusicSelect_FilterAttributeCool,クール,cool,1
+MusicSelect_FilterSelect,条件,conditions,1
+MusicSelect_FilterGroup,グループ・楽曲,Group / song,1
+MusicSelect_FilterNotClear,未クリア,Uncontrolled,1
+MusicSelect_FilterScoreS,スコアS未達成,Score S has not been achieved,1
+MusicSelect_FilterComboS,コンボS未達成,Combo S has not been achieved,1
+MusicSelect_FilterClearS,クリアS未達成,Clear S has not been achieved,1
+MusicSelect_FilterCampaign1,キャンペーン,campaign,1
+MusicSelect_FilterCampaign2,対象,subject,1
+MusicSelect_FilterUndo,全解除,All cancellation,1
+MusicSelect_ButtonApply,適用,Application,1
+MusicSelect_RehearsalButton,リハーサル,rehearsal,1
+MusicSelect_LiveButton,ライブ,live,1
+MusicSelect_NoDifficulty,選択した楽曲にMASTERの難易度がないため、他の楽曲を選択します,"Since the selected song has no difficulty in Master, select other songs",1
+MusicSelect_NoAnyDifficulty,選択した楽曲に{0}の難易度がないため、他の楽曲を選択します,"Since there is no difficulty of {0} in the selected song, select other songs",1
+HomePreset_ClearPresetButton,ホーム画面カスタム{0}を未設定の状態にもどしますか？,Would you like to return the preset {0} to the unset state?,1
+PresentBox_Attention,"※最大100,000件まで保管することができます。上限を超えた場合、古いプレゼントから削除されます。また、受取期限が切れたプレゼントは自動的に削除されます。一度に最大100件まで受け取れます。","* Up to 100,000 cases can be stored. If you exceed the upper limit, it will be deleted from an old gift. In addition, gifts that expire are automatically deleted. You can receive up to 100 at a time.",1
+PresentBox_Filter,絞り込み,Narrow down,1
+PresentBox_Filter_Title,絞り込み,Narrow down,1
+PresentBox_Filter_Button_AllSelect,全選択,Select all,1
+PresentBox_Filter_Button_AllRelease,全解除,All cancellation,1
+PresentBox_Filter_Type_Title,プレゼント種別,Present type,1
+PresentBox_Filter_Type_Member,部員,Member,1
+PresentBox_Filter_Type_Gem,ラブカ,Labka,1
+PresentBox_Filter_Type_Gold,ゴールド,ゴールド,1
+PresentBox_Filter_Type_Ticket,勧誘チケット,Solicitation ticket,1
+PresentBox_Filter_Type_Recovery,LP回復アイテム,LP recovery item,1
+PresentBox_Filter_Type_Other,その他,others,1
+PresentBox_Filter_ExpireTime_Title,期限,Deadline,1
+PresentBox_Filter_ExpireTime_Limit,期限あり,There is a deadline,1
+PresentBox_Filter_ExpireTime_NoLimit,期限なし,No deadline,1
+HomePreset_Set_Label,セット{0},Set {0},1
+HomePreset_Multiple_Set_Label,複数セット,Multiple sets,1
+PresentBox_History_Attention,※最大30件まで保管することができます。上限を超えた場合、古い履歴から削除されます。また、受け取り履歴は履歴表示から30日後に自動削除されます。,"* Up to 30 cases can be stored. If the upper limit is exceeded, it will be deleted from the old history. In addition, the reception history will be automatically deleted 30 days after the history display.",1
+BeginnerMission_BingoLine,{0}-Line,{0} -line,1
+Mission_Filter,絞り込み,Narrow down,1
+Mission_Filter_Title,絞り込み,Narrow down,1
+Mission_Filter_Button_AllSelect,全選択,Select all,1
+Mission_Filter_Button_AllRelease,全解除,All cancellation,1
+Mission_Filter_Content_Title_Reward,報酬,Reward,1
+Mission_Filter_Reward_Member,部員,Member,1
+Mission_Filter_Reward_Gem,ラブカ,Labka,1
+Mission_Filter_Reward_Gold,ゴールド,gold,1
+Mission_Filter_Reward_Ticket,勧誘チケット,Solicitation ticket,1
+Mission_Filter_Reward_Recovery,LP回復アイテム,LP recovery item,1
+Mission_Filter_Reward_Exp,レッスンアイテム,Lesson item,1
+Mission_Filter_Reward_SkillExp,スキルレッスンアイテム,Skill lesson item,1
+Mission_Filter_Reward_Evolve,覚醒アイテム,Awakening item,1
+Mission_Filter_Reward_Title,称号,title,1
+Mission_Filter_Reward_Other,その他,others,1
+Mission_Achievement,達成度,Level of achievement,1
+HomePreset_Edit_Dialog_Text,変更済みのホーム画面カスタムを保存しますか？,Do you want to save the changed home screen custom?,1
+GachaTop_Invitation_Bonus_Detail,勧誘ポイント詳細,Invitation bonus details,1
+GachaTop_Invitation_Bonus,<size=29>勧誘<br><size=23>ポイント,<size=29>Invitation<br><size=23>bonus,1
+Adv_Log_NameSuffix_Telop,[テロップ],[telop],1
+EventTop_Button_Tips_Rule,遊び方,how to play,1
+EventTop_Button_Tips_Bonus,ボーナス詳細,Bonus details,1
+EventTop_Button_Reward,報酬詳細,Reward details,1
+EventTop_Button_Story,イベント<br>ストーリー,Event <br> Story,1
+EventTop_Button_Ranking,ランキング詳細へ,To the ranking details,1
+EventTop_Button_Exchange,交換所,Exchange,1
+EventTop_Button_Favorite,確認（仮）,Confirmation (provisional),1
+EventTop_Button_ToEvent,イベント曲,Event song,1
+EventTop_Button_ToGeneral,通常曲,Normal song,1
+EventTop_Favorite_Ranking,イチ推しメンバー,Ichi recommended member,1
+EventTop_Point_Total,累計イベントpt,Cumulative event PT,1
+EventTop_Point_Next_Story,次のストーリーまで,Until the next story,1
+EventTop_Term_Title,<size=20>開催期間</size> {0}<size=20>まで</size>,<Size = 20> until the holding period </size> {0} <size = 20> </size>,1
+EventTop_Point,{0} pt,{0} pt,1
+EventTop_Rank,{0} 位,{0} position,1
+Tutorial_Group_Muse,・東京のアキバを中心に活動する国立音ノ木坂学院のスクールアイドルグループ。<br>・グループ名の由来は「9人の歌の女神『ミューズ』」から。<br>・ラブライブ！優勝を目指し活動中。,未翻訳,1
+Tutorial_Group_Aqours,・静岡県の沼津を中心に活動する私立浦の星女学院のスクールアイドルグループ。<br>・学校を盛り上げるために結成された。<br>・ラブライブ！優勝を目指し活動中。,未翻訳,1
+Tutorial_Group_Nijigaku,・東京のお台場を中心に活動する私立虹ヶ咲学園のスクールアイドル。<br>・それぞれの個性を大事に、各自がソロのスクールアイドルとして活動中。<br>・ラブライブ！ではなく、それぞれがナンバーワンのスクールアイドルを目指している。,未翻訳,1
+Tutorial_Group_Liella,・東京の原宿を中心に活動する私立結ヶ丘女子高等学校のスクールアイドルグループ。<br>・結ヶ丘は新設校であり、新設された年に部活が設立された。<br>・ラブライブ！でも見逃せないグループの一つ。,未翻訳,1
+Tutorial_Group_SelectButton,このグループで決定,Determined by this group,1
+Tutorial_Member_SelectButton,このメンバーで決定,Determined by this member,1
+Tutorial_Recommend_Lesson,レッスンで部員をレベルアップ！,Level up in lessons!,1
+Tutorial_Recommend_Gacha,アイテム勧誘で育成アイテムゲット！,Get a training item by soliciting items!,1
+Tutorial_Recommend_Live,まずはライブをしてみよう！,Let's live first!,1
+EventRanking_Tab_MySelf,自分の順位,My ranking,1
+EventRanking_Tab_Rank,{0} 位,{0} position,1
+EventRanking_Tab_TotalPoint,イベントptランキング,Event PT ranking,1
+EventRanking_Tab_Score,イベント曲スコアランキング,Event song score ranking,1
+EventRanking_Tab_Favorite,イチ推しランキング,Ichi pushing ranking,1
+EventBonus_Tab_Point,イベントptボーナス,Event PT bonus,1
+EventBonus_Tab_Item,ミラクルスター獲得ボーナス,Miracle Star acquisition bonus,1
+EventBonus_MultiTab_Score,スコアボーナス,Score bonus,223062001
+EventBonus_MultiTab_Item,ログインアイテム獲得ボーナス,Login item acquisition bonus,223062001
+EventBonus_Button_Disclaimer,免責事項,Disclaimer,1
+EventBonus_Point_Value,+{0}%,+{0}%,1
+EventBonus_Item_Value,+{0},+{0},1
+EventBonus_Empty_List,存在しません,does not exist,1
+EventTop_Button_ToGeneral_Msg,ミラクルスターを獲得！,Get a miracle star!,1
+EventTop_Button_Favorite_Ranking,イチ推しランキング,Ichi pushing ranking,1
+EventTop_Button_Mission,課題,assignment,1
+EventTop_Point_Next_Reward,次の報酬まで,To the next reward,1
+EventTop_Point_Ranking,イベントptランキング,Event PT ranking,1
+EventBonus_Title,ボーナス詳細,Bonus details,1
+EventRanking_Ranking_Not_Exists,ランキングが存在しません,There is no ranking,1
+GemShop_Footer_Special_Commercial_Code,特商法/<br>資金決済法,Special Commercial Code/<BR> Financial Payment Law,1
+GemShop_Footer_Precautions_Regarding_Use,ご利用に関する<br>注意事項,Use <br> Notes,1
+EventRanking_Unaggregated,ランキングデータが<br>まだ集計されていません,Ranking data<br>Not yet tied,1
+EventReward_EmotionalMemberUnselected,イチ推しメンバーを選択していないため、表示できません,I can't display it because I haven't selected the members,1
+EventReward_RequiredPoint,必要Pt,Necessary PT,1
+LpBoost_LP_Count,LP所持数,LP number of people,1
+LpBoost_LP_Default_Amount,基本LP消費量,Basic LP consumption,1
+LpBoost_LP_Discount,LP割引!,LP discount!,1
+LpBoost_Min,MIN,Min,1
+LpBoost_EventPt,イベントpt,Event PT,1
+LpBoost_Get,獲得,Acquisition,1
+LpBoost_GetReward,獲得報酬,Acquisition reward,1
+LpBoost_UseLpMessage,消費LP量に応じて、獲得報酬量と獲得できる報酬量が変化します,"Depending on the amount of consumption LP, the amount of rewards and the reward that can be obtained will change.",1
+LpBoost_UseLpSetting,消費LP設定,Consumption LP settings,1
+LpBoost_Count,所持数,The number of possession,1
+LpBoost_UseCount,消費量,Consumption,1
+LpBoost_Default,基本,Basics,1
+LpBoost_ValueColor,<color=#F93981><size=40>{0}</color></size>,<color =#f93981> <size = 40> {0} </color> </size>,1
+LpBoost_GetRewardMessage,に応じて、獲得報酬量が変化します,The amount of rewards will change according to,1
+LpBoost_Use,消費,consumption,1
+LpBoost_UseLp,消費LP,Consumption LP,1
+LpBoost_Setting,設定,setting,1
+LpBoost_UseLPMessageShort,消費LP量に応じて、獲得報酬量が変化します,The amount of acquisition reward changes depending on the amount of consumption LP,1
+Skip_Message,※連続スキップ回数分のクリア報酬がまとめて獲得できます<br>※スキップ時はハイスコアがライブ結果のスコアとして参照されます,"* Clear rewards for the number of continuous skips can be obtained together<br>* When skipping, the high score is referenced as a live result score.",1
+Skip_Ticket_Count,スキップチケット所持数,Number of skip tickets,1
+Skip_Ticket_UseCount,スキップ回数を設定してください,Set the number of skip,1
+Skip_Confirm,スキップ確認,Skip confirmation,1
+Skip_Lock_Message,選択した難易度をクリアするとスキップ機能が解放されます,Clearing the selected difficulty will release the skip function,1
+Skip_Not_Enough_Ticket,スキップチケットがありません,There is no skip ticket,1
+LoginBouns_RewardAmountBonus,(+{0}),(+{0}),1
+EventTop_Button_ToGeneral_2,ライブへ,To live,1
+EventTop_Button_ToGeneral_2_Msg,イベントptを獲得！,Get event PT!,1
+EventTipsDialog_Tips_Title,イベントの遊び方,How to play the event,1
+EventTop_Aggregate,ランキング集計中,Under the ranking,1
+EventTop_EventClose,イベントは終了しました,The event is over,1
+BeginnerMission_Bingo,BINGO,Bingo,1
+TakeOver_DialogTitle,プレイデータ連携,Play data cooperation,1
+TakeOver_DialogUserId,ラブライブ！スクールアイドルフェスティバルのユーザーID,lovelive! School idol festival user ID,1
+TakeOver_DialogPassword,プレイデータ連携パスワード,Play data linkage password,1
+TakeOver_DialogPasswordSample,入力する,input,1
+TakeOver_DialogAccept,プレイデータ連携,Play data cooperation,1
+TakeOver_DialogDescription,ラブライブ！スクールアイドルフェスティバルのユーザーIDとプレイデータ連携パスワードを入力することで<br>ラブライブ！スクールアイドルフェスティバルのアルバムを閲覧することができます,lovelive! By entering a school idol festival user ID and play data linked password<br>lovelive! You can browse the school idol festival album,1
+TakeOver_DialogAttension,※ラブライブ！スクールアイドルフェスティバルでプレイデータ連携設定を行っていない場合は閲覧できません<br>※プレイデータ連携、及びプレイデータ連携特典の受け取りは１度しか行なえませんのでご注意ください,"※lovelive! If you do not set play data linkage at the school idol festival, you cannot view it<br>* Please note that play data linkage and play data linkage benefits can only be received once.",1
+TakeOver_DialogUserError,ラブライブ！スクールアイドルフェスティバルのユーザーIDを入力してください,lovelive! Please enter the user ID of the school idol festival,1
+TakeOver_DialogPasswaordError,プレイデータ連携パスワードを入力してください,Enter the play data linked password,1
+TakeOver_DialogDone,プレイデータ連携が完了し「思い出アルバム」が閲覧可能になりました<br>プレゼントよりプレイデータ連携特典をお受け取りください,Play data linkage is completed and 'Memories album' can be viewed.<br>Please receive play data linkage benefits from the present,1
+BeginnerMission_BingoPlayableBalloonTips,BINGO{0}クリアで挑戦可能,Bingo {0} Clearing it can be challenged,1
+SubMenu_BgmOn,BGM/ON,BGM/ON,1
+SubMenu_BgmOff,BGM/OFF,BGM/OFF,1
+Mission_ChallengeButton_Chat,チャットへ,To the chat,1
+Mission_ChallengeButton_Home,ホームへ,home,1
+Common_Remain,あと,After,1
+Mission_Attention_Daily,デイリー課題は毎日0:00に更新されます,Daily issues are updated at 0:00 every day,1
+Mission_Attention_ExpireTime,有効期間は{0}までです,The validity period is up to {0},1
+Mission_Attention_Subscription,※MIRACLEパスの課題達成状況は、加入後からカウントされます,* Achieving the assignment of the Miracle path will be counted after joining.,1
+Mission_HeaderTabTotal,イベント通算,Total event,1
+Mission_HeaderTabDaily,デイリー,daily,1
+HomePreset_DropDownItem_Obtain,入手順,Obtaining procedure,1
+HomePreset_DropDownItem_Rare,レアリティ,Rarity,1
+HomePreset_DropDownItem_Anime,アニメ付き,With anime,1
+HomePreset_DropDownItem_Favorite,お気に入り,favorite,1
+Event_CategoryName_1,ミラクルコレクション,Miracle collection,1
+Event_CategoryName_2,ふり～ツア～,Pretend ~ Tour ~,1
+Event_CategoryName_3,きょうりょくライブ,Kyoroku Live,1
+Event_CategoryName_4,スターイベント,Star event,1
+Event_Favorite_Button_Home,ホームへ戻る,to return home,1
+Event_Favorite_Button_Decide,決定する,decide,1
+Event_Favorite_Title,イチ推しメンバーを選ぼう！,Choose the members!,1
+Event_Favorite_Tips,イチ推しメンバーとは,What are the members?,1
+Event_Favorite_Confirm_Title,確認,confirmation,1
+Event_Favorite_Confirm_Desc,イチ推しメンバーを<br>{0} に決定しますか？<br><br><color=#C70F01>※決定後はイベント終了まで変更が出来ません</color>,"Ichi -cho member<br>Do you decide to {0}?<br><br><color =#c70f01> * After the decision, it cannot be changed until the end of the event </color>",1
+EventBonus_PointBonus_Desc,イベントptボーナスは、選抜メンバーを編成することで効果を発揮！<br>ライブクリア時に獲得できるイベントptがアップ！,Event PT bonus is effective by organizing selection members!<br>Event PT that can be obtained when clearing live is up!,1
+EventBonus_PointBonus_Attention,※イベントptボーナスは、編成中の選抜メンバー全員の合計値が適用されます,* The total value of all selected members in the formation of the event PT bonus is applied.,1
+EventBonus_ItemBonus_Desc,部員リストに選抜メンバーがいると、ログインボーナスで獲得できるミラクルスターの数がアップ！,"If there is a selected member on the list, the number of miracle stars that can be obtained with the login bonus is improved!",1
+EventBonus_ItemBonus_Attention,※ミラクルスター獲得ボーナスは、部員リストにいる選抜メンバー全員の合計値が適用されます<br>※ミラクルスター獲得ボーナスは、ログインボーナスでミラクルスターが設定されている日のみ適用されます,* The total value of all selected members in the member list is applied for the Miracle Star acquisition bonus.<br>* Miracle Star acquisition bonuses are applied only on the day when the Miracle Star is set with the login bonus.,1
+EventBonus_ScoreBonus_Desc,スコアボーナスは、選抜メンバーを編成することで効果を発揮！<br>ライブクリア時に獲得できるスコアがアップ！,The score bonus is effective by organizing the selected members!<br>The score that can be obtained when clearing live is up!,1
+EventBonus_ScoreBonus_Attention,※スコアボーナスは、編成中の選抜メンバー全員の合計値が適用されます,* The total value of all the selected members in the formation of the score bonus is applied.,1
+EventBonus_ItemBonusMulti_Desc,部員リストに選抜メンバーがいると、ログインボーナスで獲得できるアイテム数がアップ！,"If there is a selected member in the member list, the number of items that can be obtained with the login bonus is improved!",223062001
+EventBonus_ItemBonusBonusMulti_Attention,※ログインアイテム獲得ボーナスは、部員リストにいる選抜メンバー全員の合計値が適用されます<br>※ログインアイテム獲得ボーナスは、ゴールドには適用されません,* The total value of all selected members in the member list is applied for the login item acquisition bonus.<br>* Bonuses for login items are not applied to gold.,223062001
+EventBonus_BeforeEvolve,覚醒前,Before awakening,1
+EventBonus_AfterEvolve,覚醒後,After awakening,1
+EventBonus_HaveCard,獲得済み,Already acquired,1
+MusicSelect_CanNotFocusMusic,現在の検索条件では楽曲が見つかりませんでした,I couldn't find the song under the current search conditions,1
+Common_ContinueSpiritShortageShortMessage,ミラクルスターが不足しています,There is a shortage of miracle stars,1
+EventReward_Category_EventPoint,累計イベントpt,Cumulative event PT,1
+EventReward_Category_EventScore,スコア,Score,1
+EventRanking_Category_EventPoint,累計イベントpt,Cumulative event PT,1
+EventRanking_Category_EventScore,スコア,Score,1
+Common_Consumption,消費,consumption,1
+Common_Setting,設定,setting,1
+PresentBox_ReceivableItemCount,{0}/<size=-10>{1}件</size>,{0}/<size = -10> {1} case </size>,1
+HomePreset_Edit_EmptyPresetText,ホーム画面カスタムが設定されていません,Home screen custom is not set,1
+Header_Lp_TextTag,{0}/<size=25>{1},{0}/<size = 25> {1},1
+Adv_Button_Skip,スキップ,skip,1
+Adv_Button_Auto,オート,Auto,1
+Adv_Button_Fast,早送り,Fast -feeding,1
+Adv_Button_Log,ログ,log,1
+Adv_Button_Deactive,非表示,Hidden,1
+Adv_Button_MovieSkip,スキップ,skip,1
+Adv_Button_MoviePlay,再生,reproduction,1
+Adv_Button_MovieStop,一時停止,pause,1
+Adv_Button_MoviePrevStep,戻る,return,1
+Adv_Button_MovieNextStep,進む,move on,1
+Adv_Button_MovieDeactive,非表示,Hidden,1
+Header_Lp_Text,L<size=21>P,L <size = 21> p,1
+Header_Rank_Num,<i>{0}</i>,<i> {0} </i>,1
+StoryPart_NotLiveClearGroupMusicCount,ライブで{0}の楽曲をあと{1}回プレイすると解放されます,It will be released by playing {0} songs at {1} times at live.,1
+StoryPart_NotLiveClearMusicCount,{0}をあと{1}回クリアすると解放されます,"If you clear {0}, you will be released if you clear {1} times",1
+Common_SeriesName_1,ラブライブ！,lovelive!,1
+Common_SeriesName_2,ラブライブ！サンシャイン!!,lovelive! Sunshine !!,1
+Common_SeriesName_3,ラブライブ！虹ヶ咲学園スクールアイドル同好会,lovelive! Nijigasaki Gakuen School Idol Club,1
+Common_SeriesName_4,ラブライブ！スーパースター!!,lovelive! Super star!!,1
+Common_SeriesName_5,ラブライブ！蓮ノ空女学院スクールアイドルクラブ,lovelive! Rennosa Gakuin School Idol Club,1
+StoryPart_NotRelease_EventStory,必要なイベントptが不足しています,There is a shortage of the necessary event PT,1
+Common_NoCapture,この画面のキャプチャは禁止されています,Capture of this screen is prohibited,1
+Common_EventCloseMessage,現在、イベントは開催されていません,"Currently, no event is held",1
+LiveResult_BonusText,Bonus +{0}<size=-3>%</size>,Bonus +{0} <size = -3>%</size>,1
+HomePreset_Title_HomeCustomEdit,ホームカスタム編集,Home custom editing,1
+HomePreset_Title_Preview,プレビュー,preview,1
+HomePreset_Title_BackgroundSelection,背景選択,Background selection,1
+HomePreset_Title_ForegroundSelection,前景選択,Front scenery selection,1
+HomePreset_Title_MemberChange,部員変更,Member change,1
+HomePreset_HomeCustom,ホームカスタム,Home custom,1
+HomePreset_Save_HomeCustom,ホームカスタムを保存しました,I saved home custom,1
+HomePreset_PhotoWarning,フォトの設定では背景・エフェクトを適応することはできません,The background and effects cannot be applied in the photo settings,1
+TermsOfService_Credit,クレジット,credit,1
+TermsOfService_Button_InformationNotation,情報表記,Information notation,1
+TermsOfService_Button_Performance,実績,Achievements,1
+TermsOfService_Button_StoneConfirmation,所持ラブカ確認,Confirmation of possession Loveka,1
+SubMenu_Button_Profile,プロフィール,profile,1
+SubMenu_Button_Friend,友達,friend,1
+SubMenu_Button_ItemList,アイテムリスト,item list,1
+SubMenu_Button_Exchange,交換所,Exchange,1
+SubMenu_Button_Album,アルバム,album,1
+SubMenu_Button_OnePanelComic,1コマ漫画,1 frame manga,1
+SubMenu_Button_MemoryAlbum,思い出アルバム,Memorial album,1
+SubMenu_Button_DataTransfer,データ引き継ぎ,Data transfer,1
+SubMenu_Button_SerialCode,シリアルコード,serial code,1
+SubMenu_Button_LocationCampaign,おでかけ<br>プレゼント,Outing <br> Present,223062001
+SubMenu_Button_MusicLibrary,楽曲辞典,Music dictionary,223081401
+GemShopItem_SubscriptionButton_Restore,復元,Restoration,1
+LiveResult_GetFriendPointSameMemberFormation,同一メンバーが編成されています,The same member is organized,1
+EventTop_RewardGotAll,すべてのイベントpt達成報酬を<br>獲得済み,All event PT achievement rewards have been obtained,1
+EventTop_StoryAllReleased,すべてのストーリーを解放済み,All stories have been released,1
+HomePreset_Cant_Clear_Last1,プリセットが1つだけのときはクリアはできません,You cannot clear it when there is only one preset,1
+EventTop_NotSetFavorite,推しメン：未設定,Proper Men: Not set,1
+StoryPart_NotRelease_ReadPrevious,前のストーリーを読んでいません,I haven't read the previous story,1
+SerialCode_InputDialogTitle,シリアルコード,serial code,1
+SerialCode_InputDialogText,シリアルコードを入力してください,Enter the serial code,1
+SerialCode_InputEmptyText,シリアルコード,serial code,1
+SerialCode_InputDialogAttentionText,※獲得したアイテムはプレゼントへ送られます。<br>※各シリアルコードの報酬は1つのアカウントにつき1回のみ受け取ることができます。,* Acquired items will be sent to the present. <br> * Rewards of each serial code can be received only once per account.,1
+SerialCode_ConfirmDialogTitle,確認,confirmation,1
+SerialCode_ConfirmDialogText,[{0}]の特典を受け取りますがよろしいですか?,I will receive the benefits of [{0}].,1
+SerialCode_SuccessMessage,特典アイテムをプレゼントからお受け取りください,Please receive the privilege item from the gift,1
+SerialCode_ErrorMessageAlreadyUsed,このシリアルコードは使用済です,This serial code has been used,1
+SerialCode_ErrorMessageNotUse,入力されたシリアルコードは使用できませんでした,The entered serial code could not be used,1
+SerialCode_ErrorMessageNotAvailable,このキャンペーンの報酬は受け取り回数上限まで受取済みです,The reward for this campaign has been received up to the number of times to receive,1
+SerialCode_ErrorMessageNotEnter,現在入力できません {0}後に入力できます,Currently cannot be entered {0} You can enter after,1
+SerialCode_InputButtonText,シリアルコード<br>入力,Serial code <br> Input,1
+SerialCode_ConfirmButtonText,シリアルコード<br>確認,Serial code <br> Confirmation,1
+SerialCode_DisplayButtonText,シリアルコード<br>表示,Serial code <br> Display,1
+SerialCode_CopyMessage,シリアルコードをコピーしました,Copy the serial code,1
+SerialCode_NoCampaign,現在キャンペーンはありません,Currently there is no campaign,1
+SerialCode_DisplayDialogTitle,シリアルコード表示,Serial code display,1
+SerialCode_DisplayDialogAttentionText,※各シリアルコードの発行は1つのアカウントにつき1回のみとなります。,* Each serial code is issued only once per account.,1
+SerialCode_DisplayDialogText,{0}のシリアルコードです,{0} serial code,1
+SerialCode_FailedToCreateSerialCode,シリアルコードの取得に失敗しました。しばらく時間を開けてもう一度お試しください,I failed to get a serial code. Open time for a while and try it again,1
+SerialCode_NoAllocatableCode,シリアルコードの割り当てに失敗しました。お問合せください,The assignment of the serial code failed. Please contact us,1
+Common_EventPointDetail,{0}の{1},{0} {1},1
+EventTop_Multi_RoomIdCopy,ルームIDをコピーしました,Copy the room ID,1
+SerialCode_ErrorMessageExpired,入力されたシリアルコードの有効期限が切れています。,The expiration date of the entered serial code has expired.,1
+SerialCode_ErrorMessageRankOutOfRange,入力されたシリアルコードに必要なプレイヤーランク条件を満たしていないため、<br>シリアルコードを使用できませんでした,<br> Serial code could not be used because it did not meet the player rank conditions required for the entered serial code.,1
+LocationInformation_Message,終了日時までに指定の場所に訪れて、報酬をGETしよう！,Visit the designated place by the end date and time and get the reward!,223062001
+LocationInformation_Success,位置情報の取得に成功しました！プレゼントより報酬をお受け取りください,I succeeded in acquiring location information! Please receive the reward from the present,223062001
+LocationInformation_ConfirmDialogTitle,キャンペーン確認,Campaign confirmation,223062001
+LocationInformation_ConfirmDialogMessage,位置情報を送信して報酬を受け取ります。よろしいですか？<br>※安全のため、移動中の送信はお控えください。,"Send location information and receive rewards. Is it OK? <BR> * For safety, please refrain from sending while moving.",223062001
+LocationInformation_ConfirmDialogGetReward,獲得報酬,Acquisition reward,223062001
+LocationInformation_ConfirmDialogGetLocation,位置情報を取得,Get location information,223062001
+LocationInformation_NoCampaign,現在開催中のおでかけプレゼントはありません,There is no outing gift currently being held,1
+Common_OnlySecond,秒,Second,1
+MultiMatching_CannotMatching,マッチングできませんでした。イベントトップに戻ります,I couldn't match. Return to the top of the event,223061303
+MultiMatching_Synchronization,他プレイヤーと同期中です,Sync with other players,223061303
+MultiMatching_MemberDecited,メンバーが決定しました,The member has been decided,223061303
+MultiMatching_LeaveByTimeLimit,時間切れで退出します,I will leave at the time of time,223061303
+DeckEdit_Score,スコア,Score,1
+MultiMatching_RecruitMembers,メンバーを再募集します,We will recruit members,223061303
+MultiMatching_WaitMembersOnResult,ライブ結果表示中のメンバーを待ちます,Wait for the members on the live result,223061303
+MultiDeck_DefaultDeckName,きょうりょくライブ,Kyoroku Live,223061303
+MultiMatching_WaitingAnotherMembers,他のプレイヤーを待っています,I'm waiting for other players,223061303
+MultiMatching_LiveWillStartSoon,まもなくライブが始まります,The live will begin soon,223061303
+SSAlignment_SubMenuButtonText,スクスタ連携,Suksta collaboration,1
+SSAlignment_SubMenuButtonTextAlreadyCompleted,連携済み,Coordinated,1
+SSAlignment_DialogTitle,スクスタ連携,Suksta collaboration,1
+SSAlignment_DialogTextPlayerId,スクスタプレイヤーID,Sukusta player ID,1
+SSAlignment_DialogTextPassword,連携パスワード,Cooperation password,1
+SSAlignment_DialogTextInfo,スクスタで発行したプレイヤーID・連携パスワードを入力することで<br>特典を受け取ることができます,You can receive benefits by entering the player ID / linked password issued by Suksta.,1
+SSAlignment_DialogTextAttension,※スクスタでスクフェス2連携設定を行っていない場合は利用できません,* It is not available if you do not set up 2 cooperation in Sukufesu in Suksta.,1
+SSAlignment_MessageSuccess,スクスタとの連携が完了しました。<br>特典をプレゼントボックスよりお受け取りください。,The cooperation with Suksta has been completed. <br> Please receive the benefits from the present box.,1
+SSAlignment_ErrorMessageLock,現在入力できません {0}後に入力できます,Currently cannot be entered {0} You can enter after,1
+SSAlignment_ErrorMessageInput,スクスタプレイヤーID・連携パスワードが正しく入力されているかご確認ください,Please check if the Skst player ID / linkage password is correctly entered,1
+Dialog_TitleConfirm,確認,confirmation,1
+Event_EndMessage,イベントは終了しました,The event is over,1
+Common_Search,検索,search,223081401
+Common_SearchPlaceholder,入力してください,Please enter,223081401
+MusicLibrary_SearchPlaceholder,楽曲名/作曲者名/作詞者名/編曲者名で検索できます,You can search by song name/composer/lyricist name/arranger name,223081401
+MusicLibrary_SearchWordsEmpty,検索ワードを入力してください,Please enter the search word,223081401
+MusicLibrary_Live,この曲でライブ！,Live with this song!,223081401
+MusicLibrary_SortDefault,デフォルト,Default,223081401
+MusicLibrary_SortMusicName,楽曲名順,Song name order,223081401
+MusicLibrary_SortReleaseTime,発売日順,Release date order,223081401
+MusicLibrary_MusicCount,{0}/<size=-5>{1}</size>,{0}/<size = -5> {1} </size>,223081401
+MusicLibrary_MusicEmpty,該当する楽曲がありませんでした,There was no corresponding song,223081401
+MusicLibrary_Button_MusicDetail,楽曲詳細,Music details,223081401
+MusicLibrary_Button_Live,ライブ,live,223081401
+Multi_CannotSendStamp,現在スタンプを利用できません,Currently not available for stamps,1
+MusicLibrary_ReleaseDate,楽曲発売日：{0},Song release date: {0},223081401
+Common_Refresh,更新,update,1
+SortDialog_SortRecommendedGuest,おすすめゲスト,Recommended guests,1
+MusicSelect_ChangeDifficulty,{0}がないので{1}を選択しました,"Since there is no {0}, I selected {1}",1
+Practice_CantUseItem,おまかせで使用できるアイテムがありませんでした,There was no item that could be used by random,1
+MusicSelect_NotFullCombo,未フルコン,Non -full control,1
+RankUpDialog_LpMax,LP最大値は上限に達しています,The maximum LP value has reached the upper limit,1
+StarEvent_TabGroupStarLevelRanking,スターLvランキング,Star LV ranking,223111506
+StarEvent_TabGroupStarLevelReward,スターLv報酬詳細,Star Lv Reward Details,223111506
+StarEvent_TabGroupStarPointReward,累計イベントpt報酬詳細,Cumulative event PT reward details,223111506
+StarEvent_Get,ゲット,get,223111506
+StarEvent_Share,1日一回シェアで,With a share once a day,223111506
+StarEvent_Assist,スターアシスト,Star assist,223111506
+StarEvent_ChangeMusic,別曲に変更,Change to another song,223111506
+StarEvent_ChangeMusicFirstPrice,初回無料,First time free,223111506
+StarEvent_SkippableStarMission,Skipで目標スコアクリア可能！,The target score can be cleared with SKIP!,223111506
+StarEvent_Skippable,Skip可能,SKIP possible,223111506
+StarEvent_MusicClearText,曲を選択してライブで目標スコアをクリアしましょう！,Select a song and clear your target score at live!,223111506
+StarEvent_PlayCount,本日の曲プレイ回数：{0}/{1},Today's song play number: {0}/{1},223111506
+StarEvent_SkillPercentUp,スコア<color=#F93981>+{0}%</color>,Score <color =#f93981>+{0}%</color>,223111506
+StarEvent_GotAllStarPointReward,すべてのイベントpt達成報酬を獲得済み,All event PT achievement rewards have been obtained,223111506
+StarEvent_NonPoint,--- pt,--- pt,223111506
+StarEvent_NextStarPointReward,次の累計イベントpt報酬まで,Up to the following cumulative event PT rewards,223111506
+StarEvent_GotAllStarLevelReward,すべてのスターLv達成報酬を獲得済み,Obtained all star Lv achievement rewards,223111506
+StarEvent_NextStarLevelReward,次のスターLv報酬,Next Star Lv Reward,223111506
+StarEvent_Total,累計,Cumulative,223111506
+StarEvent_StarLevel,スターLv,Star Lv,223111506
+StarEvent_BeforeLevel,前回の<br>スターLv,The previous<br>Star Lv,223111506
+StarEvent_ClearCount,<size=36>{0}</size>/{1},<size = 36> {0} </size>/{1},223111506
+StarEvent_StarLevelReward,スターLv報酬,Star Lv Reward,223111506
+StarEvent_StarPointReward,累計イベントpt報酬,Cumulative event PT reward,223111506
+StarEvent_StarLevelRewardDialogTitle,スターLv報酬をプレゼントにおくりました！,Star Lv reward was given as a gift!,223111506
+StarEvent_ChangeMusicMessage,「{0}」<br>を別の楽曲に変更してもよろしいですか,'{0}'<br>Is it okay to change to another song?,223111506
+StarEvent_ChangeMusicButton,別の楽曲に変更する,Change to another song,223111506
+StarEvent_StarAssistTitle,スターアシスト確認,Star Assist confirmation,223111506
+StarEvent_StarAssistInfo,スターアシストチケットを1個消費してライブしますか？<br>スターアシストチケットを使用するとライブ中以下の効果が適用されます,"Do you want to live with one star assist ticket?<br>If you use a star assist ticket, the following effects will be applied during live.",223111506
+StarEvent_StarAssistBuffInfo,・部員育成ボーナス【+{0}%】<br>※部員育成ボーナスは部員を一定以上育成することでボーナス値が上昇します<br>・ライブ中無敵状態になりHPが減少しない<br>・常時判定強化極大が発動（BADまでの判定をPERFECT判定にする）<br>・スキル発動率20%アップ<br>・選抜メンバーのスコアボーナス効果2倍,・ Member training bonus [+{0}%]<br>* The bonus value of the member training bonus increases by nurturing a certain number of members.<br>・ HP does not decrease due to invincible state during the live performance<br>・ Attorney -enhanced maximum maximum maximum (determine the BAD to Perfect)<br>・ Skill activation rate increases by 20%<br>・ Double the score bonus effect of the selected member,223111506
+StarEvent_StarAssistAmount,スターアシストチケット所持数,Star Assist Ticket Number of possession,223111506
+StarEvent_StarAssistButton,スターアシストを使ってライブ,Live using Star Assist,223111506
+StarEvent_ShareMessage,#スクフェス2 でスターチャレンジイベント開催中！#私のスターLv,#Star Challenge Event is being held at Sukufes 2! #My Star Lv,223111506
+Event_PointRewardLoop,以後{0}ptごとに獲得,"Since then, acquisition for each PT {0}",223111506
+StarEvent_LevelRewardLoop,以後スターLv1ごとに獲得 ,"After that, acquired for each star Lv1",223111506
+EventBonus_StarTab_Score,スコアボーナス,Score bonus,223111506
+EventBonus_StarTab_Item,ログインアイテム獲得ボーナス,Login item acquisition bonus,223111506
+EventBonus_ItemBonusStar_Desc,部員リストに選抜メンバーがいると、ログインボーナスで獲得できるアイテム数がアップ！,"If there is a selected member in the member list, the number of items that can be obtained with the login bonus is improved!",223111506
+EventBonus_ItemBonusBonusStar_Attention,※ログインアイテム獲得ボーナスは部員リストにいる選抜メンバー全員の合計値が適用されます<br>※ログインアイテム獲得ボーナスはログインボーナスでスターアシストチケットが設定されている日のみ適用されます,* The total value of all the selected members in the list of login items is applied to the bonus of login items.<br>* The login item acquisition bonus is applied only on the day when the star assist ticket is set with the login bonus.,223111506
+StarEvent_PlayBonus_AllGot,本日分は全て獲得しました,I got everything today,223111506
+StarEvent_Remain_point,あと{0}pt,And {0} pt,223111506
+EventBonus_StarScoreBonus_Attention,※スコアボーナスは、部員リストにいる選抜メンバー全員の合計値が適用されます,* The total value of all selected members in the score bonus is applied.,223111506
+EventBonus_StarScoreBonus_Desc,部員リストに選抜メンバーがいると<br>イベント曲のライブクリア時に獲得できるスコアがアップ！,If there is a selected member in the member list<br>The score that can be obtained when clearing the event song is up!,223111506
+Theater_DialogTitle,毎日劇場,Theater every day,223120502
+GemShop_ClosedGemShopMessage,現在ラブカ購入ができません,Currently I can't buy Loveka,224012502
+GameClose_Payback,払い戻し,Refund,224031103
+GameClose_Inquiry,お問い合わせ,inquiry,224031103
+GameClose_InformationNote,情報表記,Information notation,224031103
+GameClose_UserId,ID,ID,224031103
+GameClose_PaybackCode,払い戻しコード,Refund code,224031103
+GameClose_PaidGem,所持有償ラブカ,Palace Loveka,224031103
+GameClose_Button_Information,インフォメーション,information,224031103
+GameClose_Button_Album,アルバム,album,224031103
+GameClose_Button_TitleList,称号,title,224031103
+GameClose_Payback_CopyMessage,ID、払い戻しコード、所持有償ラブカの内容をコピーしました,"Copy the contents of ID, refund code, and ownership Labka",224031103
+GameClose_Payback_CopyText,ID {0}<br>払い戻しコード {1}<br>所持有償ラブカ {2},ID {0}<br>Refund code {1}<br>Poleding Labka {2},224031103

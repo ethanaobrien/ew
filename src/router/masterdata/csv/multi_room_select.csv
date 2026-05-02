@@ -1,0 +1,5 @@
+﻿_id,_liveMode,_name,_detail,_opened,_status,_masterMultiRoomConditionId,_minRoomId,_maxRoomId,_masterReleaseLabelId
+1,2,フリーセッション,総合力に関係なく自由にプレイが可能です。,1,1,1,0,200000,1
+5,6,XJAPANセッション,,1,1,5,500000,550000,1
+6,7,LUNASEAセッション,,1,1,6,550000,600000,1
+7,8,GLAYセッション,,1,1,7,650000,700000,1

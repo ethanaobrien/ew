@@ -1,0 +1,15 @@
+﻿_id,_masterBillingProductId,_subscriptionImageName,_masterReleaseLabelId
+1,gent.aoharu.dev.apple.subscription.980,subscription_miraclepass_banner,1
+2,gent.aoharu.qa1.apple.subscription.980,subscription_miraclepass_banner,1
+3,gent.aoharu.gqa1.apple.subscription.980,subscription_miraclepass_banner,1
+4,gent.aoharu.qa3.apple.subscription.980,subscription_miraclepass_banner,1
+5,gent.aoharu.qa4.apple.subscription.980,subscription_miraclepass_banner,1
+6,com.lovelive.sif2.ap.subscription_01.980,subscription_miraclepass_banner,1
+7,gent.aoharu.dev.google.subscription.980,subscription_miraclepass_banner,1
+8,gent.aoharu.qa1.google.subscription_980,subscription_miraclepass_banner,1
+9,gent.aoharu.qa3.google.subscription_980,subscription_miraclepass_banner,1
+10,gent.aoharu.gqa1.google.subscription_980,subscription_miraclepass_banner,1
+11,gent.aoharu.qa4.google.subscription_980,subscription_miraclepass_banner,1
+12,com.lovelive.sif2.gg.subscription_01.980,subscription_miraclepass_banner,1
+101,gent.aoharu.dev4.apple.subscription.980,subscription_miraclepass_banner,1
+102,gent.aoharu.dev4.google.subscription.980,subscription_miraclepass_banner,1

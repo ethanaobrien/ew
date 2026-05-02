@@ -1,0 +1,102 @@
+﻿_id,_lengthType,_screenType,_movieName,_movieDetail,_masterCharacterIdList,_masterCharacterId,_folderPath,_fileName,_thumbnailSpriteName,_getCategory,_masterMusicIdList,_masterReleaseLabelId
+10000001,0,1,Museライブ汎用背景,,,0,Scenes/LiveBg/,Monitor_Muse,,0,,1
+10000002,0,1,Aqoursライブ汎用背景,,,0,Scenes/LiveBg/,Monitor_Aqours,,0,,1
+10000003,0,1,虹学ライブ汎用背景,,,0,Scenes/LiveBg/,Monitor_Niji,,0,,1
+10000004,0,1,Liellaライブ汎用背景,,,0,Scenes/LiveBg/,Monitor_Liella,,0,,1
+10000005,0,1,蓮ライブ背景,,,0,Scenes/LiveBg/,Monitor_Hasu,,0,,1
+10000006,0,1,その他汎用ライブ背景,,,0,Scenes/LiveBg/,Monitor_Other,,0,,1
+10000007,0,1,ヨハネライブ汎用背景,,,0,Scenes/LiveBg/,Monitor_Yohane,,0,,1
+10001001,0,1,Muse,,,0,Scenes/Common/,Render_Muse_1,,0,,1
+10001002,0,1,Aqours,,,0,Scenes/Common/,Render_Aqours_1,,0,,1
+10001003,0,1,Niji,,,0,Scenes/Common/,Render_Niji_1,,0,,1
+10001004,0,1,Liella,,,0,Scenes/Common/,Render_Liella_1,,0,,1
+10001005,0,1,Hasu,,,0,Scenes/Common/,Render_Hasu_1,,0,,1
+10001006,0,1,Yohane,,,0,Scenes/Common/,Render_Yohane_1,,0,,1
+10001007,0,1,Others,,,0,Scenes/Common/,Render_Others_1,,0,,1
+20001004,0,1,1コマ漫画,,,0,Scenes/Common/,bg_cartoon,,0,,1
+20001006,0,1,ホームプリセット,,,0,Scenes/Common/,bg_homePreset,,0,,1
+20001007,0,1,デッキ編成,,,0,Scenes/Common/,bg_deckEdit,,0,,1
+20001008,0,1,メンバー一覧,,,0,Scenes/Common/,bg_member,,0,,1
+20001010,0,1,ショップ,,,0,Scenes/Common/,bg_shop,,0,,1
+20001011,0,1,交換所,,,0,Scenes/Common/,bg_exchange,,0,,1
+20001012,0,1,プロフィール,,,0,Scenes/Common/,bg_profile,,0,,1
+20001013,0,1,フレンド,,,0,Scenes/Common/,bg_friend,,0,,1
+20001014,0,1,GPS,,,0,Scenes/Common/,bg_gps,,0,,1
+20001015,0,1,アイテム,,,0,Scenes/Common/,bg_item,,0,,1
+20001016,0,1,マルチ,,,0,Scenes/Common/,bg_multiPlay,,0,,1
+30010001,0,1,μ'sの日常1話,,,0,Scenes/StoryNichijo/,nichijo_01_0001,,0,,1
+30010002,0,1,μ'sの日常2話,,,0,Scenes/StoryNichijo/,nichijo_01_0002,,0,,1
+30010003,0,1,μ'sの日常3話,,,0,Scenes/StoryNichijo/,nichijo_01_0003,,0,,1
+30010004,0,1,μ'sの日常4話,,,0,Scenes/StoryNichijo/,nichijo_01_0004,,0,,1
+30010005,0,1,μ'sの日常5話,,,0,Scenes/StoryNichijo/,nichijo_01_0005,,0,,1
+30010006,0,1,μ'sの日常6話,,,0,Scenes/StoryNichijo/,nichijo_01_0006,,0,,223122602
+30010007,0,1,μ'sの日常7話,,,0,Scenes/StoryNichijo/,nichijo_01_0007,,0,,223122602
+30010008,0,1,μ'sの日常8話,,,0,Scenes/StoryNichijo/,nichijo_01_0008,,0,,223122602
+30020001,0,1,Aqoursの日常1話,,,0,Scenes/StoryNichijo/,nichijo_02_0001,,0,,1
+30020002,0,1,Aqoursの日常2話,,,0,Scenes/StoryNichijo/,nichijo_02_0002,,0,,1
+30020003,0,1,Aqoursの日常3話,,,0,Scenes/StoryNichijo/,nichijo_02_0003,,0,,1
+30020004,0,1,Aqoursの日常4話,,,0,Scenes/StoryNichijo/,nichijo_02_0004,,0,,1
+30020005,0,1,Aqoursの日常5話,,,0,Scenes/StoryNichijo/,nichijo_02_0005,,0,,1
+30030001,0,1,ニジガクの日常1話,,,0,Scenes/StoryNichijo/,nichijo_03_0001,,0,,1
+30030002,0,1,ニジガクの日常2話,,,0,Scenes/StoryNichijo/,nichijo_03_0002,,0,,1
+30030003,0,1,ニジガクの日常3話,,,0,Scenes/StoryNichijo/,nichijo_03_0003,,0,,1
+30030004,0,1,ニジガクの日常4話,,,0,Scenes/StoryNichijo/,nichijo_03_0004,,0,,1
+30030005,0,1,ニジガクの日常5話,,,0,Scenes/StoryNichijo/,nichijo_03_0005,,0,,1
+30030006,0,1,私のラブソング編　歩夢1話,,,0,Scenes/StoryNichijo/,nichijo_03_0006,,0,,223090601
+30030007,0,1,私のラブソング編　かすみ1話,,,0,Scenes/StoryNichijo/,nichijo_03_0007,,0,,223090601
+30030008,0,1,私のラブソング編　しずく1話,,,0,Scenes/StoryNichijo/,nichijo_03_0008,,0,,223090601
+30030009,0,1,私のラブソング編　果林1話,,,0,Scenes/StoryNichijo/,nichijo_03_0009,,0,,223090601
+30030010,0,1,私のラブソング編　愛1話,,,0,Scenes/StoryNichijo/,nichijo_03_0010,,0,,223090601
+30030011,0,1,私のラブソング編　彼方1話,,,0,Scenes/StoryNichijo/,nichijo_03_0011,,0,,223090601
+30030012,0,1,私のラブソング編　せつ菜1話,,,0,Scenes/StoryNichijo/,nichijo_03_0012,,0,,223090601
+30030013,0,1,私のラブソング編　エマ1話,,,0,Scenes/StoryNichijo/,nichijo_03_0013,,0,,223090601
+30030014,0,1,私のラブソング編　璃奈1話,,,0,Scenes/StoryNichijo/,nichijo_03_0014,,0,,223090601
+30030015,0,1,私のラブソング編　栞子1話,,,0,Scenes/StoryNichijo/,nichijo_03_0015,,0,,223090601
+30030016,0,1,私のラブソング編　ミア1話,,,0,Scenes/StoryNichijo/,nichijo_03_0016,,0,,223090601
+30030017,0,1,私のラブソング編　ランジュ1話,,,0,Scenes/StoryNichijo/,nichijo_03_0017,,0,,223090601
+30030018,0,1,私のラブソング編　歩夢2話,,,0,Scenes/StoryNichijo/,nichijo_03_0018,,0,,223100403
+30030019,0,1,私のラブソング編　かすみ2話,,,0,Scenes/StoryNichijo/,nichijo_03_0019,,0,,223100403
+30030020,0,1,私のラブソング編　しずく2話,,,0,Scenes/StoryNichijo/,nichijo_03_0020,,0,,223100403
+30030021,0,1,私のラブソング編　果林2話,,,0,Scenes/StoryNichijo/,nichijo_03_0021,,0,,223100403
+30030022,0,1,私のラブソング編　愛2話,,,0,Scenes/StoryNichijo/,nichijo_03_0022,,0,,223100403
+30030023,0,1,私のラブソング編　彼方2話,,,0,Scenes/StoryNichijo/,nichijo_03_0023,,0,,223100403
+30030024,0,1,私のラブソング編　せつ菜2話,,,0,Scenes/StoryNichijo/,nichijo_03_0024,,0,,223100403
+30030025,0,1,私のラブソング編　エマ2話,,,0,Scenes/StoryNichijo/,nichijo_03_0025,,0,,223100403
+30030026,0,1,私のラブソング編　璃奈2話,,,0,Scenes/StoryNichijo/,nichijo_03_0026,,0,,223100403
+30030027,0,1,私のラブソング編　栞子2話,,,0,Scenes/StoryNichijo/,nichijo_03_0027,,0,,223100403
+30030028,0,1,私のラブソング編　ミア2話,,,0,Scenes/StoryNichijo/,nichijo_03_0028,,0,,223100403
+30030029,0,1,私のラブソング編　ランジュ2話,,,0,Scenes/StoryNichijo/,nichijo_03_0029,,0,,223100403
+30030030,0,1,私のラブソング編　歩夢3話,,,0,Scenes/StoryNichijo/,nichijo_03_0030,,0,,223111001
+30030031,0,1,私のラブソング編　かすみ3話,,,0,Scenes/StoryNichijo/,nichijo_03_0031,,0,,223111001
+30030032,0,1,私のラブソング編　しずく3話,,,0,Scenes/StoryNichijo/,nichijo_03_0032,,0,,223111001
+30030033,0,1,私のラブソング編　果林3話,,,0,Scenes/StoryNichijo/,nichijo_03_0033,,0,,223111001
+30030034,0,1,私のラブソング編　愛3話,,,0,Scenes/StoryNichijo/,nichijo_03_0034,,0,,223111001
+30030035,0,1,私のラブソング編　彼方3話,,,0,Scenes/StoryNichijo/,nichijo_03_0035,,0,,223111001
+30030036,0,1,私のラブソング編　せつ菜3話,,,0,Scenes/StoryNichijo/,nichijo_03_0036,,0,,223111001
+30030037,0,1,私のラブソング編　エマ3話,,,0,Scenes/StoryNichijo/,nichijo_03_0037,,0,,223111001
+30030038,0,1,私のラブソング編　璃奈3話,,,0,Scenes/StoryNichijo/,nichijo_03_0038,,0,,223111001
+30030039,0,1,私のラブソング編　栞子3話,,,0,Scenes/StoryNichijo/,nichijo_03_0039,,0,,223111001
+30030040,0,1,私のラブソング編　ミア3話,,,0,Scenes/StoryNichijo/,nichijo_03_0040,,0,,223111001
+30030041,0,1,私のラブソング編　ランジュ3話,,,0,Scenes/StoryNichijo/,nichijo_03_0041,,0,,223111001
+30040001,0,1,Liella!の日常1話,,,0,Scenes/StoryNichijo/,nichijo_04_0001,,0,,1
+30040002,0,1,Liella!の日常2話,,,0,Scenes/StoryNichijo/,nichijo_04_0002,,0,,1
+30040003,0,1,Liella!の日常3話,,,0,Scenes/StoryNichijo/,nichijo_04_0003,,0,,1
+30040004,0,1,Liella!の日常4話,,,0,Scenes/StoryNichijo/,nichijo_04_0004,,0,,1
+30040005,0,1,Liella!の日常5話,,,0,Scenes/StoryNichijo/,nichijo_04_0005,,0,,1
+30040006,0,1,Liella!の日常 ライブ開催編 1話,,,0,Scenes/StoryNichijo/,nichijo_04_0006,,0,,224011902
+30040007,0,1,Liella!の日常 ライブ開催編 2話,,,0,Scenes/StoryNichijo/,nichijo_04_0007,,0,,224013107
+30040008,0,1,Liella!の日常 ライブ開催編 3話,,,0,Scenes/StoryNichijo/,nichijo_04_0008,,0,,224020902
+90010001,0,1,ガチャ導入_muse_通常,,,0,Scenes/GachaScene/,gacha_c01_01muse_A,,0,,1
+90010002,0,1,ガチャ導入_muse_確定,,,0,Scenes/GachaScene/,gacha_c01_01muse_B,,0,,1
+90020001,0,1,ガチャ導入_aqours_通常,,,0,Scenes/GachaScene/,gacha_c01_02aqours_A,,0,,1
+90020002,0,1,ガチャ導入_aqours_確定,,,0,Scenes/GachaScene/,gacha_c01_02aqours_B,,0,,1
+90030001,0,1,ガチャ導入_niji_通常,,,0,Scenes/GachaScene/,gacha_c01_03niji_A,,0,,1
+90030002,0,1,ガチャ導入_niji_確定,,,0,Scenes/GachaScene/,gacha_c01_03niji_B,,0,,1
+90040001,0,1,ガチャ導入_liella_通常,,,0,Scenes/GachaScene/,gacha_c01_04liella_A,,0,,1
+90040002,0,1,ガチャ導入_liella_確定,,,0,Scenes/GachaScene/,gacha_c01_04liella_B,,0,,1
+90000101,0,1,ガチャ導入_test,,,0,Scenes/GachaScene/,gacha_c01_01muse_A,,0,,1
+90000201,0,1,ガチャ演出アイリスインR,,,0,Scenes/GachaScene/,gacha_rect1_bg_01r,,0,,1
+90000202,0,1,ガチャ演出アイリスインSR,,,0,Scenes/GachaScene/,gacha_rect1_bg_02sr,,0,,1
+90000203,0,1,ガチャ演出アイリスインUR,,,0,Scenes/GachaScene/,gacha_rect1_bg_03ur,,0,,1
+90000301,0,1,ガチャ演出セリフBG,,,0,Scenes/GachaScene/,gacha_rect2_bg_03ur,,0,,1
+90000302,0,1,ガチャ演出セリフ覚醒時BG,,,0,Scenes/GachaScene/,gacha_rect2_bg_03urB,,0,,1

@@ -1,0 +1,688 @@
+﻿_albumSeriesId,_albumGroupId,_albumTabId,_orderNum,_name,_nameEn,_layoutType,_thumbnailPath,_masterReleaseLabelId
+1,1,1,4,アキバ編,Akihabara,9,series_thumbnail_1_1,1
+2,1,1,8,ソロステージ編,Solo Performance,9,series_thumbnail_2_1,1
+3,1,1,6,職業編,Vocational,9,series_thumbnail_3_1,1
+4,1,1,9,動物編,Animal,3,series_thumbnail_4_1,1
+5,1,1,13,8月編(水着)　前半,Summer Uniform (1/2),13,series_thumbnail_5_1,1
+6,1,1,14,8月編(水着)　後半,Summer Uniform (2/2),12,series_thumbnail_6_1,1
+7,1,1,16,9月編(浴衣)　前半,Yukata (1/2),13,series_thumbnail_7_1,1
+8,1,1,17,9月編(浴衣)　後半,Yukata (2/2),12,series_thumbnail_8_1,1
+9,1,1,18,10月編(チア)　前半,Sports (1/2),13,series_thumbnail_9_1,1
+10,1,1,19,10月編(チア)　後半,Sports (2/2),12,series_thumbnail_10_1,1
+11,1,1,20,11月編(エプロン)　前半,Cooking (1/2),13,series_thumbnail_11_1,1
+12,1,1,21,11月編(エプロン)　後半,Cooking (2/2),12,series_thumbnail_12_1,1
+13,1,1,23,12月編(サンタ)　前半,Winter Holiday (1/2),13,series_thumbnail_13_1,1
+14,1,1,24,12月編(サンタ)　後半,Winter Holiday (2/2),12,series_thumbnail_14_1,1
+15,1,1,27,1月編(晴れ着)　前半,Kimono (1/2),13,series_thumbnail_15_1,1
+16,1,1,28,1月編(晴れ着)　後半,Kimono (2/2),12,series_thumbnail_16_1,1
+17,1,1,32,2月編(バレンタイン)前半,Chocolate (1/2),13,series_thumbnail_17_1,1
+18,1,1,33,2月編(バレンタイン)後半,Chocolate (2/2),12,series_thumbnail_18_1,1
+19,1,1,35,3月編(花)　前半,Blooming (1/2),13,series_thumbnail_19_1,1
+20,1,1,36,3月編(花)　後半,Blooming (2/2),12,series_thumbnail_20_1,1
+21,1,1,38,4月編(フルーツ)　前半,Fruit Stand (1/2),13,series_thumbnail_21_1,1
+22,1,1,39,4月編(フルーツ)　後半,Fruit Stand (2/2),12,series_thumbnail_22_1,1
+23,1,1,42,5月編(童話)　前半,Fairy Tale (1/2),13,series_thumbnail_23_1,1
+24,1,1,43,5月編(童話)　後半,Fairy Tale (2/2),12,series_thumbnail_24_1,1
+25,1,1,44,6月編(ドレス)　前半,Party Dress (1/2),13,series_thumbnail_25_1,1
+26,1,1,45,6月編(ドレス)　後半,Party Dress (2/2),12,series_thumbnail_26_1,1
+27,1,1,49,7月編(人魚)　前半,Summer Casual (1/2),13,series_thumbnail_27_1,1
+28,1,1,50,7月編(人魚)　後半,Summer Casual (2/2),12,series_thumbnail_28_1,1
+29,1,1,55,チャイナドレス編　前半,Kung Fu Star (1/2),13,series_thumbnail_29_1,1
+30,1,1,56,チャイナドレス編　後半,Kung Fu Star (2/2),12,series_thumbnail_30_1,1
+31,1,1,58,カフェメイド編　前半,Cafe Maid (1/2),13,series_thumbnail_31_1,1
+32,1,1,59,カフェメイド編　後半,Cafe Maid (2/2),12,series_thumbnail_32_1,1
+33,1,1,60,ハロウィン編　前半,Halloween (1/2),13,series_thumbnail_33_1,1
+34,1,1,61,ハロウィン編　後半,Halloween (2/2),12,series_thumbnail_34_1,1
+35,1,1,64,星座編　前半,Zodiac (1/2),13,series_thumbnail_35_1,1
+36,1,1,65,星座編　後半,Zodiac (2/2),12,series_thumbnail_36_1,1
+37,1,1,67,雪山編　前半,Winter Sports (1/2),13,series_thumbnail_37_1,1
+38,1,1,68,雪山編　後半,Winter Sports (2/2),12,series_thumbnail_38_1,1
+39,1,1,73,七福神編　前半,Goddesses of Fortune (1/2),13,series_thumbnail_39_1,1
+40,1,1,74,七福神編　後半,Goddesses of Fortune (2/2),12,series_thumbnail_40_1,1
+41,1,1,76,バレンタイン編　前半,Valentines (1/2),13,series_thumbnail_41_1,1
+42,1,1,77,バレンタイン編　後半,Valentines (2/2),12,series_thumbnail_42_1,1
+43,1,1,78,ホワイトデー編　前半,White Day (1/2),13,series_thumbnail_43_1,1
+44,1,1,79,ホワイトデー編　後半,White Day (2/2),12,series_thumbnail_44_1,1
+45,1,1,82,職業体験編　前半,Vocational Part 2 (1/2),13,series_thumbnail_45_1,1
+46,1,1,83,職業体験編　後半,Vocational Part 2 (2/2),12,series_thumbnail_46_1,1
+47,1,1,86,サイバー編　前半,Cyber (1/2),13,series_thumbnail_47_1,1
+48,1,1,87,サイバー編　後半,Cyber (2/2),12,series_thumbnail_48_1,1
+49,1,1,89,手品師編　前半,Magician (1/2),13,series_thumbnail_49_1,1
+50,1,1,90,手品師編　後半,Magician (2/2),12,series_thumbnail_50_1,1
+51,1,1,94,マリン編　前半,Sailors (1/2),13,series_thumbnail_51_1,1
+52,1,1,95,マリン編　後半,Sailors (2/2),12,series_thumbnail_52_1,1
+53,1,1,96,プール編　前半,Swimming Pool (1/2),13,series_thumbnail_53_1,1
+54,1,1,97,プール編　後半,Swimming Pool (2/2),12,series_thumbnail_54_1,1
+55,1,1,98,くのいち編　前半,Kunoichi (1/2),13,series_thumbnail_55_1,1
+56,1,1,99,くのいち編　後半,Kunoichi (2/2),12,series_thumbnail_56_1,1
+57,1,1,103,動物ふれあい編　前半,Animal Part 2 (1/2),13,series_thumbnail_57_1,1
+58,1,1,104,動物ふれあい編　後半,Animal Part 2 (2/2),12,series_thumbnail_58_1,1
+59,1,1,107,舞踏会編　前半,Dance Party (1/2),13,series_thumbnail_59_1,1
+60,1,1,108,舞踏会編　後半,Dance Party (2/2),12,series_thumbnail_60_1,1
+61,1,1,110,クリスマス編　前半,Christmas (1/2),13,series_thumbnail_61_1,1
+62,1,1,111,クリスマス編　後半,Christmas (2/2),12,series_thumbnail_62_1,1
+63,1,1,115,サーカス編　前半,Circus (1/2),13,series_thumbnail_63_1,1
+64,1,1,116,サーカス編　後半,Circus (2/2),12,series_thumbnail_64_1,1
+65,1,1,119,妖精の国編　前半,Fairyland (1/2),13,series_thumbnail_65_1,1
+66,1,1,120,妖精の国編　後半,Fairyland (2/2),12,series_thumbnail_66_1,1
+67,1,1,124,和装クラシック編　前半,Taisho Roman (1/2),13,series_thumbnail_67_1,1
+68,1,1,125,和装クラシック編　後半,Taisho Roman (2/2),12,series_thumbnail_68_1,1
+69,1,1,127,ベースボール編　前半,Baseball (1/2),13,series_thumbnail_69_1,1
+70,1,1,128,ベースボール編　後半,Baseball (2/2),12,series_thumbnail_70_1,1
+71,1,1,130,踊り子編　前半,Dancer (1/2),13,series_thumbnail_71_1,1
+72,1,1,131,踊り子編　後半,Dancer (2/2),12,series_thumbnail_72_1,1
+73,1,1,132,アイドル衣装編　前半,Idol Costume (1/2),13,series_thumbnail_73_1,1
+74,1,1,133,アイドル衣装編　後半,Idol Costume (2/2),12,series_thumbnail_74_1,1
+75,1,1,135,小悪魔編　前半,Little Devil (1/2),13,series_thumbnail_75_1,1
+76,1,1,136,小悪魔編　後半,Little Devil (2/2),12,series_thumbnail_76_1,1
+77,1,1,138,プール準備編　前半,Ready for Summer (1/2),15,series_thumbnail_77_1,1
+78,1,1,139,プール準備編　後半,Ready for Summer (2/2),14,series_thumbnail_78_1,1
+79,1,1,140,誕生石編　前半,Birth Stones (1/2),15,series_thumbnail_79_1,1
+80,1,1,141,誕生石編　後半,Birth Stones (2/2),14,series_thumbnail_80_1,1
+81,1,1,144,パジャマパーティ編　前半,Pajama Party (1/2),15,series_thumbnail_81_1,1
+82,1,1,145,パジャマパーティ編　後半,Pajama Party (2/2),14,series_thumbnail_82_1,1
+83,1,1,146,フラワーブーケ編　前半,Bouquet (1/2),15,series_thumbnail_83_1,1
+84,1,1,147,フラワーブーケ編　後半,Bouquet (2/2),14,series_thumbnail_84_1,1
+85,1,1,149,テニス編　前半,Tennis (1/2),15,series_thumbnail_85_1,1
+86,1,1,150,テニス編　後半,Tennis (2/2),14,series_thumbnail_86_1,1
+87,1,1,151,アイスフレーバー編　前半,Ice Cream (1/2),15,series_thumbnail_87_1,1
+88,1,1,152,アイスフレーバー編　後半,Ice Cream (2/2),14,series_thumbnail_88_1,1
+89,1,1,154,パイレーツ編　前半,Pirates (1/2),15,series_thumbnail_89_1,1
+90,1,1,155,パイレーツ編　後半,Pirates (2/2),14,series_thumbnail_90_1,1
+91,1,1,156,クレヨン編　前半,Crayon (1/2),15,series_thumbnail_91_1,1
+92,1,1,157,クレヨン編　後半,Crayon (2/2),14,series_thumbnail_92_1,1
+93,1,1,160,楽器編　前半,Marching Band (1/2),15,series_thumbnail_93_1,1
+94,1,1,161,楽器編　後半,Marching Band (2/2),14,series_thumbnail_94_1,1
+95,1,1,163,天空編　前半,Clear Skies (1/2),15,series_thumbnail_95_1,1
+96,1,1,164,天空編　後半,Clear Skies (2/2),14,series_thumbnail_96_1,1
+97,1,1,167,不思議の国編　前半,A Curious Place (1/2),15,series_thumbnail_97_1,1
+98,1,1,168,不思議の国編　後半,A Curious Place (2/2),14,series_thumbnail_98_1,1
+99,1,1,170,魔法使い編　前半,Witches (1/2),15,series_thumbnail_99_1,1
+100,1,1,171,魔法使い編　後半,Witches (2/2),14,series_thumbnail_100_1,1
+101,1,1,173,フルーツ編　前半,Fruits (1/2),15,series_thumbnail_101_1,1
+102,1,1,174,フルーツ編　後半,Fruits (2/2),14,series_thumbnail_102_1,1
+103,1,1,178,宇宙編　前半,Universe (1/2),15,series_thumbnail_103_1,1
+104,1,1,179,宇宙編　後半,Universe (2/2),14,series_thumbnail_104_1,1
+105,1,1,180,RPG編　前半,RPG (1/2),15,series_thumbnail_105_1,1
+106,1,1,181,RPG編　後半,RPG (2/2),14,series_thumbnail_106_1,1
+107,1,1,184,ティーパーティ編　前半,Tea Party (1/2),15,series_thumbnail_107_1,1
+108,1,1,185,ティーパーティ編　後半,Tea Party (2/2),14,series_thumbnail_108_1,1
+109,1,1,187,春の訪れ編　前半,Welcome Spring (1/2),15,series_thumbnail_109_1,1
+110,1,1,188,春の訪れ編　後半,Welcome Spring (2/2),14,series_thumbnail_110_1,1
+111,1,1,190,ビー玉編　前半,Marble (1/2),15,series_thumbnail_111_1,1
+112,1,1,191,ビー玉編　後半,Marble (2/2),14,series_thumbnail_112_1,1
+113,1,1,193,トロピカル編　前半,Tropical Adventure (1/2),15,series_thumbnail_113_1,1
+114,1,1,194,トロピカル編　後半,Tropical Adventure (2/2),14,series_thumbnail_114_1,1
+115,1,1,196,お勉強編　前半,Time to Study (1/2),15,series_thumbnail_115_1,1
+116,1,1,197,お勉強編　後半,Time to Study (2/2),14,series_thumbnail_116_1,1
+117,1,1,198,ホワイトスノー編　前半,Sparkling Snow (1/2),15,series_thumbnail_117_1,1
+118,1,1,199,ホワイトスノー編　後半,Sparkling Snow (2/2),14,series_thumbnail_118_1,1
+119,1,1,203,お化粧の魔法編　前半,Makeup's Magic (1/2),15,series_thumbnail_119_1,1
+120,1,1,201,バースデーサプライズ！衣装,Birthday Surprise,9,series_thumbnail_120_8,1
+121,1,1,202,スクフェス感謝祭2019衣装,Fan Festival 2019,9,series_thumbnail_121_8,1
+122,1,1,192,スターライト・セーラー<br>（スクフェスAC）,Starlight Sailor,9,series_thumbnail_122_1,1
+123,1,1,186,スマイルパレード編,Smile Parade,9,series_thumbnail_123_1,1
+124,1,1,183,バースデーライブ衣装,Birthday Live Show,9,series_thumbnail_124_1,1
+125,1,1,165,僕たちはひとつの光（UR）,Bokutachi wa Hitotsu no Hikari (UR),9,series_thumbnail_125_1,1
+126,1,1,159,スクールユニティ<br>（スクフェスAC）,School Unity,9,series_thumbnail_126_1,1
+127,1,1,162,スクフェスAC2017バースデー<br>衣装,SIF-AC Birthday 2017,9,series_thumbnail_127_1,1
+128,1,1,172,バースデードレス衣装,Birthday 2019,9,series_thumbnail_128_1,1
+129,1,1,137,KiRa-KiRa Sensation!<br>（SSR）,KiRa-KiRa Sensation!<br>(SSR),9,series_thumbnail_0_1,1
+130,1,1,177,巫女服（スクフェスAC）,Shrine Maiden,9,series_thumbnail_130_1,1
+131,1,1,5,特別配信Part1,Special Release Part 1,10,series_thumbnail_0_1,1
+132,1,1,10,特別配信Part2,Special Release Part 2,9,series_thumbnail_132_1,1
+133,1,1,11,特別配信Part3,Special Release Part 3,9,series_thumbnail_133_1,1
+134,1,1,30,特別配信Part7,Special Release Part 7,9,series_thumbnail_134_1,1
+135,1,1,31,タカラモノズ／<br>Paradise Live（SR）,Takaramonos/<br>Paradise Live (SR),9,series_thumbnail_135_1,1
+136,1,1,41,それは僕たちの奇跡（R）,It's our miraculous time (R),9,series_thumbnail_136_1,1
+137,1,1,47,特別配信Part9,Special Release Part 9,10,series_thumbnail_0_1,1
+138,1,1,57,特別配信Part13,Special Release Part 13,8,series_thumbnail_138_1,1
+139,1,1,75,特別配信Part14,Special Release Part 14,9,series_thumbnail_139_1,1
+140,1,1,91,特別配信Part17,Special Release Part 17,9,series_thumbnail_140_1,1
+141,1,1,92,特別配信Part18,Special Release Part 18,9,series_thumbnail_141_1,1
+142,1,1,105,HEART to HEART!（SR）,HEART to HEART! (SR),9,series_thumbnail_142_1,1
+143,1,1,123,MOMENT RING（SR）,MOMENT RING (SR),9,series_thumbnail_143_1,1
+144,1,1,63,Printemps　ライブ衣装,Printemps Live Show,3,series_thumbnail_144_1,1
+145,1,1,66,lily white　ライブ衣装,lily white Live Show,3,series_thumbnail_145_1,1
+146,1,1,71,BiBi　ライブ衣装,BiBi Live Show,3,series_thumbnail_146_1,1
+147,1,1,109,Printemps<br>WAO-WAO Powerful day!,Printemps<br>WAO-WAO Powerful day!,3,series_thumbnail_147_1,1
+148,1,1,114,lily white<br>思い出以上になりたくて,lily white<br>Omoide Ijou ni Naritakute,3,series_thumbnail_148_1,1
+149,1,1,118,BiBi<br>錯覚CROSSROADS,BiBi<br>Sakkaku CROSSROADS,3,series_thumbnail_149_1,1
+150,1,1,7,イベント報酬（SR）Part1,Event Reward (SR),9,series_thumbnail_150_1,1
+151,1,1,22,イベント報酬（SR）Part2,Event Reward (SR),9,series_thumbnail_151_1,1
+152,1,1,37,イベント報酬（SR）Part3,Event Reward (SR),9,series_thumbnail_152_1,1
+153,1,1,53,イベント報酬（SR）Part4,Event Reward (SR),9,series_thumbnail_153_1,1
+154,1,1,70,イベント報酬（SR）Part5,Event Reward (SR),9,series_thumbnail_154_1,1
+155,1,1,84,イベント報酬（SR）Part6,Event Reward (SR),9,series_thumbnail_155_1,1
+156,1,1,100,イベント報酬（SR）Part7,Event Reward (SR),9,series_thumbnail_156_1,1
+157,1,1,117,イベント報酬（SR）Part8,Event Reward (SR),9,series_thumbnail_157_1,1
+158,1,1,134,イベント報酬（SR）Part9,Event Reward (SR),9,series_thumbnail_158_1,1
+159,1,1,142,イベント報酬（SR）Part10,Event Reward (SR),9,series_thumbnail_159_1,1
+160,1,1,148,イベント報酬（SR）Part11,Event Reward (SR),9,series_thumbnail_160_1,1
+161,1,1,153,イベント報酬（SR）Part12,Event Reward (SR),9,series_thumbnail_161_1,1
+162,1,1,158,イベント報酬（SR）Part13,Event Reward (SR),9,series_thumbnail_162_1,1
+163,1,1,166,イベント報酬（SR）Part14,Event Reward (SR),9,series_thumbnail_163_1,1
+164,1,1,176,イベント報酬（SR）Part15,Event Reward (SR),9,series_thumbnail_164_1,1
+165,1,1,182,イベント報酬（SR）Part16,Event Reward (SR),9,series_thumbnail_165_1,1
+166,1,1,189,イベント報酬（SR）Part17,Event Reward (SR),9,series_thumbnail_166_1,1
+167,1,1,195,イベント報酬（SR）Part18,Event Reward (SR),9,series_thumbnail_167_1,1
+168,1,1,200,なかよし総選挙,Companion Election,2,series_thumbnail_168_1,1
+169,1,1,29,にこりんぱな,Nico Rin Pana,6,series_thumbnail_169_1,1
+170,1,1,129,あなたが決める♪リクエストUR<br>決定戦,Special Release,9,series_thumbnail_170_1,1
+171,1,1,12,特別配信Part4,Special Release Part 4,1,series_thumbnail_0_1,1
+172,1,1,15,特別配信Part5,Special Release Part 5,1,series_thumbnail_0_1,1
+173,1,1,25,クリスマスカード<br>決定戦,Christmas Girl,16,series_thumbnail_173_1,1
+174,1,1,26,特別配信Part6,Special Release Part 6,1,series_thumbnail_0_1,1
+175,1,1,34,特別配信Part8,Special Release Part 8,1,series_thumbnail_0_1,1
+176,1,1,48,特別配信Part10,Special Release Part 10,1,series_thumbnail_176_1,1
+177,1,1,51,特別配信Part11,Special Release Part 11,1,series_thumbnail_0_1,1
+178,1,1,52,特別配信Part12,Special Release Part 12,1,series_thumbnail_0_1,1
+179,1,1,54,サマーガール決定戦,Summer Girl Election,1,series_thumbnail_179_1,1
+180,1,1,69,クリスマスプレゼント大作戦,Holiday Gift Extravaganza,1,series_thumbnail_180_1,1
+181,1,1,80,特別配信Part15,Special Release Part 15,1,series_thumbnail_0_1,1
+182,1,1,85,あなたと行きたい♪旅ガール<br>決定戦,Travel Girl Competition,1,series_thumbnail_182_1,1
+183,1,1,88,特別配信Part16,Special Release Part 16,3,series_thumbnail_183_1,1
+184,1,1,93,特別配信Part19,Special Release Part 19,1,series_thumbnail_0_1,1
+185,1,1,102,特別配信Part20,Special Release Part 20,1,series_thumbnail_0_1,1
+186,1,1,106,真夏のフルーツガール決定戦,Summer Fruit Girl Competition,1,series_thumbnail_186_1,1
+187,1,1,112,特別配信Part21,Special Release Part 21,1,series_thumbnail_0_1,1
+188,1,1,122,特別配信Part22,Special Release Part 22,1,series_thumbnail_0_1,1
+189,1,1,126,特別配信Part23,Special Release Part 23,1,series_thumbnail_0_1,1
+190,1,1,143,μ's Fan Meeting Tour 2015<br>〜あなたの街でラブライブ！〜,μ's Fan Meeting Tour 2015<br>〜LoveLive! in your Town〜,1,series_thumbnail_0_1,1
+191,1,1,169,スクフェス5thアニバーサリー<br>キャンペーンガール,5th Anniversary Celebration Girls,1,series_thumbnail_191_1,1
+192,1,1,175,セガスタッフイメージガール,SEGA Staff Costume,1,series_thumbnail_0_1,1
+193,1,1,1,Wonderful Rush（R）,Wonderful Rush (R),9,series_thumbnail_193_1,1
+194,1,1,2,もぎゅっと“love”で接近中!<br>（R）,"Mogyutto ""Love"" de Sekkinchu!<br> (R)",9,series_thumbnail_194_1,1
+195,1,1,3,"夏色えがおで1,2,Jump!（R）","Natsuiro Egao de 1, 2, Jump! (R)",9,series_thumbnail_195_1,1
+196,1,1,40,僕らは今のなかで（R）,Bokura wa Ima no Naka de (R),9,series_thumbnail_196_1,1
+197,1,1,46,Snow halation（R）Part1,Snow Halation (R) Part 1,9,series_thumbnail_197_1,1
+198,1,1,62,これからのSomeday（R）,Korekara no Someday (R),9,series_thumbnail_198_1,1
+199,1,1,72,ユメノトビラ（R）,Yume no Tobira (R),9,series_thumbnail_199_1,1
+200,1,1,81,Music S.T.A.R.T!!（R）,Music S.T.A.R.T!! (R),9,series_thumbnail_200_1,1
+201,1,1,101,Dancing stars on me!（R）,Dancing stars on me! (R),9,series_thumbnail_201_1,1
+202,1,1,113,KiRa-KiRa Sensation!（R）,KiRa-KiRa Sensation! (R),9,series_thumbnail_202_1,1
+203,1,1,121,Snow halation（R）Part2,Snow Halation (R) Part 2,9,series_thumbnail_203_1,1
+204,2,1,208,マリンスクール編,Marine School,9,series_thumbnail_204_1,1
+205,2,1,210,スクールロック編,Rockin' School Idols,3,series_thumbnail_205_1,1
+206,2,1,211,水着編　前半,Swim Suit (1/2),15,series_thumbnail_206_1,1
+207,2,1,212,水着編　後半,Swim Suit (2/2),14,series_thumbnail_207_1,1
+208,2,1,213,浴衣編　前半,Yukata (1/2),15,series_thumbnail_208_1,1
+209,2,1,214,浴衣編　後半,Yukata (2/2),14,series_thumbnail_209_1,1
+210,2,1,215,ハロウィン編　前半,Trick or Treat (1/2),15,series_thumbnail_210_1,1
+211,2,1,216,ハロウィン編　後半,Trick or Treat (2/2),14,series_thumbnail_211_1,1
+212,2,1,218,チアガール編　前半,Cheerleader (1/2),15,series_thumbnail_212_1,1
+213,2,1,219,チアガール編　後半,Cheerleader (2/2),14,series_thumbnail_213_1,1
+214,2,1,220,クリスマス編　前半,Christmas (1/2),15,series_thumbnail_214_1,1
+215,2,1,221,クリスマス編　後半,Christmas (2/2),14,series_thumbnail_215_1,1
+216,2,1,224,晴れ着編　前半,Haregi (1/2),15,series_thumbnail_216_1,1
+217,2,1,225,晴れ着編　後半,Haregi (2/2),14,series_thumbnail_217_1,1
+218,2,1,226,バレンタイン編　前半,Valentine's (1/2),15,series_thumbnail_218_1,1
+219,2,1,227,バレンタイン編　後半,Valentine's (2/2),14,series_thumbnail_219_1,1
+220,2,1,228,職業編　前半,Vocational (1/2),15,series_thumbnail_220_1,1
+221,2,1,229,職業編　後半,Vocational (2/2),14,series_thumbnail_221_1,1
+222,2,1,231,動物編　前半,Animal (1/2),15,series_thumbnail_222_1,1
+223,2,1,232,動物編　後半,Animal (2/2),14,series_thumbnail_223_1,1
+224,2,1,233,天使編　前半,Angel (1/2),15,series_thumbnail_224_1,1
+225,2,1,234,天使編　後半,Angel (2/2),14,series_thumbnail_225_1,1
+226,2,1,235,タイムトラベル編　前半,Time Travel (1/2),15,series_thumbnail_226_1,1
+227,2,1,236,タイムトラベル編　後半,Time Travel (2/2),14,series_thumbnail_227_1,1
+228,2,1,238,サーカス編　前半,Circus (1/2),15,series_thumbnail_228_1,1
+229,2,1,239,サーカス編　後半,Circus (2/2),14,series_thumbnail_229_1,1
+230,2,1,242,サマービーチ編　前半,Summer Beach (1/2),15,series_thumbnail_230_1,1
+231,2,1,243,サマービーチ編　後半,Summer Beach (2/2),14,series_thumbnail_231_1,1
+232,2,1,244,不思議の国編　前半,A Curious Place (1/2),15,series_thumbnail_232_1,1
+233,2,1,245,不思議の国編　後半,A Curious Place (2/2),14,series_thumbnail_233_1,1
+234,2,1,247,ハロウィンナイト編　前半,Halloween Festival (1/2),15,series_thumbnail_234_1,1
+235,2,1,248,ハロウィンナイト編　後半,Halloween Festival (2/2),14,series_thumbnail_235_1,1
+236,2,1,250,紅葉狩り編　前半,Autumn Colors (1/2),15,series_thumbnail_236_1,1
+237,2,1,251,紅葉狩り編　後半,Autumn Colors (2/2),14,series_thumbnail_237_1,1
+238,2,1,252,クリスマスソング編　前半,Christmas Choir (1/2),15,series_thumbnail_238_1,1
+239,2,1,253,クリスマスソング編　後半,Christmas Choir (2/2),14,series_thumbnail_239_1,1
+240,2,1,256,お正月編　前半,New Year's (1/2),15,series_thumbnail_240_1,1
+241,2,1,257,お正月編　後半,New Year's (2/2),14,series_thumbnail_241_1,1
+242,2,1,259,放課後バレンタイン編　前半,Valentine's Chocolate (1/2),15,series_thumbnail_242_1,1
+243,2,1,260,放課後バレンタイン編　後半,Valentine's Chocolate (2/2),14,series_thumbnail_243_1,1
+244,2,1,262,パンクロック編　前半,Punk Rock (1/2),15,series_thumbnail_244_1,1
+245,2,1,263,パンクロック編　後半,Punk Rock (2/2),14,series_thumbnail_245_1,1
+246,2,1,266,先生編　前半,Teacher (1/2),15,series_thumbnail_246_1,1
+247,2,1,267,先生編　後半,Teacher (2/2),14,series_thumbnail_247_1,1
+248,2,1,269,おとぎ話編　前半,Fairy Tale (1/2),15,series_thumbnail_248_1,1
+249,2,1,270,おとぎ話編　後半,Fairy Tale (2/2),14,series_thumbnail_249_1,1
+250,2,1,274,ウエディング編　前半,Wedding Dress (1/2),15,series_thumbnail_250_1,1
+251,2,1,275,ウエディング編　後半,Wedding Dress (2/2),14,series_thumbnail_251_1,1
+252,2,1,278,マーメイド編　前半,Mermaid (1/2),15,series_thumbnail_252_1,1
+253,2,1,279,マーメイド編　後半,Mermaid (2/2),14,series_thumbnail_253_1,1
+254,2,1,281,常夏編　前半,Tropical Summer (1/2),14,series_thumbnail_254_1,1
+255,2,1,282,常夏編　後半,Tropical Summer (2/2),15,series_thumbnail_255_1,1
+256,2,1,285,チャイナドレス編　前半,Live in Chinatown (1/2),15,series_thumbnail_256_1,1
+257,2,1,286,チャイナドレス編　後半,Live in Chinatown (2/2),14,series_thumbnail_257_1,1
+258,2,1,290,宇宙編　前半,Universe (1/2),15,series_thumbnail_258_1,1
+259,2,1,291,宇宙編　後半,Universe (2/2),14,series_thumbnail_259_1,1
+260,2,1,293,ブレーメンの音楽隊編　前半,Town Musicians of Bremen (1/2),15,series_thumbnail_260_1,1
+261,2,1,294,ブレーメンの音楽隊編　後半,Town Musicians of Bremen (2/2),14,series_thumbnail_261_1,1
+262,2,1,296,雪の精編　前半,Snow Fairy (1/2),15,series_thumbnail_262_1,1
+263,2,1,297,雪の精編　後半,Snow Fairy (2/2),14,series_thumbnail_263_1,1
+264,2,1,300,年越し編　前半,New Year's Countdown (1/2),15,series_thumbnail_264_1,1
+265,2,1,301,年越し編　後半,New Year's Countdown (2/2),14,series_thumbnail_265_1,1
+266,2,1,306,手作りバレンタイン編　前半,Valentine's Treats (1/2),15,series_thumbnail_266_1,1
+267,2,1,307,手作りバレンタイン編　後半,Valentine's Treats (2/2),14,series_thumbnail_267_1,1
+268,2,1,309,フラワー編　前半,Flowers (1/2),15,series_thumbnail_268_1,1
+269,2,1,310,フラワー編　後半,Flowers (2/2),14,series_thumbnail_269_1,1
+270,2,1,313,テーマパーク編　前半,Theme Park (1/2),15,series_thumbnail_270_1,1
+271,2,1,314,テーマパーク編　後半,Theme Park (2/2),14,series_thumbnail_271_1,1
+272,2,1,316,トレイン編　前半,Trains (1/2),15,series_thumbnail_272_1,1
+273,2,1,317,トレイン編　後半,Trains (2/2),14,series_thumbnail_273_1,1
+274,2,1,318,踊り子編　前半,Dancer (1/2),15,series_thumbnail_274_1,1
+275,2,1,319,踊り子編　後半,Dancer (2/2),14,series_thumbnail_275_1,1
+276,2,1,321,シャボン玉編　前半,Bubbles (1/2),15,series_thumbnail_276_1,1
+277,2,1,322,シャボン玉編　後半,Bubbles (2/2),14,series_thumbnail_277_1,1
+278,2,1,324,サマーナイト編　前半,Night Pool (1/2),15,series_thumbnail_278_1,1
+279,2,1,325,サマーナイト編　後半,Night Pool (2/2),14,series_thumbnail_279_1,1
+280,2,1,328,小悪魔編　前半,Little Devil (1/2),15,series_thumbnail_280_1,1
+281,2,1,329,小悪魔編　後半,Little Devil (2/2),14,series_thumbnail_281_1,1
+282,2,1,332,実りの秋編　前半,Autumn Harvest (1/2),15,series_thumbnail_282_1,1
+283,2,1,333,実りの秋編　後半,Autumn Harvest (2/2),14,series_thumbnail_283_1,1
+284,2,1,335,スチームパンク編　前半,Steampunk (1/2),15,series_thumbnail_284_1,1
+285,2,1,336,スチームパンク編　後半,Steampunk (2/2),14,series_thumbnail_285_1,1
+286,2,1,337,クリスマスプレゼント編<br>前半,Christmas Present (1/2),15,series_thumbnail_286_1,1
+287,2,1,338,クリスマスプレゼント編<br>後半,Christmas Present (2/2),14,series_thumbnail_287_1,1
+288,2,1,340,七福神編　前半,Goddesses of Fortune (1/2),15,series_thumbnail_288_1,1
+289,2,1,341,七福神編　後半,Goddesses of Fortune (2/2),14,series_thumbnail_289_1,1
+290,2,1,342,ネコカフェ編　前半,Cat Cafe (1/2),15,series_thumbnail_290_1,1
+291,2,1,343,ネコカフェ編　後半,Cat Cafe (2/2),14,series_thumbnail_291_1,1
+292,2,1,327,市民の森 キャンプ編<br>（スクフェスAC）,Campsite,9,series_thumbnail_292_1,1
+293,2,1,311,ブライトセーラー編,Bright Sailor,9,series_thumbnail_293_1,1
+294,2,1,315,バースデーライブ衣装,Birthday 2019,9,series_thumbnail_294_1,1
+295,2,1,299,スクールユニティ<br>（スクフェスAC）,School Unity,9,series_thumbnail_295_1,1
+296,2,1,295,WORLDイメージガール,Worldwide Poster Girl,9,series_thumbnail_0_1,1
+297,2,1,283,2018年お誕生日記念UR部員,Birthday 2018,9,series_thumbnail_297_1,1
+298,2,1,249,特別配信Part1,Special Release Part 1,9,series_thumbnail_0_1,1
+299,2,1,265,WATER BLUE NEW WORLD（UR）,WATER BLUE NEW WORLD（UR）,9,series_thumbnail_299_1,1
+300,2,1,209,日常の一コマ編,A Day in the Life,9,series_thumbnail_0_1,1
+301,2,1,254,恋になりたいAQUARIUM<br>（SSR）,Koini Naritai AQUARIUM<br>（SSR）,9,series_thumbnail_0_1,1
+302,2,1,264,リアル脱出ゲームコラボ<br>第1弾,Real-Life Room Escape<br>Collaboration Part 1,9,series_thumbnail_0_1,1
+303,2,1,277,未来の僕らは知ってるよ<br>（SSR）,Mirai no Bokura wa Shitteru yo<br>（SSR）,9,series_thumbnail_303_1,1
+304,2,1,284,富士急ハイランドコラボ,Fuji-Q Highland Collab,9,series_thumbnail_0_1,1
+305,2,1,287,セガコラボ,SEGA Collaboration,9,series_thumbnail_0_1,1
+306,2,1,298,スクフェスAC Next Stage,SIF-AC Next Stage,9,series_thumbnail_306_1,1
+307,2,1,302,特別配信Part2,Special Release Part 2,9,series_thumbnail_307_1,1
+308,2,1,303,JOYSOUNDコラボ,JOYSOUND Collaboration,9,series_thumbnail_308_1,1
+309,2,1,305,Aqours劇場版公開記念,Aqours Movie Version<br>Re-Release Campaign,9,series_thumbnail_0_1,1
+310,2,1,308,みんなでワイワイ全世界同時<br>チャレンジ達成記念,Simultaneous Worldwide Challenge Completion,9,series_thumbnail_310_1,1
+311,2,1,323,リアル脱出ゲームコラボ<br>第2弾,Real-Life Room Escape<br>Collaboration Part 2,9,series_thumbnail_0_1,1
+312,2,1,330,Shadowverseコラボ,Shadowverse Collaboration,9,series_thumbnail_312_1,1
+313,2,1,271,CYaRon!<br>元気全開DAY!DAY!DAY!,CYaRon!<br>Genki Zenkai DAY! DAY! DAY!,3,series_thumbnail_313_1,1
+314,2,1,273,AZALEA<br>トリコリコPLEASE!!,AZALEA<br>Torikoriko PLEASE!!,3,series_thumbnail_314_1,1
+315,2,1,276,Guilty Kiss<br>Strawberry Trapper,Guilty Kiss<br>Strawberry Trapper,3,series_thumbnail_315_1,1
+316,2,1,292,スクフェス感謝祭2018<br>ユニット対抗戦優勝,SIF Fan Festival 2018 Team Match,3,series_thumbnail_316_1,1
+317,2,1,205,イベント報酬（SR）Part1,Event Reward (SR),9,series_thumbnail_317_1,1
+318,2,1,217,イベント報酬（SR）Part2,Event Reward (SR),9,series_thumbnail_318_1,1
+319,2,1,230,イベント報酬（SR）Part3,Event Reward (SR),9,series_thumbnail_319_1,1
+320,2,1,240,イベント報酬（SR）Part4,Event Reward (SR),9,series_thumbnail_320_1,1
+321,2,1,255,イベント報酬（SR）Part5,Event Reward (SR),9,series_thumbnail_321_1,1
+322,2,1,268,イベント報酬（SR）Part6,Event Reward (SR),9,series_thumbnail_322_1,1
+323,2,1,289,イベント報酬（SR）Part7,Event Reward (SR),9,series_thumbnail_323_1,1
+324,2,1,304,イベント報酬（SR）Part8,Event Reward (SR),9,series_thumbnail_324_1,1
+325,2,1,320,イベント報酬（SR）Part9,Event Reward (SR),7,series_thumbnail_325_1,1
+326,2,1,334,イベント報酬（SR）Part10,Event Reward (SR),9,series_thumbnail_326_1,1
+327,2,1,339,なかよし総選挙,Companion Election,2,series_thumbnail_327_1,1
+328,2,1,222,Aqoursといっしょ♪<br>冬休み大作戦！,The Winter Holidays with Aqours!,1,series_thumbnail_328_1,1
+329,2,1,237,ゲーマーズ沼津店1周年記念,Gamers Numazu 1st Anniversary,1,series_thumbnail_0_1,1
+330,2,1,261,ゲーマーズ沼津店2周年記念,Gamers Numazu 2nd Anniversary,1,series_thumbnail_0_1,1
+331,2,1,272,スクフェス5thアニバーサリー<br>キャンペーンガール,5th Anniversary Celebration Girls,1,series_thumbnail_331_1,1
+332,2,1,280,セブン・イレブン<br>キャンペーンイメージガール,7-Eleven,1,series_thumbnail_0_1,1
+333,2,1,288,セガスタッフイメージガール,SEGA Staff Costume,1,series_thumbnail_0_1,1
+334,2,1,312,特別配信Part3,Special Release Part 3,1,series_thumbnail_0_1,1
+335,2,1,331,Shadowverse×スクフェス<br>コラボキャンペーンガール,Shadowverse x SIF<br>Collaboration Event,1,series_thumbnail_335_1,1
+336,2,1,204,君のこころは輝いてるかい<br>（R）,Kimino Kokorowa Kagayaiterukai?<br> (R),9,series_thumbnail_336_1,1
+337,2,1,206,恋になりたいAQUARIUM（R）,Koini Naritai AQUARIUM (R),9,series_thumbnail_337_1,1
+338,2,1,207,青空Jumping Heart（R）,Aozora Jumping Heart (R),9,series_thumbnail_338_1,1
+339,2,1,223,未熟DREAMER（R）,Mijuku DREAMER (R),9,series_thumbnail_339_1,1
+340,2,1,241,HAPPY PARTY TRAIN（R）,HAPPY PARTY TRAIN (R),9,series_thumbnail_340_1,1
+341,2,1,246,想いよひとつになれ（R）,Omoiyo Hitotsuninare (R),9,series_thumbnail_341_1,1
+342,2,1,258,MIRAI TICKET（R）,MIRAI TICKET (R),9,series_thumbnail_342_1,1
+343,1,99,348,μ's　リトルメモリー編,μ's<br>Childhood Memory,9,series_thumbnail_343_1,1
+344,1,99,350,μ's　タイニーアニマル編,μ's<br>Tiny Animal,9,series_thumbnail_344_1,1
+345,1,99,344,A-RISE,A-RISE,3,series_thumbnail_345_1,1
+346,1,99,346,サポートメンバー<br>学校編,Support Member<br>School Staff & Students,17,series_thumbnail_346_1,1
+347,1,99,347,サポートメンバー<br>家族編,Support Member<br>Family,17,series_thumbnail_347_1,1
+348,1,99,345,サポートメンバー<br>動物編,Support Member<br>Animal,5,series_thumbnail_348_1,1
+349,1,99,349,ぷちぐるラブライブ！コラボ,Puchiguru Love Live! Collaboration,1,series_thumbnail_349_1,1
+350,1,99,351,スターライト・セーラー<br>（スクフェスAC）,Starlight Sailor,1,series_thumbnail_350_1,1
+351,2,99,356,Aqours　リトルメモリー編,Aqours<br>Childhood Memory,9,series_thumbnail_351_1,1
+352,2,99,358,Aqours　タイニーアニマル編,Aqours<br>Tiny Animal,9,series_thumbnail_352_1,1
+353,2,99,352,Saint Snow,Saint Snow,11,series_thumbnail_353_1,1
+354,2,99,354,サポートメンバー　学校編,Support Member<br>School Staff & Students,4,series_thumbnail_354_1,1
+355,2,99,355,サポートメンバー　家族編,Support Member<br>Family,4,series_thumbnail_355_1,1
+356,2,99,353,サポートメンバー　動物編,Support Member<br>Animal,9,series_thumbnail_356_1,1
+357,2,99,357,ぷちぐるラブライブ！コラボ,Puchiguru Love Live! Collaboration,1,series_thumbnail_357_1,1
+358,2,99,359,フラワーサークル<br>（スクフェスAC）,Floral Flourish,1,series_thumbnail_358_1,1
+359,3,1,402,TOKIMEKI Runners（SR）,TOKIMEKI Runners (SR),9,series_thumbnail_359_1,1
+360,3,1,404,虹ヶ咲学園スクールアイドル<br>同好会　特別配信Part1,Nijigasaki High School Idol Club<br>Special Release,9,series_thumbnail_360_1,1
+361,3,1,403,スクフェス5thアニバーサリー<br>キャンペーンガール,5th Anniversary Celebration Girls,1,series_thumbnail_361_1,1
+362,3,1,405,虹ヶ咲学園スクールアイドル<br>同好会　特別配信Part2,Nijigasaki High School Idol Club<br>Special Release,3,series_thumbnail_362_1,1
+363,99,99,360,青藍高校Part1,Seiran High School,9,series_thumbnail_363_1,1
+364,99,99,361,青藍高校Part2,Seiran High School,9,series_thumbnail_364_1,1
+365,99,99,362,青藍高校Part3,Seiran High School,9,series_thumbnail_365_1,1
+366,99,99,363,青藍高校Part4,Seiran High School,9,series_thumbnail_366_1,1
+367,99,99,364,青藍高校Part5,Seiran High School,9,series_thumbnail_367_1,1
+368,99,99,365,青藍高校Part6,Seiran High School,9,series_thumbnail_0_1,1
+369,99,99,366,青藍高校Part7,Seiran High School,8,series_thumbnail_369_2,1
+370,99,99,367,東雲学院Part1,Shinonome Academy,9,series_thumbnail_370_1,1
+371,99,99,368,東雲学院Part2,Shinonome Academy,9,series_thumbnail_371_1,1
+372,99,99,369,東雲学院Part3,Shinonome Academy,9,series_thumbnail_372_1,1
+373,99,99,370,東雲学院Part4,Shinonome Academy,9,series_thumbnail_373_1,1
+374,99,99,371,東雲学院Part5,Shinonome Academy,9,series_thumbnail_374_1,1
+375,99,99,372,東雲学院Part6,Shinonome Academy,9,series_thumbnail_0_1,1
+376,99,99,373,東雲学院Part7,Shinonome Academy,8,series_thumbnail_376_2,1
+377,99,99,374,千歳橋高校Part1,Chitosebashi High School,9,series_thumbnail_377_1,1
+378,99,99,375,千歳橋高校Part2,Chitosebashi High School,9,series_thumbnail_378_1,1
+379,99,99,376,千歳橋高校Part3,Chitosebashi High School,9,series_thumbnail_379_1,1
+380,99,99,377,千歳橋高校Part4,Chitosebashi High School,9,series_thumbnail_380_1,1
+381,99,99,378,千歳橋高校Part5,Chitosebashi High School,9,series_thumbnail_381_1,1
+382,99,99,379,千歳橋高校Part6,Chitosebashi High School,9,series_thumbnail_0_1,1
+383,99,99,380,千歳橋高校Part7,Chitosebashi High School,9,series_thumbnail_383_2,1
+384,99,99,381,藤黄学園Part1,Touoh School,9,series_thumbnail_384_1,1
+385,99,99,382,藤黄学園Part2,Touoh School,9,series_thumbnail_385_1,1
+386,99,99,383,藤黄学園Part3,Touoh School,9,series_thumbnail_386_1,1
+387,99,99,384,藤黄学園Part4,Touoh School,9,series_thumbnail_387_1,1
+388,99,99,385,藤黄学園Part5,Touoh School,9,series_thumbnail_388_1,1
+389,99,99,386,藤黄学園Part6,Touoh School,9,series_thumbnail_0_1,1
+390,99,99,387,藤黄学園Part7,Touoh School,9,series_thumbnail_390_2,1
+391,99,99,388,紫苑女学院Part1,Shion Girls Academy,9,series_thumbnail_391_1,1
+392,99,99,389,紫苑女学院Part2,Shion Girls Academy,9,series_thumbnail_392_1,1
+393,99,99,390,紫苑女学院Part3,Shion Girls Academy,9,series_thumbnail_393_1,1
+394,99,99,391,紫苑女学院Part4,Shion Girls Academy,9,series_thumbnail_394_1,1
+395,99,99,392,紫苑女学院Part5,Shion Girls Academy,9,series_thumbnail_395_1,1
+396,99,99,393,紫苑女学院Part6,Shion Girls Academy,9,series_thumbnail_0_1,1
+397,99,99,394,紫苑女学院Part7,Shion Girls Academy,9,series_thumbnail_397_2,1
+398,99,99,395,Y.G.国際学園Part1,Y. G. International School,9,series_thumbnail_398_1,1
+399,99,99,396,Y.G.国際学園Part2,Y. G. International School,9,series_thumbnail_399_1,1
+400,99,99,397,Y.G.国際学園Part3,Y. G. International School,9,series_thumbnail_400_1,1
+401,99,99,398,Y.G.国際学園Part4,Y. G. International School,9,series_thumbnail_401_1,1
+402,99,99,399,Y.G.国際学園Part5,Y. G. International School,9,series_thumbnail_402_1,1
+403,99,99,400,Y.G.国際学園Part6,Y. G. International School,9,series_thumbnail_0_1,1
+404,99,99,401,Y.G.国際学園Part7,Y. G. International School,8,series_thumbnail_404_2,1
+405,99,99,406,スクスタ60日ログイン部員,All Stars 60-Day Member,2,series_thumbnail_0_1,1
+406,1,1,407,夢の中でも一緒に,Together in Our Dreams,1,series_thumbnail_406_1,1
+407,2,1,326,簡体字版オリジナルカード,Special UR Release,2,series_thumbnail_407_1,1
+408,1,1,408,簡体字版オリジナルカード,Special UR Release,2,series_thumbnail_408_1,1
+409,2,1,409,春の妖精編　前半,Springtime Fairy (1/2),15,series_thumbnail_409_1,1
+410,2,1,410,春の妖精編　後半,Springtime Fairy (2/2),14,series_thumbnail_410_1,1
+411,1,1,411,イベント報酬（SR）Part19,Event Reward (SR),2,series_thumbnail_411_1,1
+412,1,1,412,お化粧の魔法編　後半,Makeup's Magic (2/2),14,series_thumbnail_412_1,1
+413,2,1,413,イベント報酬（SR）Part11,Event Reward (SR),2,series_thumbnail_413_1,1
+414,2,1,414,未来の僕らは知ってるよ（UR）,Mirai no Bokura wa Shitteru yo<br>（UR）,9,series_thumbnail_414_2,1
+415,2,1,415,特別配信Part4,Special Release Part 4,1,series_thumbnail_0_1,1
+416,1,1,416,パワーパフ ガールズコラボ,The Powerpuff Girls Collab,9,series_thumbnail_416_1,1
+417,2,1,417,パワーパフ ガールズコラボ,The Powerpuff Girls Collab,9,series_thumbnail_417_1,1
+419,1,1,419,遊園地編　前半,Amusement Park (1/2),7,series_thumbnail_419_1,1
+420,1,1,420,僕らは今のなかで（UR）,Bokura wa Ima no Naka de（UR）,9,series_thumbnail_420_2,1
+421,2,1,421,バースデーサプライズ！衣装,Birthday Surprise,9,series_thumbnail_421_9,1
+422,2,1,422,スクフェス感謝祭2019衣装,Fan Festival 2019,9,series_thumbnail_422_9,1
+423,1,99,423,特別な衣装のSR μ's,μ's<br>Special SR Costume,1,series_thumbnail_423_1,1
+424,2,99,424,特別な衣装のSR Aqours,Aqours<br>Special SR Costume,1,series_thumbnail_424_1,1
+425,2,1,425,花冠編　前半,Flower Crown (1/2),7,series_thumbnail_425_1,1
+426,1,1,426,遊園地編　後半,Amusement Park (2/2),2,series_thumbnail_426_1,1
+427,1,1,427,てるてる坊主編　前半,Teru Teru Bozu (1/2),7,series_thumbnail_427_1,1
+428,2,1,428,花冠編　後半,Flower Crown (2/2),2,series_thumbnail_428_1,1
+429,2,1,429,雨の日編　前半,Rainy Day (1/2),7,series_thumbnail_429_1,1
+430,1,1,430,てるてる坊主編　後半,Teru Teru Bozu (2/2),2,series_thumbnail_430_1,1
+431,1,1,431,七夕祭り編　前半,Star Festival (1/2),7,series_thumbnail_431_1,1
+432,2,1,432,雨の日編　後半,Rainy Day(2/2),2,series_thumbnail_432_1,1
+433,2,1,433,チャペル編　前半,Chapel (1/2),7,series_thumbnail_433_1,1
+434,1,1,434,七夕祭り編　後半,Star Festival (2/2),2,series_thumbnail_434_1,1
+435,2,1,435,AZALEA<br>Amazing Travel DNA,AZALEA<br>Amazing Travel DNA,3,series_thumbnail_435_1,1
+436,1,1,436,ユニットライブ編,Unit Live Show,9,series_thumbnail_436_2,1
+437,1,1,437,チャレンジ編,Challenges,9,series_thumbnail_437_9,1
+438,2,1,438,CYaRon!<br>Braveheart Coaster,CYaRon!<br>Braveheart Coaster,3,series_thumbnail_438_1,1
+439,2,1,439,チャペル編　後半,Chapel (2/2),2,series_thumbnail_439_1,1
+440,2,1,440,ユニット対抗戦編,Unit Battle,9,series_thumbnail_440_2,1
+441,2,1,441,上京編,Tokyo Visit,9,series_thumbnail_441_9,1
+442,2,1,442,Guilty Kiss<br>New Romantic Sailors,Guilty Kiss<br>New Romantic Sailors,3,series_thumbnail_442_1,1
+443,1,1,443,砂浜編,On the Shore,2,series_thumbnail_443_1,1
+444,2,1,444,君のこころは輝いてるかい？<br>（UR）,Kimino Kokorowa Kagayaiterukai?<br>（UR）,9,series_thumbnail_444_2,1
+445,2,1,445,花火編,Summer Fireworks,2,series_thumbnail_445_1,1
+446,1,1,446,バーベキュー編,Barbecue,2,series_thumbnail_446_1,1
+447,2,1,447,海水浴編,Beach Day,2,series_thumbnail_447_1,1
+448,1,1,448,ハロウィンパーティ編,Halloween Party,2,series_thumbnail_448_1,1
+449,1,1,450,チアガール編,Cheerleader,9,series_thumbnail_449_2,1
+450,2,1,451,おでかけハロウィン編,Halloween Outing,2,series_thumbnail_450_1,1
+451,2,1,452,ユニフォーム編,Uniform,9,series_thumbnail_451_2,1
+452,3,1,449,TVアニメ ニジガク特別配信,TV Anime Nijigaku Special Broadcast,9,series_thumbnail_452_1,1
+453,1,1,453,紅葉編,Vivid Foliage,2,series_thumbnail_453_1,1
+454,2,1,454,2020衣装コンテスト<br>世界のスイーツ,Sweets of the World,9,series_thumbnail_454_2,1
+455,1,1,456,2020衣装コンテスト<br>世界のスイーツ,Sweets of the World,9,series_thumbnail_455_2,1
+456,2,1,455,お散歩編,Taking a Stroll,2,series_thumbnail_456_1,1
+457,1,99,457,サポートメンバー　家族編２,Support Member<br>Family 2,1,series_thumbnail_457_1,1
+458,2,99,458,サポートメンバー　家族編２,Support Member<br>Family 2,1,series_thumbnail_458_1,1
+459,3,99,459,サポートメンバー　家族編,Support Member<br>Family,1,series_thumbnail_459_1,1
+460,3,1,460,スクフェスシリーズ<br>感謝祭2020衣装,Fan Festival 2020,9,series_thumbnail_460_2,1
+461,3,99,461,サポートメンバー　学校編,Support Member<br>School Staff & Students 1,1,series_thumbnail_461_1,1
+462,1,1,462,クリスマス仮装編,Christmas Costume,2,series_thumbnail_462_1,1
+463,2,1,463,クリスマスミュージカル編,Christmas Musical,2,series_thumbnail_463_1,1
+464,1,1,464,ナインスター・ビーナス<br>（スクフェスAC）,Nine Star Venus,9,series_thumbnail_464_2,1
+465,2,1,465,ナインウェイブドルフィン<br>（スクフェスAC）,Nine Wave Dolphin,9,series_thumbnail_465_2,1
+466,1,1,466,初参り編,The New Year Visit,2,series_thumbnail_466_1,1
+467,1,1,467,お鍋パーティ編,Hot Pot Party,9,series_thumbnail_467_2,1
+468,1,1,468,フェアリーテール<br>プリンセス衣装,Fairy Tale Princess,9,series_thumbnail_468_9,1
+469,2,1,469,着付け編,Kimono Wearing,2,series_thumbnail_469_1,1
+470,1,1,470,スクフェスシリーズ<br>感謝祭2020衣装,Fan Festival 2020,9,series_thumbnail_470_9,1
+471,2,1,471,屋台編,Food Stand,9,series_thumbnail_471_2,1
+472,1,1,472,バレンタインライブ編,Valentine's Live Show,2,series_thumbnail_472_1,1
+473,2,1,473,Awaken the power（UR）,Awaken the power（UR）,9,series_thumbnail_473_2,1
+474,2,1,474,節分祭編,Setsubun Festival,2,series_thumbnail_474_1,1
+475,1,1,475,春のお茶会編,Spring Tea Party,2,series_thumbnail_475_1,1
+476,2,1,476,春の舟遊び編,Spring Boat Party,2,series_thumbnail_476_1,1
+477,1,1,477,それは僕たちの奇跡（UR）,It's our miraculous time（UR）,9,series_thumbnail_477_2,1
+478,1,1,478,イチゴ狩り編,Strawberry Picking,2,series_thumbnail_478_1,1
+479,1,1,479,クレヨンしんちゃんコラボ,Crayon Shinchan Collab,9,series_thumbnail_479_1,1
+480,2,1,480,クレヨンしんちゃんコラボ,Crayon Shinchan Collab,9,series_thumbnail_480_1,1
+484,1,1,484,フラワーフェスティバル編,Flower Festival,9,series_thumbnail_484_2,1
+485,1,1,485,トライ・アゲイン編,Once More with Feeling,9,series_thumbnail_485_9,1
+486,2,1,486,青空Jumping Heart（UR）,Aozora Jumping Heart（UR）,9,series_thumbnail_486_2,1
+487,2,1,487,フェアリーテール<br>プリンセス衣装,Fairy Tale Princess,9,series_thumbnail_487_9,1
+488,2,1,489,スクフェスシリーズ<br>感謝祭2020衣装,Fan Festival 2020,9,series_thumbnail_488_9,1
+489,2,1,488,レトロ喫茶編,Retro Cafe,2,series_thumbnail_489_1,1
+490,2,1,498,ひな鳥編,Chick,9,series_thumbnail_490_2,1
+491,2,1,499,商店街ライブ編,Shopping Arcade Live Show,9,series_thumbnail_491_9,1
+492,3,1,490,夏私服,Nijigasaki Summer Casual,9,series_thumbnail_492_2,1
+493,3,1,491,夏制服,Nijigasaki Uniform,9,series_thumbnail_493_2,1
+494,3,1,492,夏練習着,Nijigasaki Practice Wear,9,series_thumbnail_494_2,1
+495,3,1,493,冬私服,Nijigasaki Winter Casual,9,series_thumbnail_495_2,1
+496,3,1,494,冬練習着,Nijigasaki Practice Wear,9,series_thumbnail_496_2,1
+497,3,1,495,水着,Nijigasaki Swim Suit,9,series_thumbnail_497_2,1
+498,3,1,496,ソロステージ衣装（SR）,Nijigasaki Solo Costume (SR),9,series_thumbnail_498_2,1
+499,3,1,497,Love U my friends（UR）,Love U my friends（UR）,9,series_thumbnail_499_2,1
+500,1,1,500,お泊り会編,Slumber Meeting,2,series_thumbnail_500_1,1
+501,2,1,501,鯉のぼり編,Carp Streamers,2,series_thumbnail_501_1,1
+502,3,1,502,バースデーライブ衣装,Birthday Live Show,9,series_thumbnail_502_8,1
+503,3,1,503,スクフェス感謝祭2019衣装,Fan Festival 2019,9,series_thumbnail_503_8,1
+504,1,1,504,水族館編,Aquarium,2,series_thumbnail_504_1,1
+505,2,1,505,雨上がり編,After the Rain,2,series_thumbnail_505_1,1
+506,1,1,506,夏の海編,Summer Sea,2,series_thumbnail_506_1,1
+507,2,1,507,Fantastic Departure!（UR）,Fantastic Departure!（UR）,9,series_thumbnail_507_2,1
+508,1,1,508,夏空編,Summer Sky,9,series_thumbnail_508_2,1
+509,4,1,509,ラブライブ！スーパースター!!<br>特別配信Part1,Love Live! Superstar!!<br>Special Release Part 1,5,series_thumbnail_509_2,1
+510,2,1,510,朝顔編,Morning Glories,2,series_thumbnail_510_1,1
+511,2,1,511,天体観測編,Stargazing,9,series_thumbnail_511_2,1
+512,99,99,512,第４回転入生総選挙,Transfer Student Popularity<br>Contest Round 4,9,series_thumbnail_512_1,1
+513,1,1,513,かき氷編,Shaved Ice,2,series_thumbnail_513_1,1
+514,3,1,515,ニジガク3rdソロ楽曲衣装,Nijigasaki 3rd Solo Song<br>Costume,9,series_thumbnail_514_2,1
+515,3,1,516,ニジガク3rdソロ楽曲衣装２,Nijigasaki 3rd Solo Song<br>Costume 2,1,series_thumbnail_515_1,1
+516,2,1,519,smile smile ship Start!（UR）,smile smile ship Start! (UR),9,series_thumbnail_516_2,1
+517,2,1,518,アスレチックプール編,Athletic Pool,2,series_thumbnail_517_1,1
+518,4,1,520,私服,Casual Clothes,5,series_thumbnail_0_1,1
+519,4,1,521,制服,School Uniform,5,series_thumbnail_0_1,1
+520,4,1,522,始まりは君の空（SR）,Hajimari wa Kimi no Sora (SR),5,series_thumbnail_0_1,1
+521,4,1,523,始まりは君の空（SR）２,Hajimari wa Kimi no Sora (SR) 2,5,series_thumbnail_0_1,1
+522,4,1,524,日常の一コマ編,Everyday Life,5,series_thumbnail_0_1,1
+523,4,1,525,始まりは君の空衣装（UR）,Hajimari wa Kimi no Sora Costume<br>(UR),5,series_thumbnail_523_2,1
+524,2,1,517,特別配信Part5,Special Release Part 5,9,series_thumbnail_524_1,1
+525,3,1,514,ラブライブ！シリーズ9周年<br>セガコラボ,Love Live! Series<br>9th Anniversary SEGA Collab,9,series_thumbnail_525_1,1
+526,1,1,526,星見団子編,Stargazing Dumplings,2,series_thumbnail_526_1,1
+527,2,1,527,特別配信Part6,Special Release Part 6,9,series_thumbnail_527_1,1
+528,2,1,530,特別配信Part7,Special Release,9,series_thumbnail_528_1,1
+529,2,1,529,パンケーキ作り編,Pancakes,2,series_thumbnail_529_1,1
+530,3,1,538,バースデーライブ衣装２,Birthday Live Show 2,3,series_thumbnail_530_3,1
+531,1,1,539,ハロウィンクッキング編,Halloween Cooking,2,series_thumbnail_531_1,1
+532,2,1,528,MIRACLE WAVE（着せ替え専用）,MIRACLE WAVE<br>(Makeover Costume),9,series_thumbnail_532_1,1
+533,3,1,540,誕生日記念プロローグ衣装,Birthday Prologue Costume,3,series_thumbnail_533_3,1
+534,1,1,541,エレクトリック世界編,Electric World,9,series_thumbnail_534_2,1
+535,2,1,542,未熟DREAMER（着せ替え専用）,Mijuku DREAMER<br>(Makeover Costume),9,series_thumbnail_535_1,1
+536,3,1,531,夏私服２,Nijigasaki Summer Casual 2,3,series_thumbnail_536_3,1
+537,3,1,532,夏制服２,Nijigasaki Uniform 2,3,series_thumbnail_537_3,1
+538,3,1,533,夏練習着２,Nijigasaki Practice Wear 2,3,series_thumbnail_538_3,1
+539,3,1,534,冬私服２,Nijigasaki Winter Casual 2,3,series_thumbnail_539_3,1
+540,3,1,535,冬練習着２,Nijigasaki Practice Wear 2,3,series_thumbnail_540_3,1
+541,3,1,536,水着２,Nijigasaki Swim Suit 2,3,series_thumbnail_541_1,1
+542,3,1,537,ソロステージ衣装（SR）２,Nijigasaki Solo Costume (SR) 2,3,series_thumbnail_542_3,1
+543,2,1,543,ハロウィンショッピング編,Halloween Shopping,2,series_thumbnail_543_1,1
+544,2,1,545,梅雨コーデ,Rainy Season Outfit,9,series_thumbnail_544_1,1
+545,3,1,546,ニジガク指定ジャージ,Nijigasaki PE Jacket,9,series_thumbnail_545_1,1
+546,3,1,547,ニジガク指定ジャージ２,Nijigasaki PE Jacket 2,1,series_thumbnail_546_1,1
+547,2,1,544,おもちゃの世界編,Toy World,9,series_thumbnail_547_1,1
+548,1,1,549,秋の公園編,Park in Fall,2,series_thumbnail_548_1,1
+549,1,1,550,「ペルソナ」シリーズコラボ編,Persona Series Collab,9,series_thumbnail_549_1,1
+550,1,1,551,「ペルソナ」シリーズコラボ編<br>キャンペーンガール,Persona Series Collab<br>Campaign Girl,1,series_thumbnail_550_1,1
+551,2,1,552,「ペルソナ」シリーズコラボ編,Persona Series Collab,9,series_thumbnail_551_1,1
+553,3,1,548,Love U my friends（UR）２,Love U my friends (UR) 2,1,series_thumbnail_553_1,1
+555,4,1,555,フレッシュライブ編,Fresh Live Show,5,series_thumbnail_555_1,1
+556,2,1,556,ふれあい動物園編,Petting Zoo,2,series_thumbnail_556_1,1
+557,2,1,557,MIRAI TICKET（UR）,MIRAI TICKET (UR),9,series_thumbnail_557_1,1
+558,1,1,558,イルミネーション編,Illumination,2,series_thumbnail_558_1,1
+559,4,1,559,カラフルパフォーマンス編,Colorful Performance,5,series_thumbnail_559_1,1
+560,2,1,560,ホワイトクリスマス編,White Christmas,2,series_thumbnail_560_1,1
+561,1,1,561,メイド・イン・ワンダーランド<br>（スクフェスAC）,Maid in Wonderland<br>(SIF AC),9,series_thumbnail_561_1,1
+562,2,1,562,メイド・イン・レジデンス<br>（スクフェスAC）,Maid in Residence<br>(SIF AC),9,series_thumbnail_562_1,1
+563,1,1,563,お正月編,New Year's,2,series_thumbnail_563_1,1
+564,1,1,564,氷の幻想世界編,Ice Illusion,9,series_thumbnail_564_1,1
+565,1,1,565,曲作り編,Song Making,9,series_thumbnail_565_2,1
+566,1,1,566,ブリリアントジュエリー編,Brilliant Jewelry,9,series_thumbnail_566_1,1
+567,4,1,567,パワフルペイント編,Powerful Paint,5,series_thumbnail_567_1,1
+568,2,1,574,おみくじ編,Omikuji,2,series_thumbnail_568_1,1
+569,2,1,579,ファンシー編,Fancy,9,series_thumbnail_569_1,1
+570,2,1,580,曲づくり編,Song Making,9,series_thumbnail_570_2,1
+571,1,1,571,カウントダウンライブ編,Countdown Live Show,9,series_thumbnail_571_1,1
+572,2,1,568,ニューイヤーライブ編,New Year's Live Show,9,series_thumbnail_572_1,1
+573,3,1,573,モダンフルール衣装,Modern Fleur,9,series_thumbnail_573_1,1
+574,2,1,572,DREAMY COLOR（SSR）,DREAMY COLOR (SSR),9,series_thumbnail_574_1,1
+575,3,1,575,L!L!L!（SSR）,L!L!L! (SSR),9,series_thumbnail_575_1,1
+576,3,1,576,L!L!L!（SSR）２,L!L!L! (SSR) 2,3,series_thumbnail_576_1,1
+577,4,1,577,START!! True dreams（SSR）,START!! True dreams (SSR),5,series_thumbnail_577_1,1
+578,1,1,578,スクフェスシリーズ　感謝祭2021衣装,Fan Festival 2021,9,series_thumbnail_578_1,1
+579,1,1,581,雪まつり編,Snow Festival,2,series_thumbnail_579_1,1
+580,4,1,582,ピュアリィドレス編,Purely Dress,5,series_thumbnail_580_1,1
+581,2,1,583,World Cat Day編,World Cat Day,2,series_thumbnail_581_1,1
+584,1,1,586,ライブ応援編,Live Show Cheering,2,series_thumbnail_584_1,1
+585,4,1,587,レトロポップ編,Retro Pop,5,series_thumbnail_585_1,1
+587,2,1,585,ゲーマーズ沼津店5周年記念,Gamers Numazu 5th Anniversary,9,series_thumbnail_587_1,1
+588,2,1,588,KU-RU-KU-RU Cruller!（UR）,KU-RU-KU-RU Cruller!（UR）,9,series_thumbnail_588_1,1
+589,2,1,589,ヨーロピアンタウン編,European Town,2,series_thumbnail_589_1,1
+590,4,99,590,Sunny Passion編,Sunny Passion,2,series_thumbnail_590_1,1
+598,1,1,603,キャンディポッププリンセス編,Candy Pop Princess,9,series_thumbnail_598_1,1
+599,2,1,605,「コードギアス」コラボ編,Code Geass Collab,9,series_thumbnail_599_1,1
+600,2,1,606,「コードギアス」コラボ編<br>キャンペーンガール,Code Geass Collab<br>Campaign Girl,1,series_thumbnail_600_1,1
+601,1,1,607,「コードギアス」コラボ編,Code Geass Collab,9,series_thumbnail_601_1,1
+603,4,99,591,サポートメンバー　学校編,Support Member<br>School Staff & Students,4,series_thumbnail_603_1,1
+604,4,99,592,サポートメンバー　家族編,Support Member<br>Family,3,series_thumbnail_604_1,1
+605,4,99,593,サポートメンバー　動物編,Support Member<br>Animal,3,series_thumbnail_0_1,1
+606,2,1,594,オーシャンパーティクル編,Ocean Particle,9,series_thumbnail_606_1,1
+607,2,1,595,特別配信Part8,Special Release Part 8,9,series_thumbnail_607_1,1
+609,2,1,611,ブリリアントジュエリー編,Brilliant Jewelry,9,series_thumbnail_609_8,1
+610,1,1,618,世界旅行に連れてって♡編,Show Me the World,9,series_thumbnail_610_1,1
+611,2,1,619,世界旅行に連れてって♡編,Show Me the World,9,series_thumbnail_611_1,1
+612,2,1,617,ラブライブ！シリーズ9周年<br>セガコラボ,Love Live! Series<br>9th Anniversary SEGA Collab,9,series_thumbnail_612_2,1
+613,1,1,609,ラブライブ！シリーズ9周年<br>セガコラボ,Love Live! Series<br>9th Anniversary SEGA Collab,9,series_thumbnail_613_2,1
+614,4,1,610,チェリーブロッサム編,Cherry Blossom,5,series_thumbnail_614_1,1
+615,1,1,612,僕たちはひとつの光（UR）Part2,Bokutachi wa Hitotsu no Hikari (UR)Part 2,9,series_thumbnail_615_1,1
+616,2,1,613,Next SPARKLING!!（UR）,Next SPARKLING!! (UR),9,series_thumbnail_616_1,1
+617,3,1,614,TOKIMEKI Runners（UR）,TOKIMEKI Runners (UR),9,series_thumbnail_617_1,1
+618,4,1,615,Starlight Prologue（UR）,Starlight Prologue  (UR),5,series_thumbnail_618_1,1
+619,2,1,616,スクフェスシリーズ　感謝祭2021衣装,Fan Festival 2021,9,series_thumbnail_619_9,1
+620,3,1,621,ODAIBAゲーマーズTシャツ衣装,ODAIBA Gamers T Shirt Costume,6,series_thumbnail_620_1,1
+621,3,1,622,ODAIBAゲーマーズTシャツ衣装２,ODAIBA Gamers T Shirt Costume 2,6,series_thumbnail_621_1,1
+622,4,1,620,START!! True dreams（UR）,START!! True dreams (UR),5,series_thumbnail_622_1,1
+623,4,1,623,端午の節句編,Children's Day,5,series_thumbnail_623_1,1
+624,1,1,624,スクフェス9周年記念<br>(フェスティバル)衣装,SIF 9th Anniversary<br> (Festival) costume,1,series_thumbnail_624_1,1
+625,2,1,625,スクフェス9周年記念<br>(フェスティバル)衣装,SIF 9th Anniversary<br> (Festival) costume,1,series_thumbnail_625_1,1
+626,3,1,626,スクフェス9周年記念<br>(フェスティバル)衣装,SIF 9th Anniversary<br> (Festival) costume,1,series_thumbnail_626_1,1
+627,4,1,627,スクフェス9周年記念<br>(フェスティバル)衣装,SIF 9th Anniversary<br> (Festival) costume,1,series_thumbnail_627_1,1
+628,2,1,628,脱出ゲームコラボ第3弾,Real-Life Room Escape<br>Collaboration Part 3,9,series_thumbnail_628_1,1
+629,2,1,629,フラワーサークル編,Flower Circle,9,series_thumbnail_629_2,1
+630,3,1,631,スクフェスシリーズ　感謝祭2021衣装,Fan Festival 2021,6,series_thumbnail_630_6,1
+631,3,1,630,ブリリアントジュエリー編,Brilliant Jewelry,6,series_thumbnail_631_5,1
+632,1,1,632,ブレザーズ・ハット編,Blazers and Hats,9,series_thumbnail_632_2,1
+633,4,1,633,ジューンブライド編,June Bride,5,series_thumbnail_633_1,1
+634,2,1,634,デモンストレーション,Demonstration,1,series_thumbnail_634_1,1
+635,2,1,635,世界で最高のお姫様編,The World's Best Princess,9,series_thumbnail_635_2,1
+636,2,1,636,潮干狩り編,Clam Digging,2,series_thumbnail_636_1,1
+637,3,1,637,オールスターズプロローグ衣装,All Stars Prologue,9,series_thumbnail_637_9,1
+638,2,1,638,なんどだって約束！（UR）,Nando datte YAKUSOKU! (UR),9,series_thumbnail_638_1,1
+639,1,1,639,世界で最高のお姫様編,The World's Best Princess,9,series_thumbnail_639_2,1
+640,1,1,640,ロイヤルプリンセス編,Royal Princess,9,series_thumbnail_640_3,1
+641,4,1,641,サニーオーシャン編,Sunny Ocean,5,series_thumbnail_641_1,1
+642,4,1,642,冬制服,Winter Uniform,4,series_thumbnail_642_2,1
+643,1,1,643,エンドレスサマー編,Endless Summer,9,series_thumbnail_643_6,1
+644,2,1,644,シークレットビーチ編,Secret Beach,9,series_thumbnail_644_6,1
+645,2,1,645,Aqours3rdソロ楽曲衣装,Aqours 3rd Solo Song<br>Costume,9,series_thumbnail_645_2,1
+646,3,1,646,ブリリアントジュエリー編２,Brilliant Jewelry 2,6,series_thumbnail_646_6,1
+647,1,1,647,風鈴編,Wind Chimes,2,series_thumbnail_647_1,1
+648,1,1,648,神々の大地 訪問編,Visiting the Sacred Grounds,9,series_thumbnail_648_2,1
+649,2,1,649,イタリア グルメ編,Gourmet Italian,9,series_thumbnail_649_2,1
+650,2,1,650,ラグジュアリークルーズ編,Luxurious Cruise,9,series_thumbnail_650_3,1
+651,3,1,651,スクフェスシリーズ　感謝祭2021衣装２,Fan Festival 2021 2,6,series_thumbnail_651_6,1
+652,1,1,652,スターリング・レースガール編,Star Racing Girl,9,series_thumbnail_652_2,1
+653,2,1,653,ウォーターエッセンス編,Water Essence,9,series_thumbnail_653_2,1
+654,2,1,654,夏空アイス編,Summer Ice Pops,2,series_thumbnail_654_1,1
+655,2,1,655,紅葉狩り 西武鉄道編,Fall Leaves - Seibu Railway,9,series_thumbnail_655_2,1
+656,1,1,656,誕生日デート編,Birthday Date,9,series_thumbnail_656_2,1
+657,4,1,657,2022衣装コンテスト　小悪魔編,2022 Costume Contest Little Devil,9,series_thumbnail_657_4,1
+658,1,1,658,夏仕舞い編,End of the Summer,2,series_thumbnail_658_1,1
+659,2,1,659,AZALEA　GALAXY HidE and SeeK,AZALEA GALAXY HidE and SeeK,3,series_thumbnail_659_2,1
+660,2,1,660,CYaRon！　近未来ハッピーエンド,CYaRon! Kinmirai Happy End,3,series_thumbnail_660_2,1
+661,2,1,661,Guilty Kiss　コワレヤスキ,Guilty Kiss KOWAREYASUKI,3,series_thumbnail_661_2,1
+662,1,1,662,パンキッシュ・ロック・ガール,Punkish Rock Girl,9,series_thumbnail_662_2,1
+663,2,1,663,ファンクション・ロック,Function Rock,9,series_thumbnail_663_2,1
+664,2,1,664,アスルクラロ沼津コラボユニフォーム,Azul Claro Numazu Collab Uniform,9,series_thumbnail_664_1,1
+665,3,1,665,キャラポップフェス,Chara Pop Fes,6,series_thumbnail_665_1,1
+666,3,1,666,キャラポップフェス２,Chara Pop Fes 2,6,series_thumbnail_666_1,1
+667,2,1,667,アンブレラスカイ編,Umbrella Sky,2,series_thumbnail_667_1,1
+668,2,1,668,シャイン・ブライド,Shine Bride,9,series_thumbnail_668_2,1
+669,1,1,671,キャットツインテール,Twin Tailed Cat,9,series_thumbnail_669_2,1
+670,2,1,669,特別配信Part9,Special Release Part 9,3,series_thumbnail_670_1,1
+671,3,1,670,虹ヶ咲学園スクールアイドル<br>同好会　特別配信Part3,Nijigasaki High School Idol Club<br>Special Release 3,3,series_thumbnail_671_1,1
+672,1,1,672,[パーティ]和装クラシック編,[Party Card] Taisho Roman,2,series_thumbnail_672_1,1
+673,1,1,673,[パーティ]6月編(ドレス),[Party Card] Party Dress,2,series_thumbnail_673_1,1
+674,1,1,674,[パーティ]職業体験編,[Party Card] Vocational,2,series_thumbnail_674_1,1
+675,1,1,675,[パーティ]サーカス編,[Party Card] Circus,2,series_thumbnail_675_1,1
+676,1,1,676,[パーティ]踊り子編,[Party Card] Dancer,2,series_thumbnail_676_1,1
+677,1,1,677,[パーティ]7月編(人魚),[Party Card] Summer Casual,2,series_thumbnail_677_1,1
+678,1,1,678,[パーティ]ティーパーティ編,[Party Card] Tea Party,2,series_thumbnail_678_1,1
+679,1,1,679,[パーティ]3月編(花),[Party Card] Blooming,2,series_thumbnail_679_1,1
+680,1,1,680,[パーティ]小悪魔編,[Party Card] Little Devil,2,series_thumbnail_680_1,1
+681,2,1,681,[パーティ]ネコカフェ編,[Party Card] Cat Cafe,2,series_thumbnail_681_1,1
+682,2,1,682,[パーティ]天使編,[Party Card] Angel,2,series_thumbnail_682_1,1
+683,2,1,683,[パーティ]ハロウィンナイト編,[Party Card] Halloween Festival,2,series_thumbnail_683_1,1
+684,2,1,684,[パーティ]職業編,[Party Card] Vocational,2,series_thumbnail_684_1,1
+685,2,1,685,[パーティ]不思議の国編,[Party Card] A Curious Place,2,series_thumbnail_685_1,1
+686,2,1,686,[パーティ]ハロウィン編,[Party Card] Trick or Treat,2,series_thumbnail_686_1,1
+687,2,1,687,[パーティ]マーメイド編,[Party Card] Mermaid,2,series_thumbnail_687_1,1
+688,2,1,688,[パーティ]バレンタイン編,[Party Card] Valentine's,2,series_thumbnail_688_1,1
+689,2,1,689,[パーティ]ブレーメンの音楽隊編,[Party Card] Town Musicians of Bremen,2,series_thumbnail_689_1,1
+690,2,1,690,函館 クリスマス編,Christmas in Hakodate,9,series_thumbnail_690_2,1
+691,1,1,691,フラワーガーデン編,Flowery Garden,2,series_thumbnail_691_1,1
+692,1,1,692,μ'sの休日編,A Day Off - μ's,9,series_thumbnail_692_2,1
+693,2,1,693,ブックカフェ編,Book Cafe,2,series_thumbnail_693_1,1
+694,1,1,694,神田明神 初詣編,New Year at Kanda Shrine,9,series_thumbnail_694_1,1
+695,2,1,695,Aqoursの休日編,A Day Off - Aqours,9,series_thumbnail_695_1,1
+696,1,1,696,水と光の夢世界編,Dream World of Water and Light,9,series_thumbnail_696_1,1
+697,1,1,697,ラブライブ！フェス,Love Live! Fest,9,series_thumbnail_698_2,1
+698,2,1,698,ラブライブ！フェス,Love Live! Fest,9,series_thumbnail_699_2,1
+699,1,1,699,水着風衣装編,Swimsuit Costume,9,series_thumbnail_699_1,1
+700,1,1,703,夜桜編,Night Blossom,2,series_thumbnail_700_1,1
+701,1,1,700,SUNNY DAY SONG,SUNNY DAY SONG,9,series_thumbnail_701_1,1
+702,2,1,701,未体験HORIZON,MITAIKEN HORIZON,9,series_thumbnail_702_1,1
+703,4,1,702,結女祭,Yuijosai,9,series_thumbnail_703_1,1
+704,1,1,704,スクフェスシリーズ感謝祭2020〜ONLINE〜,Fan Festival 2020<br>〜ONLINE〜,9,series_thumbnail_704_2,1
+705,2,1,705,氷と光の夢世界編,Dream World of Ice and Light,9,series_thumbnail_705_1,1

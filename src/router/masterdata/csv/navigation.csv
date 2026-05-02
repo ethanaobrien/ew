@@ -1,0 +1,22 @@
+﻿_id,_masterScenarioId,_dialogTitle,_masterReleaseLabelId
+SubTutorial_FreeLive,0,楽曲選択,1
+SubTutorial_Practice,0,レッスン,1
+SubTutorial_SkillPractice,0,スキルレッスン,1
+SubTutorial_Training,0,覚醒,1
+SubTutorial_Mission,0,課題,1
+SubTutorial_Story,0,ストーリー,1
+SubTutorial_BeginnerMission,0,初心者課題,1
+MainTutorial_Live,0,チュートリアルライブ,1
+Event_EmotionalRanking,0,イチ推しメンバー,1
+SubTutorial_Composition,0,編成,1
+SubTutorial_LiveReady,0,ライブ準備,1
+MainTutorial_DeckConfirm,0,編成,1
+MainTutorial_MainGameCycle,0,全体サイクル,1
+MainTutorial_LiveReslt,0,ライブ結果,1
+SubTutorial_Chat,0,チャット,1
+MainTutorial_Gacha,0,勧誘,1
+MainTutorial_GachaReslt,0,勧誘結果,1
+MainTutorial_MusicSerect,0,楽曲選択,1
+SubTutorial_Guest,0,ゲスト選択,1
+SubTutorial_Star_PlayBonus,0,スターチャレンジ プレイボーナス,223111506
+SubTutorial_Star_ContinuBonus,0,スターチャレンジ 継続ボーナス,223111506

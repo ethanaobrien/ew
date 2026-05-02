@@ -1,0 +1,5 @@
+﻿_id,_tabName,_name,_priority,_shopType,_spriteName,_masterShopRewardId,_masterReleaseLabelId
+1010001,ショップ,ラブカショップ,10,1,shop_banner_gem,0,1
+4010001,LP回復ショップ,LP回復ショップ,10,4,shop_banner_gem,0,1
+5010001,会員証,会員証,5,5,shop_banner_subscription,0,1
+3040001,特別ショップ,リリース記念ショップ,99,3,shop_banner_paid,0,1
