@@ -1,0 +1,6 @@
+﻿_eventId,_name,_type,_targetGroupIds,_targetType,_leftLiveButtonCharaId,_rightLiveButtonCharaId,_needHelperLevel,_needHelperPower,_needHelperRank,_needHelpableMessage,_exclusionLevel,_helpCount,_roomWaitSec,_masterReleaseLabelId
+115,きょうりょくライブ,3,"400,401,402,490,491,499",3,4007,4008,0,33000,10,"You can  join for assistance if you have a RANK 10 or above and Pure P of 33,000 or more in the event team.",0,5,60,223081504
+111,きょうりょくライブ,3,"300,301,302,303,304,390,399",2,3001,3010,0,33000,10,"You can  join for assistance if you have a RANK 10 or above and Pure P of 33,000 or more in the event team.",4,5,60,223071505
+108,きょうりょくライブ,3,"200,201,202,203,205,290,299",1,2003,2004,0,33000,10,"You can  join for assistance if you have a RANK 10 or above and Pure P of 33,000 or more in the event team.",0,5,60,223061504
+119,きょうりょくライブ,3,"100,101,102,103,190,191,199",2,1006,1007,0,33000,10,"You can  join for assistance if you have a RANK 10 or above and Pure P of 33,000 or more in the event team.",0,5,60,223091504
+131,きょうりょくライブ,3,"400,401,402,403,404,405,490,491,499",2,4001,4002,0,33000,10,"You can  join for assistance if you have a RANK 10 or above and Pure P of 33,000 or more in the event team.",0,5,60,223121507

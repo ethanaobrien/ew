@@ -1,0 +1,10 @@
+﻿_resultCode,_masterDialogId,_stayFlag,_silentFlag,_masterReleaseLabelId
+0,ChipsterErrorCode_0,0,0,1
+100000,ChipsterErrorCode_100000,0,0,1
+100404,ChipsterErrorCode_100404,0,0,1
+100408,ChipsterErrorCode_100408,0,0,1
+100500,ChipsterErrorCode_100500,0,0,1
+200000,ChipsterErrorCode_200000,0,0,1
+200100,ChipsterErrorCode_200100,0,0,1
+200200,ChipsterErrorCode_200200,0,0,1
+999999,ChipsterErrorCode_999999,0,0,1

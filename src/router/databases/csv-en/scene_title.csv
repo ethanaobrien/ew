@@ -1,0 +1,89 @@
+﻿_id,_mainTitle,_mainMasterNavigationId,_masterReleaseLabelId
+DeckTop,Unit Formation,,1
+DeckEdit,Unit Formation,SubTutorial_Composition,1
+DeckCharaSelect,Member Select,,1
+Classmate,Member List,,1
+CostumeCharaList,Costume Change,,1
+Practice,Lesson,SubTutorial_Practice,1
+SkillPractice,Skill Lesson,SubTutorial_SkillPractice,1
+Training,Idolize,SubTutorial_Training,1
+MemberList,Member List,,1
+WaitingMemberList,Waiting Room,,1
+CardDetail,Member Details,,1
+MemberIllustrateList,Albums,,1
+MemberCharaTop,Member Details,,1
+AreaTalkList,Dummy,,1
+Album,Dummy,,1
+MovieCollection,Collection,,1
+CardAlbum,Card Albums,,1
+DeckConfirm,Prepare Live Show,SubTutorial_LiveReady,1
+Profile,Profile,,1
+RecommendList,Select Favorite,,1
+Friend,Friend List,,1
+LiveSelect,Select Live Show,,1
+MusicSelect,Song Select,SubTutorial_FreeLive,1
+CooperationLive,Select Session,SubTutorial_MultiLive,1
+CooperationLiveMatching,Matching,,1
+MultiMusicSelect,Song Select,,1
+MusicDecision,Song Shuffle,,1
+MusicDifficulty,Select Difficulty,,1
+MultiConfirm,Final Confirmation,,1
+StampSetting,Favorite Setting,,1
+Warehouse,Room parts,,1
+TitleListSelect,Select a Title,,1
+TitleListView,Title List,,1
+SealExchange,Item Exchange,,1
+BadgeExchange,Item Exchange,,1
+EventTop,Events,,1
+EventStoryTop,Event Story Top,,1
+EventStory,Select Event,,1
+EventScoreRanking,Event pt Ranking,,1
+EventReward,Event Reward,,1
+ItemList,Item List,,1
+ExchangeTop,Item Exchange,,1
+EventMusicSelect,Song Select,,1
+EventChallengeLiveMusicSelect,Song Select,,1
+EventLiveTryMusicSelect,Song Select,,1
+EventDeckConfirm,Prepare Formation,,1
+EventChallengeLiveDeckConfirm,Prepare Formation,,1
+EventLiveTryDeckConfirm,Prepare Formation,,1
+ExchangeItemList,Item Exchange,,1
+BirthdayTop,Birthday,,1
+MapScene,Select Area,,1
+MultiLiveEventCooperationLive,Room select,,1
+MultiLiveEventCooperationLiveMatching,Matching,,1
+MultiLiveEventMultiMusicSelect,Song Select,,1
+MultiLiveEventMusicDecision,Song Shuffle,,1
+MultiLiveEventMusicDifficulty,Select Difficulty,,1
+MultiLiveEventMultiConfirm,Final Confirmation,,1
+LimitedLiveTop,Event Live Shows,,1
+LimitedLiveLottery,Song Shuffle,,1
+TeacherLiveMusicSelect,Song Select,,1
+TeacherLiveDeckConfirm,Prepare Formation,,1
+TeacherLiveTop,Select Live Show,,1
+CharacterEpisodeLevel,Check Episodes,,1
+BoxGardenTop,Customize Room,,1
+GachaTop,Scout,MainTutorial_Gacha,1
+GachaResult,Scout Results,MainTutorial_GachaReslt,1
+BandEnrichTop,Band Strengthening TOP ,,1
+BandEnrich,Band Strengthening,,1
+StoryTop,Story Top,,1
+StoryMainTop,Story,SubTutorial_Story,1
+StoryCardMemberTop,Select Member,,1
+StoryCardEpisodeTop,Select Episode,,1
+Shop,Shop,,1
+BeginnerMission,Beginner Goals,SubTutorial_BeginnerMission,1
+GuestSelect,Select Guest,SubTutorial_Guest,1
+MusicRanking,Song-specific ranking,,1
+MusicRecommend,Recommended,,1
+ChatTop,,SubTutorial_Chat,1
+ComicList,Comics,,1
+PresentBox,Present Box,,1
+Mission,Goals,SubTutorial_Mission,1
+ProfileMemberSelect,Profile Settings,,1
+FriendGestDetail,Guest Details,,1
+FriendGestMemberSelect,Edit Guest,,1
+LocationInformation,On-Location Present,,223062001
+MusicLibrary,Song Library,,223081401
+SerialCodeDisplay,Check Code,,1
+StarEventRanking,Star Level Ranking,,1

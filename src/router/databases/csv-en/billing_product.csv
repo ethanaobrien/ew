@@ -1,0 +1,23 @@
+﻿_id,_masterBillingShopId,_itemName,_itemDetail,_type,_detail,_masterBillingProductRewardId,_startdashTime,_startdashExpireTime,_priority,_spriteName,_masterReleaseLabelId
+com.bushiroad.global.lovelive.sif2.apple.gempromo.4199,1010001,"6,000 Love Gems","Paid Love Gems x6,000",1,"6,000 Love Gems",0,0,0,70,shop_btn_muse_2,1
+com.bushiroad.global.lovelive.sif2.apple.gempromo.8499,1010001,"13,000 Love Gems","Paid Love Gems x13,000",1,"13,000 Love Gems",0,0,0,75,shop_btn_liella_2,1
+com.bushiroad.global.lovelive.sif2.google.gempromo.4199,1010001,"6,000 Love Gems","Paid Love Gems x6,000",1,"6,000 Love Gems",0,0,0,70,shop_btn_muse_2,1
+com.bushiroad.global.lovelive.sif2.google.gempromo.8499,1010001,"13,000 Love Gems","Paid Love Gems x13,000",1,"13,000 Love Gems",0,0,0,75,shop_btn_liella_2,1
+com.bushiroad.global.lovelive.sif2.gem.299,1010001,140 Love Gems,Paid Love Gems x140,1,140 Love Gems,0,0,0,40,shop_btn_nijigaku_1,1
+com.bushiroad.global.lovelive.sif2.gem.499,1010001,430 Love Gems,Paid Love Gems x420<br><size=22><color=#F93981>+Free Love Gems x10</size></color>,1,430 Love Gems,0,0,0,35,shop_btn_muse_1,1
+com.bushiroad.global.lovelive.sif2.gem.899,1010001,910 Love Gems,Paid Love Gems x870<br><size=22><color=#F93981>+Free Love Gems x40</size></color>,1,910 Love Gems,0,0,0,30,shop_btn_aqours_1,1
+com.bushiroad.global.lovelive.sif2.gem.1299,1010001,"1,380 Love Gems","Paid Love Gems x1,310<br><size=22><color=#F93981>+Free Love Gems x70</size></color>",1,"1,380 Love Gems",0,0,0,25,shop_btn_liella_1,1
+com.bushiroad.global.lovelive.sif2.gem.2499,1010001,"2,700 Love Gems","Paid Love Gems x2,530<br><size=22><color=#F93981>+Free Love Gems x170</size></color>",1,"2,700 Love Gems",0,0,0,20,shop_btn_nijigaku_2,1
+com.bushiroad.global.lovelive.sif2.gem.4199,1010001,"4,800 Love Gems","Paid Love Gems x4,460<br><size=22><color=#F93981>+Free Love Gems x340</size></color>",1,"4,800 Love Gems",0,0,0,15,shop_btn_muse_2,1
+com.bushiroad.global.lovelive.sif2.gem.6499,1010001,"7,500 Love Gems","Paid Love Gems x6,730<br><size=22><color=#F93981>+Free Love Gems x770</size></color>",1,"7,500 Love Gems",0,0,0,10,shop_btn_aqours_2,1
+com.bushiroad.global.lovelive.sif2.gem.8499,1010001,"10,100 Love Gems","Paid Love Gems x8,910<br><size=22><color=#F93981>+Free Love Gems x1,190</size></color>",1,"10,100 Love Gems",0,0,0,5,shop_btn_liella_2,1
+com.bushiroad.global.lovelive.sif2.google.promo.8499,1010001,"13,000 Love Gems","Paid Love Gems x13,000",1,"13,000 Love Gems",0,0,0,75,shop_btn_liella_2,1
+com.bushiroad.global.lovelive.sif2.google.promo.4199,1010001,"6,000 Love Gems","Paid Love Gems x6,000",1,"6,000 Love Gems",0,0,0,70,shop_btn_muse_2,1
+com.bushiroad.global.lovelive.sif2.google.gem.299,1010001,140 Love Gems,Paid Love Gems x140,1,140 Love Gems,0,0,0,40,shop_btn_nijigaku_1,1
+com.bushiroad.global.lovelive.sif2.google.gem.499,1010001,430 Love Gems,Paid Love Gems x420<br><size=22><color=#F93981>+Free Love Gems x10</size></color>,1,430 Love Gems,0,0,0,35,shop_btn_muse_1,1
+com.bushiroad.global.lovelive.sif2.google.gem.899,1010001,910 Love Gems,Paid Love Gems x870<br><size=22><color=#F93981>+Free Love Gems x40</size></color>,1,910 Love Gems,0,0,0,30,shop_btn_aqours_1,1
+com.bushiroad.global.lovelive.sif2.google.gem.1299,1010001,"1,380 Love Gems","Paid Love Gems x1,310<br><size=22><color=#F93981>+Free Love Gems x70</size></color>",1,"1,380 Love Gems",0,0,0,25,shop_btn_liella_1,1
+com.bushiroad.global.lovelive.sif2.google.gem.2499,1010001,"2,700 Love Gems","Paid Love Gems x2,530<br><size=22><color=#F93981>+Free Love Gems x170</size></color>",1,"2,700 Love Gems",0,0,0,20,shop_btn_nijigaku_2,1
+com.bushiroad.global.lovelive.sif2.google.gem.4199,1010001,"4,800 Love Gems","Paid Love Gems x4,460<br><size=22><color=#F93981>+Free Love Gems x340</size></color>",1,"4,800 Love Gems",0,0,0,15,shop_btn_muse_2,1
+com.bushiroad.global.lovelive.sif2.google.gem.6499,1010001,"7,500 Love Gems","Paid Love Gems x6,730<br><size=22><color=#F93981>+Free Love Gems x770</size></color>",1,"7,500 Love Gems",0,0,0,10,shop_btn_aqours_2,1
+com.bushiroad.global.lovelive.sif2.google.gem.8499,1010001,"10,100 Love Gems","Paid Love Gems x8,910<br><size=22><color=#F93981>+Free Love Gems x1,190</size></color>",1,"10,100 Love Gems",0,0,0,5,shop_btn_liella_2,1

@@ -1,0 +1,70 @@
+﻿_id,_name,_detailText,_effects,_masterReleaseLabelId
+100001,Smile Heart,Smile points increased by 3%,100001,1
+100002,Smile Star,Smile points increased by 6%,100002,1
+100003,Smile Angel,Smile points increased by 8%,100003,1
+100004,Smile Empress,Smile points increased by 10%,100004,1
+100005,Smile Queen,"Smile points increased by 8%<br>Additionally, Smile points for μ's members increased by 3%","100003,100005",1
+100006,Smile Queen,"Smile points increased by 8%<br>Additionally, Smile points for Aqours members increased by 3%","100003,100006",1
+100007,Smile Queen,"Smile points increased by 8%<br>Additionally, Smile points for Nijigasaki members increased by 3%","100003,100007",1
+100008,Smile Queen,"Smile points increased by 8%<br>Additionally, Smile points for Liella! members increased by 3%","100003,100008",1
+100009,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for Printemps members increased by 5%","100003,100009",1
+100010,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for lily white members increased by 5%","100003,100010",1
+100011,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for BiBi members increased by 5%","100003,100011",1
+100012,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for CYaRon! members increased by 5%","100003,100012",1
+100013,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for AZALEA members increased by 5%","100003,100013",1
+100014,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for Guilty Kiss members increased by 5%","100003,100014",1
+100015,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for DiverDiva members increased by 5%","100003,100015",1
+100016,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for A・ZU・NA members increased by 5%","100003,100016",1
+100017,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for QU4RTZ members increased by 5%","100003,100017",1
+100018,Smile Princess,"Smile points increased by 8%<br>Additionally, Smile points for R3BIRTH members increased by 5%","100003,100018",1
+100019,Smile Empress,Increases Smile Pts for Smile Attribute characters by 13%.,100019,223103109
+100020,Smile Queen,Increases Smile Pts by 8%<br>Further increases Smile Pts for μ's Smile Attribute characters by 7%.,"100003,100020",223103109
+100021,Smile Queen,Increases Smile Pts by 8%<br>Further increases Smile Pts for Aqours Smile Attribute characters by 7%.,"100003,100021",223103109
+100022,Smile Queen,Increases Smile Pts by 8%.<br>Further increases Nijigasaki Smile Attribute characters by 7%.,"100003,100022",223103109
+100023,Smile Queen,Increases Smile Pts by 8%.<br>Further increases Smile Pts for Liella! Smile Attribute characters by 7%.,"100003,100023",223103109
+200001,Pure Heart,Pure points increased by 3%,200001,1
+200002,Pure Star,Pure points increased by 6%,200002,1
+200003,Pure Angel,Pure points increased by 8%,200003,1
+200004,Pure Empress,Pure points increased by 10%,200004,1
+200005,Pure Queen,"Pure points increased by 8%<br>Additionally, Pure points for μ's members increased by 3%","200003,200005",1
+200006,Pure Queen,"Pure points increased by 8%<br>Additionally, Pure points for Aqours members increased by 3%","200003,200006",1
+200007,Pure Queen,"Pure points increased by 8%<br>Additionally, Pure points for Nijigasaki members increased by 3%","200003,200007",1
+200008,Pure Queen,"Pure points increased by 8%<br>Additionally, Pure points for Liella! members increased by 3%","200003,200008",1
+200009,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for Printemps members increased by 5%","200003,200009",1
+200010,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for lily white members increased by 5%","200003,200010",1
+200011,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for BiBi members increased by 5%","200003,200011",1
+200012,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for CYaRon! members increased by 5%","200003,200012",1
+200013,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for AZALEA members increased by 5%","200003,200013",1
+200014,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for Guilty Kiss members increased by 5%","200003,200014",1
+200015,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for DiverDiva members increased by 5%","200003,200015",1
+200016,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for A・ZU・NA members increased by 5%","200003,200016",1
+200017,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for QU4RTZ members increased by 5%","200003,200017",1
+200018,Pure Princess,"Pure points increased by 8%<br>Additionally, Pure points for R3BIRTH members increased by 5%","200003,200018",1
+200019,Pure Empress,Increases Pure Pts for Pure Attribute characters by 13%.,200019,223103109
+200020,Pure Queen,Increases Pure Pts by 8%.<br>Further increases Pure Pts for μ's Pure Attribute characters by 7%.,"200003,200020",223103109
+200021,Pure Queen,Increases Pure Pts by 8%.<br>Further increases Pure Pts for Aqours Pure Attribute characters by 7%.,"200003,200021",223103109
+200022,Pure Queen,Increases Pure Pts by 8%.<br>Further increases Pure Pts for Nijigasaki Pure Attribute characters by 7%.,"200003,200022",223103109
+200023,Pure Queen,Increases Pure Pts by 8%.<br>Further increases Pure Pts for Liella! Pure Attribute characters by 7%.,"200003,200023",223103109
+300001,Cool Heart,Cool points increased by 3%,300001,1
+300002,Cool Star,Cool points increased by 6%,300002,1
+300003,Cool Angel,Cool points increased by 8%,300003,1
+300004,Cool Empress,Cool points increased by 10%,300004,1
+300005,Cool Queen,"Cool points increased by 8%<br>Additionally, Cool points for μ's members increased by 3%","300003,300005",1
+300006,Cool Queen,"Cool points increased by 8%<br>Additionally, Cool points for Aqours members increased by 3%","300003,300006",1
+300007,Cool Queen,"Cool points increased by 8%<br>Additionally, Cool points for Nijigasaki members increased by 3%","300003,300007",1
+300008,Cool Queen,"Cool points increased by 8%<br>Additionally, Cool points for Liella! members increased by 3%","300003,300008",1
+300009,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for Printemps members increased by 5%","300003,300009",1
+300010,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for lily white members increased by 5%","300003,300010",1
+300011,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for BiBi members increased by 5%","300003,300011",1
+300012,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for CYaRon! members increased by 5%","300003,300012",1
+300013,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for AZALEA members increased by 5%","300003,300013",1
+300014,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for Guilty Kiss members increased by 5%","300003,300014",1
+300015,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for DiverDiva members increased by 5%","300003,300015",1
+300016,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for A・ZU・NA members increased by 5%","300003,300016",1
+300017,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for QU4RTZ members increased by 5%","300003,300017",1
+300018,Cool Princess,"Cool points increased by 8%<br>Additionally, Cool points for R3BIRTH members increased by 5%","300003,300018",1
+300019,Cool Empress,Increases Cool Pts for Cool Attribute characters by 13%.,300019,223101507
+300020,Cool Queen,Increases Cool Pts by 8%. Further increases Cool Pts<br>for μ's Cool Attribute characters by 7%.,"300003,300020",223101507
+300021,Cool Queen,Increases Cool Pts by 8%. Further increases Cool Pts<br>for Aqours Cool Attribute characters by 7%.,"300003,300021",223101507
+300022,Cool Queen,Increases Cool Pts by 8%. Further increases Cool Pts<br>for Nijigasaki Cool Attribute characters by 7%.,"300003,300022",223101507
+300023,Cool Queen,Increases Cool Pts by 8%. Further increases Cool Pts<br>for Liella! Cool Attribute characters by 7%.,"300003,300023",223101507

@@ -11,6 +11,7 @@ use std::fs;
 
 use crate::include_file;
 use crate::router::{userdata, items};
+use crate::router::databases::csv::Region;
 
 fn get_config() -> JsonValue {
     let args = crate::get_args();
@@ -26,7 +27,7 @@ fn get_login_token(req: &HttpRequest) -> Option<String> {
     if cookies.is_empty() {
         return None;
     }
-    return Some(cookies.split("ew_token=").last().unwrap_or("").split(';').collect::<Vec<_>>()[0].to_string());
+    Some(cookies.split("ew_token=").last().unwrap_or("").split(';').collect::<Vec<_>>()[0].to_string())
 }
 
 fn error(msg: &str) -> HttpResponse {
@@ -174,19 +175,19 @@ pub fn main(req: HttpRequest) -> HttpResponse {
 
         let file_name = path.split("/").last().unwrap_or("");
         let file_path = format!("{}/{}", args.image_asset_path, file_name).replace("//", "/");
-        if args.image_asset_path != "" && let Ok(body) = fs::read(file_path) {
+        return if args.image_asset_path != "" && let Ok(body) = fs::read(file_path) {
             let mime = mime_guess::from_path(path).first_or_octet_stream();
-            return HttpResponse::Ok()
+            HttpResponse::Ok()
                 .insert_header(ContentType(mime))
                 .insert_header(("content-length", body.len()))
-                .body(body);
+                .body(body)
         } else {
             if args.image_asset_path != "" {
                 println!("File '{file_name}' was requested, but no file was found on the disk!");
             }
-            return HttpResponse::SeeOther()
+            HttpResponse::SeeOther()
                 .insert_header(("location", format!("https://sif2-api.ethanthesleepy.one{}", req.path())))
-                .body("");
+                .body("")
         }
     }
 
@@ -252,7 +253,7 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
 
     let start = page * max;
 
-    let items = jzon::parse(&include_file!("src/router/webui/cards.json")).unwrap();
+    let items = crate::router::databases::csv::table(Region::Jp, "card");
 
     if all == "true" {
         let resp = object!{
@@ -310,9 +311,9 @@ pub fn get_music_info(req: HttpRequest) -> HttpResponse {
     let start = page * max;
 
     let items = if lang == "EN" {
-        jzon::parse(&include_file!("src/router/databases/json/global/music.json")).unwrap()
+        crate::router::databases::csv::table(Region::En, "music")
     } else {
-        jzon::parse(&include_file!("src/router/databases/json/music.json")).unwrap()
+        crate::router::databases::csv::table(Region::Jp, "music")
     };
 
     let page_items: Vec<_> = items.members()

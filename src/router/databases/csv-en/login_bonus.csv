@@ -1,0 +1,317 @@
+﻿_id,_name,_type,_masterEventId,_loop,_priority,_prefabName,_boardSpriteName,_masterVoiceId,_masterReleaseLabelId
+1,Daily Login Bonus,1,0,1,0,DailyLoginBonus,loginbonus_daily,0,1
+2,Starting Dash Login Bonus,2,0,0,3,LoginBonus_startdash_0001,loginbonus_startdash_0001,0,223041502
+3,Starting Dash Login Bonus (Constant),2,0,0,3,LoginBonus_startdash_0002,loginbonus_startdash_0002,0,223071501
+10001,Thanksgiving 10-Day,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0001,0,223061402
+10002,Thanksgiving Day 1,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0002,0,223062401
+10003,Thanksgiving Day 2,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0003,0,223062501
+10004,Yohane 1,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223062502
+10005,Yohane 2,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223070201
+10006,Yohane 3,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223070901
+10007,Yohane 4,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223071601
+10008,Yohane 5,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223072301
+10009,Yohane 6,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223073001
+10010,Yohane 7,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223080601
+10011,Yohane 8,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223081301
+10012,Yohane 9,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223082001
+10013,Yohane 10,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223082701
+10014,Yohane 11,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223090301
+10015,Yohane 12,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223091001
+10016,Yohane 13,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0004,0,223091701
+10017,Nijigasaki OVA Release Celebration Login Bonus,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0017,0,223062302
+10018,Bon Festival,1,0,0,1,LoginBonus_campaign07day_0001,loginbonus_campaign_0018,0,223081001
+10019,Animelo Summer Login Bonus 1,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0019,0,223082501
+10020,Animelo Summer Login Bonus 2,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0020,0,223082702
+10021,Comiket Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0021,0,223081201
+10022,Liella! Chiba,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0022,0,223081903
+10023,Liella! Aichi,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0023,0,223082602
+10024,Liella! Tokyo,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0024,0,223090901
+10025,Ice Cream,1,0,0,1,LoginBonus_common01day_0001,loginbonus_campaign_0025,0,223091601
+10026,,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0026,0,223100501
+10027,,1,0,0,1,LoginBonus_common03day_0001,loginbonus_campaign_0027,0,223100701
+10028,Halloween,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0028,0,223102501
+10029,Hasunosora: Fukuoka Concert,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0029,0,223102103
+10030,Hasunosora: Tokyo Concert,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0030,0,223111801
+10031,Hasunosora: Aichi Concert,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0031,0,223112501
+10034,IJIGEN FES THE IDOLM@STER★︎♥LOVE LIVE! Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0034,0,223120902
+10037,Fall Festival,1,0,0,1,LoginBonus_campaign07day_0001,loginbonus_campaign_0037,0,223111103
+10035,Yohane the Parhelion: The Story of the Sound of Heart Login Bonus,1,0,0,1,LoginBonus_common03day_0001,loginbonus_campaign_0035,0,223121504
+10036,Love Live! Nijigasaki High School Idol Club 6th Live! I love You ⇆ You love Me Aichi Concert Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0036,0,223122302
+10038,Snow White Christmas Campaign first half,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0038,0,223120105
+10039,New Year's! Miracle Campaign Login Bonus,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0039,0,223122804
+10040,Snow White Christmas Campaign second half,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0038,0,223121204
+10041,Love Live! Nijigasaki High School Idol Club 6th Live! I love You ⇆ You love Me Kanagawa Concert Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0041,0,224011302
+10042,School Idol Musical: 2024 Performance Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0042,0,224011104
+10043,3週連続ライブ応援！いっぱいシャンシャンしようキャンペーンログインボーナス,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0043,0,223120802
+10044,Love Live! Superstar!! Liella! 5th LoveLive! ~Twinkle Triangle~ Fukuoka Concert Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0044,0,224012004
+10045,Love Live! Superstar!! Liella! 5th LoveLive! ~Twinkle Triangle~ Tokyo Concert Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0045,0,224021001
+10046,Happy Valentine's Day Campaign Login Bonus,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0046,0,224020104
+10047,Winter Vacation! Let’s Play Together All We Can Campaign Login Bonus,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0047,0,224020106
+10050,Colorful Spring Campaign Login Bonus,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0050,0,224030113
+10051,Super Thanks! Let’s Play Together Until the End Campaign Login Bonus,1,0,0,1,LoginBonus_common10day_0001,loginbonus_campaign_0051,0,224030115
+10054,Anime Broadcast 10 Year Anniversary LoveLive! Special Talk Session Login Bonus,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0054,0,224022302
+10055,LoveLive! Series Presents ユニット甲子園 2024　開催記念ログインボーナス,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0055,0,224030902
+10056,ラブライブ！TVアニメ放送10周年記念　LoveLive! Orchestra Concert　開催記念ログインボーナス,1,0,0,1,LoginBonus_common02day_0001,loginbonus_campaign_0056,0,224033002
+10057,School Idol Festival 2 Super Thanks Login Bonus,1,0,0,1,LoginBonus_event30day_0001,loginbonus_campaign_0057,0,224030117
+10058,School Idol Festival 2 Super Thanks Login Bonus,1,0,0,1,LoginBonus_event30day_0001,loginbonus_campaign_0058,0,224030117
+10059,スペシャル勧誘記念ログインボーナス～桜坂しずく～,1,0,0,1,LoginBonus_common01day_0001,ThanksLoginBonus_03003_01,0,224031702
+10060,スペシャル勧誘記念ログインボーナス～桜小路きな子～,1,0,0,1,LoginBonus_common01day_0001,ThanksLoginBonus_04006_01,0,224031802
+10061,スペシャル勧誘記念ログインボーナス～渡辺 曜～,1,0,0,1,LoginBonus_common01day_0001,ThanksLoginBonus_02005_01,0,224031902
+10062,スペシャル勧誘記念ログインボーナス～西木野真姫～,1,0,0,1,LoginBonus_common01day_0001,ThanksLoginBonus_01006_01,0,224032002
+20000,Subscription Login Bonus,6,0,0,0,,,0,1
+20001,Operation: Slump Escape! Login Bonus,5,101,0,3,LoginBonus_event10day_0001,loginbonus_event_0101,0,223041903
+20002,April 2023 (Event): μ's Login Bonus,5,102,0,3,LoginBonus_event10day_0001,loginbonus_event_0102,0,223043004
+20003,May 2023 (Event): Basic,5,103,0,3,LoginBonus_event04day_0001,loginbonus_event_0103,0,223051101
+20004,May 2023 (Event): Aqours Login Bonus,5,104,0,3,LoginBonus_event10day_0001,loginbonus_event_0104,0,223051504
+20005,May 2023 (Event): Basic,5,105,0,3,LoginBonus_event04day_0001,loginbonus_event_0103,0,223052601
+20006,June 2023 (Event A): Login Bonus,5,106,0,3,LoginBonus_event10day_0001,loginbonus_event_0106,0,223053104
+20007,June 2023 (Event): Basic,5,107,0,3,LoginBonus_event07day_0002,loginbonus_event_0107,0,223061101
+20008,June 2023 (Event B): Login Bonus,5,108,0,3,LoginBonus_event10day_0001,loginbonus_event_0108,0,223061504
+20009,July 2023 (Event A): Login Bonus,5,109,0,3,LoginBonus_event10day_0001,loginbonus_event_0109,0,223063004
+20010,July 2023 (Event): Basic,5,110,0,3,LoginBonus_event04day_0001,loginbonus_event_0110,0,223071101
+20011,July 2023 (Event B): Login Bonus,5,111,0,3,LoginBonus_event10day_0001,loginbonus_event_0111,0,223071505
+20012,July 2023 (Event): Basic,5,112,0,3,LoginBonus_event04day_0001,loginbonus_event_0112,0,223072601
+20013,August 2023 (Event A): Login Bonus,5,113,0,3,LoginBonus_event10day_0001,loginbonus_event_0113,0,223073104
+20014,August 2023 (Event): Basic,5,114,0,3,LoginBonus_event04day_0001,loginbonus_event_0114,0,223081101
+20015,August 2023 (Event B): Login Bonus,5,115,0,3,LoginBonus_event10day_0001,loginbonus_event_0115,0,223081504
+20016,August 2023 (Event): Basic,5,116,0,3,LoginBonus_event04day_0001,loginbonus_event_0116,0,223082601
+20017,September 2023 (Event A): Login Bonus,5,117,0,3,LoginBonus_event10day_0001,loginbonus_event_0117,0,223083104
+20018,September 2023 (Event): Basic,5,118,0,3,LoginBonus_event04day_0001,loginbonus_event_0118,0,223091101
+20019,September 2023 (Event B): Login Bonus,5,119,0,3,LoginBonus_event10day_0001,loginbonus_event_0119,0,223091504
+20020,September 2023 (Event): Basic,5,120,0,3,LoginBonus_event04day_0001,loginbonus_event_0120,0,223092601
+20021,October 2023 (Event A): Login Bonus,5,121,0,3,LoginBonus_event10day_0001,loginbonus_event_0121,0,223093004
+20022,October 2023 (Event): Basic (Early October),5,122,0,3,LoginBonus_event04day_0001,loginbonus_event_0122,0,223101101
+20023,October 2023 (Event B): Login Bonus,5,123,0,3,LoginBonus_event10day_0001,loginbonus_event_0123,0,223101508
+20024,October 2023 (Event): Basic (Late October),5,124,0,3,LoginBonus_event04day_0001,loginbonus_event_0124,0,223102601
+20025,October 2023 (Event A): Login Bonus,5,125,0,3,LoginBonus_event10day_0001,loginbonus_event_0125,0,223103104
+20026,November 2023 (Event): Basic (Early October) Login Bonus,5,126,0,3,LoginBonus_event04day_0001,loginbonus_event_0126,0,223111101
+20027,November 2023 (Event B): Login Bonus,5,127,0,3,LoginBonus_event10day_0001,loginbonus_event_0127,0,223111504
+20028,November 2023 (Event): Basic (Late November) Login Bonus,5,128,0,3,LoginBonus_event04day_0001,loginbonus_event_0128,0,223112601
+20029,December 2023 (Event A): Login Bonus,5,129,0,3,LoginBonus_event10day_0001,loginbonus_event_0129,0,223113004
+20030,December 2023 (Event): Basic (Early December) Login Bonus,5,130,0,3,LoginBonus_event04day_0001,loginbonus_event_0130,0,223121102
+20031,December 2023 (Event B): Login Bonus,5,131,0,3,LoginBonus_event10day_0001,loginbonus_event_0131,0,223121507
+20032,December 2023 (Event): Basic (Late December) Login Bonus,5,132,0,3,LoginBonus_event04day_0001,loginbonus_event_0132,0,223122603
+20033,January 2024 (Event A): Login Bonus,5,133,0,3,LoginBonus_event10day_0001,loginbonus_event_0133,0,223123104
+20034,"January, 2024: Simple (Early)_Login Bonus",5,134,0,3,LoginBonus_event04day_0001,loginbonus_event_0134,0,224011106
+20035,"January, 2024: Event B_Login Bonus",5,135,0,3,LoginBonus_event10day_0001,loginbonus_event_0135,0,224011504
+20036,"January, 2024: Simple (Late)_Login Bonus",5,136,0,3,LoginBonus_event04day_0001,loginbonus_event_0136,0,224012702
+20037,"February, 2024 : Event A_Login Bonus",5,137,0,3,LoginBonus_event10day_0001,loginbonus_event_0137,0,224013104
+20038,"February, 2024 : Event_Simple (Early)_Login Bonus",5,138,0,3,LoginBonus_event04day_0001,loginbonus_event_0138,0,224021006
+20039,February 2024 (Event B): Login Bonus,5,139,0,3,LoginBonus_event9day_0001,loginbonus_event_0139,0,224021404
+20040,February 2024 (Event): Basic (Late February) Login Bonus,5,140,0,3,LoginBonus_event07day_0002,loginbonus_event_0140,0,224022305
+20041,March 2024 (Event B): Login Bonus,5,141,0,3,LoginBonus_event10day_0001,loginbonus_event_0141,0,224030104
+30001,Honoka's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01001_01,loginbonus_birthday_01001_01,40001097,123080301
+30002,Eli's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01002_01,loginbonus_birthday_01002_01,40002097,123102101
+30003,Kotori's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01003_01,loginbonus_birthday_01003_01,40003099,123091201
+30004,Umi's Birthday Commemorative Login Bonus,1,0,0,0,BirthdayLoginBonus_01004_01,loginbonus_birthday_01004_01,40004100,124031501
+30005,Rin's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01005_01,loginbonus_birthday_01005_01,40005100,123110101
+30006,Maki's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01006_01,loginbonus_birthday_01006_01,40006101,124041901
+30007,Nozomi's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01007_01,loginbonus_birthday_01007_01,40007102,123060901
+30008,Hanayo's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01008_01,loginbonus_birthday_01008_01,40008103,124011701
+30009,Nico's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_01009_01,loginbonus_birthday_01009_01,40009104,123072201
+30010,Chika's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02001_01,loginbonus_birthday_02001_01,40010097,123080101
+30011,Riko's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02002_01,loginbonus_birthday_02002_01,40011098,123091901
+30012,Kanan's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02003_01,loginbonus_birthday_02003_01,40012099,124021001
+30013,Dia's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02004_01,loginbonus_birthday_02004_01,40013100,124010101
+30014,You's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02005_01,loginbonus_birthday_02005_01,40014101,124041701
+30015,Yoshiko's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02006_01,loginbonus_birthday_02006_01,40015102,123071301
+30016,Hanamaru's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02007_01,loginbonus_birthday_02007_01,40016103,124030401
+30017,Mari's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02008_01,loginbonus_birthday_02008_01,40017104,123061301
+30018,Ruby's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02009_01,loginbonus_birthday_02009_01,40018105,123092101
+30019,Ayumu's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03001_01,loginbonus_birthday_03001_01,40019095,124030101
+30020,Kasumi's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03002_01,loginbonus_birthday_03002_01,40020096,124012301
+30021,Shizuku's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03003_01,loginbonus_birthday_03003_01,40021097,124040301
+30022,Karin's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03004_01,loginbonus_birthday_03004_01,40022098,123062901
+30023,Ai's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03005_01,loginbonus_birthday_03005_01,40023099,123053001
+30024,Kanata's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03006_01,loginbonus_birthday_03006_01,40024100,123121601
+30025,Setsuna's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03007_01,loginbonus_birthday_03007_01,40025101,123080801
+30026,Emma's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03008_01,loginbonus_birthday_03008_01,40026102,124020501
+30027,Rina's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03009_01,loginbonus_birthday_03009_01,40027103,123111301
+30028,Shioriko's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03010_01,loginbonus_birthday_03010_01,40028104,123100501
+30029,Mia's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03011_01,loginbonus_birthday_03011_01,40029105,123120601
+30030,Lanzhu's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_03012_01,loginbonus_birthday_03012_01,40030106,124021501
+30031,Kanon's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04001_01,loginbonus_birthday_04001_01,40031095,123050101
+30032,Keke's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04002_01,loginbonus_birthday_04002_01,40032096,123071701
+30033,Chisato's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04003_01,loginbonus_birthday_04003_01,40033097,124022501
+30034,Sumire's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04004_01,loginbonus_birthday_04004_01,40034098,123092801
+30035,Ren's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04005_01,loginbonus_birthday_04005_01,40035099,123112401
+30036,Kinako's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04006_01,loginbonus_birthday_04006_01,40036100,124041001
+30037,Mei's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04007_01,loginbonus_birthday_04007_01,40037101,123102901
+30038,Shiki's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04008_01,loginbonus_birthday_04008_01,40038102,123061701
+30039,Natsumi's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04009_01,loginbonus_birthday_04009_01,40039103,123080701
+30040,Riko's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_02002_01,loginbonus_birthday_02002_01,40011098,123091903
+30041,Margarete's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04010_01,loginbonus_birthday_04010_01,40040104,124012001
+30042,Tomari's Birthday Login Bonus,1,0,0,0,BirthdayLoginBonus_04011_01,loginbonus_birthday_04011_01,40041105,123122801
+40001,Daily Login Bonus 1,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231011,0,223101102
+40002,Daily Login Bonus 2,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231012,0,223101201
+40003,Daily Login Bonus 3,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231013,0,223101302
+40004,Daily Login Bonus 4,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231014,0,223101401
+40005,Daily Login Bonus 5,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231015,0,223101511
+40006,Daily Login Bonus 6,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231016,0,223101606
+40007,Daily Login Bonus 7,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231017,0,223101703
+40008,Daily Login Bonus 8,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231018,0,223101802
+40009,Daily Login Bonus 9,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231019,0,223101901
+40010,Daily Login Bonus 10,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231020,0,223102001
+40011,Daily Login Bonus 11,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231021,0,223102105
+40012,Daily Login Bonus 12,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231022,0,223102201
+40013,Daily Login Bonus 13,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231023,0,223102301
+40014,Daily Login Bonus 14,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231024,0,223102403
+40015,Daily Login Bonus 15,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231025,0,223102503
+40016,Daily Login Bonus 16,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231026,0,223102602
+40017,Daily Login Bonus 17,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231027,0,223102701
+40018,Daily Login Bonus 18,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231028,0,223102801
+40019,Daily Login Bonus 19,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231029,0,223102904
+40020,Daily Login Bonus 20,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231030,0,223103002
+40021,Daily Login Bonus 21,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231031,0,223103110
+40022,Daily Login Bonus 22,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231101,0,223110105
+40023,Daily Login Bonus 23,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231102,0,223110201
+40024,Daily Login Bonus 24,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231103,0,223110301
+40025,Daily Login Bonus 25,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231104,0,223110401
+40026,Daily Login Bonus 26,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231105,0,223110501
+40027,Daily Login Bonus 27,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231106,0,223110601
+40028,Daily Login Bonus 28,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231107,0,223110703
+40029,Daily Login Bonus 29,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231108,0,223110802
+40030,Daily Login Bonus 30,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231109,0,223110901
+40031,Daily Login Bonus 31,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231110,0,223111002
+40032,Daily Login Bonus 32,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231111,0,223111102
+40033,Daily Login Bonus 33,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231112,0,223111201
+40034,Daily Login Bonus 34,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231113,0,223111303
+40035,Daily Login Bonus 35,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231114,0,223111403
+40036,Daily Login Bonus 36,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231115,0,223111509
+40037,Daily Login Bonus 37,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231116,0,223111601
+40038,Daily Login Bonus 38,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231117,0,223111701
+40039,Daily Login Bonus 39,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231118,0,223111803
+40040,Daily Login Bonus 40,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231119,0,223111901
+40041,Daily Login Bonus 41,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231120,0,223112001
+40042,Daily Login Bonus 42,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231121,0,223112103
+40043,Daily Login Bonus 43,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231122,0,223112201
+40044,Daily Login Bonus 44,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231123,0,223112301
+40045,Daily Login Bonus 45,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231124,0,223112403
+40046,Daily Login Bonus 46,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231125,0,223112503
+40047,Daily Login Bonus 47,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231126,0,223112602
+40048,Daily Login Bonus 48,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231127,0,223112701
+40049,Daily Login Bonus 49,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231128,0,223112803
+40050,Daily Login Bonus 50,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231129,0,223112901
+40051,Daily Login Bonus 51,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231130,0,223113007
+40052,Daily Login Bonus 52,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231201,0,223120102
+40053,Daily Login Bonus 53,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231202,0,223120201
+40054,Daily Login Bonus 54,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231203,0,223120301
+40055,Daily Login Bonus 55,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231204,0,223120401
+40056,Daily Login Bonus 56,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231205,0,223120503
+40057,Daily Login Bonus 57,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231206,0,223120603
+40058,Daily Login Bonus 58,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231207,0,223120701
+40059,Daily Login Bonus 59,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231208,0,223120801
+40060,Daily Login Bonus 60,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231209,0,223120901
+40061,Daily Login Bonus 61,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231210,0,223121001
+40062,Daily Login Bonus 62,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231211,0,223121101
+40063,Daily Login Bonus 63,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231212,0,223121203
+40064,Daily Login Bonus 64,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231213,0,223121301
+40065,Daily Login Bonus 65,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231214,0,223121401
+40066,Daily Login Bonus 66,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231215,0,223121501
+40067,Daily Login Bonus 67,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231216,0,223121603
+40068,Daily Login Bonus 68,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231217,0,223121701
+40069,Daily Login Bonus 69,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231218,0,223121801
+40070,Daily Login Bonus 70,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231219,0,223121903
+40071,Daily Login Bonus 71,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231220,0,223122001
+40072,Daily Login Bonus 72,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231221,0,223122101
+40073,Daily Login Bonus 73,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231222,0,223122201
+40074,Daily Login Bonus 74,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231223,0,223122301
+40075,Daily Login Bonus 75,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231224,0,223122401
+40076,Daily Login Bonus 76,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231225,0,223122501
+40077,Daily Login Bonus 77,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231226,0,223122601
+40078,Daily Login Bonus 78,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231227,0,223122701
+40079,Daily Login Bonus 79,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231228,0,223122803
+40080,Daily Login Bonus 80,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231229,0,223122901
+40081,Daily Login Bonus 81,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231230,0,223123001
+40082,Daily Login Bonus 82,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_231231,0,223123101
+40083,Daily Login Bonus 83,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240101,0,224010101
+40084,Daily Login Bonus 84,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240102,0,224010201
+40085,Daily Login Bonus 85,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240103,0,224010301
+40086,Daily Login Bonus 86,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240104,0,224010401
+40087,Daily Login Bonus 87,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240105,0,224010501
+40088,Daily Login Bonus 88,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240106,0,224010601
+40089,Daily Login Bonus 89,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240107,0,224010701
+40090,Daily Login Bonus 90,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240108,0,224010801
+40091,Daily Login Bonus 91,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240109,0,224010901
+40092,Daily Login Bonus 92,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240110,0,224011001
+40093,Daily Login Bonus 93,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240111,0,224011101
+40094,Daily Login Bonus 94,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240112,0,224011201
+40095,Daily Login Bonus 95,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240113,0,224011301
+40096,Daily Login Bonus 96,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240114,0,224011401
+40097,Daily Login Bonus 97,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240115,0,224011501
+40098,Daily Login Bonus 98,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240116,0,224011601
+40099,Daily Login Bonus 99,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240117,0,224011701
+40100,Daily Login Bonus 00,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240118,0,224011801
+40101,Daily Login Bonus 01,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240119,0,224011901
+40102,Daily Login Bonus 02,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240120,0,224012001
+40103,Daily Login Bonus 03,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240121,0,224012101
+40104,Daily Login Bonus 04,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240122,0,224012201
+40105,Daily Login Bonus 05,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240123,0,224012301
+40106,Daily Login Bonus 06,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240124,0,224012401
+40107,Daily Login Bonus 07,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240125,0,224012501
+40108,Daily Login Bonus 08,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240126,0,224012601
+40109,Daily Login Bonus 09,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240127,0,224012701
+40110,Daily Login Bonus 10,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240128,0,224012801
+40111,Daily Login Bonus 11,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240129,0,224012902
+40112,Daily Login Bonus 12,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240130,0,224013001
+40113,Daily Login Bonus 13,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240131,0,224013101
+40114,Daily Login Bonus 14,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240201,0,224020101
+40115,Daily Login Bonus 15,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240202,0,224020201
+40116,Daily Login Bonus 16,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240203,0,224020301
+40117,Daily Login Bonus 17,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240204,0,224020401
+40118,Daily Login Bonus 18,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240205,0,224020501
+40119,Daily Login Bonus 19,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240206,0,224020601
+40120,Daily Login Bonus 20,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240207,0,224020701
+40121,Daily Login Bonus 21,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240208,0,224020801
+40122,Daily Login Bonus 22,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240209,0,224020901
+40123,Daily Login Bonus 23,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240210,0,224021003
+40124,Daily Login Bonus 24,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240211,0,224021101
+40125,Daily Login Bonus 25,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240212,0,224021201
+40126,Daily Login Bonus 26,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240213,0,224021301
+40127,Daily Login Bonus 27,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240214,0,224021401
+40128,Daily Login Bonus 28,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240215,0,224021501
+40129,Daily Login Bonus 29,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240216,0,224021601
+40130,Daily Login Bonus 30,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240217,0,224021701
+40131,Daily Login Bonus 31,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240218,0,224021801
+40132,Daily Login Bonus 32,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240219,0,224021901
+40133,Daily Login Bonus 33,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240220,0,224022001
+40134,Daily Login Bonus 34,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240221,0,224022101
+40135,Daily Login Bonus 35,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240222,0,224022201
+40136,Daily Login Bonus 36,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240223,0,224022301
+40137,Daily Login Bonus 37,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240224,0,224022401
+40138,Daily Login Bonus 38,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240225,0,224022501
+40139,Daily Login Bonus 39,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240226,0,224022601
+40140,Daily Login Bonus 40,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240227,0,224022701
+40141,Daily Login Bonus 41,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240228,0,224022801
+40142,Daily Login Bonus 42,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240229,0,224022901
+40143,Daily Login Bonus 43,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240301,0,224030101
+40144,Daily Login Bonus 44,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240302,0,224030201
+40145,Daily Login Bonus 45,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240303,0,224030301
+40146,Daily Login Bonus 46,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240304,0,224030401
+40147,Daily Login Bonus 47,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240305,0,224030501
+40148,Daily Login Bonus 48,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240306,0,224030601
+40149,Daily Login Bonus 49,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240307,0,224030701
+40150,Daily Login Bonus 50,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240308,0,224030801
+40151,Daily Login Bonus 51,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240309,0,224030901
+40152,Daily Login Bonus 52,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240310,0,224031001
+40153,Daily Login Bonus 53,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240311,0,224031101
+40154,Daily Login Bonus 54,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240312,0,224031201
+40155,Daily Login Bonus 55,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240313,0,224031301
+40156,Daily Login Bonus 56,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240314,0,224031401
+40157,Daily Login Bonus 57,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240315,0,224031501
+40158,Daily Login Bonus 58,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240316,0,224031601
+40159,Daily Login Bonus 59,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240317,0,224031701
+40160,Daily Login Bonus 60,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240318,0,224031801
+40161,Daily Login Bonus 61,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240319,0,224031901
+40162,Daily Login Bonus 62,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240320,0,224032001
+40163,Daily Login Bonus 63,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240321,0,224032101
+40164,Daily Login Bonus 64,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240322,0,224032201
+40165,Daily Login Bonus 65,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240323,0,224032301
+40166,Daily Login Bonus 66,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240324,0,224032401
+40167,Daily Login Bonus 67,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240325,0,224032501
+40168,Daily Login Bonus 68,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240326,0,224032601
+40169,Daily Login Bonus 69,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240327,0,224032701
+40170,Daily Login Bonus 70,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240328,0,224032801
+40171,Daily Login Bonus 71,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240329,0,224032901
+40172,Daily Login Bonus 72,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240330,0,224033001
+40173,Daily Login Bonus 73,1,0,0,0,LoginBonus_common01day_0001,loginbonus_everyday_240331,0,224033101

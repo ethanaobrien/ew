@@ -1,0 +1,40 @@
+﻿_id,_name,_category,_imageColor,_recommendListTextColor,_sortPriority,_recommendedDeckView,_isCategoryJudge,_musicSelectSortView,_homeBgmSoundKey,_masterReleaseLabelId
+100,μ's,1,f1399f,f93981,1001,1,0,1,HomeScene_Bgm_Muse,1
+101,Printemps,1,#000000,f93981,1101,1,0,1,,1
+102,lily white,1,#000000,f93981,1102,1,0,1,,1
+103,BiBi,1,#000000,f93981,1103,1,0,1,,1
+104,A-RISE,1,#000000,f93981,1104,0,0,1,,1
+190,Solo,1,#000000,f93981,1190,0,1,1,,1
+199,Other,1,#000000,f93981,1199,0,1,1,,1
+200,Aqours,2,009de5,4587ff,2001,1,0,1,HomeScene_Bgm_Aqors,1
+201,CYaRon!,2,#000000,4587ff,2101,1,0,1,,1
+202,AZALEA,2,#000000,4587ff,2102,1,0,1,,1
+203,Guilty Kiss,2,#000000,4587ff,2103,1,0,1,,1
+204,Saint Snow,2,#000000,4587ff,2104,0,0,1,,1
+205,Saint Aqours Snow,2,#000000,4587ff,2105,0,1,1,,1
+290,Solo,2,#000000,4587ff,2190,0,1,1,,1
+299,Other,2,#000000,4587ff,2199,0,1,1,,1
+300,Nijigasaki High School Idol Club,3,fdab0d,ffb745,3002,1,0,1,HomeScene_Bgm_Nijigaku,1
+301,DiverDiva,3,#000000,ffb745,3101,1,0,1,,1
+302,A·ZU·NA,3,#000000,ffb745,3102,1,0,1,,1
+303,QU4RTZ,3,#000000,ffb745,3103,1,0,1,,1
+304,R3BIRTH,3,#000000,ffb745,3104,1,0,1,,1
+390,Solo,3,#000000,ffb745,3001,0,1,1,,1
+399,Other,3,#000000,ffb745,3199,0,1,1,,1
+400,Liella!,4,c04abe,aa45ff,4001,1,0,1,HomeScene_Bgm_Liella,1
+401,Sunny Passion,4,#000000,aa45ff,4102,0,0,1,,1
+402,Wien Margarete,4,#000000,aa45ff,4103,0,0,1,,1
+403,CatChu!,4,#000000,aa45ff,4004,1,0,1,,223101004
+404,KALEIDOSCORE,4,#000000,aa45ff,4005,1,0,1,,223101004
+405,5yncri5e!,4,#000000,aa45ff,4006,1,0,1,,223101004
+490,Solo,4,#000000,aa45ff,4190,0,1,1,,1
+499,Other,4,#000000,aa45ff,4199,0,1,1,,1
+500,Hasunosora,5,#000000,494949,5001,0,0,1,,1
+501,Cerise Bouquet,5,#000000,494949,5002,0,0,1,,1
+502,DOLLCHESTRA,5,#000000,494949,5003,0,0,1,,1
+503,Mira-Cra Park!,5,#000000,494949,5004,0,0,1,,1
+590,Solo,5,#000000,494949,5190,0,1,1,,1
+599,Other,5,#000000,494949,5199,0,1,1,,1
+600,Yohane,7,#000000,494949,6001,0,0,1,,223062001
+9901,Yohane the Parhelion,6,b8826d,494949,99001,0,0,0,,223121403
+9999,Other,6,b8826d,b8826d,90000,1,0,1,,1

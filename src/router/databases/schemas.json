@@ -1,0 +1,5868 @@
+{
+  "library": "master_serializer, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "enums": {
+    "Shock.BAND_CATEGORY": "int",
+    "Shock.BILLING_PRODUCT_TYPE": "int",
+    "Shock.CARD_TYPE": "int",
+    "Shock.CONSUME_TYPE": "int",
+    "Shock.DATE_CONDITION_TYPE": "int",
+    "Shock.DAY_OF_WEEK": "int",
+    "Shock.EVENT_TYPE": "int",
+    "Shock.EVOLVE_ITEM_CONDITION_TYPE": "int",
+    "Shock.EXCHANGE_TAB": "int",
+    "Shock.EXCHANGE_TYPE": "int",
+    "Shock.GET_CATEGORY": "int",
+    "Shock.GIVE_TYPE": "int",
+    "Shock.HOME_BANNER_TYPE": "int",
+    "Shock.HOME_BG_TYPE": "int",
+    "Shock.INPUT_RESULT_TYPE": "int",
+    "Shock.ITEM_CATEGORY": "int",
+    "Shock.ITEM_EFFECT_TYPE": "int",
+    "Shock.ITEM_EXPIRE_TYPE": "int",
+    "Shock.ITEM_TAB": "int",
+    "Shock.LIVE_CONDITION_TYPE": "int",
+    "Shock.LIVE_LEVEL": "int",
+    "Shock.LIVE_MISSION_TYPE": "int",
+    "Shock.LIVE_MODE": "int",
+    "Shock.LIVE_RULE_TYPE": "int",
+    "Shock.LOGIN_BONUS_TYPE": "int",
+    "Shock.LOGIN_NOTICE_PHASE": "int",
+    "Shock.LOGIN_NOTICE_TRANSITION": "int",
+    "Shock.LOGIN_NOTICE_TYPE": "int",
+    "Shock.LOTTERY_TYPE": "int",
+    "Shock.MEMBERSHIP_WALLPAPER_CONDITION_TYPE": "int",
+    "Shock.MEMBER_RANKING_TYPE": "int",
+    "Shock.MISSION_CONDITION_TYPE": "int",
+    "Shock.MISSION_TYPE": "int",
+    "Shock.MOVIE_LENGTH_TYPE": "int",
+    "Shock.MOVIE_SCREEN_TYPE": "int",
+    "Shock.MULTI_CONDITION_TYPE": "int",
+    "Shock.NAVIGATION_CONDITION_TYPE": "int",
+    "Shock.OBTAIN_TYPE": "int",
+    "Shock.PRESET_BACKGROUND_TYPE": "int",
+    "Shock.PRESET_FOREGROUND_TYPE": "int",
+    "Shock.RARITY": "int",
+    "Shock.RESULT_CODE": "int",
+    "Shock.REWARD_TYPE": "int",
+    "Shock.SCORE_RANK": "int",
+    "Shock.SKILL_CARD_TYPE": "int",
+    "Shock.SKILL_MAIN_EFFECT_TYPE": "int",
+    "Shock.SKILL_MAIN_TRIGGER_TYPE": "int",
+    "Shock.SKILL_SUB_TARGET_TYPE": "int",
+    "Shock.SOUND_TYPE": "int",
+    "Shock.STATUS_UP_TYPE": "int",
+    "Shock.STORY_TYPE": "int",
+    "Shock.SUBSCRIPTION_REWARD_TYPE": "int",
+    "Shock.SUBSCRIPTION_TYPE": "int",
+    "Shock.SYSTEM_VOICE_TYPE": "int",
+    "Shock.TIME_RESET_TYPE": "int",
+    "Shock.TITLE_CATEGORY": "int",
+    "Shock.TRACKING_TYPE": "int"
+  },
+  "tables": {
+    "achievement": {
+      "class": "Shock.AchievementMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_achievementIdAndroid",
+          "type": "string"
+        },
+        {
+          "name": "_achievementIdIos",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "adjust_tracking_list": {
+      "class": "Shock.AdjustTrackingListMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_trackingId",
+          "type": "string"
+        },
+        {
+          "name": "_trackingType",
+          "type": "Shock.TRACKING_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_card_m": {
+      "class": "Shock.AlbumCardMMst",
+      "fields": [
+        {
+          "name": "_cardId",
+          "type": "uint"
+        },
+        {
+          "name": "_naviMoveX",
+          "type": "int"
+        },
+        {
+          "name": "_naviMoveY",
+          "type": "int"
+        },
+        {
+          "name": "_thumbnailName",
+          "type": "string"
+        },
+        {
+          "name": "_signedThumbnailName",
+          "type": "string"
+        },
+        {
+          "name": "_assetName",
+          "type": "string"
+        },
+        {
+          "name": "_signedAssetName",
+          "type": "string"
+        },
+        {
+          "name": "_isBgActive",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_member_tag_m": {
+      "class": "Shock.AlbumMemberTagMMst",
+      "fields": [
+        {
+          "name": "_memberTagId",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_imgAsset",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_multi_unit_m": {
+      "class": "Shock.AlbumMultiUnitMMst",
+      "fields": [
+        {
+          "name": "_multiUnitId",
+          "type": "uint"
+        },
+        {
+          "name": "_unitId",
+          "type": "uint"
+        },
+        {
+          "name": "_unitNumber",
+          "type": "uint"
+        },
+        {
+          "name": "_eponym",
+          "type": "string"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_multiCardName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_series_m": {
+      "class": "Shock.AlbumSeriesMMst",
+      "fields": [
+        {
+          "name": "_albumSeriesId",
+          "type": "uint"
+        },
+        {
+          "name": "_albumGroupId",
+          "type": "uint"
+        },
+        {
+          "name": "_albumTabId",
+          "type": "uint"
+        },
+        {
+          "name": "_orderNum",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_nameEn",
+          "type": "string"
+        },
+        {
+          "name": "_layoutType",
+          "type": "uint"
+        },
+        {
+          "name": "_thumbnailPath",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_series_thumbnail_asset_m": {
+      "class": "Shock.AlbumSeriesThumbnailAssetMMst",
+      "fields": [
+        {
+          "name": "_albumSeriesId",
+          "type": "uint"
+        },
+        {
+          "name": "_thumbnailAsset",
+          "type": "string"
+        },
+        {
+          "name": "_thumbnailAssetEn",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_unit_m": {
+      "class": "Shock.AlbumUnitMMst",
+      "fields": [
+        {
+          "name": "_unitId",
+          "type": "uint"
+        },
+        {
+          "name": "_unitTypeId",
+          "type": "uint"
+        },
+        {
+          "name": "_albumSeriesId",
+          "type": "uint"
+        },
+        {
+          "name": "_eponym",
+          "type": "string"
+        },
+        {
+          "name": "_eponymEn",
+          "type": "string"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_nameEn",
+          "type": "string"
+        },
+        {
+          "name": "_normalCardId",
+          "type": "uint"
+        },
+        {
+          "name": "_rankMaxCardId",
+          "type": "uint"
+        },
+        {
+          "name": "_rarity",
+          "type": "uint"
+        },
+        {
+          "name": "_attributeId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_unit_pair_m": {
+      "class": "Shock.AlbumUnitPairMMst",
+      "fields": [
+        {
+          "name": "_unitPairId",
+          "type": "uint"
+        },
+        {
+          "name": "_pair",
+          "type": "uint"
+        },
+        {
+          "name": "_unitId",
+          "type": "uint"
+        },
+        {
+          "name": "_position",
+          "type": "uint"
+        },
+        {
+          "name": "_rank",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_unit_series_m": {
+      "class": "Shock.AlbumUnitSeriesMMst",
+      "fields": [
+        {
+          "name": "_albumUnitSeriesId",
+          "type": "uint"
+        },
+        {
+          "name": "_albumSeriesId",
+          "type": "uint"
+        },
+        {
+          "name": "_unitId",
+          "type": "uint"
+        },
+        {
+          "name": "_position",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_unit_type": {
+      "class": "Shock.AlbumUnitTypeMst",
+      "fields": [
+        {
+          "name": "_unitTypeId",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_nameAlpha",
+          "type": "string"
+        },
+        {
+          "name": "_age",
+          "type": "string"
+        },
+        {
+          "name": "_birthday",
+          "type": "string"
+        },
+        {
+          "name": "_bloodType",
+          "type": "string"
+        },
+        {
+          "name": "_height",
+          "type": "string"
+        },
+        {
+          "name": "_cv",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "album_unit_type_member_tag_m": {
+      "class": "Shock.AlbumUnitTypeMemberTagMMst",
+      "fields": [
+        {
+          "name": "_unitTypeId",
+          "type": "uint"
+        },
+        {
+          "name": "_memberTagId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "beginner_mission": {
+      "class": "Shock.BeginnerMissionMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_masterMissionId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "beginner_mission_reward": {
+      "class": "Shock.BeginnerMissionRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "beginner_mission_reward_setting": {
+      "class": "Shock.BeginnerMissionRewardSettingMst",
+      "fields": [
+        {
+          "name": "_masterBeginnerMissionId",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_masterBeginnerMissionRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "bgm": {
+      "class": "Shock.BgmMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_cueSheetName",
+          "type": "string"
+        },
+        {
+          "name": "_cueName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "billing_product": {
+      "class": "Shock.BillingProductMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_masterBillingShopId",
+          "type": "uint"
+        },
+        {
+          "name": "_itemName",
+          "type": "string"
+        },
+        {
+          "name": "_itemDetail",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.BILLING_PRODUCT_TYPE"
+        },
+        {
+          "name": "_detail",
+          "type": "string"
+        },
+        {
+          "name": "_masterBillingProductRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_startdashTime",
+          "type": "uint"
+        },
+        {
+          "name": "_startdashExpireTime",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "billing_product_reward": {
+      "class": "Shock.BillingProductRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "billing_shop": {
+      "class": "Shock.BillingShopMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_tabName",
+          "type": "string"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_shopType",
+          "type": "int"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_masterShopRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "billing_subscription": {
+      "class": "Shock.BillingSubscriptionMst",
+      "fields": [
+        {
+          "name": "_masterBillingProductId",
+          "type": "string"
+        },
+        {
+          "name": "_label",
+          "type": "string"
+        },
+        {
+          "name": "_deviceType",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_summary",
+          "type": "string"
+        },
+        {
+          "name": "_subscriptionType",
+          "type": "Shock.SUBSCRIPTION_TYPE"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "billing_subscription_reward": {
+      "class": "Shock.BillingSubscriptionRewardMst",
+      "fields": [
+        {
+          "name": "_masterBillingSubscriptionLabel",
+          "type": "string"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_subscriptionRewardType",
+          "type": "Shock.SUBSCRIPTION_REWARD_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card": {
+      "class": "Shock.CardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterCharacterId",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.CARD_TYPE"
+        },
+        {
+          "name": "_masterSkillCenterId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterSkillId",
+          "type": "uint"
+        },
+        {
+          "name": "_rarity",
+          "type": "Shock.RARITY"
+        },
+        {
+          "name": "_hp",
+          "type": "int"
+        },
+        {
+          "name": "_smile",
+          "type": "int"
+        },
+        {
+          "name": "_cool",
+          "type": "int"
+        },
+        {
+          "name": "_pure",
+          "type": "int"
+        },
+        {
+          "name": "_illustId",
+          "type": "string"
+        },
+        {
+          "name": "_evolveIllustId",
+          "type": "string"
+        },
+        {
+          "name": "_masterCardLevelId",
+          "type": "uint"
+        },
+        {
+          "name": "_uniqueBackgroundFileName",
+          "type": "string"
+        },
+        {
+          "name": "_evolveUniqueBackgroundFileName",
+          "type": "string"
+        },
+        {
+          "name": "_getCategory",
+          "type": "Shock.GET_CATEGORY"
+        },
+        {
+          "name": "_masterCardSysVoiceId",
+          "type": "uint"
+        },
+        {
+          "name": "_albumUnitMId",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_collection_reward": {
+      "class": "Shock.CardCollectionRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_evolve": {
+      "class": "Shock.CardEvolveMst",
+      "fields": [
+        {
+          "name": "_rarity",
+          "type": "Shock.RARITY"
+        },
+        {
+          "name": "_evolveCount",
+          "type": "int"
+        },
+        {
+          "name": "_maxLevel",
+          "type": "int"
+        },
+        {
+          "name": "_price",
+          "type": "int"
+        },
+        {
+          "name": "_hpAddValue",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_evolve_condition": {
+      "class": "Shock.CardEvolveConditionMst",
+      "fields": [
+        {
+          "name": "_masterCardId",
+          "type": "uint"
+        },
+        {
+          "name": "_evolveCount",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_get": {
+      "class": "Shock.CardGetMst",
+      "fields": [
+        {
+          "name": "_masterCardId",
+          "type": "uint"
+        },
+        {
+          "name": "_index",
+          "type": "int"
+        },
+        {
+          "name": "_getCategory",
+          "type": "Shock.GET_CATEGORY"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_level": {
+      "class": "Shock.CardLevelMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_exp",
+          "type": "int"
+        },
+        {
+          "name": "_hpRatio",
+          "type": "int"
+        },
+        {
+          "name": "_smileRatio",
+          "type": "int"
+        },
+        {
+          "name": "_pureRatio",
+          "type": "int"
+        },
+        {
+          "name": "_coolRatio",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_rarity": {
+      "class": "Shock.CardRarityMst",
+      "fields": [
+        {
+          "name": "_rarity",
+          "type": "Shock.RARITY"
+        },
+        {
+          "name": "_maxLevel",
+          "type": "int"
+        },
+        {
+          "name": "_baseEvolveCount",
+          "type": "int"
+        },
+        {
+          "name": "_masterCardSkillLevelId",
+          "type": "uint"
+        },
+        {
+          "name": "_exchangeMasterItemId",
+          "type": "uint"
+        },
+        {
+          "name": "_exchangeItemAmount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_skill_level": {
+      "class": "Shock.CardSkillLevelMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_exp",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "card_sys_voice": {
+      "class": "Shock.CardSysVoiceMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_masterVoiceId",
+          "type": "uint"
+        },
+        {
+          "name": "_systemVoiceType",
+          "type": "Shock.SYSTEM_VOICE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_textJa",
+          "type": "string"
+        },
+        {
+          "name": "_textEn",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "character": {
+      "class": "Shock.CharacterMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_nameRuby",
+          "type": "string"
+        },
+        {
+          "name": "_detailText",
+          "type": "string"
+        },
+        {
+          "name": "_category",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_schoolGrade",
+          "type": "uint"
+        },
+        {
+          "name": "_charaCategory",
+          "type": "uint"
+        },
+        {
+          "name": "_masterGroupId",
+          "type": "uint"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_displayOrder",
+          "type": "int"
+        },
+        {
+          "name": "_height",
+          "type": "string"
+        },
+        {
+          "name": "_bloodType",
+          "type": "string"
+        },
+        {
+          "name": "_birsday",
+          "type": "string"
+        },
+        {
+          "name": "_voiceActor",
+          "type": "string"
+        },
+        {
+          "name": "_imageColor",
+          "type": "string"
+        },
+        {
+          "name": "_imageColorDark",
+          "type": "string"
+        },
+        {
+          "name": "_nameRichtextGacha",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "character_group": {
+      "class": "Shock.CharacterGroupMst",
+      "fields": [
+        {
+          "name": "_characterId",
+          "type": "uint"
+        },
+        {
+          "name": "_groupId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "character_sys_voice": {
+      "class": "Shock.CharacterSysVoiceMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_masterVoiceId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterCharacterId",
+          "type": "uint"
+        },
+        {
+          "name": "_systemVoiceType",
+          "type": "Shock.SYSTEM_VOICE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_textJa",
+          "type": "string"
+        },
+        {
+          "name": "_textEn",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat": {
+      "class": "Shock.ChatMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "uint"
+        },
+        {
+          "name": "_category",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_chatCharaId",
+          "type": "uint"
+        },
+        {
+          "name": "_bgColorCode",
+          "type": "string"
+        },
+        {
+          "name": "_headerColorCode",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat_attachment": {
+      "class": "Shock.ChatAttachmentMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_filename",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat_chapter": {
+      "class": "Shock.ChatChapterMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterChatId",
+          "type": "uint"
+        },
+        {
+          "name": "_roomId",
+          "type": "uint"
+        },
+        {
+          "name": "_chapterId",
+          "type": "uint"
+        },
+        {
+          "name": "_scriptKey",
+          "type": "string"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_firstLineValue",
+          "type": "string"
+        },
+        {
+          "name": "_noticeValue",
+          "type": "string"
+        },
+        {
+          "name": "_appearStampIdList",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat_character": {
+      "class": "Shock.ChatCharacterMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_characterId",
+          "type": "uint"
+        },
+        {
+          "name": "_group",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat_reward": {
+      "class": "Shock.ChatRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat_room": {
+      "class": "Shock.ChatRoomMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterChatId",
+          "type": "uint"
+        },
+        {
+          "name": "_roomId",
+          "type": "uint"
+        },
+        {
+          "name": "_hashTag",
+          "type": "string"
+        },
+        {
+          "name": "_firstLineValue",
+          "type": "string"
+        },
+        {
+          "name": "_iconPath",
+          "type": "string"
+        },
+        {
+          "name": "_appearCharaIdList",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat_stamp": {
+      "class": "Shock.ChatStampMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_group",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_isUsableChat",
+          "type": "uint"
+        },
+        {
+          "name": "_isUsableMulti",
+          "type": "uint"
+        },
+        {
+          "name": "_filename",
+          "type": "string"
+        },
+        {
+          "name": "_order",
+          "type": "uint"
+        },
+        {
+          "name": "_initialStamp",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chat_voice_key": {
+      "class": "Shock.ChatVoiceKeyMst",
+      "fields": [
+        {
+          "name": "_key",
+          "type": "string"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_group",
+          "type": "uint"
+        },
+        {
+          "name": "_comment",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "chipster_result_code": {
+      "class": "Shock.ChipsterResultCodeMst",
+      "fields": [
+        {
+          "name": "_resultCode",
+          "type": "int"
+        },
+        {
+          "name": "_masterDialogId",
+          "type": "string"
+        },
+        {
+          "name": "_stayFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_silentFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "comic": {
+      "class": "Shock.ComicMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterGroupId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_imageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "common_bg_movie": {
+      "class": "Shock.CommonBgMovieMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterMovieId",
+          "type": "uint"
+        },
+        {
+          "name": "_bandCategory",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_sceneType",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "const": {
+      "class": "Shock.ConstMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_value",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "date_condition": {
+      "class": "Shock.DateConditionMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_dateConditionType",
+          "type": "Shock.DATE_CONDITION_TYPE"
+        },
+        {
+          "name": "_arg1",
+          "type": "uint"
+        },
+        {
+          "name": "_arg2",
+          "type": "uint"
+        },
+        {
+          "name": "_arg3",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "date_condition_others": {
+      "class": "Shock.DateConditionOthersMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_date",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "dialog": {
+      "class": "Shock.DialogMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_message",
+          "type": "string"
+        },
+        {
+          "name": "_buttonId",
+          "type": "string[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "dialog_button": {
+      "class": "Shock.DialogButtonMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_masterTextId",
+          "type": "string"
+        },
+        {
+          "name": "_masterTextIdColor",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event": {
+      "class": "Shock.EventMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.EVENT_TYPE"
+        },
+        {
+          "name": "_memberRankingType",
+          "type": "Shock.MEMBER_RANKING_TYPE"
+        },
+        {
+          "name": "_resultClosedDate",
+          "type": "string"
+        },
+        {
+          "name": "_aggregationDate",
+          "type": "string"
+        },
+        {
+          "name": "_rewardMemberMasterCardIdList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterEventPointSettingsId",
+          "type": "uint"
+        },
+        {
+          "name": "_openingObjName",
+          "type": "string"
+        },
+        {
+          "name": "_openingGroupBg",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_favoriteMemberSettingCharacterIds",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_card_bonus": {
+      "class": "Shock.EventCardBonusMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_targetId",
+          "type": "uint"
+        },
+        {
+          "name": "_pointBonusRatioList",
+          "type": "int[]"
+        },
+        {
+          "name": "_eventTicketBonusAmountList",
+          "type": "int[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_live": {
+      "class": "Shock.EventLiveMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLiveId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_member_ranking": {
+      "class": "Shock.EventMemberRankingMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_groupId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_highRank",
+          "type": "uint"
+        },
+        {
+          "name": "_lowRank",
+          "type": "uint"
+        },
+        {
+          "name": "_masterEventMemberRankingRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_member_ranking_reward": {
+      "class": "Shock.EventMemberRankingRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_point": {
+      "class": "Shock.EventPointMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterEventPointRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_repeatInterval",
+          "type": "uint"
+        },
+        {
+          "name": "_repeatCount",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_point_ranking": {
+      "class": "Shock.EventPointRankingMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_groupId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_highRank",
+          "type": "uint"
+        },
+        {
+          "name": "_lowRank",
+          "type": "uint"
+        },
+        {
+          "name": "_masterEventPointRankingRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_point_ranking_reward": {
+      "class": "Shock.EventPointRankingRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_point_reward": {
+      "class": "Shock.EventPointRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_point_settings": {
+      "class": "Shock.EventPointSettingsMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_score": {
+      "class": "Shock.EventScoreMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_eventLivePointBase",
+          "type": "int"
+        },
+        {
+          "name": "_eventPointRatio",
+          "type": "int"
+        },
+        {
+          "name": "_eventBoostRatio",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_score_ranking": {
+      "class": "Shock.EventScoreRankingMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_groupCount",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_highRank",
+          "type": "uint"
+        },
+        {
+          "name": "_lowRank",
+          "type": "uint"
+        },
+        {
+          "name": "_masterEventScoreRankingRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_score_ranking_reward": {
+      "class": "Shock.EventScoreRankingRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_story": {
+      "class": "Shock.EventStoryMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterStoryId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_tips": {
+      "class": "Shock.EventTipsMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_rootPath",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_tips_page": {
+      "class": "Shock.EventTipsPageMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_message",
+          "type": "string"
+        },
+        {
+          "name": "_category",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_top_banner": {
+      "class": "Shock.EventTopBannerMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterGachaId",
+          "type": "uint"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "event_type": {
+      "class": "Shock.EventTypeMst",
+      "fields": [
+        {
+          "name": "_type",
+          "type": "Shock.EVENT_TYPE"
+        },
+        {
+          "name": "_eventLiveName",
+          "type": "string"
+        },
+        {
+          "name": "_masterMultiPenaltyId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "evolve_item_amount": {
+      "class": "Shock.EvolveItemAmountMst",
+      "fields": [
+        {
+          "name": "_rarity",
+          "type": "Shock.RARITY"
+        },
+        {
+          "name": "_evolveCount",
+          "type": "int"
+        },
+        {
+          "name": "_effectType",
+          "type": "Shock.ITEM_EFFECT_TYPE"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "evolve_item_condition": {
+      "class": "Shock.EvolveItemConditionMst",
+      "fields": [
+        {
+          "name": "_masterItemId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.EVOLVE_ITEM_CONDITION_TYPE"
+        },
+        {
+          "name": "_valueList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "exchange": {
+      "class": "Shock.ExchangeMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_exchangeType",
+          "type": "Shock.EXCHANGE_TYPE"
+        },
+        {
+          "name": "_consumeType",
+          "type": "Shock.CONSUME_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_bannerSpriteName",
+          "type": "string"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_exchangeTab",
+          "type": "Shock.EXCHANGE_TAB"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_displayControlFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "exchange_item": {
+      "class": "Shock.ExchangeItemMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_consumeType",
+          "type": "Shock.CONSUME_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterExchangeItemRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_exchangeLimit",
+          "type": "int"
+        },
+        {
+          "name": "_timeResetType",
+          "type": "Shock.TIME_RESET_TYPE"
+        },
+        {
+          "name": "_recommendMarkClosedAt",
+          "type": "string"
+        },
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "exchange_item_reward": {
+      "class": "Shock.ExchangeItemRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "function_lock": {
+      "class": "Shock.FunctionLockMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_locked",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "gamelib_result_code": {
+      "class": "Shock.GamelibResultCodeMst",
+      "fields": [
+        {
+          "name": "_resultCode",
+          "type": "int"
+        },
+        {
+          "name": "_masterDialogId",
+          "type": "string"
+        },
+        {
+          "name": "_stayFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_silentFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "group": {
+      "class": "Shock.GroupMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_category",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_imageColor",
+          "type": "string"
+        },
+        {
+          "name": "_recommendListTextColor",
+          "type": "string"
+        },
+        {
+          "name": "_sortPriority",
+          "type": "int"
+        },
+        {
+          "name": "_recommendedDeckView",
+          "type": "uint"
+        },
+        {
+          "name": "_isCategoryJudge",
+          "type": "int"
+        },
+        {
+          "name": "_musicSelectSortView",
+          "type": "uint"
+        },
+        {
+          "name": "_homeBgmSoundKey",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "home_banner": {
+      "class": "Shock.HomeBannerMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.HOME_BANNER_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "string"
+        },
+        {
+          "name": "_deviceType",
+          "type": "int"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_position",
+          "type": "int"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "home_bg": {
+      "class": "Shock.HomeBgMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_imageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterMovieId",
+          "type": "uint"
+        },
+        {
+          "name": "_homeBgType",
+          "type": "Shock.HOME_BG_TYPE"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "item": {
+      "class": "Shock.ItemMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_category",
+          "type": "Shock.ITEM_CATEGORY"
+        },
+        {
+          "name": "_effectType",
+          "type": "Shock.ITEM_EFFECT_TYPE"
+        },
+        {
+          "name": "_effectConditionValue",
+          "type": "uint"
+        },
+        {
+          "name": "_effectValue",
+          "type": "int"
+        },
+        {
+          "name": "_extraEffectValue",
+          "type": "int"
+        },
+        {
+          "name": "_effectDetail",
+          "type": "string"
+        },
+        {
+          "name": "_wayToUse",
+          "type": "string"
+        },
+        {
+          "name": "_wayToGet",
+          "type": "string"
+        },
+        {
+          "name": "_price",
+          "type": "int"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_itemTab",
+          "type": "Shock.ITEM_TAB"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_expireDate",
+          "type": "string"
+        },
+        {
+          "name": "_itemExpireType",
+          "type": "Shock.ITEM_EXPIRE_TYPE"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "limited_live": {
+      "class": "Shock.LimitedLiveMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_nameMasterTextId",
+          "type": "string"
+        },
+        {
+          "name": "_ruleFormatMasterTextId",
+          "type": "string"
+        },
+        {
+          "name": "_masterLiveIdList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_bonusMasterLiveId",
+          "type": "uint"
+        },
+        {
+          "name": "_bonusLiveLotteryRatio",
+          "type": "int"
+        },
+        {
+          "name": "_bonusEffectMasterTextId",
+          "type": "string"
+        },
+        {
+          "name": "_count",
+          "type": "int"
+        },
+        {
+          "name": "_masterItemId",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_timeResetType",
+          "type": "Shock.TIME_RESET_TYPE"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live": {
+      "class": "Shock.LiveMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterMusicId",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.CARD_TYPE"
+        },
+        {
+          "name": "_scoreC",
+          "type": "int"
+        },
+        {
+          "name": "_scoreB",
+          "type": "int"
+        },
+        {
+          "name": "_scoreA",
+          "type": "int"
+        },
+        {
+          "name": "_scoreS",
+          "type": "int"
+        },
+        {
+          "name": "_multiScoreC",
+          "type": "int"
+        },
+        {
+          "name": "_multiScoreB",
+          "type": "int"
+        },
+        {
+          "name": "_multiScoreA",
+          "type": "int"
+        },
+        {
+          "name": "_multiScoreS",
+          "type": "int"
+        },
+        {
+          "name": "_liveEffectValueId",
+          "type": "int"
+        },
+        {
+          "name": "_bpm",
+          "type": "int"
+        },
+        {
+          "name": "_startWait",
+          "type": "float"
+        },
+        {
+          "name": "_endWait",
+          "type": "float"
+        },
+        {
+          "name": "_masterLiveRewardSettingId",
+          "type": "uint"
+        },
+        {
+          "name": "_liveBgMovieMasterId",
+          "type": "uint"
+        },
+        {
+          "name": "_rehearsalImagePath",
+          "type": "string"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_campaignFlag",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_boost": {
+      "class": "Shock.LiveBoostMst",
+      "fields": [
+        {
+          "name": "_value",
+          "type": "int"
+        },
+        {
+          "name": "_lp",
+          "type": "int"
+        },
+        {
+          "name": "_icon",
+          "type": "int"
+        },
+        {
+          "name": "_eventPointRatio",
+          "type": "int"
+        },
+        {
+          "name": "_rewardRatio",
+          "type": "int"
+        },
+        {
+          "name": "_expRatio",
+          "type": "int"
+        },
+        {
+          "name": "_eventPointRatioAuto",
+          "type": "int"
+        },
+        {
+          "name": "_rewardRatioAuto",
+          "type": "int"
+        },
+        {
+          "name": "_expRatioAuto",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_clear_reward": {
+      "class": "Shock.LiveClearRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLiveId",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_getableCount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_combo": {
+      "class": "Shock.LiveComboMst",
+      "fields": [
+        {
+          "name": "_comboNum",
+          "type": "int"
+        },
+        {
+          "name": "_scoreUpRate",
+          "type": "float"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_condition": {
+      "class": "Shock.LiveConditionMst",
+      "fields": [
+        {
+          "name": "_masterLiveId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_detail",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.LIVE_CONDITION_TYPE"
+        },
+        {
+          "name": "_values",
+          "type": "uint[]"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_compareType",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_effect_value": {
+      "class": "Shock.LiveEffectValueMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "int"
+        },
+        {
+          "name": "_effectObjectName",
+          "type": "string"
+        },
+        {
+          "name": "_baseColor",
+          "type": "string"
+        },
+        {
+          "name": "_changeColor",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_input_result": {
+      "class": "Shock.LiveInputResultMst",
+      "fields": [
+        {
+          "name": "_type",
+          "type": "Shock.INPUT_RESULT_TYPE"
+        },
+        {
+          "name": "_offsetTimeSec",
+          "type": "float"
+        },
+        {
+          "name": "_offsetTimeSecSlider",
+          "type": "float"
+        },
+        {
+          "name": "_scoreCoeff",
+          "type": "float"
+        },
+        {
+          "name": "_lifeDamage",
+          "type": "int"
+        },
+        {
+          "name": "_midpointLifeDamage",
+          "type": "int"
+        },
+        {
+          "name": "_bombLifeDamage",
+          "type": "int"
+        },
+        {
+          "name": "_enableCombo",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_lane_skin": {
+      "class": "Shock.LiveLaneSkinMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_lanePath",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_mission": {
+      "class": "Shock.LiveMissionMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.LIVE_MISSION_TYPE"
+        },
+        {
+          "name": "_level",
+          "type": "Shock.LIVE_LEVEL"
+        },
+        {
+          "name": "_value",
+          "type": "string"
+        },
+        {
+          "name": "_masterLiveMissionRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_mission_combo": {
+      "class": "Shock.LiveMissionComboMst",
+      "fields": [
+        {
+          "name": "_masterMusicId",
+          "type": "uint"
+        },
+        {
+          "name": "_valueList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_mission_reward": {
+      "class": "Shock.LiveMissionRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_ranking_reward": {
+      "class": "Shock.LiveRankingRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_recommend": {
+      "class": "Shock.LiveRecommendMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_priority",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_recommend_list": {
+      "class": "Shock.LiveRecommendListMst",
+      "fields": [
+        {
+          "name": "_masterLiveRecommendId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLiveId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_reward": {
+      "class": "Shock.LiveRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_reward_setting": {
+      "class": "Shock.LiveRewardSettingMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_liveMode",
+          "type": "Shock.LIVE_MODE"
+        },
+        {
+          "name": "_scoreRank",
+          "type": "Shock.SCORE_RANK"
+        },
+        {
+          "name": "_masterLiveRewardIdList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_rareMasterLiveRewardIdList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_ensuredMasterLiveRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_rule": {
+      "class": "Shock.LiveRuleMst",
+      "fields": [
+        {
+          "name": "_masterLiveId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_detail",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.LIVE_RULE_TYPE"
+        },
+        {
+          "name": "_values",
+          "type": "uint[]"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_compareType",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_tap_effect": {
+      "class": "Shock.LiveTapEffectMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_tapPath",
+          "type": "string"
+        },
+        {
+          "name": "_flickPath",
+          "type": "string"
+        },
+        {
+          "name": "_longPath",
+          "type": "string"
+        },
+        {
+          "name": "_longLoopPath",
+          "type": "string"
+        },
+        {
+          "name": "_skillPath",
+          "type": "string"
+        },
+        {
+          "name": "_emptyPath",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "live_tap_se": {
+      "class": "Shock.LiveTapSeMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_tapPerfectSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_tapGrateSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_tapGoodSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_tapBadSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_tapMissSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_flickSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_tapLongSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_tapEmptySoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "location": {
+      "class": "Shock.LocationMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_description",
+          "type": "string"
+        },
+        {
+          "name": "_masterLocationRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_bannerName",
+          "type": "string"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "location_reward": {
+      "class": "Shock.LocationRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "login_bonus": {
+      "class": "Shock.LoginBonusMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.LOGIN_BONUS_TYPE"
+        },
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_loop",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_prefabName",
+          "type": "string"
+        },
+        {
+          "name": "_boardSpriteName",
+          "type": "string"
+        },
+        {
+          "name": "_masterVoiceId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "login_bonus_reward": {
+      "class": "Shock.LoginBonusRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "login_bonus_reward_setting": {
+      "class": "Shock.LoginBonusRewardSettingMst",
+      "fields": [
+        {
+          "name": "_masterLoginBonusId",
+          "type": "uint"
+        },
+        {
+          "name": "_dayCount",
+          "type": "int"
+        },
+        {
+          "name": "_masterLoginBonusRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_itemBackgroundSpriteName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery": {
+      "class": "Shock.LotteryMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_masterLotteryInfoId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterCautionId",
+          "type": "uint"
+        },
+        {
+          "name": "_category",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.LOTTERY_TYPE"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterLotteryPriceId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLotteryRarityId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLotteryImageId",
+          "type": "uint"
+        },
+        {
+          "name": "_balloonSpriteName",
+          "type": "string"
+        },
+        {
+          "name": "_startdashTime",
+          "type": "uint"
+        },
+        {
+          "name": "_startdashExpireTime",
+          "type": "uint"
+        },
+        {
+          "name": "_checkDisplayableLottery",
+          "type": "uint"
+        },
+        {
+          "name": "_repeat",
+          "type": "uint"
+        },
+        {
+          "name": "_exchangeMasterItemId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLotteryEffMovieId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLotteryEffMovieRatioId",
+          "type": "uint"
+        },
+        {
+          "name": "_storeReviewFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_caution": {
+      "class": "Shock.LotteryCautionMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_cautionText",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_eff_movie": {
+      "class": "Shock.LotteryEffMovieMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_bandCategory",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_normalMovieId",
+          "type": "uint"
+        },
+        {
+          "name": "_expectedMoveId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_eff_movie_ratio": {
+      "class": "Shock.LotteryEffMovieRatioMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_minRarity",
+          "type": "Shock.RARITY"
+        },
+        {
+          "name": "_normalMovieRatio",
+          "type": "uint"
+        },
+        {
+          "name": "_expectedMoveRatio",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_image": {
+      "class": "Shock.LotteryImageMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_logoFileName",
+          "type": "string"
+        },
+        {
+          "name": "_infoFileName",
+          "type": "string"
+        },
+        {
+          "name": "_stepupInfoFileName",
+          "type": "string[]"
+        },
+        {
+          "name": "_bgFileName",
+          "type": "string[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_info": {
+      "class": "Shock.LotteryInfoMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_infoText",
+          "type": "string"
+        },
+        {
+          "name": "_detailText",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_item": {
+      "class": "Shock.LotteryItemMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_pickup",
+          "type": "uint"
+        },
+        {
+          "name": "_show",
+          "type": "uint"
+        },
+        {
+          "name": "_boxCount",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_price": {
+      "class": "Shock.LotteryPriceMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_consumeType",
+          "type": "Shock.CONSUME_TYPE"
+        },
+        {
+          "name": "_count",
+          "type": "int"
+        },
+        {
+          "name": "_price",
+          "type": "int"
+        },
+        {
+          "name": "_limitCount",
+          "type": "int"
+        },
+        {
+          "name": "_dailyLimitCount",
+          "type": "int"
+        },
+        {
+          "name": "_masterItemId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLotteryRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_rarity": {
+      "class": "Shock.LotteryRarityMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLotteryItemId",
+          "type": "uint"
+        },
+        {
+          "name": "_rarity",
+          "type": "Shock.RARITY"
+        },
+        {
+          "name": "_ratio",
+          "type": "int"
+        },
+        {
+          "name": "_pickupRatio",
+          "type": "int"
+        },
+        {
+          "name": "_ensured",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_reward": {
+      "class": "Shock.LotteryRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "lottery_stepup": {
+      "class": "Shock.LotteryStepupMst",
+      "fields": [
+        {
+          "name": "_masterLotteryId",
+          "type": "uint"
+        },
+        {
+          "name": "_count",
+          "type": "int"
+        },
+        {
+          "name": "_nextCount",
+          "type": "int"
+        },
+        {
+          "name": "_masterLotteryPriceId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterLotteryRarityId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "membership_wallpaper": {
+      "class": "Shock.MembershipWallpaperMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_priorily",
+          "type": "uint"
+        },
+        {
+          "name": "_membershipWallpaperConditionType",
+          "type": "Shock.MEMBERSHIP_WALLPAPER_CONDITION_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "mission": {
+      "class": "Shock.MissionMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_detail",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.MISSION_TYPE"
+        },
+        {
+          "name": "_parentMasterMissionId",
+          "type": "uint"
+        },
+        {
+          "name": "_conditionType",
+          "type": "Shock.MISSION_CONDITION_TYPE"
+        },
+        {
+          "name": "_conditionValues",
+          "type": "uint[]"
+        },
+        {
+          "name": "_conditionNumber",
+          "type": "int"
+        },
+        {
+          "name": "_masterMissionRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "mission_banner": {
+      "class": "Shock.MissionBannerMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.MISSION_TYPE"
+        },
+        {
+          "name": "_bannerFileName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "mission_reward": {
+      "class": "Shock.MissionRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "movie": {
+      "class": "Shock.MovieMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_lengthType",
+          "type": "Shock.MOVIE_LENGTH_TYPE"
+        },
+        {
+          "name": "_screenType",
+          "type": "Shock.MOVIE_SCREEN_TYPE"
+        },
+        {
+          "name": "_movieName",
+          "type": "string"
+        },
+        {
+          "name": "_movieDetail",
+          "type": "string"
+        },
+        {
+          "name": "_masterCharacterIdList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterCharacterId",
+          "type": "uint"
+        },
+        {
+          "name": "_folderPath",
+          "type": "string"
+        },
+        {
+          "name": "_fileName",
+          "type": "string"
+        },
+        {
+          "name": "_thumbnailSpriteName",
+          "type": "string"
+        },
+        {
+          "name": "_getCategory",
+          "type": "Shock.GET_CATEGORY"
+        },
+        {
+          "name": "_masterMusicIdList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "movie_key": {
+      "class": "Shock.MovieKeyMst",
+      "fields": [
+        {
+          "name": "_key",
+          "type": "string"
+        },
+        {
+          "name": "_masterMovieId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multi_daily_drop_effect": {
+      "class": "Shock.MultiDailyDropEffectMst",
+      "fields": [
+        {
+          "name": "_dayOfWeek",
+          "type": "Shock.DAY_OF_WEEK"
+        },
+        {
+          "name": "_text",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multi_room_condition": {
+      "class": "Shock.MultiRoomConditionMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_multiConditionType",
+          "type": "Shock.MULTI_CONDITION_TYPE"
+        },
+        {
+          "name": "_values",
+          "type": "uint[]"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_compareType",
+          "type": "uint"
+        },
+        {
+          "name": "_conditionDetail",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multi_room_select": {
+      "class": "Shock.MultiRoomSelectMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_liveMode",
+          "type": "Shock.LIVE_MODE"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_detail",
+          "type": "string"
+        },
+        {
+          "name": "_opened",
+          "type": "uint"
+        },
+        {
+          "name": "_status",
+          "type": "uint"
+        },
+        {
+          "name": "_masterMultiRoomConditionId",
+          "type": "uint"
+        },
+        {
+          "name": "_minRoomId",
+          "type": "int"
+        },
+        {
+          "name": "_maxRoomId",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multievent_card_bonus": {
+      "class": "Shock.MultieventCardBonusMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_targetId",
+          "type": "uint"
+        },
+        {
+          "name": "_pointBonusRatioList",
+          "type": "int[]"
+        },
+        {
+          "name": "_eventBonusAmountList",
+          "type": "int[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multievent_matchingrange": {
+      "class": "Shock.MultieventMatchingrangeMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_matchingDiffPer",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multievent_penalty": {
+      "class": "Shock.MultieventPenaltyMst",
+      "fields": [
+        {
+          "name": "_penaltyCount",
+          "type": "uint"
+        },
+        {
+          "name": "_penaltySec",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multievent_rankbonus": {
+      "class": "Shock.MultieventRankbonusMst",
+      "fields": [
+        {
+          "name": "_playerCount",
+          "type": "uint"
+        },
+        {
+          "name": "_liveRank",
+          "type": "uint"
+        },
+        {
+          "name": "_eventPtBonus",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "multievent_setting": {
+      "class": "Shock.MultieventSettingMst",
+      "fields": [
+        {
+          "name": "_eventId",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.EVENT_TYPE"
+        },
+        {
+          "name": "_targetGroupIds",
+          "type": "uint[]"
+        },
+        {
+          "name": "_targetType",
+          "type": "Shock.CARD_TYPE"
+        },
+        {
+          "name": "_leftLiveButtonCharaId",
+          "type": "uint"
+        },
+        {
+          "name": "_rightLiveButtonCharaId",
+          "type": "uint"
+        },
+        {
+          "name": "_needHelperLevel",
+          "type": "Shock.LIVE_LEVEL"
+        },
+        {
+          "name": "_needHelperPower",
+          "type": "int"
+        },
+        {
+          "name": "_needHelperRank",
+          "type": "int"
+        },
+        {
+          "name": "_needHelpableMessage",
+          "type": "string"
+        },
+        {
+          "name": "_exclusionLevel",
+          "type": "Shock.LIVE_LEVEL"
+        },
+        {
+          "name": "_helpCount",
+          "type": "int"
+        },
+        {
+          "name": "_roomWaitSec",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "music": {
+      "class": "Shock.MusicMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_shortName",
+          "type": "string"
+        },
+        {
+          "name": "_kana",
+          "type": "string"
+        },
+        {
+          "name": "_artist",
+          "type": "string"
+        },
+        {
+          "name": "_detailInfo",
+          "type": "string"
+        },
+        {
+          "name": "_dictionaryReference",
+          "type": "string"
+        },
+        {
+          "name": "_dictionaryComment",
+          "type": "string"
+        },
+        {
+          "name": "_bandCategory",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_masterGroupId",
+          "type": "uint"
+        },
+        {
+          "name": "_jacketImageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterBgmId",
+          "type": "uint"
+        },
+        {
+          "name": "_previewMasterBgmId",
+          "type": "uint"
+        },
+        {
+          "name": "_locked",
+          "type": "uint"
+        },
+        {
+          "name": "_obtainType",
+          "type": "Shock.OBTAIN_TYPE"
+        },
+        {
+          "name": "_isAcLevelMusic",
+          "type": "int"
+        },
+        {
+          "name": "_releaseDateTime",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "music_level": {
+      "class": "Shock.MusicLevelMst",
+      "fields": [
+        {
+          "name": "_masterMusicId",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "Shock.LIVE_LEVEL"
+        },
+        {
+          "name": "_levelNumber",
+          "type": "int"
+        },
+        {
+          "name": "_noteDataFileName",
+          "type": "string"
+        },
+        {
+          "name": "_fullCombo",
+          "type": "int"
+        },
+        {
+          "name": "_beforeClimaxNotesCount",
+          "type": "int"
+        },
+        {
+          "name": "_scoreCoeff",
+          "type": "float"
+        },
+        {
+          "name": "_climaxScoreCoeff",
+          "type": "float"
+        },
+        {
+          "name": "_voltageIncreaseCoeff",
+          "type": "float"
+        },
+        {
+          "name": "_voltageDecreaseCoeff",
+          "type": "float"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "music_shop_price": {
+      "class": "Shock.MusicShopPriceMst",
+      "fields": [
+        {
+          "name": "_masterMusicId",
+          "type": "uint"
+        },
+        {
+          "name": "_consumeType",
+          "type": "Shock.CONSUME_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "navigation": {
+      "class": "Shock.NavigationMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_masterScenarioId",
+          "type": "uint"
+        },
+        {
+          "name": "_dialogTitle",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "navigation_condition": {
+      "class": "Shock.NavigationConditionMst",
+      "fields": [
+        {
+          "name": "_masterNavigationId",
+          "type": "string"
+        },
+        {
+          "name": "_conditionType",
+          "type": "Shock.NAVIGATION_CONDITION_TYPE"
+        },
+        {
+          "name": "_conditionValue",
+          "type": "uint"
+        },
+        {
+          "name": "_conditionNumber",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "navigation_dialog_page": {
+      "class": "Shock.NavigationDialogPageMst",
+      "fields": [
+        {
+          "name": "_masterNavigationId",
+          "type": "string"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_message",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "new_skill": {
+      "class": "Shock.NewSkillMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_detailText",
+          "type": "string"
+        },
+        {
+          "name": "_trigger",
+          "type": "Shock.SKILL_MAIN_TRIGGER_TYPE"
+        },
+        {
+          "name": "_triggerValue",
+          "type": "uint[]"
+        },
+        {
+          "name": "_probability",
+          "type": "uint[]"
+        },
+        {
+          "name": "_effectiveMilliSecs",
+          "type": "uint[]"
+        },
+        {
+          "name": "_subTarget",
+          "type": "Shock.SKILL_SUB_TARGET_TYPE"
+        },
+        {
+          "name": "_targetGroupId",
+          "type": "uint"
+        },
+        {
+          "name": "_targetSchoolGrade",
+          "type": "uint"
+        },
+        {
+          "name": "_effectType",
+          "type": "Shock.SKILL_MAIN_EFFECT_TYPE"
+        },
+        {
+          "name": "_effectiveValues",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_birthday": {
+      "class": "Shock.NoticeBirthdayMst",
+      "fields": [
+        {
+          "name": "_masterNoticeGeneralId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterCharacterId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_card": {
+      "class": "Shock.NoticeCardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "int"
+        },
+        {
+          "name": "_cardId",
+          "type": "uint"
+        },
+        {
+          "name": "_introductionText",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_card_image": {
+      "class": "Shock.NoticeCardImageMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_imageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterLotteryId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_gacha": {
+      "class": "Shock.NoticeGachaMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_textSpriteName",
+          "type": "string"
+        },
+        {
+          "name": "_efTextSpriteName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_general": {
+      "class": "Shock.NoticeGeneralMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_phase",
+          "type": "Shock.LOGIN_NOTICE_PHASE"
+        },
+        {
+          "name": "_navigationTitle",
+          "type": "string"
+        },
+        {
+          "name": "_masterNoticeRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_displayableTime",
+          "type": "uint"
+        },
+        {
+          "name": "_displayableExpireTime",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_general_navigation": {
+      "class": "Shock.NoticeGeneralNavigationMst",
+      "fields": [
+        {
+          "name": "_masterNoticeGeneralId",
+          "type": "uint"
+        },
+        {
+          "name": "_order",
+          "type": "uint"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_message",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_general_sequence": {
+      "class": "Shock.NoticeGeneralSequenceMst",
+      "fields": [
+        {
+          "name": "_masterNoticeGeneralId",
+          "type": "uint"
+        },
+        {
+          "name": "_order",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.LOGIN_NOTICE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "string"
+        },
+        {
+          "name": "_masterBgmId",
+          "type": "uint"
+        },
+        {
+          "name": "_endTransition",
+          "type": "Shock.LOGIN_NOTICE_TRANSITION"
+        },
+        {
+          "name": "_skippableFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_music": {
+      "class": "Shock.NoticeMusicMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "int"
+        },
+        {
+          "name": "_masterMusicId",
+          "type": "uint"
+        },
+        {
+          "name": "_stopLoadingImageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "notice_music_image": {
+      "class": "Shock.NoticeMusicImageMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_startLoadingImageName1",
+          "type": "string"
+        },
+        {
+          "name": "_startLoadingImageName2",
+          "type": "string"
+        },
+        {
+          "name": "_startLoadingImageName3",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "part_voice_key": {
+      "class": "Shock.PartVoiceKeyMst",
+      "fields": [
+        {
+          "name": "_key",
+          "type": "string"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_group",
+          "type": "uint"
+        },
+        {
+          "name": "_comment",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "preset_background": {
+      "class": "Shock.PresetBackgroundMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.PRESET_BACKGROUND_TYPE"
+        },
+        {
+          "name": "_filename",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "preset_foreground": {
+      "class": "Shock.PresetForegroundMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.PRESET_FOREGROUND_TYPE"
+        },
+        {
+          "name": "_filename",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "release_label": {
+      "class": "Shock.ReleaseLabelMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_description",
+          "type": "string"
+        },
+        {
+          "name": "_releaseStatus",
+          "type": "uint"
+        },
+        {
+          "name": "_scope",
+          "type": "string"
+        },
+        {
+          "name": "_openedAt",
+          "type": "string"
+        },
+        {
+          "name": "_closedAt",
+          "type": "string"
+        }
+      ]
+    },
+    "resource_download": {
+      "class": "Shock.ResourceDownloadMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_imageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "result_code": {
+      "class": "Shock.ResultCodeMst",
+      "fields": [
+        {
+          "name": "_resultCode",
+          "type": "Shock.RESULT_CODE"
+        },
+        {
+          "name": "_masterDialogId",
+          "type": "string"
+        },
+        {
+          "name": "_resetFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_silentFlag",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "rhythm_icon": {
+      "class": "Shock.RhythmIconMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_atlasName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "scene_title": {
+      "class": "Shock.SceneTitleMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_mainTitle",
+          "type": "string"
+        },
+        {
+          "name": "_mainMasterNavigationId",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "se": {
+      "class": "Shock.SeMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_cueSheetName",
+          "type": "string"
+        },
+        {
+          "name": "_cueName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "shop_item": {
+      "class": "Shock.ShopItemMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_masterBillingShopId",
+          "type": "uint"
+        },
+        {
+          "name": "_consumeType",
+          "type": "Shock.CONSUME_TYPE"
+        },
+        {
+          "name": "_price",
+          "type": "uint"
+        },
+        {
+          "name": "_masterShopRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_buyLimit",
+          "type": "uint"
+        },
+        {
+          "name": "_startdashTime",
+          "type": "uint"
+        },
+        {
+          "name": "_startdashExpireTime",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_timeResetType",
+          "type": "Shock.TIME_RESET_TYPE"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "shop_reward": {
+      "class": "Shock.ShopRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_isBonus",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "skill_center": {
+      "class": "Shock.SkillCenterMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_detailText",
+          "type": "string"
+        },
+        {
+          "name": "_effects",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "skill_center_effect": {
+      "class": "Shock.SkillCenterEffectMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_targetSchoolGrade",
+          "type": "uint"
+        },
+        {
+          "name": "_targetGroupId",
+          "type": "uint"
+        },
+        {
+          "name": "_targetCardType",
+          "type": "Shock.SKILL_CARD_TYPE"
+        },
+        {
+          "name": "_calcType",
+          "type": "uint"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_targetParam",
+          "type": "Shock.STATUS_UP_TYPE"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "sound_key": {
+      "class": "Shock.SoundKeyMst",
+      "fields": [
+        {
+          "name": "_key",
+          "type": "string"
+        },
+        {
+          "name": "_soundType",
+          "type": "Shock.SOUND_TYPE"
+        },
+        {
+          "name": "_masterSoundId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterSoundNum",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "stamp": {
+      "class": "Shock.StampMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_bandCategory",
+          "type": "Shock.BAND_CATEGORY"
+        },
+        {
+          "name": "_isRare",
+          "type": "uint"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "star_event_card_bonus": {
+      "class": "Shock.StarEventCardBonusMst",
+      "fields": [
+        {
+          "name": "_masterEventId",
+          "type": "uint"
+        },
+        {
+          "name": "_targetId",
+          "type": "uint"
+        },
+        {
+          "name": "_pointBonusRatioList",
+          "type": "int[]"
+        },
+        {
+          "name": "_eventBonusAmountList",
+          "type": "int[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "star_event_level": {
+      "class": "Shock.StarEventLevelMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "uint"
+        },
+        {
+          "name": "_liveScoreCoefficient",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "star_event_level_reward": {
+      "class": "Shock.StarEventLevelRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "star_event_level_reward_setting": {
+      "class": "Shock.StarEventLevelRewardSettingMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "uint"
+        },
+        {
+          "name": "_isLoop",
+          "type": "uint"
+        },
+        {
+          "name": "_starId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterStarEventLevelRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "star_event_setting": {
+      "class": "Shock.StarEventSettingMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_starId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "story": {
+      "class": "Shock.StoryMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.STORY_TYPE"
+        },
+        {
+          "name": "_masterGroupId",
+          "type": "uint"
+        },
+        {
+          "name": "_seasonNumber",
+          "type": "uint"
+        },
+        {
+          "name": "_chapterNumber",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_summary",
+          "type": "string"
+        },
+        {
+          "name": "_imageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "story_part": {
+      "class": "Shock.StoryPartMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterStoryId",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_masterStoryRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterMusicId",
+          "type": "uint"
+        },
+        {
+          "name": "_scenarioId",
+          "type": "uint"
+        },
+        {
+          "name": "_movieIds",
+          "type": "uint[]"
+        },
+        {
+          "name": "_imageName",
+          "type": "string"
+        },
+        {
+          "name": "_stampCharacterId",
+          "type": "uint"
+        },
+        {
+          "name": "_storeReviewSetting",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "story_release": {
+      "class": "Shock.StoryReleaseMst",
+      "fields": [
+        {
+          "name": "_masterStoryPartId",
+          "type": "uint"
+        },
+        {
+          "name": "_userRank",
+          "type": "int"
+        },
+        {
+          "name": "_groupLevel",
+          "type": "int"
+        },
+        {
+          "name": "_masterLiveId",
+          "type": "uint"
+        },
+        {
+          "name": "_liveScore",
+          "type": "uint"
+        },
+        {
+          "name": "_masterMissionId",
+          "type": "uint"
+        },
+        {
+          "name": "_eventPoint",
+          "type": "int"
+        },
+        {
+          "name": "_openedAtAfterEvent",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "story_reward": {
+      "class": "Shock.StoryRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "subscription_image": {
+      "class": "Shock.SubscriptionImageMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_masterBillingProductId",
+          "type": "string"
+        },
+        {
+          "name": "_subscriptionImageName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "sys_voice_key": {
+      "class": "Shock.SysVoiceKeyMst",
+      "fields": [
+        {
+          "name": "_key",
+          "type": "string"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_group",
+          "type": "uint"
+        },
+        {
+          "name": "_comment",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "text": {
+      "class": "Shock.TextMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_textJa",
+          "type": "string"
+        },
+        {
+          "name": "_textEn",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "title": {
+      "class": "Shock.TitleMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_category",
+          "type": "Shock.TITLE_CATEGORY"
+        },
+        {
+          "name": "_detailText",
+          "type": "string"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_spriteName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "title_screen": {
+      "class": "Shock.TitleScreenMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_prefabName",
+          "type": "string"
+        },
+        {
+          "name": "_masterBgmId",
+          "type": "uint"
+        },
+        {
+          "name": "_priority",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "url": {
+      "class": "Shock.UrlMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_url",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "user_rank": {
+      "class": "Shock.UserRankMst",
+      "fields": [
+        {
+          "name": "_rank",
+          "type": "int"
+        },
+        {
+          "name": "_exp",
+          "type": "int"
+        },
+        {
+          "name": "_masterUserRankRewardId",
+          "type": "uint"
+        },
+        {
+          "name": "_maxFriend",
+          "type": "uint"
+        },
+        {
+          "name": "_maxLp",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "user_rank_reward": {
+      "class": "Shock.UserRankRewardMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_number",
+          "type": "uint"
+        },
+        {
+          "name": "_type",
+          "type": "Shock.REWARD_TYPE"
+        },
+        {
+          "name": "_giveType",
+          "type": "Shock.GIVE_TYPE"
+        },
+        {
+          "name": "_value",
+          "type": "uint"
+        },
+        {
+          "name": "_level",
+          "type": "int"
+        },
+        {
+          "name": "_amount",
+          "type": "int"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "voice": {
+      "class": "Shock.VoiceMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_num",
+          "type": "uint"
+        },
+        {
+          "name": "_cueSheetName",
+          "type": "string"
+        },
+        {
+          "name": "_cueName",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "voice_key": {
+      "class": "Shock.VoiceKeyMst",
+      "fields": [
+        {
+          "name": "_key",
+          "type": "string"
+        },
+        {
+          "name": "_masterVoiceId",
+          "type": "uint"
+        },
+        {
+          "name": "_masterVoiceNum",
+          "type": "uint"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "wipe": {
+      "class": "Shock.WipeMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_prefabPath",
+          "type": "string"
+        },
+        {
+          "name": "_readySeKey",
+          "type": "string"
+        },
+        {
+          "name": "_wipeSeKey",
+          "type": "string"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    },
+    "wipe_play_list": {
+      "class": "Shock.WipePlayListMst",
+      "fields": [
+        {
+          "name": "_id",
+          "type": "uint"
+        },
+        {
+          "name": "_wipeIdList",
+          "type": "uint[]"
+        },
+        {
+          "name": "_masterReleaseLabelId",
+          "type": "uint"
+        }
+      ]
+    }
+  }
+}

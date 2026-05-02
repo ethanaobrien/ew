@@ -1,7 +1,6 @@
-use actix_web::{HttpResponse, HttpRequest, web, Responder};
-use include_dir::{include_dir, Dir};
+use actix_web::{web, HttpRequest, HttpResponse, Responder};
 
-static MASTERDATA: Dir<'_> = include_dir!("src/router/masterdata/csv/");
+use crate::router::databases::csv::{self, Region};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -11,13 +10,19 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 }
 
 async fn mst(req: HttpRequest) -> impl Responder {
-    let mst = req.match_info().get("MST").unwrap();
-    if let Some(file) = MASTERDATA.get_file(format!("{mst}.csv")) {
-        let body = file.contents();
-        return HttpResponse::Ok()
+    let mst_name = req.match_info().get("MST").unwrap();
+    let lang = req.match_info().get("LANG").unwrap_or("JP");
+
+    let region = match lang.to_ascii_uppercase().as_str() {
+        "JP" => Region::Jp,
+        _    => Region::En, // idk
+    };
+
+    match csv::csv_bytes(region, mst_name) {
+        Some(body) => HttpResponse::Ok()
             .insert_header(("content-type", "text/csv; charset=utf-8"))
             .insert_header(("content-length", body.len()))
-            .body(body);
+            .body(body),
+        None => HttpResponse::NotFound().finish(),
     }
-    HttpResponse::NotFound().finish()
 }

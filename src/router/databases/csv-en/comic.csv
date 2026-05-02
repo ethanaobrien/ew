@@ -1,0 +1,41 @@
+﻿_id,_masterGroupId,_number,_name,_imageName,_masterReleaseLabelId
+100001,100,1,"""o""",comic_01_0001,1
+100002,100,2,Dark-Proof Gear,comic_01_0002,1
+100003,100,3,Work Socks,comic_01_0003,1
+100004,100,4,Combating the Jitters,comic_01_0004,1
+100005,100,5,Take Care of Your Health,comic_01_0005,1
+100006,100,6,Perm Time?,comic_01_0006,1
+100007,100,7,Secret Combo,comic_01_0007,1
+100008,100,8,Certified Rice-Grading Expert,comic_01_0008,1
+100009,100,9,A New National Holiday,comic_01_0009,1
+200001,200,1,Are You Glowing?,comic_02_0001,1
+200002,200,2,Riko's Secret,comic_02_0002,1
+200003,200,3,Kanan's Training Regimen,comic_02_0003,1
+200004,200,4,My Collection Just Keeps Growing!,comic_02_0004,1
+200005,200,5,"Short Sleeves, Even in Winter!",comic_02_0005,1
+200006,200,6,A Fallen Angel's Lunchtime,comic_02_0006,1
+200007,200,7,Enjoy This Purr-Fect Meal!,comic_02_0007,1
+200008,200,8,"That'll Be X00,000 Yen",comic_02_0008,1
+200009,200,9,Sleepy Time Merch?,comic_02_0009,1
+300001,300,1,Complimenting Everything and Anything,comic_03_0001,1
+300002,300,2,Marketing Kasumin,comic_03_0002,1
+300003,300,3,Method Acting,comic_03_0003,1
+300004,300,4,Waiting for Pickup,comic_03_0004,1
+300005,300,5,Ai's Wealth of Knowledge,comic_03_0005,1
+300006,300,6,Always Ready for a Nap,comic_03_0006,1
+300007,300,7,Apple Pie with a Side of Dark Matter,comic_03_0007,1
+300008,300,8,Law of Nature,comic_03_0008,1
+300009,300,9,Requesting Budget Revision,comic_03_0009,1
+300010,300,10,Mistakes Are Just Happy Accidents,comic_03_0010,1
+300011,300,11,Giver and Receiver,comic_03_0011,1
+300012,300,12,Lanzhu's Day Off,comic_03_0012,1
+300013,300,13,I Can't Just Choose One!,comic_03_0013,1
+400001,400,1,Two Sides of the Same Coin,comic_04_0001,1
+400002,400,2,Lucky Charm,comic_04_0002,1
+400003,400,3,Cute Is Blind,comic_04_0003,1
+400004,400,4,Is This Your Sumire?,comic_04_0004,1
+400005,400,5,Warm and Toasty,comic_04_0005,1
+400006,400,6,Sprouting Wings,comic_04_0006,1
+400007,400,7,Saved to the Cloud,comic_04_0007,1
+400008,400,8,The Seven Wonders of the Science Club,comic_04_0008,1
+400009,400,9,Another Long Day of Work...,comic_04_0009,1
