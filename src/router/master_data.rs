@@ -4,8 +4,12 @@ use crate::router::databases::csv::{self, Region};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("/masterdata/{platform}/{LANG}")
-            .route("/{MST}", web::get().to(mst))
+        web::scope("/masterdata")
+            .route("/supported", web::get().to(supported))
+            .service(
+                web::scope("/{platform}/{LANG}")
+                    .route("/{MST}", web::get().to(mst))
+            )
     );
 }
 
@@ -25,4 +29,8 @@ async fn mst(req: HttpRequest) -> impl Responder {
             .body(body),
         None => HttpResponse::NotFound().finish(),
     }
+}
+
+async fn supported() -> impl Responder {
+    "SUPPORTED"
 }
