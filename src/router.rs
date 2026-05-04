@@ -27,7 +27,7 @@ pub mod items;
 pub mod databases;
 pub mod location;
 pub mod event_ranking;
-pub mod file_lists;
+pub mod asset_lists;
 mod master_data;
 
 use actix_web::{
@@ -231,7 +231,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
 pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.service(
         actix_web::web::scope("/api")
-            .configure(file_lists::routes)
+            .configure(asset_lists::routes)
             .configure(master_data::routes)
     );
 }

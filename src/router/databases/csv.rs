@@ -33,6 +33,23 @@ fn dir_for(region: Region) -> &'static Dir<'static> {
     }
 }
 
+pub fn get_all(region: Region) -> JsonValue {
+    let mut rv = object!{};
+
+    for file in dir_for(region).files() {
+        let table_name = file.path()
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .unwrap_or_default();
+
+        if !table_name.is_empty() {
+            rv[table_name] = file.contents_utf8().unwrap_or_default().into();
+        }
+    }
+
+    rv
+}
+
 pub fn csv_bytes(region: Region, name: &str) -> Option<&'static [u8]> {
     dir_for(region)
         .get_file(format!("{name}.csv"))
