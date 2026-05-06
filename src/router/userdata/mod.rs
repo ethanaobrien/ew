@@ -567,7 +567,7 @@ pub fn purge_accounts() -> usize {
     for uid in dead_uids.members() {
         let user_id = uid.as_i64().unwrap();
         println!("Removing dead UID: {}", user_id);
-        crate::router::gree::delete_uuid(user_id);
+        crate::database::gree::delete_uuid(user_id);
         DATABASE.lock_and_exec("DELETE FROM userdata WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM userhome WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM missions WHERE user_id=?1", params!(user_id));
@@ -583,6 +583,6 @@ pub fn purge_accounts() -> usize {
         DATABASE.lock_and_exec("DELETE FROM migration WHERE user_id=?1", params!(user_id));
     }
     DATABASE.lock_and_exec("VACUUM", params!());
-    crate::router::gree::vacuum_database();
+    crate::database::gree::setup();
     dead_uids.len()
 }

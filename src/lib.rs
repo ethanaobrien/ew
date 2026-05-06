@@ -4,6 +4,7 @@ mod router;
 mod encryption;
 mod sql;
 pub mod runtime;
+pub mod database;
 #[macro_use]
 mod macros;
 

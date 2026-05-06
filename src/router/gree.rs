@@ -1,170 +1,132 @@
-use actix_web::{HttpResponse, HttpRequest, http::header::{HeaderValue, ContentType, HeaderMap}};
+use actix_web::{HttpRequest, http::header::HeaderValue, web, Responder, HttpMessage};
 use base64::{Engine as _, engine::general_purpose};
 use std::collections::HashMap;
+use actix_web::dev::{ServiceResponse, Service};
+use actix_web::http::header;
+use actix_web::http::header::HeaderName;
 use sha1::Sha1;
-use substring::Substring;
 use jzon::{object, JsonValue};
 use hmac::{Hmac, Mac, KeyInit};
-use rusqlite::params;
-use lazy_static::lazy_static;
-
-use sha1::Digest;
-use rsa::{RsaPublicKey, Pkcs1v15Sign};
-use rsa::pkcs8::DecodePublicKey;
 
 use crate::router::global;
 use crate::router::userdata;
-use crate::encryption;
-use crate::sql::SQLite;
 
-lazy_static! {
-    static ref DATABASE: SQLite = SQLite::new("gree.db", setup_tables);
-}
+use crate::database::gree::*;
 
-fn setup_tables(conn: &rusqlite::Connection) {
-    conn.execute_batch("CREATE TABLE IF NOT EXISTS users (
-        cert     TEXT NOT NULL,
-        uuid     TEXT NOT NULL,
-        user_id  BIGINT NOT NULL PRIMARY KEY
-    );").unwrap();
-}
+const APP_ID: &str = "232610769078541";
+const SRC_APP_ID: &str = "100900301";
+const HMAC_SECRET_HEX: &str = "6438663638653238346566646636306262616563326432323563306366643432";
 
-fn update_cert(uid: i64, cert: &str) {
-    if DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).is_err() {
-        let token = userdata::get_login_token(uid);
-        if token != String::new() {
-            DATABASE.lock_and_exec(
-                "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
-                params!(cert, token, uid)
-            );
-            return;
-        }
-    }
-    DATABASE.lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
-}
-fn create_acc(cert: &str) -> String {
-    let uuid = global::create_token();
-    let user = userdata::get_acc(&uuid);
-    let user_id = user["user"]["id"].as_i64().unwrap();
-    DATABASE.lock_and_exec(
-        "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3)",
-        params!(cert, uuid, user_id)
+struct RequireGreeAuth;
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("")
+            .wrap_fn(|req, srv| {
+                let fut = srv.call(req);
+                async move {
+                    let mut res = fut.await?;
+                    apply_headers(&mut res);
+                    Ok(res)
+                }
+            })
+            .service(
+                web::scope("/auth")
+                    .route("/x_uid", web::get().to(uid))
+                    .route("/initialize", web::post().to(initialize))
+                    .route("/authorize", web::post().to(authorize))
+            )
+            .service(
+                web::scope("/payment")
+                    .route("/productlist", web::get().to(payment))
+                    .route("/balance", web::get().to(balance))
+                    .route("/subscription/productlist", web::get().to(payment))
+                    .route("/ticket/status", web::get().to(payment_ticket))
+            )
+            .service(
+                web::scope("/moderate")
+                    .route("/keywordlist", web::get().to(moderate_keyword))
+                    .route("/filtering/commit", web::post().to(moderate_commit))
+            )
+            .service(
+                web::scope("/migration")
+                    .route("", web::post().to(migration))
+                    .route("/code", web::get().to(migration_code))
+                    .route("/code/verify", web::post().to(migration_verify))
+                    .route("/password/register", web::post().to(migration_password_register))
+            )
+            .default_service(web::route().to(not_found))
     );
-    
-    uuid
 }
 
-fn verify_signature(signature: &[u8], message: &[u8], public_key: &str) -> bool {
-    let pem = pem::parse(public_key).unwrap();
-    let public_key = RsaPublicKey::from_public_key_der(&pem.contents()).unwrap();
-    let digest = Sha1::digest(message);
+fn apply_headers(res: &mut ServiceResponse) {
+    let gree_auth = res.request().extensions().get::<RequireGreeAuth>().is_some();
+    let req = res.request().clone();
+    let headers = res.headers_mut();
 
-    public_key
-        .verify(Pkcs1v15Sign::new::<Sha1>(), &digest, signature)
-        .is_ok()
-}
+    headers.insert(header::CONTENT_TYPE, "application/json".parse().unwrap());
+    headers.insert(header::EXPIRES, "-1".parse().unwrap());
+    headers.insert(header::PRAGMA, "no-cache".parse().unwrap());
+    headers.insert(
+        header::CACHE_CONTROL,
+        "must-revalidate, no-cache, no-store, private".parse().unwrap()
+    );
+    headers.insert(header::VARY, "Authorization,Accept-Encoding".parse().unwrap());
 
-pub fn delete_uuid(user_id: i64) {
-    DATABASE.lock_and_exec("DELETE FROM users WHERE user_id=?1", params!(user_id));
-}
-
-pub fn vacuum_database() {
-    DATABASE.lock_and_exec("VACUUM", params!());
-}
-
-pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
-    let body = encryption::decrypt_packet(body).unwrap();
-    let blank_header = HeaderValue::from_static("");
-    let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let uid = headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let version = headers.get("aoharu-client-version").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let timestamp = headers.get("aoharu-timestamp").unwrap_or(&blank_header).to_str().unwrap_or("");
-    if uid.is_empty() || login.is_empty() || version.is_empty() || timestamp.is_empty() {
-        return String::new();
-    }
-    
-    let cert = DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).unwrap();
-    
-    let data = format!("{}{}{}{}{}", uid, "sk1bdzb310n0s9tl", version, timestamp, body);
-    let encoded = general_purpose::STANDARD.encode(data.as_bytes());
-    
-    let decoded = general_purpose::STANDARD.decode(login).unwrap_or_default();
-    
-    if verify_signature(&decoded, encoded.as_bytes(), &cert) {
-        DATABASE.lock_and_select("SELECT uuid FROM users WHERE user_id=?1;", params!(uid)).unwrap()
-    } else {
-        String::new()
+    if gree_auth {
+        let auth_str = gree_authorize(&req);
+        headers.insert(HeaderName::from_static("x-gree-authorization"), auth_str.parse().unwrap());
     }
 }
 
-fn rot13(input: &str) -> String {
-    let mut result = String::new();
-    for c in input.chars() {
-        let shifted = match c {
-            'A'..='Z' => ((c as u8 - b'A' + 13) % 26 + b'A') as char,
-            'a'..='z' => ((c as u8 - b'a' + 13) % 26 + b'a') as char,
-            _ => c,
-        };
-        result.push(shifted);
-    }
-    result
-}
-fn decrypt_transfer_password(password: &str) -> String {
-    let reversed = password.chars().rev().collect::<String>();
-    let rot = rot13(&reversed);
-    let decoded = general_purpose::STANDARD.decode(rot).unwrap_or_default();
-    
-    String::from_utf8_lossy(&decoded).to_string()
+
+fn get_uid(req: &HttpRequest) -> String {
+    req.headers()
+        .get("Authorization")
+        .and_then(|h| h.to_str().ok())
+        .and_then(|auth| auth.split(",xoauth_requestor_id=\"").nth(1))
+        .and_then(|s| s.split('"').next())
+        .unwrap_or("")
+        .to_string()
 }
 
-fn send(req: HttpRequest, resp: JsonValue) -> HttpResponse {
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .insert_header(("Vary", "Authorization,Accept-Encoding"))
-        .insert_header(("X-GREE-Authorization", gree_authorize(&req)))
-        .body(jzon::stringify(resp))
+fn send(req: HttpRequest, resp: JsonValue) -> impl Responder {
+    req.extensions_mut().insert(RequireGreeAuth);
+    jzon::stringify(resp)
 }
 
-pub fn not_found() -> HttpResponse {
+async fn not_found() -> impl Responder {
     let resp = object!{
         code: 10001,
         message: "Not Found",
         result: "NG"
     };
-    HttpResponse::NotFound()
-        .insert_header(ContentType::json())
-        .insert_header(("Expires", "-1"))
-        .insert_header(("Pragma", "no-cache"))
-        .insert_header(("Cache-Control", "must-revalidate, no-cache, no-store, private"))
-        .body(jzon::stringify(resp))
+    jzon::stringify(resp)
 }
 
-pub fn initialize(req: HttpRequest, body: String) -> HttpResponse {
+async fn initialize(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
     let token = create_acc(&body["token"].to_string());
-    
-    let app_id = "232610769078541";
+
+    let app_id = APP_ID;
     let resp = object!{
         result: "OK",
         app_id: app_id,
         uuid: token
     };
-    
+
     send(req, resp)
 }
 
-pub fn authorize(req: HttpRequest, _body: String) -> HttpResponse {
+async fn authorize(req: HttpRequest, _body: String) -> impl Responder {
     let resp = object!{
         result: "OK"
     };
-    
+
     send(req, resp)
 }
 
-pub fn moderate_keyword(req: HttpRequest) -> HttpResponse {
+async fn moderate_keyword(req: HttpRequest) -> impl Responder {
     let resp = object!{
         result: "OK",
         entry: {
@@ -172,41 +134,32 @@ pub fn moderate_keyword(req: HttpRequest) -> HttpResponse {
             keywords: [{"id":"1","type":"0","keyword":"oink","rank":"0"}]
         }
     };
-    
+
     send(req, resp)
 }
-pub fn moderate_commit(req: HttpRequest, _body: String) -> HttpResponse {
+async fn moderate_commit(req: HttpRequest, _body: String) -> impl Responder {
     let resp = object!{
         result: "OK"
     };
-    
+
     send(req, resp)
 }
 
-pub fn uid(req: HttpRequest) -> HttpResponse {
-    let mut uid = String::new();
-    let blank_header = HeaderValue::from_static("");
-    let auth_header = req.headers().get("Authorization").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
-    if let Some(uid_data2) = uid_data.get(1) {
-        let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.first() {
-            uid = uid_str.to_string();
-        }
-    }
-    
+async fn uid(req: HttpRequest) -> impl Responder {
+    let uid = get_uid(&req);
+
     let user = userdata::get_acc(&uid);
-    
+
     let resp = object!{
         result: "OK",
         x_uid: user["user"]["id"].to_string(),
-        x_app_id: "100900301"
+        x_app_id: SRC_APP_ID
     };
-    
+
     send(req, resp)
 }
 
-pub fn payment(req: HttpRequest) -> HttpResponse {
+async fn payment(req: HttpRequest) -> impl Responder {
     let resp = object!{
         result: "OK",
         entry: {
@@ -214,24 +167,24 @@ pub fn payment(req: HttpRequest) -> HttpResponse {
             welcome: "0"
         }
     };
-    
+
     send(req, resp)
 }
-pub fn payment_ticket(req: HttpRequest) -> HttpResponse {
+async fn payment_ticket(req: HttpRequest) -> impl Responder {
     let resp = object!{
         result: "OK",
         entry: []
     };
-    
+
     send(req, resp)
 }
 
-pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
+async fn migration_verify(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
     let password = decrypt_transfer_password(&body["migration_password"].to_string());
-    
+
     let user = userdata::user::migration::get_acc_transfer(&body["migration_code"].to_string(), &password);
-    
+
     let resp = if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
         object!{
             result: "ERR",
@@ -249,13 +202,13 @@ pub fn migration_verify(req: HttpRequest, body: String) -> HttpResponse {
             balance_total_gem: data_user["gem"]["total"].to_string()
         }
     };
-    
+
     send(req, resp)
 }
 
-pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
+async fn migration(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
-    
+
     let user = userdata::get_acc(&body["src_uuid"].to_string());
     //clear old token
     if !body["dst_uuid"].is_null() {
@@ -263,28 +216,19 @@ pub fn migration(req: HttpRequest, body: String) -> HttpResponse {
         update_cert(user2["user"]["id"].as_i64().unwrap(), "none");
     }
     update_cert(user["user"]["id"].as_i64().unwrap(), &body["token"].to_string());
-    
+
     let resp = object!{
         result: "OK"
     };
-    
+
     send(req, resp)
 }
 
-pub fn balance(req: HttpRequest) -> HttpResponse {
-    let mut uid = String::new();
-    let blank_header = HeaderValue::from_static("");
-    let auth_header = req.headers().get("Authorization").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
-    if let Some(uid_data2) = uid_data.get(1) {
-        let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.first() {
-            uid = uid_str.to_string();
-        }
-    }
-    
+async fn balance(req: HttpRequest) -> impl Responder {
+    let uid = get_uid(&req);
+
     let user = userdata::get_acc(&uid);
-    
+
     let resp = object!{
         result: "OK",
         entry: {
@@ -293,21 +237,12 @@ pub fn balance(req: HttpRequest) -> HttpResponse {
             balance_total_gem: user["gem"]["total"].to_string()
         }
     };
-    
+
     send(req, resp)
 }
 
-pub fn migration_code(req: HttpRequest) -> HttpResponse {
-    let mut uid = String::new();
-    let blank_header = HeaderValue::from_static("");
-    let auth_header = req.headers().get("Authorization").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
-    if let Some(uid_data2) = uid_data.get(1) {
-        let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.first() {
-            uid = uid_str.to_string();
-        }
-    }
+async fn migration_code(req: HttpRequest) -> impl Responder {
+    let uid = get_uid(&req);
 
     let user = userdata::get_acc(&uid);
 
@@ -315,25 +250,14 @@ pub fn migration_code(req: HttpRequest) -> HttpResponse {
         result: "OK",
         migration_code: userdata::user::migration::get_acc_token(user["user"]["id"].as_i64().unwrap())
     };
-    
+
     send(req, resp)
 }
 
-pub fn migration_password_register(req: HttpRequest, body: String) -> HttpResponse {
+async fn migration_password_register(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
-    let mut uid = String::new();
-    let blank_header = HeaderValue::from_static("");
-    let auth_header = req.headers().get("Authorization").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let uid_data: Vec<&str> = auth_header.split(",xoauth_requestor_id=\"").collect();
-    if let Some(uid_data2) = uid_data.get(1) {
-        let uid_data2: Vec<&str> = uid_data2.split('"').collect();
-        if let Some(uid_str) = uid_data2.first() {
-            uid = uid_str.to_string();
-        }
-    }
-
+    let uid = get_uid(&req);
     let user = userdata::get_acc(&uid);
-
     let pass = decrypt_transfer_password(&body["migration_password"].to_string());
     
     userdata::user::migration::save_acc_transfer(user["user"]["id"].as_i64().unwrap(), &pass);
@@ -361,7 +285,7 @@ fn gree_authorize(req: &HttpRequest) -> String {
     if auth_header.is_empty() {
         return String::new();
     }
-    let auth_header = auth_header.substring(6, auth_header.len());
+    let auth_header = auth_header.get(6..).unwrap_or("");
 
     let auth_list: Vec<&str> = auth_header.split(',').collect();
     let mut header_data = HashMap::new();
@@ -393,7 +317,7 @@ fn gree_authorize(req: &HttpRequest) -> String {
                                     method,
                                     timestamp,
                                     extra)));
-    let mut hasher = HmacSha1::new_from_slice(&hex::decode("6438663638653238346566646636306262616563326432323563306366643432").unwrap()).unwrap();
+    let mut hasher = HmacSha1::new_from_slice(&hex::decode(HMAC_SECRET_HEX).unwrap()).unwrap();
     hasher.update(validate_data.as_bytes());
     let signature = general_purpose::STANDARD.encode(hasher.finalize().into_bytes());
 

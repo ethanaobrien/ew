@@ -182,21 +182,8 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             return webui::main(req);
         }
     }
-    if req.path().starts_with("/v1.0") && headers.get("Authorization").is_none() {
-        if args.hidden {
-            return gree::not_found();
-        } else {
-            return webui::main(req);
-        }
-    }
     if req.method() == "POST" {
         match req.path() {
-            "/v1.0/auth/initialize" => gree::initialize(req, body),
-            "/v1.0/moderate/filtering/commit" => gree::moderate_commit(req, body),
-            "/v1.0/auth/authorize" => gree::authorize(req, body),
-            "/v1.0/migration/code/verify" => gree::migration_verify(req, body),
-            "/v1.0/migration/password/register" => gree::migration_password_register(req, body),
-            "/v1.0/migration" => gree::migration(req, body),
             "/api/webui/login" => webui::login(req, body),
             "/api/webui/startLoginbonus" => webui::start_loginbonus(req, body),
             "/api/webui/import" => webui::import(req, body),
@@ -206,13 +193,6 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
         }
     } else {
         match req.path() {
-            "/v1.0/auth/x_uid" => gree::uid(req),
-            "/v1.0/payment/productlist" => gree::payment(req),
-            "/v1.0/payment/subscription/productlist" => gree::payment(req),
-            "/v1.0/payment/ticket/status" => gree::payment_ticket(req),
-            "/v1.0/moderate/keywordlist" => gree::moderate_keyword(req),
-            "/v1.0/migration/code" => gree::migration_code(req),
-            "/v1.0/payment/balance" => gree::balance(req),
             "/web/announcement" => web::announcement(req),
             "/api/webui/userInfo" => webui::user(req),
             "/live_clear_rate.html" => clear_rate::clearrate_html(req).await,
@@ -233,5 +213,9 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
         actix_web::web::scope("/api")
             .configure(asset_lists::routes)
             .configure(master_data::routes)
+    );
+    cfg.service(
+        actix_web::web::scope("/v1.0")
+            .configure(gree::routes)
     );
 }

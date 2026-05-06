@@ -15,7 +15,6 @@ hmac = "0.13.0"
 md5 = "0.8.0"
 urlencoding = "2.1.3"
 sha1 = "0.11.0"
-substring = "1.4.5"
 uuid = { version = "1.21.0", features = ["v7"] }
 # This needs to be on 0.10.* to be able to bump other crates. This is probably fine
 rsa = { version = "0.10.0-rc.18", features = ["sha1"] }
