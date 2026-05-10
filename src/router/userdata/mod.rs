@@ -13,7 +13,10 @@ use crate::include_file;
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("userdata.db", setup_tables);
     static ref NEW_USER: JsonValue = {
-        jzon::parse(&include_file!("src/router/userdata/new_user.json")).unwrap()
+        let raw = crate::runtime::read_masterdata_file("userdata/new_user.json")
+            .and_then(|b| String::from_utf8(b).ok())
+            .unwrap_or_else(|| include_file!("src/router/userdata/new_user.json"));
+        jzon::parse(&raw).unwrap()
     };
 }
 
