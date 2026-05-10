@@ -13,15 +13,30 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 
 async fn get(_req: HttpRequest) -> impl Responder {
     let mut response = object!{};
-    response["Bundle"] = include_file!("src/router/asset_lists/Bundle.json").into();
-    response["Movie"] = include_file!("src/router/asset_lists/Movie.json").into();
-    response["Sound"] = include_file!("src/router/asset_lists/Sound.json").into();
+    response["Bundle"] = load_list("Bundle").into();
+    response["Movie"] = load_list("Movie").into();
+    response["Sound"] = load_list("Sound").into();
 
     let body = jzon::stringify(response);
     HttpResponse::Ok()
         .insert_header(("content-type", ContentType::json()))
         .insert_header(("content-length", body.len()))
         .body(body)
+}
+
+fn load_list(name: &str) -> String {
+    let rel = format!("asset_lists/{}.json", name);
+    if let Some(bytes) = crate::runtime::read_masterdata_file(&rel) {
+        if let Ok(s) = String::from_utf8(bytes) {
+            return s;
+        }
+    }
+    match name {
+        "Bundle" => include_file!("src/router/asset_lists/Bundle.json"),
+        "Movie" => include_file!("src/router/asset_lists/Movie.json"),
+        "Sound" => include_file!("src/router/asset_lists/Sound.json"),
+        _ => unreachable!(),
+    }
 }
 
 async fn supported() -> impl Responder {

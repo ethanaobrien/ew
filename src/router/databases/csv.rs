@@ -33,6 +33,13 @@ fn dir_for(region: Region) -> &'static Dir<'static> {
     }
 }
 
+fn region_subdir(region: Region) -> &'static str {
+    match region {
+        Region::Jp => "csv",
+        Region::En => "csv-en",
+    }
+}
+
 pub fn get_all(region: Region) -> JsonValue {
     let mut rv = object!{};
 
@@ -42,18 +49,26 @@ pub fn get_all(region: Region) -> JsonValue {
             .and_then(|s| s.to_str())
             .unwrap_or_default();
 
-        if !table_name.is_empty() {
-            rv[table_name] = file.contents_utf8().unwrap_or_default().into();
+        if table_name.is_empty() {
+            continue;
+        }
+
+        if let Some(bytes) = csv_bytes(region, table_name) {
+            rv[table_name] = String::from_utf8(bytes).unwrap_or_default().into();
         }
     }
 
     rv
 }
 
-pub fn csv_bytes(region: Region, name: &str) -> Option<&'static [u8]> {
+pub fn csv_bytes(region: Region, name: &str) -> Option<Vec<u8>> {
+    let rel = format!("{}/{}.csv", region_subdir(region), name);
+    if let Some(bytes) = crate::runtime::read_masterdata_file(&rel) {
+        return Some(bytes);
+    }
     dir_for(region)
         .get_file(format!("{name}.csv"))
-        .map(|f| f.contents())
+        .map(|f| f.contents().to_vec())
 }
 
 pub fn table(region: Region, name: &str) -> JsonValue {
@@ -65,7 +80,7 @@ pub fn table(region: Region, name: &str) -> JsonValue {
     let bytes = csv_bytes(region, name).unwrap_or_else(|| {
         panic!("masterdata CSV not bundled: {name}.csv ({region:?})")
     });
-    let parsed = parse_csv(name, bytes);
+    let parsed = parse_csv(name, &bytes);
 
     TABLE_CACHE.lock().unwrap().insert(key, parsed.clone());
     parsed
