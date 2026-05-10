@@ -27,4 +27,6 @@ asset_ios_en=$([ "$EN_IOS_ASSET_HASH" != "" ] && echo "--en-ios-asset-hash $EN_I
 
 image_asset_path=$([ "$IMAGE_ASSET_PATH" != "" ] && echo "--image-asset-path $IMAGE_ASSET_PATH" || echo "")
 
-/root/ew/ew --path $directory --port $port --npps4 $npps4 $asset_android_jp $asset_ios_jp $asset_android_en $asset_ios_en $exports $imports $purge $hidden $https $image_asset_path --global-android "$ANDROID_GLOBAL"  --japan-android "$ANDROID_JAPAN"  --global-ios "$IOS_GLOBAL"  --japan-ios "$IOS_JAPAN" --assets-url "$ASSET_URL" --max-time $maxTime
+masterdata=$([ "$MASTERDATA" != "" ] && echo "--masterdata $MASTERDATA" || echo "")
+
+/root/ew/ew --path $directory --port $port --npps4 $npps4 $asset_android_jp $asset_ios_jp $asset_android_en $asset_ios_en $exports $imports $purge $hidden $https $image_asset_path $masterdata --global-android "$ANDROID_GLOBAL"  --japan-android "$ANDROID_JAPAN"  --global-ios "$IOS_GLOBAL"  --japan-ios "$IOS_JAPAN" --assets-url "$ASSET_URL" --max-time $maxTime
