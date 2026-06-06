@@ -11,6 +11,6 @@ fn main() {
     }
 
     if !std::fs::exists("webui/index.html").unwrap_or(false) {
-        panic!("Could not compile crate! Missing webui! Did you pull submodules?");
+        panic!("Missing webui! Did you pull submodules?\nRun `git submodule update --init --recursive`");
     }
 }

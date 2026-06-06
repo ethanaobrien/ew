@@ -4,6 +4,7 @@ fn main() -> std::io::Result<()> {
     let args = ew::get_args();
     ew::runtime::update_data_path(&args.path);
     ew::runtime::update_masterdata_path(&args.masterdata);
+    ew::runtime::update_mod_paths(&args.mods);
     ew::run_server(false)
 }
 

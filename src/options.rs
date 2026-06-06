@@ -63,7 +63,10 @@ pub struct Args {
     pub image_asset_path: String,
 
     #[arg(long, default_value = "", help = "Optional directory to load asset lists and master data CSVs from at runtime. Layout mirrors the bundled assets (asset_lists/, csv/, csv-en/). Missing files fall back to the internal copies.")]
-    pub masterdata: String
+    pub masterdata: String,
+
+    #[arg(long = "mod", value_name = "DIR", action = clap::ArgAction::Append, help = "Path to a mod directory layered on top of --masterdata + the bundled defaults. May be passed multiple times. Each mod dir mirrors the masterdata layout (asset_lists/, csv/, csv-en/, userdata/) but only needs to include the files it adds rows to. CSV rows merge by primary key (first column), asset_lists entries merge by m_identifier, new_user.json top-level arrays union. Later --mod wins on collisions.")]
+    pub mods: Vec<String>
 }
 
 pub fn get_args() -> Args {

@@ -9,6 +9,7 @@ lazy_static! {
     static ref DATAPATH: RwLock<String> = RwLock::new(String::new());
     static ref MASTERDATA_PATH: RwLock<String> = RwLock::new(String::new());
     static ref MASTERDATA_WARNED: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
+    static ref MOD_PATHS: RwLock<Vec<String>> = RwLock::new(Vec::new());
     static ref EASTER: RwLock<bool> = RwLock::new(false);
 }
 
@@ -78,4 +79,40 @@ pub fn set_easter_mode(enabled: bool) {
 
 pub fn get_easter_mode() -> bool {
     *EASTER.read().unwrap()
+}
+
+pub fn update_mod_paths(paths: &[String]) {
+    let cleaned: Vec<String> = paths.iter()
+        .map(|p| p.trim_end_matches('/').to_string())
+        .filter(|p| !p.is_empty())
+        .filter_map(|p| {
+            if Path::new(&p).is_dir() {
+                Some(p)
+            } else {
+                println!("Couldn't find mod directory {} — skipping", p);
+                None
+            }
+        })
+        .collect();
+    if !cleaned.is_empty() {
+        println!("Loaded {} mod overlay{}", cleaned.len(),
+                 if cleaned.len() == 1 { "" } else { "s" });
+        for p in &cleaned {
+            println!("  mod: {}", p);
+        }
+    }
+    let mut w = MOD_PATHS.write().unwrap();
+    *w = cleaned;
+}
+
+pub fn read_mod_files(rel_path: &str) -> Vec<(String, Vec<u8>)> {
+    let paths = MOD_PATHS.read().unwrap().clone();
+    let mut out = Vec::new();
+    for p in paths {
+        let full = format!("{}/{}", p, rel_path);
+        if let Ok(bytes) = fs::read(&full) {
+            out.push((p, bytes));
+        }
+    }
+    out
 }
