@@ -16,9 +16,13 @@ async fn maintenance(_req: HttpRequest) -> HttpResponse {
 
 fn safe_join(base: &Path, untrusted: &str) -> Option<PathBuf> {
     let relative = untrusted.trim_start_matches("/");
-    let joined = base.join(relative);
-    let canonical = joined.canonicalize().ok()?;
-    canonical.starts_with(base.canonicalize().ok()?).then_some(canonical)
+    if Path::new(relative)
+        .components()
+        .any(|c| matches!(c, std::path::Component::ParentDir))
+    {
+        return None;
+    }
+    Some(base.join(relative))
 }
 
 #[cfg(feature = "library")]
