@@ -1,3 +1,7 @@
+use argon2::{
+    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
+    Argon2
+};
 use rusqlite::params;
 use jzon::{JsonValue, object};
 use crate::router::userdata;
@@ -55,46 +59,27 @@ pub fn get_acc_token(uid: i64) -> String {
     }
 }
 
-fn generate_salt() -> Vec<u8> {
-    let mut rng = rand::rng();
-    let mut bytes = vec![0u8; 16];
-    rng.fill(&mut bytes[..]);
-    bytes
-}
-
 fn hash_password(password: &str) -> String {
-    if password.is_empty() { return String::new(); };
-    let salt = &generate_salt();
-    let mut hasher = Sha256::new();
-    hasher.update(password.as_bytes());
-    hasher.update(salt);
-    let hashed_password = hasher.finalize();
-
-    let salt_hash = [&salt[..], &hashed_password[..]].concat();
-    general_purpose::STANDARD.encode(salt_hash)
+    if password.is_empty() { return String::new(); }
+    let salt = SaltString::generate(&mut OsRng);
+    Argon2::default()
+        .hash_password(password.as_bytes(), &salt)
+        .unwrap()
+        .to_string()
 }
 
-pub fn verify_password(password: &str, salted_hash: &str) -> bool {
-    if password.is_empty() || salted_hash.is_empty() {
+pub fn verify_password(password: &str, hash: &str) -> bool {
+    if password.is_empty() || hash.is_empty() {
         return false;
     }
-    let bytes = general_purpose::STANDARD.decode(salted_hash);
-    if bytes.is_err() {
-        return password == salted_hash;
+    if !hash.starts_with("$argon2") {
+        return legacy_verify_password(password, hash);
     }
-    let bytes = bytes.unwrap();
-    if bytes.len() < 17 {
-        return password == salted_hash;
-    }
-    let (salt, hashed_password) = bytes.split_at(16);
-    let hashed_password = &hashed_password[0..32];
-
-    let mut hasher = Sha256::new();
-    hasher.update(password.as_bytes());
-    hasher.update(salt);
-    let input_hash = hasher.finalize();
-
-    input_hash.as_slice() == hashed_password
+    let parsed = match PasswordHash::new(hash) {
+        Ok(h) => h,
+        Err(_) => return false,
+    };
+    Argon2::default().verify_password(password.as_bytes(), &parsed).is_ok()
 }
 
 pub fn setup_sql(conn: &rusqlite::Connection) -> Result<(), rusqlite::Error> {
@@ -141,6 +126,7 @@ pub fn setup_sql(conn: &rusqlite::Connection) -> Result<(), rusqlite::Error> {
     Ok(())
 }
 
+// For migrating from a legacy database
 fn code_to_uid(code: &str) -> String {
     code
         .replace('7', "")
@@ -154,4 +140,18 @@ fn code_to_uid(code: &str) -> String {
         .replace('P', "8")
         .replace('U', "9")
         .replace('M', "0")
+}
+
+fn legacy_verify_password(password: &str, salted_hash: &str) -> bool {
+    let bytes = match general_purpose::STANDARD.decode(salted_hash) {
+        Ok(b) if b.len() >= 17 => b,
+        _ => return password == salted_hash,
+    };
+    let (salt, hashed_password) = bytes.split_at(16);
+    let hashed_password = &hashed_password[0..32];
+    let mut hasher = Sha256::new();
+    hasher.update(password.as_bytes());
+    hasher.update(salt);
+    let input_hash = hasher.finalize();
+    input_hash.as_slice() == hashed_password
 }

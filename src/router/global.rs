@@ -75,6 +75,7 @@ pub fn parse_platform(header: &str) -> &str {
         "android" => "Android",
         "ios"     => "iOS",
         "windows" => "Windows",
+        "windowsplayer" => "Windows",
         _         => "Android",
     }
 }
