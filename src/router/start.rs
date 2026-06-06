@@ -1,19 +1,23 @@
 use jzon::{JsonValue, object};
-use actix_web::{HttpRequest, http::header::HeaderValue};
+use actix_web::HttpRequest;
 
 use crate::encryption;
 use crate::router::{userdata, global};
 
 fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
-    if body["asset_version"] != global::ASSET_VERSION_GL && body["asset_version"] != global::ASSET_VERSION_JP {
+    if global::get_player_region(&body["asset_version"].to_string()).is_none() {
         println!("Warning! Asset version is not what was expected. (Did the app update?)");
     }
-    
-    let blank_header = HeaderValue::from_static("");
-    let platform = req.headers().get("aoharu-platform").unwrap_or(&blank_header).to_str().unwrap_or("");
-    let android = !platform.to_lowercase().contains("iphone");
-    
-    global::get_asset_hash(body["asset_version"].to_string(), android)
+
+    let platform = req.headers()
+        .get("aoharu-platform")
+        .and_then(|v| v.to_str().ok())
+        .map(global::parse_platform)
+        .unwrap_or("Android");
+
+    println!("Login on platform: {}", platform);
+
+    global::get_asset_hash(&body["asset_version"].to_string(), platform).unwrap()
 }
 
 pub fn asset_hash(req: HttpRequest, body: String) -> Option<JsonValue> {

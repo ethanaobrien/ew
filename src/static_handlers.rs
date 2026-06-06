@@ -31,7 +31,6 @@ static SPART_FILES: Dir<'_> = include_dir!("assets/iOS/");
 static SPART_FILES: Dir<'_> = include_dir!("assets/Android/");
 
 fn handle_assets(req: HttpRequest) -> HttpResponse {
-    let platform = req.match_info().get("platform").unwrap_or("Android").parse().unwrap_or(String::from("Android"));
     #[cfg(feature = "library")]
     {
         let lang: String = req.match_info().get("lang").unwrap_or("JP").parse().unwrap_or(String::from("JP"));

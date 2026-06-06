@@ -39,7 +39,7 @@ pub fn remove_paid_gems(user: &mut JsonValue, amount: i64) {
 pub fn get_region(headers: &HeaderMap) -> bool {
     let blank_header = HeaderValue::from_static("");
     let asset_version = headers.get("aoharu-asset-version").unwrap_or(&blank_header).to_str().unwrap_or("");
-    asset_version == global::ASSET_VERSION_JP
+    global::get_player_region(asset_version).unwrap_or(String::from("JP")) == "JP"
 }
 
 pub fn check_for_region(user: &mut JsonValue, headers: &HeaderMap) {

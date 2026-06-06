@@ -12,52 +12,78 @@ use crate::router::{userdata, items};
 use crate::database::gree;
 use crate::runtime::get_easter_mode;
 
-pub const ASSET_VERSION_GL:        &str = "5260ff15dff8ba0c00ad91400f515f55";
-pub const ASSET_HASH_ANDROID_GL:   &str = "d210b28037885f3ef56b8f8aa45ac95b";
-pub const ASSET_HASH_IOS_GL:       &str = "dd7175e4bcdab476f38c33c7f34b5e4d";
+struct AssetHashes {
+    version:  &'static str,
+    android:  &'static str,
+    ios:      &'static str,
+}
 
-pub const ASSET_VERSION_JP:        &str = "4c921d2443335e574a82e04ec9ea243c";
-pub const ASSET_HASH_ANDROID_JP:   &str = "67f8f261c16b3cca63e520a25aad6c1c";
-pub const ASSET_HASH_IOS_JP:       &str = "b8975be8300013a168d061d3fdcd4a16";
+static ASSET_TABLE: &[(&str, AssetHashes)] = &[
+    ("JP", AssetHashes {
+        version: "4c921d2443335e574a82e04ec9ea243c",
+        android: "67f8f261c16b3cca63e520a25aad6c1c",
+        ios:     "b8975be8300013a168d061d3fdcd4a16",
+    }),
+    ("GL", AssetHashes {
+        version: "5260ff15dff8ba0c00ad91400f515f55",
+        android: "d210b28037885f3ef56b8f8aa45ac95b",
+        ios:     "dd7175e4bcdab476f38c33c7f34b5e4d",
+    }),
+];
 
-pub const ASSET_HASH_ANDROID_EASTER_GL:     &str = "da7ae831381c3f29337caa9891db7e6a";
-pub const ASSET_HASH_ANDROID_EASTER_JP:     &str = "eac0cad61c82bf2e31fc596555747d11";
+static EASTER_HASHES: &[(&str, &str)] = &[
+    ("JP", "eac0cad61c82bf2e31fc596555747d11"),
+    ("GL", "da7ae831381c3f29337caa9891db7e6a"),
+];
 
-pub fn get_asset_hash(asset_version: String, android: bool) -> String {
+pub fn get_player_region(asset_version: &str) -> Option<String> {
+    ASSET_TABLE
+        .iter()
+        .find(|(_, h)| h.version == asset_version)
+        .map(|(region, _)| region.to_string())
+}
+
+pub fn parse_platform(header: &str) -> &str {
+    let platform = header.split_whitespace().next().unwrap_or("").to_lowercase();
+    match platform.as_str() {
+        "android" => "Android",
+        "ios"     => "iOS",
+        "windows" => "Windows",
+        _         => "Android",
+    }
+}
+
+pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
     let args = crate::get_args();
-    if android {
-        if asset_version == ASSET_VERSION_JP {
-            if args.jp_android_asset_hash != String::new() {
-                &args.jp_android_asset_hash
-            } else if get_easter_mode() {
-                ASSET_HASH_ANDROID_EASTER_JP
+    let easter = get_easter_mode();
+
+    let (region, hashes) = ASSET_TABLE
+        .iter()
+        .find(|(_, h)| h.version == asset_version)?;
+
+    let (android_override, ios_override) = match *region {
+        "JP" => (&args.jp_android_asset_hash, &args.jp_ios_asset_hash),
+        "GL" => (&args.en_android_asset_hash, &args.en_ios_asset_hash),
+        _    => (&String::new(), &String::new()),
+    };
+
+    let hash = match platform {
+        "Android" => {
+            if !android_override.is_empty() {
+                android_override.as_str()
+            } else if easter {
+                EASTER_HASHES.iter().find(|(r, _)| r == region).map(|(_, h)| *h).unwrap_or(hashes.android)
             } else {
-                ASSET_HASH_ANDROID_JP
-            }
-        } else {
-            if args.en_android_asset_hash != String::new() {
-                &args.en_android_asset_hash
-            } else if get_easter_mode() {
-                ASSET_HASH_ANDROID_EASTER_GL
-            } else {
-                ASSET_HASH_ANDROID_GL
-            }
-        }
-    } else {
-        if asset_version == ASSET_VERSION_JP {
-            if args.jp_ios_asset_hash != String::new() {
-                &args.jp_ios_asset_hash
-            } else {
-                ASSET_HASH_IOS_JP
-            }
-        } else {
-            if args.en_ios_asset_hash != String::new() {
-                &args.en_ios_asset_hash
-            } else {
-                ASSET_HASH_IOS_GL
+                hashes.android
             }
         }
-    }.to_string()
+        "iOS" => {
+            if !ios_override.is_empty() { ios_override.as_str() } else { hashes.ios }
+        }
+        _ => return None,
+    };
+
+    Some(hash.to_string())
 }
 
 pub fn create_token() -> String {
