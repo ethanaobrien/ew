@@ -5,12 +5,20 @@ use actix_web::{
     http::header::ContentType
 };
 use std::fs;
+use std::path::{Path, PathBuf};
 
 #[get("/maintenance/maintenance.json")]
 async fn maintenance(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType(mime::APPLICATION_JSON))
         .body(r#"{"opened_at":"2024-02-05 02:00:00","closed_at":"2024-02-05 04:00:00","message":":(","server":1,"gamelib":0}"#)
+}
+
+fn safe_join(base: &Path, untrusted: &str) -> Option<PathBuf> {
+    let relative = untrusted.trim_start_matches("/");
+    let joined = base.join(relative);
+    let canonical = joined.canonicalize().ok()?;
+    canonical.starts_with(base.canonicalize().ok()?).then_some(canonical)
 }
 
 #[cfg(feature = "library")]
@@ -23,6 +31,7 @@ static SPART_FILES: Dir<'_> = include_dir!("assets/iOS/");
 static SPART_FILES: Dir<'_> = include_dir!("assets/Android/");
 
 fn handle_assets(req: HttpRequest) -> HttpResponse {
+    let platform = req.match_info().get("platform").unwrap_or("Android").parse().unwrap_or(String::from("Android"));
     #[cfg(feature = "library")]
     {
         let lang: String = req.match_info().get("lang").unwrap_or("JP").parse().unwrap_or(String::from("JP"));
@@ -36,25 +45,27 @@ fn handle_assets(req: HttpRequest) -> HttpResponse {
                 .body(body);
         }
     }
-    let file_path = format!("assets{}", req.path());
-    let exists = fs::exists(&file_path);
 
-    if exists.unwrap_or(false) {
-        let resp = fs::read(&file_path).unwrap();
-        return HttpResponse::Ok()
-            .body(resp)
+    let assets_root = Path::new("assets");
+
+    let Some(file_path) = safe_join(assets_root, req.path()) else {
+        return HttpResponse::BadRequest().body("Invalid path");
+    };
+
+    match fs::read(&file_path) {
+        Ok(contents) => HttpResponse::Ok().body(contents),
+        Err(_) => HttpResponse::SeeOther()
+            .insert_header(("location", format!("https://sif2.sif.moe{}", req.path())))
+            .body(""),
     }
-
-    HttpResponse::SeeOther()
-        .insert_header(("location", format!("https://sif2.sif.moe{}", req.path())))
-        .body("")
 }
-#[get("/Android/{hash}/{file}")]
+
+#[get("/{platform}/{hash}/{file}")]
 async fn files_jp(req: HttpRequest) -> HttpResponse {
     handle_assets(req)
 }
 
-#[get("/Android/{lang}/{hash}/{file}")]
+#[get("/{platform}/{lang}/{hash}/{file}")]
 async fn files_gl(req: HttpRequest) -> HttpResponse {
     handle_assets(req)
 }
