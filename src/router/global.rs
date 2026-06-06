@@ -16,6 +16,7 @@ struct AssetHashes {
     version:  &'static str,
     android:  &'static str,
     ios:      &'static str,
+    windows:  &'static str,
 }
 
 static ASSET_TABLE: &[(&str, AssetHashes)] = &[
@@ -23,13 +24,38 @@ static ASSET_TABLE: &[(&str, AssetHashes)] = &[
         version: "4c921d2443335e574a82e04ec9ea243c",
         android: "67f8f261c16b3cca63e520a25aad6c1c",
         ios:     "b8975be8300013a168d061d3fdcd4a16",
+        windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     }),
     ("GL", AssetHashes {
         version: "5260ff15dff8ba0c00ad91400f515f55",
         android: "d210b28037885f3ef56b8f8aa45ac95b",
         ios:     "dd7175e4bcdab476f38c33c7f34b5e4d",
+        windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     }),
 ];
+
+impl AssetHashes {
+    fn resolve(&self, platform: &str, region: &str, easter_hash: Option<&str>) -> Option<String> {
+        let args = crate::get_args();
+
+        let (base, override_hash) = match (region, platform) {
+            ("JP", "Android") => (self.android, args.jp_android_asset_hash.as_str()),
+            ("JP", "iOS")     => (self.ios,     args.jp_ios_asset_hash.as_str()),
+            ("JP", "Windows") => (self.windows, args.windows_asset_hash.as_str()),
+            ("GL", "Android") => (self.android, args.en_android_asset_hash.as_str()),
+            ("GL", "iOS")     => (self.ios,     args.en_ios_asset_hash.as_str()),
+            _                 => return None,
+        };
+
+        Some(if !override_hash.is_empty() {
+            override_hash
+        } else if let Some(easter) = easter_hash {
+            easter
+        } else {
+            base
+        }.to_string())
+    }
+}
 
 static EASTER_HASHES: &[(&str, &str)] = &[
     ("JP", "eac0cad61c82bf2e31fc596555747d11"),
@@ -54,36 +80,17 @@ pub fn parse_platform(header: &str) -> &str {
 }
 
 pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
-    let args = crate::get_args();
     let easter = get_easter_mode();
 
     let (region, hashes) = ASSET_TABLE
         .iter()
         .find(|(_, h)| h.version == asset_version)?;
 
-    let (android_override, ios_override) = match *region {
-        "JP" => (&args.jp_android_asset_hash, &args.jp_ios_asset_hash),
-        "GL" => (&args.en_android_asset_hash, &args.en_ios_asset_hash),
-        _    => (&String::new(), &String::new()),
-    };
+    let easter_hash = easter
+        .then(|| EASTER_HASHES.iter().find(|(r, _)| r == region).map(|(_, h)| *h))
+        .flatten();
 
-    let hash = match platform {
-        "Android" => {
-            if !android_override.is_empty() {
-                android_override.as_str()
-            } else if easter {
-                EASTER_HASHES.iter().find(|(r, _)| r == region).map(|(_, h)| *h).unwrap_or(hashes.android)
-            } else {
-                hashes.android
-            }
-        }
-        "iOS" => {
-            if !ios_override.is_empty() { ios_override.as_str() } else { hashes.ios }
-        }
-        _ => return None,
-    };
-
-    Some(hash.to_string())
+    hashes.resolve(platform, region, easter_hash)
 }
 
 pub fn create_token() -> String {
