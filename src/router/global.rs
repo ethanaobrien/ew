@@ -13,24 +13,30 @@ use crate::database::gree;
 use crate::runtime::get_easter_mode;
 
 struct AssetHashes {
-    version:  &'static str,
-    android:  &'static str,
-    ios:      &'static str,
-    windows:  &'static str,
+    version_android: &'static str,
+    version_ios:     &'static str,
+    version_windows: &'static str,
+    android:         &'static str,
+    ios:             &'static str,
+    windows:         &'static str,
 }
 
 static ASSET_TABLE: &[(&str, AssetHashes)] = &[
     ("JP", AssetHashes {
-        version: "4c921d2443335e574a82e04ec9ea243c",
-        android: "67f8f261c16b3cca63e520a25aad6c1c",
-        ios:     "b8975be8300013a168d061d3fdcd4a16",
-        windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        version_android: "4c921d2443335e574a82e04ec9ea243c",
+        version_ios:     "4c921d2443335e574a82e04ec9ea243c",
+        version_windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        android:         "67f8f261c16b3cca63e520a25aad6c1c",
+        ios:             "b8975be8300013a168d061d3fdcd4a16",
+        windows:         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     }),
     ("GL", AssetHashes {
-        version: "5260ff15dff8ba0c00ad91400f515f55",
-        android: "d210b28037885f3ef56b8f8aa45ac95b",
-        ios:     "dd7175e4bcdab476f38c33c7f34b5e4d",
-        windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        version_android: "5260ff15dff8ba0c00ad91400f515f55",
+        version_ios:     "5260ff15dff8ba0c00ad91400f515f55",
+        version_windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        android:         "d210b28037885f3ef56b8f8aa45ac95b",
+        ios:             "dd7175e4bcdab476f38c33c7f34b5e4d",
+        windows:         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     }),
 ];
 
@@ -55,6 +61,25 @@ impl AssetHashes {
             base
         }.to_string())
     }
+    fn version_for(&self, platform: &str, region: &str) -> Option<String> {
+        let args = crate::get_args();
+
+        let (base, override_version) = match (region, platform) {
+            ("JP", "Android") => (self.version_android, ""),
+            ("JP", "iOS")     => (self.version_ios,     ""),
+            ("JP", "Windows") => (self.version_windows, args.windows_asset_version.as_str()),
+            ("GL", "Android") => (self.version_android, ""),
+            ("GL", "iOS")     => (self.version_ios,     ""),
+            ("GL", "Windows") => (self.version_windows, ""),
+            _                 => return None,
+        };
+
+        Some(if !override_version.is_empty() {
+            override_version
+        } else {
+            base
+        }.to_string())
+    }
 }
 
 static EASTER_HASHES: &[(&str, &str)] = &[
@@ -65,7 +90,11 @@ static EASTER_HASHES: &[(&str, &str)] = &[
 pub fn get_player_region(asset_version: &str) -> Option<String> {
     ASSET_TABLE
         .iter()
-        .find(|(_, h)| h.version == asset_version)
+        .find(|(_, h)| {
+            h.version_android == asset_version ||
+                h.version_ios     == asset_version ||
+                h.version_windows == asset_version
+        })
         .map(|(region, _)| region.to_string())
 }
 
@@ -85,7 +114,7 @@ pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
 
     let (region, hashes) = ASSET_TABLE
         .iter()
-        .find(|(_, h)| h.version == asset_version)?;
+        .find(|(region, h)| h.version_for(platform, region).as_deref() == Some(asset_version))?;
 
     let easter_hash = easter
         .then(|| EASTER_HASHES.iter().find(|(r, _)| r == region).map(|(_, h)| *h))
