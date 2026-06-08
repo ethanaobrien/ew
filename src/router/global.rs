@@ -99,11 +99,12 @@ pub fn get_player_region(asset_version: &str) -> Option<String> {
 }
 
 pub fn parse_platform(header: &str) -> &str {
-    println!("{header}");
     let platform = header.split_whitespace().next().unwrap_or("").to_lowercase();
     match platform.as_str() {
         "android" => "Android",
         "ios"     => "iOS",
+        "iphoneplayer" => "iOS",
+        "iphone" => "iOS",
         "windows" => "Windows",
         "windowsplayer" => "Windows",
         _         => "Android",
