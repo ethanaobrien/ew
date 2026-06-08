@@ -116,11 +116,13 @@ pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
         .iter()
         .find(|(region, h)| h.version_for(platform, region).as_deref() == Some(asset_version))?;
 
-    let easter_hash = easter
+    let easter_hash = (easter && platform == "Android")
         .then(|| EASTER_HASHES.iter().find(|(r, _)| r == region).map(|(_, h)| *h))
         .flatten();
 
-    hashes.resolve(platform, region, easter_hash)
+    let rv = hashes.resolve(platform, region, easter_hash);
+    println!("Get asset hash: {platform}. {rv:?}");
+    return rv;
 }
 
 pub fn create_token() -> String {
