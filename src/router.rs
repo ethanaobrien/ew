@@ -209,6 +209,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
+    cfg.configure(crate::static_handlers::routes);
     cfg.service(
         actix_web::web::scope("/api")
             .configure(asset_lists::routes)

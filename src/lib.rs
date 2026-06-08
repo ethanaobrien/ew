@@ -16,13 +16,7 @@ mod android;
 #[cfg(target_os = "ios")]
 mod ios;
 
-use actix_web::{
-    rt,
-    App,
-    HttpServer,
-    web,
-    dev::Service
-};
+use actix_web::{rt, App, HttpServer, web, dev::Service};
 use std::time::Duration;
 pub use options::get_args;
 use runtime::get_data_path;
@@ -50,8 +44,6 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
     })
     .app_data(web::PayloadConfig::default().limit(1024 * 1024 * 25))
     .service(static_handlers::maintenance)
-    .service(static_handlers::files_jp)
-    .service(static_handlers::files_gl)
     .configure(router::configure)
     .default_service(web::route().to(router::request))
     ).bind(("0.0.0.0", port))?.run();

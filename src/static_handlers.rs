@@ -1,9 +1,4 @@
-use actix_web::{
-    get,
-    HttpResponse,
-    HttpRequest,
-    http::header::ContentType
-};
+use actix_web::{get, HttpResponse, HttpRequest, http::header::ContentType, web, guard};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -63,12 +58,31 @@ fn handle_assets(req: HttpRequest) -> HttpResponse {
     }
 }
 
-#[get("/{platform}/{hash}/{file}")]
 async fn files_jp(req: HttpRequest) -> HttpResponse {
     handle_assets(req)
 }
 
-#[get("/{platform}/{lang}/{hash}/{file}")]
 async fn files_gl(req: HttpRequest) -> HttpResponse {
     handle_assets(req)
+}
+
+fn platform_guard(ctx: &guard::GuardContext) -> bool {
+    let platform = ctx.head().uri.path()
+        .split('/')
+        .nth(1)
+        .unwrap_or("");
+    matches!(platform, "Android" | "StandaloneWindows64" | "Ios")
+}
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::resource("/{platform}/{hash}/{file}")
+            .guard(guard::fn_guard(platform_guard))
+            .route(web::get().to(files_jp))
+    )
+        .service(
+            web::resource("/{platform}/{lang}/{hash}/{file}")
+                .guard(guard::fn_guard(platform_guard))
+                .route(web::get().to(files_gl))
+        );
 }
