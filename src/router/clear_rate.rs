@@ -1,5 +1,5 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest, HttpResponse, http::header::ContentType};
+use actix_web::{HttpRequest, HttpResponse, Responder, http::header::ContentType};
 use rusqlite::params;
 use std::sync::Mutex;
 use lazy_static::lazy_static;
@@ -220,11 +220,11 @@ async fn get_clearrate_json() -> JsonValue {
     rv
 }
 
-pub async fn clearrate(_req: HttpRequest) -> Option<JsonValue> {
-    Some(get_clearrate_json().await)
+pub async fn clearrate(req: HttpRequest) -> impl Responder {
+    global::api(&req, Some(get_clearrate_json().await))
 }
 
-pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
+pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
     
@@ -246,9 +246,9 @@ pub fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
         }).unwrap();
     }
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "ranking_list": rank
-    })
+    }))
 }
 
 fn get_html() -> JsonValue {

@@ -1,19 +1,28 @@
-use jzon::{array, object, JsonValue};
-use actix_web::{HttpRequest};
+use jzon::{array, object};
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn mission(req: HttpRequest) -> Option<JsonValue> {
-    let key = global::get_login(req.headers(), "");
-    let missions = userdata::get_acc_missions(&key);
-    
-    Some(object!{
-        "mission_list": missions
-    })
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/mission")
+            .route("", web::get().to(mission))
+            .route("/clear", web::post().to(clear))
+            .route("/receive", web::post().to(receive))
+    );
 }
 
-pub fn clear(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn mission(req: HttpRequest) -> impl Responder {
+    let key = global::get_login(req.headers(), "");
+    let missions = userdata::get_acc_missions(&key);
+
+    global::api(&req, Some(object!{
+        "mission_list": missions
+    }))
+}
+
+async fn clear(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     
     let mut missions = userdata::get_acc_missions(&key);
@@ -25,12 +34,12 @@ pub fn clear(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc_missions(&key, missions);
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "clear_mission_ids": body["master_mission_ids"].clone()
-    })
+    }))
 }
 
-pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn receive(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -71,7 +80,7 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions.clone());
 
-    Some(object!{
+    global::api(&req, Some(object!{
         "reward_list": rewards,
         "updated_value_list": {
             "gem": user["gem"].clone(),
@@ -79,5 +88,5 @@ pub fn receive(req: HttpRequest, body: String) -> Option<JsonValue> {
             "point_list": user["point_list"].clone()
         },
         "mission_list": missions
-    })
+    }))
 }

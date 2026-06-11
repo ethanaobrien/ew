@@ -1,10 +1,14 @@
-use jzon::{array, JsonValue};
-use actix_web::{HttpRequest};
+use jzon::{array};
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{userdata, global};
 use crate::encryption;
 
-pub fn tutorial(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.route("/tutorial", web::post().to(tutorial));
+}
+
+async fn tutorial(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -16,5 +20,5 @@ pub fn tutorial(req: HttpRequest, body: String) -> Option<JsonValue> {
         userdata::save_acc(&key, user);
     }
     
-    Some(array![])
+    global::api(&req, Some(array![]))
 }

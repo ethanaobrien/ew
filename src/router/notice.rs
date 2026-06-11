@@ -1,14 +1,19 @@
-use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest};
+use jzon::{object, array};
+use actix_web::{web, HttpRequest, Responder};
 
+use crate::router::global;
 
-//todo
-pub fn reward(_req: HttpRequest) -> Option<JsonValue> {
-    Some(object!{
-        "reward_list": []
-    })
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(web::resource("/notice/reward").route(web::get().to(reward)).route(web::post().to(reward_post)));
 }
 
-pub fn reward_post(_req: HttpRequest, _body: String) -> Option<JsonValue> {
-    Some(array![])
+//todo
+async fn reward(req: HttpRequest) -> impl Responder {
+    global::api(&req, Some(object!{
+        "reward_list": []
+    }))
+}
+
+async fn reward_post(req: HttpRequest, _body: String) -> impl Responder {
+    global::api(&req, Some(array![]))
 }

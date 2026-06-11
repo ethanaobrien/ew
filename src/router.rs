@@ -33,13 +33,30 @@ mod master_data;
 use actix_web::{
     HttpResponse,
     HttpRequest,
-    http::header::HeaderValue,
+    body::{BoxBody, MessageBody},
+    dev::{ServiceRequest, ServiceResponse},
+    middleware::{from_fn, Next},
     http::header::HeaderMap
 };
 use jzon::{JsonValue, object};
 use crate::encryption;
 
-fn unhandled(req: HttpRequest, body: String) -> Option<JsonValue> {
+// Requests without client headers (a browser) get the webui
+async fn webui_fallback(req: ServiceRequest, next: Next<impl MessageBody + 'static>) -> Result<ServiceResponse<BoxBody>, actix_web::Error> {
+    let is_from_game = req.headers().get("aoharu-asset-version").is_some() || req.path().starts_with("/api/webui");
+    if !is_from_game {
+        let req = req.into_parts().0;
+        let resp = if crate::get_args().hidden {
+            not_found(req.headers())
+        } else {
+            webui::main(req.clone())
+        };
+        return Ok(ServiceResponse::new(req, resp));
+    }
+    Ok(next.call(req).await?.map_into_boxed_body())
+}
+
+fn unhandled(req: &HttpRequest, body: String) -> Option<JsonValue> {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap_or(body));
     }
@@ -56,117 +73,16 @@ fn not_found(headers: &HeaderMap) -> HttpResponse {
     global::send(rv, 0, headers)
 }
 
+// Fallback for paths no actix route matched. Game endpoints live in each module's routes()
 async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
-    let headers = req.headers().clone();
     let args = crate::get_args();
     if args.hidden && (req.path().starts_with("/api/webui/") || !(req.path().starts_with("/api") || req.path().starts_with("/v1.0"))) {
-        return not_found(&headers);
+        return not_found(req.headers());
     } else if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
         return webui::main(req);
     }
-    let blank_header = HeaderValue::from_static("");
-    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
-    let resp: Option<JsonValue> = if req.method() == "POST" {
-        match req.path() {
-            "/api/debug/error" => debug::error(req, body),
-            "/api/start" => start::start(req, body),
-            "/api/start/assetHash" => start::asset_hash(req, body),
-            "/api/dummy/login" => login::dummy(req, body),
-            "/api/user" => user::user_post(req, body),
-            "/api/chat/home" => chat::home(req, body),
-            "/api/chat/talk/start" => chat::start(req, body),
-            "/api/chat/talk/end" => chat::end(req, body),
-            "/api/story/read" => story::read(req, body),
-            "/api/user/initialize" => user::initialize(req, body),
-            "/api/user/detail" => user::detail(req, body),
-            "/api/gift" => user::gift(req, body),
-            "/api/deck" => user::deck(req, body),
-            "/api/tutorial" => tutorial::tutorial(req, body),
-            "/api/friend" => friend::friend(req, body),
-            "/api/friend/search" => friend::search(req, body),
-            "/api/friend/search/recommend" => friend::recommend(req, body),
-            "/api/friend/request" => friend::request(req, body),
-            "/api/friend/request/approve" => friend::approve(req, body),
-            "/api/friend/request/cancel" => friend::cancel(req, body),
-            "/api/friend/delete" => friend::delete(req, body),
-            "/api/live/guest" => live::guest(req, body),
-            "/api/live/mission" => live::mission(req, body),
-            "/api/live/ranking" => clear_rate::ranking(req, body),
-            "/api/event" => event::event(req, body),
-            "/api/event/star_event" => event::star_event(req, body),
-            "/api/event/set/member" => event::set_member(req, body),
-            "/api/event/ranking" => event::ranking(req, body).await,
-            "/api/event_star_live/change_target_music" => event::change_target_music(req, body),
-            "/api/event_star_live/start" => live::event_start(req, body),
-            "/api/event_star_live/end" => event::event_end(req, body),
-            "/api/event_star_live/skip" => event::event_skip(req, body),
-            "/api/live/start" => live::start(req, body),
-            "/api/live/end" => live::end(req, body),
-            "/api/live/skip" => live::skip(req, body),
-            "/api/live/retire" => live::retire(req, body),
-            "/api/live/continue" => live::continuee(req, body),
-            "/api/live/reward" => live::reward(req, body),
-            "/api/mission/clear" => mission::clear(req, body),
-            "/api/mission/receive" => mission::receive(req, body),
-            "/api/home/preset" => home::preset(req, body),
-            "/api/lottery/get_tutorial" => lottery::tutorial(req, body),
-            "/api/lottery" => lottery::lottery_post(req, body),
-            "/api/login_bonus" => login::bonus(req, body),
-            "/api/login_bonus/event" => login::bonus_event(req, body),
-            "/api/notice/reward" => notice::reward_post(req, body),
-            "/api/user/getmigrationcode" => user::get_migration_code(req, body),
-            "/api/user/registerpassword" => user::register_password(req, body),
-            "/api/user/migration" => user::migration(req, body),
-            "/api/user/gglrequestmigrationcode" => user::request_migration_code(req, body),
-            "/api/user/gglverifymigrationcode" => user::verify_migration_code(req, body),
-            "/api/serial_code" => serial_code::serial_code(req, body),
-            "/api/card/reinforce" => card::reinforce(req, body),
-            "/api/card/skill/reinforce" => card::skill_reinforce(req, body),
-            "/api/card/evolve" => card::evolve(req, body),
-            "/api/shop/buy" => shop::buy(req, body),
-            "/api/user/getregisteredplatformlist" => user::getregisteredplatformlist(req, body),
-            "/api/user/sif/migrate" => user::sif_migrate(req, body).await,
-            "/api/user/ss/migrate" => user::sifas_migrate(req, body),
-            "/api/exchange" => exchange::exchange_post(req, body),
-            "/api/item/use" => items::use_item_req(req, body),
-            _ => unhandled(req, body)
-        }
-    } else {
-        match req.path() {
-            "/api/user" => user::user(req),
-            "/api/gift" => home::gift_get(req),
-            "/api/purchase" => purchase::purchase(req),
-            "/api/friend/ids" => friend::ids(req),
-            "/api/live/clearRate" => clear_rate::clearrate(req).await,
-            "/api/mission" => mission::mission(req),
-            "/api/home" => home::home(req),
-            "/api/home/preset" => home::preset_get(req),
-            "/api/lottery" => lottery::lottery(req),
-            "/api/notice/reward" => notice::reward(req),
-            "/api/serial_code/events" => serial_code::events(req),
-            "/api/album/sif" => user::sif(req),
-            "/api/home/announcement" => user::announcement(req),
-            "/api/shop" => shop::shop(req),
-            "/api/exchange" => exchange::exchange(req),
-            "/api/location" => location::location(req),
-            _ => unhandled(req, body)
-        }
-    };
-    if resp.is_some() {
-        let rv = object!{
-            "code": 0,
-            "server_time": global::timestamp(),
-            "data": resp.unwrap()
-        };
-        global::send(rv, uid, &headers)
-    } else {
-        let rv = object!{
-            "code": 4,//Idontnermemrmemremremermrme   <-- I think I was not okay when I put this note because I dont remmebr doing it
-            "server_time": global::timestamp(),
-            "message": ""
-        };
-        global::send(rv, uid, &headers)
-    }
+    let resp = unhandled(&req, body);
+    global::api(&req, resp)
 }
 
 pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
@@ -214,6 +130,37 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
         actix_web::web::scope("/api")
             .configure(asset_lists::routes)
             .configure(master_data::routes)
+            .service(
+                actix_web::web::scope("")
+                    .wrap(from_fn(webui_fallback))
+                    // Split between user (claiming) and home (listing)
+                    .service(
+                        actix_web::web::resource("/gift")
+                            .route(actix_web::web::get().to(home::gift_get))
+                            .route(actix_web::web::post().to(user::gift))
+                    )
+                    .configure(card::routes)
+                    .configure(chat::routes)
+                    .configure(debug::routes)
+                    .configure(event::routes)
+                    .configure(exchange::routes)
+                    .configure(friend::routes)
+                    .configure(home::routes)
+                    .configure(items::routes)
+                    .configure(live::routes)
+                    .configure(location::routes)
+                    .configure(login::routes)
+                    .configure(lottery::routes)
+                    .configure(mission::routes)
+                    .configure(notice::routes)
+                    .configure(purchase::routes)
+                    .configure(serial_code::routes)
+                    .configure(shop::routes)
+                    .configure(start::routes)
+                    .configure(story::routes)
+                    .configure(tutorial::routes)
+                    .configure(user::routes)
+            )
     );
     cfg.service(
         actix_web::web::scope("/v1.0")

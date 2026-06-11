@@ -1,11 +1,19 @@
 use jzon::{array, object, JsonValue};
-use actix_web::{HttpRequest};
+use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn tutorial(_req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/lottery")
+            .service(web::resource("").route(web::get().to(lottery)).route(web::post().to(lottery_post)))
+            .route("/get_tutorial", web::post().to(tutorial))
+    );
+}
+
+async fn tutorial(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let id = body["master_character_id"].to_string();
@@ -20,7 +28,7 @@ pub fn tutorial(_req: HttpRequest, body: String) -> Option<JsonValue> {
     }
     lotteryid += user;
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "lottery_list": [
             {
                 "master_lottery_id": lotteryid,
@@ -31,7 +39,7 @@ pub fn tutorial(_req: HttpRequest, body: String) -> Option<JsonValue> {
             }
         ],
         "item_list": []
-    })
+    }))
 }
 
 fn get_card_master_id(lottery_id: String, lottery_number: String) -> Option<i64> {
@@ -93,13 +101,13 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
     rv
 }
 
-pub fn lottery(_req: HttpRequest) -> Option<JsonValue> {
-    Some(object!{
+async fn lottery(req: HttpRequest) -> impl Responder {
+    global::api(&req, Some(object!{
         "lottery_list": []
-    })
+    }))
 }
 
-pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn lottery_post(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     //println!("lottery: {}", body);
@@ -183,7 +191,7 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions);
 
-    Some(object!{
+    global::api(&req, Some(object!{
         "lottery_item_list": lottery_list,
         "updated_value_list": {
             "card_list": new_cards,
@@ -192,5 +200,5 @@ pub fn lottery_post(req: HttpRequest, body: String) -> Option<JsonValue> {
         "gift_list": user2["home"]["gift_list"].clone(),
         "clear_mission_ids": cleared_missions,
         "draw_count_list": []
-    })
+    }))
 }

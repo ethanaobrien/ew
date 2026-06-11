@@ -1,14 +1,18 @@
-use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest};
+use jzon::{object, array};
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 
-pub fn exchange(_req: HttpRequest) -> Option<JsonValue> {
-    Some(object!{"exchange_list":[]})
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(web::resource("/exchange").route(web::get().to(exchange)).route(web::post().to(exchange_post)));
 }
 
-pub fn exchange_post(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn exchange(req: HttpRequest) -> impl Responder {
+    global::api(&req, Some(object!{"exchange_list":[]}))
+}
+
+async fn exchange_post(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -29,7 +33,7 @@ pub fn exchange_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_missions(&key, missions);
     userdata::save_acc_chats(&key, chats);
 
-    Some(object!{
+    global::api(&req, Some(object!{
         "exchange": body,
         "updated_value_list": {
             "card_list": user["card_list"].clone(),
@@ -37,5 +41,5 @@ pub fn exchange_post(req: HttpRequest, body: String) -> Option<JsonValue> {
             "point_list": user["point_list"].clone()
         },
         "clear_mission_ids": cleared_missions
-    })
+    }))
 }

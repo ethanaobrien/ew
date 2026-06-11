@@ -1,8 +1,13 @@
 use jzon::{JsonValue, object};
-use actix_web::HttpRequest;
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::encryption;
 use crate::router::{userdata, global};
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.route("/start", web::post().to(start));
+    cfg.route("/start/assetHash", web::post().to(asset_hash));
+}
 
 fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
     if global::get_player_region(&body["asset_version"].to_string()).is_none() {
@@ -20,15 +25,15 @@ fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
     global::get_asset_hash(&body["asset_version"].to_string(), platform).unwrap()
 }
 
-pub fn asset_hash(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn asset_hash(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    
-    Some(object!{
+
+    global::api(&req, Some(object!{
         "asset_hash": get_asset_hash(&req, &body)
-    })
+    }))
 }
 
-pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn start(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -39,8 +44,8 @@ pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user);
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "asset_hash": get_asset_hash(&req, &body),
         "token": hex::encode("Hello") //what is this?
-    })
+    }))
 }

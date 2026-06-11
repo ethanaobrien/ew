@@ -1,6 +1,7 @@
 use jzon::{array, object, JsonValue};
 use actix_web::{
     HttpResponse,
+    HttpRequest,
     http::header::{HeaderValue, HeaderMap}
 };
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -247,6 +248,26 @@ pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse 
     let resp = encrypted.into_bytes();
 
     HttpResponse::Ok().body(resp)
+}
+
+// Standard api response wrapper. None becomes the generic error response
+pub fn api(req: &HttpRequest, data: Option<JsonValue>) -> HttpResponse {
+    let blank_header = HeaderValue::from_static("");
+    let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
+    let rv = if let Some(data) = data {
+        object!{
+            "code": 0,
+            "server_time": timestamp(),
+            "data": data
+        }
+    } else {
+        object!{
+            "code": 4,
+            "server_time": timestamp(),
+            "message": ""
+        }
+    };
+    send(rv, uid, req.headers())
 }
 
 pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) -> bool {

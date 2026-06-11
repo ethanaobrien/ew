@@ -1,11 +1,20 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest};
+use actix_web::{web, HttpRequest, Responder};
 use lazy_static::lazy_static;
 
 use crate::router::{global, userdata, items};
 use crate::encryption;
 
-pub fn preset(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/home")
+            .route("", web::get().to(home))
+            .service(web::resource("/preset").route(web::get().to(preset_get)).route(web::post().to(preset)))
+            .route("/announcement", web::get().to(crate::router::user::announcement))
+    );
+}
+
+async fn preset(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc_home(&key);
@@ -16,8 +25,8 @@ pub fn preset(req: HttpRequest, body: String) -> Option<JsonValue> {
         }
     }
     userdata::save_acc_home(&key, user);
-    
-    Some(array![])
+
+    global::api(&req, Some(array![]))
 }
 
 fn check_gifts(user: &mut JsonValue) {
@@ -32,25 +41,25 @@ fn check_gifts(user: &mut JsonValue) {
     }
 }
 
-pub fn gift_get(req: HttpRequest) -> Option<JsonValue> {
+pub async fn gift_get(req: HttpRequest) -> impl Responder {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc_home(&key);
     check_gifts(&mut user);
-    
-    Some(object!{
+
+    global::api(&req, Some(object!{
         "gift_list": user["home"]["gift_list"].clone()
-    })
+    }))
 }
 
-pub fn preset_get(req: HttpRequest) -> Option<JsonValue> {
+async fn preset_get(req: HttpRequest) -> impl Responder {
     let key = global::get_login(req.headers(), "");
     let user = userdata::get_acc(&key);
-    
-    Some(object!{
+
+    global::api(&req, Some(object!{
         "master_preset_background_ids": [1,2,3,4,5],
         "master_preset_foreground_ids": [1,2,3],
         "card_list": user["card_list"].clone()
-    })
+    }))
 }
 
 
@@ -79,7 +88,7 @@ lazy_static! {
     };
 }
 
-pub fn home(req: HttpRequest) -> Option<JsonValue> {
+async fn home(req: HttpRequest) -> impl Responder {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc_home(&key);
     
@@ -123,6 +132,6 @@ pub fn home(req: HttpRequest) -> Option<JsonValue> {
 
     //todo
     user["home"]["beginner_mission_complete"] = 1.into();
-    
-    Some(user)
+
+    global::api(&req, Some(user))
 }

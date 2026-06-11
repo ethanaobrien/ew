@@ -1,5 +1,5 @@
 use jzon::{JsonValue, object, array};
-use actix_web::HttpRequest;
+use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 
 use crate::encryption;
@@ -8,6 +8,23 @@ use crate::router::{userdata, global, databases};
 
 // I believe(?) this is all?
 const STAR_EVENT_IDS: [u32; 3] = [127, 135, 139];
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/event")
+            .route("", web::post().to(event))
+            .route("/star_event", web::post().to(star_event))
+            .route("/set/member", web::post().to(set_member))
+            .route("/ranking", web::post().to(ranking))
+    );
+    cfg.service(
+        web::scope("/event_star_live")
+            .route("/start", web::post().to(crate::router::live::event_start))
+            .route("/change_target_music", web::post().to(change_target_music))
+            .route("/end", web::post().to(event_end))
+            .route("/skip", web::post().to(event_skip))
+    );
+}
 
 fn get_event_data(key: &str, event_id: u32) -> JsonValue {
     let mut event = userdata::get_acc_event(key);
@@ -97,7 +114,7 @@ fn init_star_event(event: &mut JsonValue) {
     switch_music(event, 5);
 }
 
-pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn event(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
@@ -142,10 +159,10 @@ pub fn event(req: HttpRequest, body: String) -> Option<JsonValue> {
         }
     }
 
-    Some(event)
+    global::api(&req, Some(event))
 }
 
-pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn star_event(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let user = userdata::get_acc(&key);
 
@@ -163,14 +180,14 @@ pub fn star_event(req: HttpRequest, body: String) -> Option<JsonValue> {
 
     save_event_data(&key, master_event_id, event.clone());
 
-    Some(object!{
+    global::api(&req, Some(object!{
         star_event: star_event,
         gift_list: [],
         reward_list: []
-    })
+    }))
 }
 
-pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn change_target_music(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
@@ -185,10 +202,10 @@ pub fn change_target_music(req: HttpRequest, body: String) -> Option<JsonValue> 
 
     save_event_data(&key, master_event_id, event.clone());
 
-    Some(event["star_event"].clone())
+    global::api(&req, Some(event["star_event"].clone()))
 }
 
-pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn set_member(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
 
     let body = &encryption::decrypt_packet(&body).unwrap();
@@ -205,9 +222,9 @@ pub fn set_member(req: HttpRequest, body: String) -> Option<JsonValue> {
 
     save_event_data(&key, master_event_id, event.clone());
 
-    Some(object!{
+    global::api(&req, Some(object!{
         event_member: event["member_ranking"].clone()
-    })
+    }))
 }
 
 fn get_rank(event: u32, user_id: u64) -> u32 {
@@ -223,7 +240,7 @@ fn get_rank(event: u32, user_id: u64) -> u32 {
     0
 }
 
-pub async fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn ranking(req: HttpRequest, body: String) -> impl Responder {
     let body = &encryption::decrypt_packet(&body).unwrap();
     let body = jzon::parse(&body).unwrap();
     let master_event_id = body["master_event_id"].as_u32().unwrap();
@@ -241,9 +258,9 @@ pub async fn ranking(_req: HttpRequest, body: String) -> Option<JsonValue> {
         }
     }
 
-    Some(object!{
+    global::api(&req, Some(object!{
         ranking_detail_list: rv
-    })
+    }))
 }
 
 const POINTS_PER_LEVEL: i64 = 65;
@@ -287,7 +304,7 @@ fn get_points(event_id: u32, user: &JsonValue) -> i64 {
     0
 }
 
-pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonValue> {
+fn event_live(req: &HttpRequest, body: String, skipped: bool) -> Option<JsonValue> {
     let key = global::get_login(req.headers(), &body);
     let body_temp = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let event_id = if skipped {
@@ -296,7 +313,7 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
         crate::router::live::get_end_live_event_id(&key, &body_temp)?
     };
 
-    let mut resp = crate::router::live::live_end(&req, &body, skipped);
+    let mut resp = crate::router::live::live_end(req, &body, skipped);
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut event = get_event_data(&key, event_id);
@@ -363,10 +380,10 @@ pub fn event_live(req: HttpRequest, body: String, skipped: bool) -> Option<JsonV
     Some(resp)
 }
 
-pub fn event_end(req: HttpRequest, body: String) -> Option<JsonValue> {
-    event_live(req, body, false)
+async fn event_end(req: HttpRequest, body: String) -> impl Responder {
+    global::api(&req, event_live(&req, body, false))
 }
 
-pub fn event_skip(req: HttpRequest, body: String) -> Option<JsonValue> {
-    event_live(req, body, true)
+async fn event_skip(req: HttpRequest, body: String) -> impl Responder {
+    global::api(&req, event_live(&req, body, true))
 }

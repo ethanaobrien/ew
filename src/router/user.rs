@@ -1,12 +1,31 @@
 use jzon::{array, object, JsonValue};
-use actix_web::{HttpRequest};
+use actix_web::{web, HttpRequest, Responder};
 use sha1::{Sha1, Digest};
 
 use crate::encryption;
 use crate::router::{userdata, global, items};
 use crate::include_file;
 
-pub fn deck(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/user")
+            .service(web::resource("").route(web::get().to(user)).route(web::post().to(user_post)))
+            .route("/initialize", web::post().to(initialize))
+            .route("/detail", web::post().to(detail))
+            .route("/getmigrationcode", web::post().to(get_migration_code))
+            .route("/registerpassword", web::post().to(register_password))
+            .route("/migration", web::post().to(migration))
+            .route("/gglrequestmigrationcode", web::post().to(request_migration_code))
+            .route("/gglverifymigrationcode", web::post().to(verify_migration_code))
+            .route("/getregisteredplatformlist", web::post().to(getregisteredplatformlist))
+            .route("/sif/migrate", web::post().to(sif_migrate))
+            .route("/ss/migrate", web::post().to(sifas_migrate))
+    );
+    cfg.route("/deck", web::post().to(deck));
+    cfg.route("/album/sif", web::get().to(sif));
+}
+
+async fn deck(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -29,26 +48,26 @@ pub fn deck(req: HttpRequest, body: String) -> Option<JsonValue> {
     }
     userdata::save_acc(&key, user.clone());
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "deck": {
             "slot": body["slot"].clone(),
             "leader_role": 0,
             "main_card_ids": body["main_card_ids"].clone()
         },
         "clear_mission_ids": []
-    })
+    }))
 }
 
-pub fn user(req: HttpRequest) -> Option<JsonValue> {
+async fn user(req: HttpRequest) -> impl Responder {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc(&key);
     
     user["lottery_list"] = array![];
     
-    Some(user)
+    global::api(&req, Some(user))
 }
 
-pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub async fn gift(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -93,7 +112,7 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc(&key, userr.clone());
     let userr = userdata::get_acc(&key);
 
-    Some(object!{
+    global::api(&req, Some(object!{
         "failed_gift_ids": failed,
         "updated_value_list": {
             "gem": userr["gem"].clone(),
@@ -103,10 +122,10 @@ pub fn gift(req: HttpRequest, body: String) -> Option<JsonValue> {
         },
         "clear_mission_ids": cleared_missions,
         "reward_list": rewards
-    })
+    }))
 }
 
-pub fn user_post(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn user_post(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
@@ -149,13 +168,13 @@ pub fn user_post(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
 
-    Some(object!{
+    global::api(&req, Some(object!{
         "user": user["user"].clone(),
         "clear_mission_ids": []
-    })
+    }))
 }
 
-pub fn announcement(req: HttpRequest) -> Option<JsonValue> {
+pub async fn announcement(req: HttpRequest) -> impl Responder {
     let key = global::get_login(req.headers(), "");
     
     let mut user = userdata::get_acc_home(&key);
@@ -164,22 +183,23 @@ pub fn announcement(req: HttpRequest) -> Option<JsonValue> {
     
     userdata::save_acc_home(&key, user);
     
-    Some(object!{
+    global::api(&req, Some(object!{
         new_announcement_flag: 0
-    })
+    }))
 }
 
-pub fn get_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn get_migration_code(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    
-    let code = userdata::user::migration::get_acc_token(body["user_id"].as_i64()?);
-    
-    Some(object!{
+
+    let Some(user_id) = body["user_id"].as_i64() else { return global::api(&req, None); };
+    let code = userdata::user::migration::get_acc_token(user_id);
+
+    global::api(&req, Some(object!{
         "migrationCode": code
-    })
+    }))
 }
 
-pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn register_password(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -187,49 +207,49 @@ pub fn register_password(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::user::migration::save_acc_transfer(user["user"]["id"].as_i64().unwrap(), &body["pass"].to_string());
     
-    Some(array![])
+    global::api(&req, Some(array![]))
 }
 
-pub fn verify_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn verify_migration_code(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
-        return None;
+        return global::api(&req, None);
     }
-    
+
     let data_user = userdata::get_acc(&user["login_token"].to_string());
-    
-    Some(object!{
+
+    global::api(&req, Some(object!{
         "user_id": user["user_id"].clone(),
         "uuid": user["login_token"].to_string(),
         "charge": data_user["gem"]["charge"].clone(),
         "free": data_user["gem"]["free"].clone()
-    })
+    }))
 }
-pub fn request_migration_code(_req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn request_migration_code(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
-        return None;
+        return global::api(&req, None);
     }
-    
-    Some(object!{
+
+    global::api(&req, Some(object!{
         "twxuid": user["login_token"].to_string()
-    })
+    }))
 }
-pub fn migration(_req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn migration(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    
+
     let user = userdata::get_name_and_rank(body["user_id"].to_string().parse::<i64>().unwrap());
-    
-    Some(user)
+
+    global::api(&req, Some(user))
 }
 
-pub fn detail(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn detail(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let friends = userdata::get_acc_friends(&key);
@@ -240,12 +260,12 @@ pub fn detail(req: HttpRequest, body: String) -> Option<JsonValue> {
         let user = global::get_user(uid, &friends, true);
         user_detail_list.push(user).unwrap();
     }
-    Some(object!{
+    global::api(&req, Some(object!{
         user_detail_list: user_detail_list
-    })
+    }))
 }
 
-pub fn sif(req: HttpRequest) -> Option<JsonValue> {
+async fn sif(req: HttpRequest) -> impl Responder {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc(&key);
     let mut cards = userdata::get_acc_sif(&key);
@@ -259,18 +279,18 @@ pub fn sif(req: HttpRequest) -> Option<JsonValue> {
         userdata::save_acc(&key, user);
     }
     
-    Some(object!{
+    global::api(&req, Some(object!{
         cards: cards
-    })
+    }))
 }
 
-pub fn sifas_migrate(_req: HttpRequest, _body: String) -> Option<JsonValue> {
-    Some(object!{
+async fn sifas_migrate(req: HttpRequest, _body: String) -> impl Responder {
+    global::api(&req, Some(object!{
         "ss_migrate_status": 1,
         "user": null,
         "gift_list": null,
         "lock_remain_time": null
-    })
+    }))
 }
 
 fn _a_sha1(t: &str) -> String {
@@ -315,7 +335,7 @@ fn clean_sif_data(current: &JsonValue) -> JsonValue {
     rv
 }
 
-pub async fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn sif_migrate(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
@@ -323,9 +343,9 @@ pub async fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
     let id = generate_passcode_sha1(body["sif_user_id"].to_string(), body["password"].to_string());
     let user_info = npps4_req(id).await;
     if user_info.is_none() {
-        return Some(object!{
+        return global::api(&req, Some(object!{
             sif_migrate_status: 38
-        });
+        }));
     }
     let user_info = user_info.unwrap();
 
@@ -338,23 +358,23 @@ pub async fn sif_migrate(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_sif(&key, clean_sif_data(&user_info["units"]));
     userdata::save_acc(&key, user.clone());
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "sif_migrate_status": 0,
         "user": user["user"].clone(),
         "master_title_ids": user["master_title_ids"].clone()
-    })
+    }))
 
 }
 
-pub fn getregisteredplatformlist(_req: HttpRequest, _body: String) -> Option<JsonValue> {
-    Some(object!{
+async fn getregisteredplatformlist(req: HttpRequest, _body: String) -> impl Responder {
+    global::api(&req, Some(object!{
         "google": 0,
         "apple": 0,
         "twitter": 0
-    })
+    }))
 }
 
-pub fn initialize(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn initialize(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     
@@ -394,7 +414,7 @@ pub fn initialize(req: HttpRequest, body: String) -> Option<JsonValue> {
         cardstoreward = array![40010001, 40020001, 40030001, 40040001, 40050001, 40060001, 40070001, 40080001, 40090001]; //liella
         masterid += 9 + 9 + 12; //nijigasaki
     } else {
-        return None;
+        return global::api(&req, None);
     }
     masterid += userr;
     
@@ -415,6 +435,6 @@ pub fn initialize(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_home(&key, user2);
     userdata::save_acc_missions(&key, missions);
-    
-    Some(user["user"].clone())
+
+    global::api(&req, Some(user["user"].clone()))
 }

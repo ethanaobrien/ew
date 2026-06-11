@@ -1,8 +1,17 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest};
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{userdata, global, items, databases};
 use crate::encryption;
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/card")
+            .route("/reinforce", web::post().to(reinforce))
+            .route("/skill/reinforce", web::post().to(skill_reinforce))
+            .route("/evolve", web::post().to(evolve))
+    );
+}
 
 // Chats will only ever be used when evolving
 fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_multiplier: i64, evolve: bool, missions: &mut JsonValue, chats: &mut JsonValue, clear_mission_ids: &mut JsonValue) -> JsonValue {
@@ -52,7 +61,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
     object!{}
 }
 
-pub fn reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn reinforce(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -62,15 +71,15 @@ pub fn reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     
-    Some(object!{
+    global::api(&req, Some(object!{
         card: card,
         item_list: user["item_list"].clone(),
         point_list: user["point_list"].clone(),
         clear_mission_ids: clear_mission_ids
-    })
+    }))
 }
 
-pub fn skill_reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn skill_reinforce(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -80,15 +89,15 @@ pub fn skill_reinforce(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     
-    Some(object!{
+    global::api(&req, Some(object!{
         card: card,
         item_list: user["item_list"].clone(),
         point_list: user["point_list"].clone(),
         clear_mission_ids: clear_mission_ids
-    })
+    }))
 }
 
-pub fn evolve(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn evolve(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -102,10 +111,10 @@ pub fn evolve(req: HttpRequest, body: String) -> Option<JsonValue> {
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions);
     
-    Some(object!{
+    global::api(&req, Some(object!{
         card: card,
         item_list: user["item_list"].clone(),
         point_list: user["point_list"].clone(),
         clear_mission_ids: clear_mission_ids
-    })
+    }))
 }

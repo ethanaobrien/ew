@@ -1,8 +1,17 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest};
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{global, items, userdata, databases};
 use crate::encryption;
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/chat")
+            .route("/home", web::post().to(home))
+            .route("/talk/start", web::post().to(start))
+            .route("/talk/end", web::post().to(end))
+    );
+}
 
 pub fn add_chat(id: i64, num: i64, chats: &mut JsonValue) -> bool {
     for data in chats.members() {
@@ -29,7 +38,7 @@ pub fn add_chat_from_chapter_id(chapter_id: i64, chats: &mut JsonValue) -> bool 
     add_chat(chapter["masterChatId"].as_i64().unwrap(), chapter["roomId"].as_i64().unwrap(), chats)
 }
 
-pub fn home(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn home(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let chats = userdata::get_acc_chats(&key);
     
@@ -38,19 +47,19 @@ pub fn home(req: HttpRequest, body: String) -> Option<JsonValue> {
         rooms.push(databases::CHATS[data["chat_id"].to_string()][data["room_id"].to_string()]["id"].clone()).unwrap();
     }
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "progress_list": chats,
         "master_chat_room_ids": rooms,
         "master_chat_stamp_ids": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,43,44,45,46,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,11001003,22001001,33001001,44001002],
         "master_chat_attachment_ids": []
-    })
+    }))
 }
 
-pub fn start(_req: HttpRequest, _body: String) -> Option<JsonValue> {
-    Some(object!{"select_talk_id_list":[],"get_item_list":[],"is_read":0})
+async fn start(req: HttpRequest, _body: String) -> impl Responder {
+    global::api(&req, Some(object!{"select_talk_id_list":[],"get_item_list":[],"is_read":0}))
 }
 
-pub fn end(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn end(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut missions = userdata::get_acc_missions(&key);
@@ -68,5 +77,5 @@ pub fn end(req: HttpRequest, body: String) -> Option<JsonValue> {
         }
     }
     
-    Some(array![])
+    global::api(&req, Some(array![]))
 }

@@ -1,9 +1,14 @@
-use jzon::{object, JsonValue};
-use actix_web::{HttpRequest};
+use jzon::object;
+use actix_web::{web, HttpRequest, Responder};
 
+use crate::router::global;
 
-pub fn purchase(_req: HttpRequest) -> Option<JsonValue> {
-    Some(object!{
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.route("/purchase", web::get().to(purchase));
+}
+
+async fn purchase(req: HttpRequest) -> impl Responder {
+    global::api(&req, Some(object!{
         "product_list": [//Client will error if this is an empty array
             {
                 "product_id": "com.bushiroad.global.lovelive.sif2.google.promo.4199",
@@ -29,5 +34,5 @@ pub fn purchase(_req: HttpRequest) -> Option<JsonValue> {
                 "total_gem": 6000
             }
         ]
-    })
+    }))
 }

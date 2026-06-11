@@ -1,19 +1,27 @@
-use jzon::{object, JsonValue};
-use actix_web::{HttpRequest};
+use jzon::{object};
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{userdata, global, items, databases};
 use crate::encryption;
 
-pub fn shop(req: HttpRequest) -> Option<JsonValue> {
-    let key = global::get_login(req.headers(), "");
-    let user = userdata::get_acc(&key);
-    
-    Some(object!{
-        "shop_list": user["shop_list"].clone()
-    })
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/shop")
+            .route("", web::get().to(shop))
+            .route("/buy", web::post().to(buy))
+    );
 }
 
-pub fn buy(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn shop(req: HttpRequest) -> impl Responder {
+    let key = global::get_login(req.headers(), "");
+    let user = userdata::get_acc(&key);
+
+    global::api(&req, Some(object!{
+        "shop_list": user["shop_list"].clone()
+    }))
+}
+
+async fn buy(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -27,12 +35,12 @@ pub fn buy(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "gem": user["gem"].clone(),
         "shop_list": user["shop_list"].clone(),
         "gift_list": user_home["home"]["gift_list"].clone(),
         "updated_value_list": {
             "stamina": user["stamina"].clone()
         }
-    })
+    }))
 }

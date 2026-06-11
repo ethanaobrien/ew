@@ -1,5 +1,5 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest};
+use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 use lazy_static::lazy_static;
 
@@ -7,25 +7,41 @@ use crate::router::{global, userdata, items, databases};
 use crate::encryption;
 use crate::router::clear_rate::live_completed;
 
-pub fn retire(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::scope("/live")
+            .route("/guest", web::post().to(guest))
+            .route("/mission", web::post().to(mission))
+            .route("/ranking", web::post().to(crate::router::clear_rate::ranking))
+            .route("/clearRate", web::get().to(crate::router::clear_rate::clearrate))
+            .route("/start", web::post().to(start))
+            .route("/end", web::post().to(end))
+            .route("/skip", web::post().to(skip))
+            .route("/retire", web::post().to(retire))
+            .route("/continue", web::post().to(continuee))
+            .route("/reward", web::post().to(reward))
+    );
+}
+
+async fn retire(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     live_retire(&key, &body);
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
     }
-    Some(object!{
+    global::api(&req, Some(object!{
         "stamina": {},
         "item_list": [],
         "event_point_list": []
-    })
+    }))
 }
 
-pub fn reward(_req: HttpRequest, _body: String) -> Option<JsonValue> {
-    Some(object!{
+async fn reward(req: HttpRequest, _body: String) -> impl Responder {
+    global::api(&req, Some(object!{
         "ensured_list": [],
         "random_list": []
-    })
+    }))
 }
 
 fn random_number(lowest: usize, highest: usize) -> usize {
@@ -37,7 +53,7 @@ fn random_number(lowest: usize, highest: usize) -> usize {
     rand::rng().random_range(lowest..highest + 1)
 }
 
-pub fn guest(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn guest(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
@@ -161,18 +177,18 @@ pub fn guest(req: HttpRequest, body: String) -> Option<JsonValue> {
         }
     }
     
-    Some(object!{
+    global::api(&req, Some(object!{
         "guest_list": guest_list
-    })
+    }))
 }
 
-pub fn mission(_req: HttpRequest, _body: String) -> Option<JsonValue> {
+async fn mission(req: HttpRequest, _body: String) -> impl Responder {
     //todo
-    Some(object!{
+    global::api(&req, Some(object!{
         "score_ranking": "",
         "combo_ranking": "",
         "clear_count_ranking": ""
-    })
+    }))
 }
 
 fn check_for_stale_data(server_data: &mut JsonValue, live_id: i64) {
@@ -236,18 +252,21 @@ fn start_live(login_token: &str, body: &JsonValue) {
     userdata::save_server_data(login_token, server_data);
 }
 
-pub fn start(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn start(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     start_live(&key, &body);
-    Some(array![])
+    global::api(&req, Some(array![]))
 }
 
-pub fn event_start(req: HttpRequest, body: String) -> Option<JsonValue> {
-    start(req, body)
+pub async fn event_start(req: HttpRequest, body: String) -> impl Responder {
+    let key = global::get_login(req.headers(), &body);
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    start_live(&key, &body);
+    global::api(&req, Some(array![]))
 }
 
-pub fn continuee(req: HttpRequest, body: String) -> Option<JsonValue> {
+async fn continuee(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let mut user = userdata::get_acc(&key);
     
@@ -255,9 +274,9 @@ pub fn continuee(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     
-    Some(object!{
+    global::api(&req, Some(object!{
         gem: user["gem"].clone()
-    })
+    }))
 }
 
 fn get_clear_count(id: i64, user: &JsonValue) -> i64 {
@@ -652,10 +671,10 @@ pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     }
 }
 
-pub fn end(req: HttpRequest, body: String) -> Option<JsonValue> {
-    Some(live_end(&req, &body, false))
+async fn end(req: HttpRequest, body: String) -> impl Responder {
+    global::api(&req, Some(live_end(&req, &body, false)))
 }
 
-pub fn skip(req: HttpRequest, body: String) -> Option<JsonValue> {
-    Some(live_end(&req, &body, true))
+async fn skip(req: HttpRequest, body: String) -> impl Responder {
+    global::api(&req, Some(live_end(&req, &body, true)))
 }

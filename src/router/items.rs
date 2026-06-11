@@ -1,6 +1,6 @@
 use jzon::{array, object, JsonValue};
 use rand::RngExt;
-use actix_web::{HttpRequest, http::header::{HeaderMap, HeaderValue}};
+use actix_web::{web, HttpRequest, Responder, http::header::{HeaderMap, HeaderValue}};
 use crate::encryption;
 
 use crate::router::{userdata, global, databases};
@@ -511,7 +511,11 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     rv
 }
 
-pub fn use_item_req(req: HttpRequest, body: String) -> Option<JsonValue> {
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.route("/item/use", web::post().to(use_item_req));
+}
+
+async fn use_item_req(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
@@ -532,8 +536,8 @@ pub fn use_item_req(req: HttpRequest, body: String) -> Option<JsonValue> {
     
     userdata::save_acc(&key, user.clone());
     
-    Some(object!{
+    global::api(&req, Some(object!{
         item_list: user["item_list"].clone(),
         stamina: user["stamina"].clone()
-    })
+    }))
 }
