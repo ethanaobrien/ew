@@ -16,12 +16,6 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Set up QEMU
-        id: qemu
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: arm64
-
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3
@@ -61,8 +55,5 @@ jobs:
             docker.io/ethanaobrien/ew:${{ env.APP_VERSION }}
           file: "docker/Dockerfile"
           platforms: linux/amd64, linux/arm64
-
-          # arm64 builds OOM without the git fetch setting. c.f.
-          # https://github.com/rust-lang/cargo/issues/10583
-          build-args: |
-            CARGO_NET_GIT_FETCH_WITH_CLI=true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
