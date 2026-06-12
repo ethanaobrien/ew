@@ -13,8 +13,19 @@ services:
       HIDDEN: false # Will disable the webui
       DISABLE_IMPORTS: false # Will disable account imports
       DISABLE_EXPORTS: false # Will disable account exports
+      #PURGE: false # Purge dead user accounts on startup
       #IMAGE_ASSET_PATH: /images/ # Images for cards in webui (will default to the public server)
       #MASTERDATA: /masterdata/ # Override bundled asset lists / CSVs / new_user.json at runtime (missing files fall back to the internal copies)
+
+      # Asset hash / version overrides. Leave unset to use the values bundled in
+      # the binary; set one to make the server report a different hash/version
+      # to that client (e.g. to track a newer client build).
+      #JP_ANDROID_ASSET_HASH: ""
+      #JP_IOS_ASSET_HASH: ""
+      #EN_ANDROID_ASSET_HASH: ""
+      #EN_IOS_ASSET_HASH: ""
+      #WINDOWS_ASSET_VERSION: "" # Windows asset version (JP only; GL Windows is unused)
+      #WINDOWS_ASSET_HASH: ""    # Windows asset hash (JP only)
 
       # Everything below is for the "Help" page
       #ANDROID_GLOBAL: "link.to/patched/android/global.apk"

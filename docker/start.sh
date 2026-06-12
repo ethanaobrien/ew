@@ -1,32 +1,43 @@
 #!/bin/bash
+set -euo pipefail
 
-port="${PORT:-8080}"
-directory="${DIRECTORY:-/data/}"
+args=(
+  --path  "${DIRECTORY:-/data/}"
+  --port  "${PORT:-8080}"
+  --npps4 "${NPPS4_ADDRESS:-http://127.0.0.1:51376}"
+  --max-time "${MAXTIME:-0}"
+)
 
-npps4="${NPPS4_ADDRESS:-http://127.0.0.1:51376}"
+[ "${HTTPS:-}" = "true" ]           && args+=(--https)
+[ "${HIDDEN:-}" = "true" ]          && args+=(--hidden)
+[ "${PURGE:-}" = "true" ]           && args+=(--purge)
+[ "${DISABLE_IMPORTS:-}" = "true" ] && args+=(--disable-imports)
+[ "${DISABLE_EXPORTS:-}" = "true" ] && args+=(--disable-exports)
 
-https=$([ "$HTTPS" = "true" ] && echo "--https" || echo "")
+add_opt() {
+  local value="$1" flag="$2"
+  if [ -n "$value" ]; then
+    args+=("$flag" "$value")
+  fi
+}
 
-hidden=$([ "$HIDDEN" = "true" ] && echo "--hidden" || echo "")
+# Asset hash / version overrides
+add_opt "${JP_ANDROID_ASSET_HASH:-}" --jp-android-asset-hash
+add_opt "${JP_IOS_ASSET_HASH:-}"     --jp-ios-asset-hash
+add_opt "${EN_ANDROID_ASSET_HASH:-}" --en-android-asset-hash
+add_opt "${EN_IOS_ASSET_HASH:-}"     --en-ios-asset-hash
+add_opt "${WINDOWS_ASSET_VERSION:-}" --windows-asset-version
+add_opt "${WINDOWS_ASSET_HASH:-}"    --windows-asset-hash
 
-maxTime="${MAXTIME:-0}"
+# Asset / image paths.
+add_opt "${IMAGE_ASSET_PATH:-}" --image-asset-path
+add_opt "${MASTERDATA:-}"       --masterdata
 
-purge=$([ "$PURGE" = "true" ] && echo "--purge" || echo "")
+# "Help" page download links + asset server.
+add_opt "${ANDROID_GLOBAL:-}" --global-android
+add_opt "${ANDROID_JAPAN:-}"  --japan-android
+add_opt "${IOS_GLOBAL:-}"     --global-ios
+add_opt "${IOS_JAPAN:-}"      --japan-ios
+add_opt "${ASSET_URL:-}"      --assets-url
 
-imports=$([ "$DISABLE_IMPORTS" = "true" ] && echo "--disable-imports" || echo "")
-
-exports=$([ "$DISABLE_EXPORTS" = "true" ] && echo "--disable-exports" || echo "")
-
-asset_android_jp=$([ "$JP_ANDROID_ASSET_HASH" != "" ] && echo "--jp-android-asset-hash $JP_ANDROID_ASSET_HASH" || echo "")
-
-asset_ios_jp=$([ "$JP_IOS_ASSET_HASH" != "" ] && echo "--jp-ios-asset-hash $JP_IOS_ASSET_HASH" || echo "")
-
-asset_android_en=$([ "$EN_ANDROID_ASSET_HASH" != "" ] && echo "--en-android-asset-hash $EN_ANDROID_ASSET_HASH" || echo "")
-
-asset_ios_en=$([ "$EN_IOS_ASSET_HASH" != "" ] && echo "--en-ios-asset-hash $EN_IOS_ASSET_HASH" || echo "")
-
-image_asset_path=$([ "$IMAGE_ASSET_PATH" != "" ] && echo "--image-asset-path $IMAGE_ASSET_PATH" || echo "")
-
-masterdata=$([ "$MASTERDATA" != "" ] && echo "--masterdata $MASTERDATA" || echo "")
-
-/root/ew/ew --path $directory --port $port --npps4 $npps4 $asset_android_jp $asset_ios_jp $asset_android_en $asset_ios_en $exports $imports $purge $hidden $https $image_asset_path $masterdata --global-android "$ANDROID_GLOBAL"  --japan-android "$ANDROID_JAPAN"  --global-ios "$IOS_GLOBAL"  --japan-ios "$IOS_JAPAN" --assets-url "$ASSET_URL" --max-time $maxTime
+exec /root/ew/ew "${args[@]}"
