@@ -1,8 +1,9 @@
-use jni::{Env, EnvUnowned};
-use jni::objects::{JClass, JString};
-use jni::sys::jstring;
-use jni::errors::ThrowRuntimeExAndDefault;
+use jni::JNIEnv;
+use jni::objects::{JClass};
+use jni::sys::{jstring, jboolean};
 use std::thread;
+use std::sync::Once;
+use jni::objects::JString;
 use crate::{run_server, stop_server};
 use std::os::raw::c_char;
 
@@ -26,52 +27,50 @@ macro_rules! log_to_logcat {
     };
 }
 
+static ANDROID_INIT: Once = Once::new();
+
+// Install a panic hook once so Rust panics surface in logcat instead of being
+// silently swallowed at the JNI boundary.
+fn android_init() {
+    ANDROID_INIT.call_once(|| {
+        std::panic::set_hook(Box::new(|info| {
+            log_to_logcat!("ew", "PANIC: {}", info);
+        }));
+    });
+}
+
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_one_ethanthesleepy_androidew_BackgroundService_startServer<'local>(
-    mut unowned_env: EnvUnowned<'local>,
+extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_startServer<'local>(
+    mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     data_path: JString<'local>,
-    easter: bool,
+    easter: jboolean
 ) -> jstring {
-    crate::runtime::set_easter_mode(easter);
+    android_init();
+    crate::runtime::set_easter_mode(easter != 0);
 
-    unowned_env
-        .with_env(|env: &mut Env<'local>| -> jni::errors::Result<jstring> {
-            let data_path: String = data_path.to_string();
-            crate::runtime::update_data_path(&data_path);
+    let data_path: String = env.get_string(&data_path).unwrap().into();
+    crate::runtime::update_data_path(&data_path);
 
-            let output = JString::from_str(env, "Azunyannnn~")?;
-
-            thread::spawn(|| {
-                run_server(true).unwrap();
-            });
-            log_to_logcat!("ew", "running");
-
-            Ok(output.into_raw())
-        })
-        .resolve::<ThrowRuntimeExAndDefault>()
+    let output = env.new_string(String::from("Azunyannnn~")).unwrap();
+    thread::spawn(|| {
+        run_server(true).unwrap();
+    });
+    log_to_logcat!("ew", "running");
+    output.into_raw()
 }
 
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_one_ethanthesleepy_androidew_BackgroundService_stopServer<'local>(
-    mut unowned_env: EnvUnowned<'local>,
-    _class: JClass<'local>,
-) -> jstring {
+extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_stopServer<'local>(env: JNIEnv<'local>, _class: JClass<'local>) -> jstring {
+    android_init();
     stop_server();
-
-    unowned_env
-        .with_env(|env: &mut Env<'local>| -> jni::errors::Result<jstring> {
-            let output = JString::from_str(env, "I like Yui!")?;
-            Ok(output.into_raw())
-        })
-        .resolve::<ThrowRuntimeExAndDefault>()
+    let output = env.new_string(String::from("I like Yui!")).unwrap();
+    output.into_raw()
 }
 
+
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_one_ethanthesleepy_androidew_BackgroundService_setEasterMode<'local>(
-    _unowned_env: EnvUnowned<'local>,
-    _class: JClass<'local>,
-    easter: bool,
-) {
-    crate::runtime::set_easter_mode(easter);
+extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_setEasterMode<'local>(_env: JNIEnv<'local>, _class: JClass<'local>, easter: jboolean) {
+    android_init();
+    crate::runtime::set_easter_mode(easter != 0);
 }
