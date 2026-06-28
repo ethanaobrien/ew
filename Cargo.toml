@@ -47,6 +47,6 @@ cc = "1.2"
 [features]
 library = ["jni", "objc2", "objc2-foundation"]
 
-[lib]
-crate-type = ["cdylib"]
-required-features = ["library"]
+#[lib]
+#crate-type = ["cdylib"]
+#required-features = ["library"]
