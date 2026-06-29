@@ -76,5 +76,7 @@ pub struct Args {
 }
 
 pub fn get_args() -> Args {
-    Args::parse()
+    let mut args = Args::parse();
+    crate::runtime::overlay_args(&mut args);
+    args
 }

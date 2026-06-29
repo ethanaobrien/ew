@@ -11,6 +11,18 @@ lazy_static! {
     static ref MASTERDATA_WARNED: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
     static ref MOD_PATHS: RwLock<Vec<String>> = RwLock::new(Vec::new());
     static ref EASTER: RwLock<bool> = RwLock::new(false);
+    static ref HOST_CONFIG: RwLock<HostConfig> = RwLock::new(HostConfig::default());
+}
+
+// This is used by an embedding app in lib mode
+#[derive(Default, Clone)]
+pub struct HostConfig {
+    pub assets_url: String,
+    pub npps4: String,
+    pub max_time: u64,
+    pub port: u16,
+    pub jp_android_asset_hash: String,
+    pub en_android_asset_hash: String,
 }
 
 pub fn set_running(running: bool) {
@@ -115,4 +127,51 @@ pub fn read_mod_files(rel_path: &str) -> Vec<(String, Vec<u8>)> {
         }
     }
     out
+}
+
+pub fn apply_config_json(json: &str) {
+    let parsed = match jzon::parse(json) {
+        Ok(p) => p,
+        Err(e) => {
+            println!("Ignoring invalid host config json: {}", e);
+            return;
+        }
+    };
+
+    if let Some(v) = parsed["dataPath"].as_str() {
+        if !v.is_empty() {
+            update_data_path(v);
+        }
+    }
+    set_easter_mode(parsed["easterMode"].as_bool().unwrap_or(false));
+
+    let s = |key: &str| parsed[key].as_str().unwrap_or("").to_string();
+    let mut cfg = HOST_CONFIG.write().unwrap();
+    cfg.assets_url = s("assetsUrl");
+    cfg.npps4 = s("npps4");
+    cfg.max_time = parsed["maxTime"].as_u64().unwrap_or(0);
+    cfg.port = parsed["port"].as_u64().unwrap_or(0) as u16;
+    cfg.jp_android_asset_hash = s("jpAndroidAssetHash");
+    cfg.en_android_asset_hash = s("enAndroidAssetHash");
+}
+
+pub fn overlay_args(args: &mut crate::options::Args) {
+    let cfg = HOST_CONFIG.read().unwrap();
+    macro_rules! overlay_str {
+        ($field:ident) => {
+            if !cfg.$field.is_empty() {
+                args.$field = cfg.$field.clone();
+            }
+        };
+    }
+    overlay_str!(assets_url);
+    overlay_str!(npps4);
+    if cfg.max_time != 0 {
+        args.max_time = cfg.max_time;
+    }
+    if cfg.port != 0 {
+        args.port = cfg.port;
+    }
+    overlay_str!(jp_android_asset_hash);
+    overlay_str!(en_android_asset_hash);
 }

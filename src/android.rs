@@ -1,6 +1,6 @@
 use jni::JNIEnv;
 use jni::objects::{JClass};
-use jni::sys::{jstring, jboolean};
+use jni::sys::jstring;
 use std::thread;
 use std::sync::Once;
 use jni::objects::JString;
@@ -43,14 +43,12 @@ fn android_init() {
 extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_startServer<'local>(
     mut env: JNIEnv<'local>,
     _class: JClass<'local>,
-    data_path: JString<'local>,
-    easter: jboolean
+    config: JString<'local>,
 ) -> jstring {
     android_init();
-    crate::runtime::set_easter_mode(easter != 0);
 
-    let data_path: String = env.get_string(&data_path).unwrap().into();
-    crate::runtime::update_data_path(&data_path);
+    let config: String = env.get_string(&config).unwrap().into();
+    crate::runtime::apply_config_json(&config);
 
     let output = env.new_string(String::from("Azunyannnn~")).unwrap();
     thread::spawn(|| {
@@ -70,7 +68,12 @@ extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_stopServer<'lo
 
 
 #[unsafe(no_mangle)]
-extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_setEasterMode<'local>(_env: JNIEnv<'local>, _class: JClass<'local>, easter: jboolean) {
+extern "C" fn Java_one_ethanthesleepy_androidew_BackgroundService_updateConfig<'local>(
+    mut env: JNIEnv<'local>,
+    _class: JClass<'local>,
+    config: JString<'local>,
+) {
     android_init();
-    crate::runtime::set_easter_mode(easter != 0);
+    let config: String = env.get_string(&config).unwrap().into();
+    crate::runtime::apply_config_json(&config);
 }
