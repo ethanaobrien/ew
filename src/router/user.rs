@@ -1,10 +1,11 @@
 use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
-use sha1::{Sha1, Digest};
+use sha1::{Digest, Sha1};
 
 use crate::encryption;
-use crate::router::{userdata, global, items};
+use crate::router::{global, items, userdata};
 use crate::include_file;
+use crate::router::tools::guest;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -262,7 +263,7 @@ async fn detail(req: HttpRequest, body: String) -> impl Responder {
     let mut user_detail_list = array![];
     for data in body["user_ids"].members() {
         let uid = data.as_i64().unwrap();
-        let user = global::get_user(uid, &friends, true);
+        let user = guest::get_user(uid, &friends, guest::UserView::Detail);
         user_detail_list.push(user).unwrap();
     }
     global::api(&req, Some(object!{

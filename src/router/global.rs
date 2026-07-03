@@ -1,15 +1,15 @@
 use jzon::{array, object, JsonValue};
 use actix_web::{
-    HttpResponse,
+    http::header::{HeaderMap, HeaderValue},
     HttpRequest,
-    http::header::{HeaderValue, HeaderMap}
+    HttpResponse
 };
 use std::time::{SystemTime, UNIX_EPOCH};
-use base64::{Engine as _, engine::general_purpose};
+use base64::{engine::general_purpose, Engine as _};
 use uuid::Uuid;
 
 use crate::encryption;
-use crate::router::{userdata, items};
+use crate::router::{items, userdata};
 use crate::database::gree;
 use crate::runtime::get_easter_mode;
 
@@ -250,7 +250,6 @@ pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse 
     HttpResponse::Ok().body(resp)
 }
 
-// Standard api response wrapper. None becomes the generic error response
 pub fn api(req: &HttpRequest, data: Option<JsonValue>) -> HttpResponse {
     let blank_header = HeaderValue::from_static("");
     let uid = req.headers().get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0);
@@ -300,7 +299,7 @@ pub fn get_card(id: i64, user: &JsonValue) -> JsonValue {
     object!{}
 }
 
-fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
+pub(crate) fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
     let mut rv = array![];
     for data in arr.members() {
         let to_push = get_card(data.as_i64().unwrap_or(0), user);
@@ -309,84 +308,5 @@ fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
         }
         rv.push(to_push).unwrap();
     }
-    rv
-}
-
-fn get_clear_count(user: &JsonValue, level: i32) -> i64 {
-    let mut rv = 0;
-    for current in user["live_list"].members() {
-        if current["level"] == level {
-            rv += 1;
-        }
-    }
-    rv
-}
-
-fn get_full_combo_count(user: &JsonValue, level: i32) -> i64 {
-    let mut rv = 0;
-    for current in user["live_mission_list"].members() {
-        if current["clear_master_live_mission_ids"].contains(20 + level) {
-            rv += 1;
-        }
-    }
-    rv
-}
-
-fn get_perfect_count(user: &JsonValue, level: i32) -> i64 {
-    let mut rv = 0;
-    for current in user["live_mission_list"].members() {
-        if current["clear_master_live_mission_ids"].contains(40 + level) {
-            rv += 1;
-        }
-    }
-    rv
-}
-
-pub fn get_user(id: i64, friends: &JsonValue, live_data: bool) -> JsonValue {
-    let user = userdata::get_acc_from_uid(id);
-    if !user["error"].is_empty() {
-        return object!{};
-    }
-    
-    let mut rv = object!{
-        user: user["user"].clone(),
-        main_deck_detail: {
-            total_power: 0, //how to calculate?
-            deck: user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1].clone(),
-            card_list: get_cards(user["deck_list"][user["user"]["main_deck_slot"].as_usize().unwrap_or(1) - 1]["main_card_ids"].clone(), &user)
-        },
-        favorite_card: get_card(user["user"]["favorite_master_card_id"].as_i64().unwrap_or(0), &user),
-        guest_smile_card: get_card(user["user"]["guest_smile_master_card_id"].as_i64().unwrap_or(0), &user),
-        guest_cool_card: get_card(user["user"]["guest_cool_master_card_id"].as_i64().unwrap_or(0), &user),
-        guest_pure_card: get_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user),
-        master_title_ids: user["user"]["master_title_ids"].clone()
-    };
-    if live_data {
-        rv["live_data_summary"] = object!{
-            clear_count_list: [get_clear_count(&user, 1), get_clear_count(&user, 2), get_clear_count(&user, 3), get_clear_count(&user, 4)],
-            full_combo_list: [get_full_combo_count(&user, 1), get_full_combo_count(&user, 2), get_full_combo_count(&user, 3), get_full_combo_count(&user, 4)],
-            all_perfect_list: [get_perfect_count(&user, 1), get_perfect_count(&user, 2), get_perfect_count(&user, 3), get_perfect_count(&user, 4)],
-            high_score_rate: {
-                rate: 0,
-                detail: []
-            }
-        };
-    }
-    rv["user"].remove("sif_user_id");
-    rv["user"].remove("ss_user_id");
-    rv["user"].remove("birthday");
-    
-    if !friends.is_empty() {
-        rv["status"] = if friends["friend_user_id_list"].contains(id) {
-            3
-        } else if friends["pending_user_id_list"].contains(id) {
-            2
-        } else if friends["request_user_id_list"].contains(id) {
-            1
-        } else {
-            0
-        }.into();
-    }
-    
     rv
 }

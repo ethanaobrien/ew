@@ -30,6 +30,7 @@ pub mod location;
 pub mod event_ranking;
 pub mod asset_lists;
 mod master_data;
+mod tools;
 
 use actix_web::{
     HttpResponse,

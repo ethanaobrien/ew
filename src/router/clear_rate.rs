@@ -1,13 +1,14 @@
-use jzon::{object, array, JsonValue};
-use actix_web::{HttpRequest, HttpResponse, Responder, http::header::ContentType};
+use jzon::{array, object, JsonValue};
+use actix_web::{http::header::ContentType, HttpRequest, HttpResponse, Responder};
 use rusqlite::params;
 use std::sync::Mutex;
 use lazy_static::lazy_static;
 
 use crate::encryption;
 use crate::sql::SQLite;
-use crate::router::{global, databases};
+use crate::router::{databases, global};
 use crate::include_file;
+use crate::router::tools::guest;
 
 trait SqlClearRate {
     fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error>;
@@ -243,7 +244,7 @@ pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {
     let mut rank = array![];
     
     for (i, data) in scores.members().enumerate() {
-        let user = global::get_user(data["user"].as_i64().unwrap(), &object![], false);
+        let user = guest::get_user(data["user"].as_i64().unwrap(), &object![], guest::UserView::Ranking);
         rank.push(object!{
             rank: i + 1,
             user: user["user"].clone(),

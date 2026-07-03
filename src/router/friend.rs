@@ -1,8 +1,9 @@
-use jzon::{object, array};
+use jzon::{array, object};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{userdata, global};
+use crate::router::{global, userdata};
 use crate::encryption;
+use crate::router::tools::guest;
 
 pub const FRIEND_LIMIT: usize = 40;
 
@@ -39,7 +40,7 @@ async fn friend(req: HttpRequest, body: String) -> impl Responder {
     };
 
     for uid in rv_data.members() {
-        let mut user = global::get_user(uid.as_i64().unwrap(), &friends, false);
+        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card);
         user["user"]["last_login_time"] = global::set_time(user["user"]["last_login_time"].as_u64().unwrap_or(0), user_id, false).into();
         rv.push(user).unwrap();
     }
@@ -69,7 +70,7 @@ async fn recommend(req: HttpRequest, body: String) -> impl Responder {
 
     let mut rv = array![];
     for uid in random.members() {
-        let mut user = global::get_user(uid.as_i64().unwrap(), &friends, false);
+        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card);
         if user["user"]["friend_request_disabled"] == 1 || user.is_empty() {
             continue;
         }
@@ -88,9 +89,13 @@ async fn search(req: HttpRequest, body: String) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
 
     let uid = body["user_id"].as_i64().unwrap();
-    let user = global::get_user(uid, &friends, false);
+    let user = guest::get_user(uid, &friends, guest::UserView::Detail);
 
-    global::api(&req, Some(user))
+    global::api(&req, Some(if user.is_empty() {
+        array![]
+    } else {
+        user
+    }))
 }
 
 async fn request(req: HttpRequest, body: String) -> impl Responder {

@@ -1,10 +1,11 @@
-use jzon::{object, array, JsonValue};
+use jzon::{array, object, JsonValue};
 use rusqlite::params;
 use std::sync::Mutex;
 use lazy_static::lazy_static;
 
 use crate::sql::SQLite;
 use crate::router::global;
+use crate::router::tools::guest;
 
 lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("event_ranking.db", setup_tables);
@@ -81,7 +82,7 @@ fn get_json() -> JsonValue {
 
         let mut i = 1;
         for score in scores.members() {
-            let user = global::get_user(score["user"].as_i64().unwrap(), &object![], false);
+            let user = guest::get_user(score["user"].as_i64().unwrap(), &object![], guest::UserView::Ranking);
             rv[event.to_string()].push(object!{
                 "rank": i,
                 "user_detail": user,
