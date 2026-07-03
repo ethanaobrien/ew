@@ -26,10 +26,10 @@ static ASSET_TABLE: &[(&str, AssetHashes)] = &[
     ("JP", AssetHashes {
         version_android: "4c921d2443335e574a82e04ec9ea243c",
         version_ios:     "4c921d2443335e574a82e04ec9ea243c",
-        version_windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        version_windows: "4c921d2443335e574a82e04ec9ea243c",
         android:         "67f8f261c16b3cca63e520a25aad6c1c",
         ios:             "b8975be8300013a168d061d3fdcd4a16",
-        windows:         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        windows:         "eb59fcba5ff6987eff1969dbd97eccde",
     }),
     ("GL", AssetHashes {
         version_android: "5260ff15dff8ba0c00ad91400f515f55",

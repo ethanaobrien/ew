@@ -10,3 +10,4 @@ docker/data/
 .idea/
 ndk/
 .DS_Store
+custom_songs/

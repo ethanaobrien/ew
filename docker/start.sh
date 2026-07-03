@@ -13,6 +13,7 @@ args=(
 [ "${PURGE:-}" = "true" ]           && args+=(--purge)
 [ "${DISABLE_IMPORTS:-}" = "true" ] && args+=(--disable-imports)
 [ "${DISABLE_EXPORTS:-}" = "true" ] && args+=(--disable-exports)
+[ "${ENABLE_CUSTOM_SONGS:-}" = "true" ] && args+=(--enable-custom-songs)
 
 add_opt() {
   local value="$1" flag="$2"

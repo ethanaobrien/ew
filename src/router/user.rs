@@ -61,9 +61,14 @@ async fn deck(req: HttpRequest, body: String) -> impl Responder {
 async fn user(req: HttpRequest) -> impl Responder {
     let key = global::get_login(req.headers(), "");
     let mut user = userdata::get_acc(&key);
-    
+
     user["lottery_list"] = array![];
-    
+
+    // Custom songs visible to this user are unlocked
+    for id in crate::router::custom_song::get_music_ids(user["user"]["id"].as_i64().unwrap()).members() {
+        user["master_music_ids"].push(id.as_i64().unwrap()).unwrap();
+    }
+
     global::api(&req, Some(user))
 }
 

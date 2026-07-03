@@ -117,6 +117,14 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
     }
 }
 
+// Delete live id when custom song deleted
+pub fn purge_live(live_id: i64) {
+    DATABASE.lock_and_exec("DELETE FROM lives WHERE live_id=?1", params!(live_id));
+    DATABASE.lock_and_exec("DELETE FROM scores WHERE live_id=?1", params!(live_id));
+    crate::lock_onto_mutex!(CACHED_DATA).take();
+    crate::lock_onto_mutex!(CACHED_HTML_DATA).take();
+}
+
 pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
     update_live_score(id, uid, score);
     match DATABASE.get_live_data(id) {
@@ -190,7 +198,8 @@ fn get_json() -> JsonValue {
             expert: get_pass_percent(info.expert_failed, info.expert_pass),
             master: get_pass_percent(info.master_failed, info.master_pass)
         };
-        ids.push(databases::LIVE_LIST[info.live_id.to_string()]["masterMusicId"].as_i64().unwrap()).unwrap();
+        // Custom songs aren't in the official live mst; their live_id == music_id
+        ids.push(databases::LIVE_LIST[info.live_id.to_string()]["masterMusicId"].as_i64().unwrap_or(info.live_id as i64)).unwrap();
         rates.push(to_push).unwrap();
     }
     object!{

@@ -23,6 +23,13 @@ pub struct HostConfig {
     pub port: u16,
     pub jp_android_asset_hash: String,
     pub en_android_asset_hash: String,
+    pub enable_custom_songs: bool,
+}
+
+// Lets an embedding app (or the tests) enable the opt-in custom songs feature
+// without a command-line flag
+pub fn set_enable_custom_songs(enabled: bool) {
+    HOST_CONFIG.write().unwrap().enable_custom_songs = enabled;
 }
 
 pub fn set_running(running: bool) {
@@ -174,4 +181,30 @@ pub fn overlay_args(args: &mut crate::options::Args) {
     }
     overlay_str!(jp_android_asset_hash);
     overlay_str!(en_android_asset_hash);
+    // Overlay only ever enables the feature; a command-line --enable-custom-songs
+    // is never overridden back to off
+    if cfg.enable_custom_songs {
+        args.enable_custom_songs = true;
+    }
+}
+
+// idk why an ai put tests here but they are here now. Yay tests????
+#[cfg(test)]
+lazy_static! {
+    static ref TEST_DATA_DIR: String = {
+        let dir = std::env::temp_dir().join(format!("ew-tests-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        dir.to_str().unwrap().to_string()
+    };
+    static ref TEST_LOCK: Mutex<()> = Mutex::new(());
+}
+
+#[cfg(test)]
+pub fn lock_test_data_path() -> std::sync::MutexGuard<'static, ()> {
+    let guard = crate::lock_onto_mutex!(TEST_LOCK);
+    update_data_path(&TEST_DATA_DIR);
+    // The feature is off by default; tests exercise it, so turn it on while holding the lock
+    set_enable_custom_songs(true);
+    guard
 }

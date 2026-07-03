@@ -13,6 +13,7 @@ services:
       HIDDEN: false # Will disable the webui
       DISABLE_IMPORTS: false # Will disable account imports
       DISABLE_EXPORTS: false # Will disable account exports
+      #ENABLE_CUSTOM_SONGS: true # Custom songs are DISABLED by default; uncomment to enable upload/browse/download (webui + endpoints)
       #PURGE: false # Purge dead user accounts on startup
       #IMAGE_ASSET_PATH: /images/ # Images for cards in webui (will default to the public server)
       #MASTERDATA: /masterdata/ # Override bundled asset lists / CSVs / new_user.json at runtime (missing files fall back to the internal copies)

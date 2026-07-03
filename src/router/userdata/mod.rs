@@ -7,6 +7,7 @@ use rand::RngExt;
 
 use crate::router::global;
 use crate::router::items;
+use crate::database::custom_song;
 use crate::sql::SQLite;
 use crate::include_file;
 
@@ -224,10 +225,53 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
     jzon::parse(&result.unwrap()).unwrap()
 }
 
+// Deleted custom songs leave stale score/clear records behind. They're wiped
+// lazily when the userdata is pulled: collect the user's own music-id-keyed
+// rows in the custom range (official ids are never candidates) and drop the
+// ones whose id no longer exists in the catalog. Custom ids are never reused,
+// so the wipe is final. A song that still exists but isn't visible to this
+// user is NOT wiped - existence is what's checked, not visibility
+fn remove_deleted_custom_songs(user: &mut JsonValue) -> bool {
+    // Feature off: never touch custom_songs.db, leave userdata untouched
+    if crate::router::custom_song::disabled() {
+        return false;
+    }
+    let mut candidates = array![];
+    for key in ["live_list", "live_mission_list"] {
+        for data in user[key].members() {
+            let id = data["master_live_id"].as_i64().unwrap_or(0);
+            if id >= custom_song::FIRST_MUSIC_ID && !candidates.contains(id) {
+                candidates.push(id).unwrap();
+            }
+        }
+    }
+    if candidates.is_empty() {
+        return false;
+    }
+    let dead = custom_song::dead_music_ids(&candidates);
+    if dead.is_empty() {
+        return false;
+    }
+    for key in ["live_list", "live_mission_list"] {
+        let mut i = 0;
+        while i < user[key].len() {
+            if dead.contains(user[key][i]["master_live_id"].as_i64().unwrap_or(0)) {
+                user[key].array_remove(i);
+            } else {
+                i += 1;
+            }
+        }
+    }
+    true
+}
+
 pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     cleanup_account(&mut user);
-    
+    if remove_deleted_custom_songs(&mut user) {
+        save_data(auth_key, "userdata", user.clone());
+    }
+
     items::lp_modification(&mut user, 0, false);
     user
 }
@@ -588,4 +632,62 @@ pub fn purge_accounts() -> usize {
     DATABASE.lock_and_exec("VACUUM", params!());
     crate::database::gree::setup();
     dead_uids.len()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // User plays a custom song -> the song is deleted -> the next userdata
+    // pull serves data without the dead scores and the stored rows are gone
+    #[test]
+    fn deleted_custom_song_records_are_wiped_on_pull() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let token = "userdata-test-token";
+        let mut user = get_acc(token);
+
+        let deleted_id = custom_song::next_music_id();
+        custom_song::insert_song(deleted_id, 1, &object!{music_id: deleted_id}, "public", &array![], false);
+        // Exists but isn't visible to this user - must survive the wipe
+        let private_id = custom_song::next_music_id();
+        custom_song::insert_song(private_id, 1, &object!{music_id: private_id}, "private", &array![], false);
+
+        for id in [1001, deleted_id, private_id] {
+            user["live_list"].push(object!{
+                master_live_id: id,
+                level: 4,
+                clear_count: 1,
+                high_score: 123456,
+                max_combo: 100
+            }).unwrap();
+            user["live_mission_list"].push(object!{
+                master_live_id: id,
+                clear_master_live_mission_ids: [1, 24]
+            }).unwrap();
+        }
+        save_acc(token, user);
+
+        // Both custom songs still exist: nothing gets wiped
+        let user = get_acc(token);
+        assert_eq!(user["live_list"].len(), 3);
+        assert_eq!(user["live_mission_list"].len(), 3);
+
+        custom_song::delete_song(deleted_id);
+
+        // The next pull drops the dead id's records and only those
+        let user = get_acc(token);
+        assert!(!user["live_list"].members().any(|data| data["master_live_id"] == deleted_id));
+        assert!(!user["live_mission_list"].members().any(|data| data["master_live_id"] == deleted_id));
+        // Official records are untouchable, invisible-but-alive songs survive
+        assert!(user["live_list"].members().any(|data| data["master_live_id"] == 1001));
+        assert!(user["live_list"].members().any(|data| data["master_live_id"] == private_id));
+        assert_eq!(user["live_list"].len(), 2);
+        assert_eq!(user["live_mission_list"].len(), 2);
+
+        // The wipe persisted to the database, not just the served copy
+        let stored = get_data(token, "userdata");
+        assert!(!stored["live_list"].members().any(|data| data["master_live_id"] == deleted_id));
+        assert!(!stored["live_mission_list"].members().any(|data| data["master_live_id"] == deleted_id));
+    }
 }

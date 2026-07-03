@@ -21,7 +21,7 @@ fn get_config() -> JsonValue {
     }
 }
 
-fn get_login_token(req: &HttpRequest) -> Option<String> {
+pub fn get_login_token(req: &HttpRequest) -> Option<String> {
     let blank_header = HeaderValue::from_static("");
     let cookies = req.headers().get("Cookie").unwrap_or(&blank_header).to_str().unwrap_or("");
     if cookies.is_empty() {
@@ -30,7 +30,7 @@ fn get_login_token(req: &HttpRequest) -> Option<String> {
     Some(cookies.split("ew_token=").last().unwrap_or("").split(';').collect::<Vec<_>>()[0].to_string())
 }
 
-fn error(msg: &str) -> HttpResponse {
+pub fn error(msg: &str) -> HttpResponse {
     let resp = object!{
         result: "ERR",
         message: msg
@@ -53,7 +53,7 @@ pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=Strict; HttpOnly", token.unwrap())))
+        .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=Strict; Path=/; HttpOnly", token.unwrap())))
         .body(jzon::stringify(resp))
 }
 
@@ -220,6 +220,7 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
         result: "OK",
         data: {
             account_import: get_config()["import"].as_bool().unwrap(),
+            custom_songs: !crate::router::custom_song::disabled(),
             links: {
                 global: args.global_android,
                 japan: args.japan_android,

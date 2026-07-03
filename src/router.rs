@@ -20,6 +20,7 @@ pub mod serial_code;
 pub mod web;
 pub mod card;
 pub mod shop;
+pub mod custom_song;
 pub mod webui;
 pub mod clear_rate;
 pub mod exchange;
@@ -141,6 +142,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
                     )
                     .configure(card::routes)
                     .configure(chat::routes)
+                    .configure(custom_song::routes)
                     .configure(debug::routes)
                     .configure(event::routes)
                     .configure(exchange::routes)
@@ -166,4 +168,5 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
         actix_web::web::scope("/v1.0")
             .configure(gree::routes)
     );
+    cfg.configure(custom_song::web_routes);
 }
