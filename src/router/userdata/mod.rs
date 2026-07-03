@@ -268,11 +268,14 @@ fn remove_deleted_custom_songs(user: &mut JsonValue) -> bool {
 pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     cleanup_account(&mut user);
-    if remove_deleted_custom_songs(&mut user) {
+    let mut changed = remove_deleted_custom_songs(&mut user);
+
+    if items::lp_modification(&mut user, 0, false) {
+        changed = true;
+    }
+    if changed {
         save_data(auth_key, "userdata", user.clone());
     }
-
-    items::lp_modification(&mut user, 0, false);
     user
 }
 

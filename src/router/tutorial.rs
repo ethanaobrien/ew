@@ -16,7 +16,7 @@ async fn tutorial(req: HttpRequest, body: String) -> impl Responder {
     if user["tutorial_step"].as_i32().unwrap() < 130 {
         user["tutorial_step"] = body["step"].clone();
         user["stamina"]["stamina"] = (100).into();
-        user["stamina"]["last_updated_time"] = global::timestamp().into();
+        user["stamina"]["last_updated_time"] = global::set_time(global::timestamp(), user["user"]["id"].as_i64().unwrap(), false).into();
         userdata::save_acc(&key, user);
     }
     

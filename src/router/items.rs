@@ -267,31 +267,38 @@ pub fn gift_item_basic(id: i32, value: i64, ty_pe: i32, reason: &str, user: &mut
     }, reason, user)
 }
 
-pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) {
+pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) -> bool {
+    let now = global::set_time(global::timestamp(), user["user"]["id"].as_i64().unwrap_or(0), false);
     let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
-    
-    let speed = 285; //4 mins, 45 sec
-    let since_last = global::timestamp() - user["stamina"]["last_updated_time"].as_u64().unwrap();
-    
-    let diff = since_last % speed;
-    let restored = (since_last - diff) / speed;
-    user["stamina"]["last_updated_time"] = (global::timestamp() - diff).into();
-    
-    let mut stamina = user["stamina"]["stamina"].as_u64().unwrap();
-    if stamina < max {
-        stamina += restored;
-        if stamina > max {
-            stamina = max;
+
+    let orig_stamina = user["stamina"]["stamina"].as_u64().unwrap();
+    let orig_anchor = user["stamina"]["last_updated_time"].as_u64().unwrap();
+
+    let mut stamina = orig_stamina;
+    let mut anchor = orig_anchor;
+
+    if stamina < max && now > anchor {
+        let restored = (now - anchor) / 300;
+        stamina = (stamina + restored).min(max);
+        anchor += restored * 300;
+    }
+
+    if change_amount > 0 {
+        if remove {
+            let was_full = stamina >= max;
+            stamina -= change_amount;
+            if was_full {
+                anchor = now;
+            }
+        } else {
+            stamina += change_amount;
         }
     }
-    
-    if remove {
-        stamina -= change_amount;
-    } else {
-        stamina += change_amount;
-    }
-    
+
     user["stamina"]["stamina"] = stamina.into();
+    user["stamina"]["last_updated_time"] = anchor.into();
+
+    stamina != orig_stamina || anchor != orig_anchor
 }
 
 pub fn get_rarity(id: i64) -> i32 {
@@ -360,8 +367,7 @@ pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue, rv: 
     let new_rank = get_user_rank_data(user["user"]["exp"].as_i64().unwrap());
     if current_rank["rank"] != new_rank["rank"] {
         user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i64().unwrap() + new_rank["maxLp"].as_i64().unwrap()).into();
-        user["stamina"]["last_updated_time"] = global::timestamp().into();
-        
+
         let status = get_mission_status(get_variable_mission_num(1101001, 1101030, mission), mission);
         if status.is_empty() {
             return;
