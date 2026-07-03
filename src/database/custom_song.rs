@@ -85,7 +85,7 @@ pub fn get_revision() -> i64 {
     DATABASE.lock_and_select("SELECT revision FROM revision WHERE id=1", params!()).unwrap_or_default().parse::<i64>().unwrap_or(0)
 }
 
-// Bumped on every upload/delete/visibility change so the client can invalidate its cache
+// Bumped on every upload/update/delete/visibility change so the client can invalidate its cache
 pub fn bump_revision() {
     DATABASE.lock_and_exec("INSERT INTO revision (id, revision, last_music_id) VALUES (1, 1, 0) ON CONFLICT(id) DO UPDATE SET revision=revision+1", params!());
 }
@@ -108,6 +108,12 @@ pub fn insert_song(music_id: i64, owner_id: i64, song: &JsonValue, visibility: &
     DATABASE.lock_and_exec("INSERT INTO songs (music_id, owner_id, song, visibility, downloads_disabled) VALUES (?1, ?2, ?3, ?4, ?5)", params!(music_id, owner_id, jzon::stringify(song.clone()), visibility, downloads_disabled as i64));
     DATABASE.lock_and_exec("INSERT INTO revision (id, revision, last_music_id) VALUES (1, 0, ?1) ON CONFLICT(id) DO UPDATE SET last_music_id=?1", params!(music_id));
     set_shared_users(music_id, shared_with);
+}
+
+// Replace an existing song's catalog blob in place. The owner, visibility,
+// shared list and download toggle live in their own columns and are untouched
+pub fn update_song(music_id: i64, song: &JsonValue) {
+    DATABASE.lock_and_exec("UPDATE songs SET song=?1 WHERE music_id=?2", params!(jzon::stringify(song.clone()), music_id));
 }
 
 pub fn delete_song(music_id: i64) {

@@ -62,6 +62,7 @@ pub fn web_routes(cfg: &mut web::ServiceConfig) {
             .route("/assets/{music_id}/{file}", web::get().to(assets))
             .route("/audio/{hash}/{file}", web::get().to(audio))
             .route("/upload", web::post().to(upload))
+            .route("/update", web::post().to(update))
             .route("/mine", web::get().to(mine))
             .route("/browse", web::get().to(browse))
             .route("/download/{music_id}", web::get().to(download))
@@ -424,6 +425,235 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
     Ok(music_id)
 }
 
+// Edit an existing song in place. The music_id - and everything derived from
+// it: live_id, cue names, note_data_file_name, asset URLs - stays the same, so
+// player score records survive (delete + re-upload retires the id and wipes
+// them). A field present in the form replaces the stored value, an absent one
+// keeps it; visibility/shared_with/downloads_disabled are not touched here.
+// The stored originals under original/ are updated too, so a later export
+// reflects the edited state.
+fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), String> {
+    let old_song = database::get_song(music_id).ok_or(String::from("Song not found"))?;
+    // Partial edits re-read the original upload artifacts (the manifest for
+    // absent metadata fields, the original audio for preview re-cuts), which
+    // songs from before export support don't have on disk
+    let old_manifest = fs::read(song_path(music_id, "original/manifest.json"))
+        .map_err(|_| String::from("This song was uploaded before export support and can't be edited"))?;
+    let old_manifest = jzon::parse(&String::from_utf8_lossy(&old_manifest))
+        .map_err(|_| String::from("This song was uploaded before export support and can't be edited"))?;
+
+    // The stored values come from the manifest: it carries the upload-schema
+    // fields, including the null-when-defaulted bpm/preview numbers
+    let text = |key: &str| {
+        if fields.contains_key(key) { field_str(fields, key) } else { old_manifest[key].as_str().unwrap_or("").to_string() }
+    };
+    let number = |key: &str| {
+        if fields.contains_key(key) { field_f64(fields, key) } else { old_manifest[key].as_f64() }
+    };
+
+    let name = text("name");
+    let artist = text("artist");
+    if name.is_empty() || artist.is_empty() {
+        return Err(String::from("Song name and artist are required"));
+    }
+
+    let attribute = if fields.contains_key("attribute") {
+        field_str(fields, "attribute").parse::<i64>().unwrap_or(0)
+    } else {
+        old_manifest["attribute"].as_i64().unwrap_or(0)
+    };
+    if !(1..=3).contains(&attribute) {
+        return Err(String::from("Attribute must be 1 (smile), 2 (pure) or 3 (cool)"));
+    }
+
+    let mut band_category = text("band_category");
+    if band_category.is_empty() {
+        band_category = String::from("OTHER");
+    }
+    if !BAND_CATEGORIES.contains(&band_category.as_str()) {
+        return Err(format!("Unknown band category '{}'", band_category));
+    }
+
+    // (level, replacement chart json + original SIF1 bytes, full_combo, level_number)
+    let mut charts: Vec<(i64, Option<(JsonValue, Vec<u8>)>, i64, i64)> = Vec::new();
+    let mut removed: Vec<i64> = Vec::new();
+    for level in 1..=LEVEL_COUNT {
+        let existing = old_song["levels"].members().find(|data| data["level"] == level);
+        let raw = fields.get(&format!("chart_{}", level)).filter(|v| !v.is_empty());
+        if field_flag(fields, &format!("remove_chart_{}", level)) {
+            if raw.is_some() {
+                return Err(format!("Difficulty {}: cannot both replace and remove", level));
+            }
+            // Removing a difficulty the song doesn't have is a no-op
+            if existing.is_some() {
+                removed.push(level);
+            }
+            continue;
+        }
+        let stored_number = existing
+            .and_then(|data| data["level_number"].as_i64())
+            .unwrap_or(DEFAULT_LEVEL_NUMBERS[(level - 1) as usize]);
+        let level_number = if fields.contains_key(&format!("level_number_{}", level)) {
+            field_str(fields, &format!("level_number_{}", level)).parse::<i64>().unwrap_or(stored_number)
+        } else {
+            stored_number
+        };
+        if let Some(raw) = raw {
+            // A chart for a level the song didn't have before ADDS that difficulty
+            let beatmap = jzon::parse(&String::from_utf8_lossy(raw))
+                .map_err(|_| format!("Difficulty {}: chart is not valid JSON", level))?;
+            let (chart, full_combo) = chart::transcode(&beatmap)
+                .map_err(|e| format!("Difficulty {}: {}", level, e))?;
+            charts.push((level, Some((chart, raw.clone())), full_combo, level_number));
+        } else if let Some(existing) = existing {
+            charts.push((level, None, existing["full_combo"].as_i64().unwrap_or(0), level_number));
+        }
+    }
+    if charts.is_empty() {
+        return Err(String::from("At least one difficulty chart is required"));
+    }
+
+    let jacket_bytes = fields.get("jacket").filter(|v| !v.is_empty());
+    let jacket = match jacket_bytes {
+        Some(bytes) => Some(process_jacket(bytes)?),
+        None => None
+    };
+
+    let preview_start_sec = number("preview_start_sec");
+    let preview_length_sec = number("preview_length_sec");
+    let audio_bytes = fields.get("audio").filter(|v| !v.is_empty());
+    // New audio replaces both cues. A preview change without new audio re-cuts
+    // the select cue from the stored original audio; the play cue stays put
+    let (play, select) = if let Some(bytes) = audio_bytes {
+        let (play, select) = audio::process(bytes, preview_start_sec, preview_length_sec)?;
+        (Some(play), Some(select))
+    } else if fields.contains_key("preview_start_sec") || fields.contains_key("preview_length_sec") {
+        let original = fs::read(song_path(music_id, "original/audio")).map_err(|e| e.to_string())?;
+        let (_, select) = audio::process(&original, preview_start_sec, preview_length_sec)?;
+        (None, Some(select))
+    } else {
+        (None, None)
+    };
+
+    let suffix = format!("Custom{}", music_id);
+    let mut levels = array![];
+    for (level, _, full_combo, level_number) in charts.iter() {
+        levels.push(object!{
+            "level": *level,
+            "level_number": *level_number,
+            "full_combo": *full_combo,
+            "score_coeff": 1.0,
+            // Official convention: the filename difficulty index is level+1
+            "note_data_file_name": format!("{}_{}_{}", music_id, level + 1, suffix),
+            "chart": format!("/custom_song/assets/{}/chart_{}.json", music_id, level)
+        }).unwrap();
+    }
+
+    // Scores and combo missions always derive from the resulting state, with
+    // the same formulas as upload
+    let (_, _, hardest_combo, hardest_stars) = charts.last().unwrap();
+    let (score, multi_score) = default_scores(*hardest_combo, *hardest_stars);
+
+    let mut manifest_levels = array![];
+    for (level, _, _, level_number) in charts.iter() {
+        manifest_levels.push(object!{
+            "level": *level,
+            "level_number": *level_number
+        }).unwrap();
+    }
+    let manifest = object!{
+        "format": 1,
+        "name": name.clone(),
+        "name_en": text("name_en"),
+        "short_name": text("short_name"),
+        "kana": text("kana"),
+        "artist": artist.clone(),
+        "artist_en": text("artist_en"),
+        "attribute": attribute,
+        "band_category": band_category.clone(),
+        "bpm": number("bpm"),
+        "preview_start_sec": preview_start_sec,
+        "preview_length_sec": preview_length_sec,
+        "levels": manifest_levels
+    };
+
+    // Same id everywhere, so the cue sheet/cue names never change
+    let mut sound = old_song["sound"].clone();
+    if let Some(play) = &play {
+        sound["play"] = cue_json(play, format!("play_{}_{}", music_id, suffix));
+    }
+    if let Some(select) = &select {
+        sound["select"] = cue_json(select, format!("select_{}_{}", music_id, suffix));
+    }
+
+    let song = object!{
+        "music_id": music_id,
+        "name": name,
+        "name_en": text("name_en"),
+        "short_name": text("short_name"),
+        "kana": text("kana"),
+        "artist": artist,
+        "artist_en": text("artist_en"),
+        "band_category": band_category.clone(),
+        "master_group_id": database::band_group_id(&band_category),
+        "attribute": attribute,
+        "bpm": number("bpm").unwrap_or(DEFAULT_BPM) as f32,
+        "start_wait": 2.0,
+        "end_wait": 0.0,
+        "score": score,
+        "multi_score": multi_score,
+        // Combo missions at 25/50/75/100% of the hardest difficulty's full combo
+        "mission_combo": [hardest_combo / 4, hardest_combo / 2, hardest_combo * 3 / 4, *hardest_combo],
+        "jacket": format!("/custom_song/assets/{}/jacket.png", music_id),
+        "levels": levels,
+        "sound": sound
+    };
+
+    // Same serialization as upload around the writes and the revision bump
+    let lock = lock_onto_mutex!(UPLOAD_LOCK);
+    if let (Some((jacket, jacket_blur)), Some(bytes)) = (&jacket, jacket_bytes) {
+        fs::write(song_path(music_id, "jacket.png"), jacket).map_err(|e| e.to_string())?;
+        fs::write(song_path(music_id, "jacket_blur.png"), jacket_blur).map_err(|e| e.to_string())?;
+        fs::write(song_path(music_id, "original/jacket"), bytes).map_err(|e| e.to_string())?;
+    }
+    for (level, chart, _, _) in charts.iter() {
+        if let Some((chart, raw)) = chart {
+            fs::write(song_path(music_id, &format!("chart_{}.json", level)), jzon::stringify(chart.clone())).map_err(|e| e.to_string())?;
+            fs::write(song_path(music_id, &format!("original/chart_{}.json", level)), raw).map_err(|e| e.to_string())?;
+        }
+    }
+    for level in removed.iter() {
+        let _ = fs::remove_file(song_path(music_id, &format!("chart_{}.json", level)));
+        let _ = fs::remove_file(song_path(music_id, &format!("original/chart_{}.json", level)));
+    }
+    if let Some(play) = &play {
+        fs::write(audio_file_path(&play.md5), &play.bytes).map_err(|e| e.to_string())?;
+    }
+    if let Some(select) = &select {
+        fs::write(audio_file_path(&select.md5), &select.bytes).map_err(|e| e.to_string())?;
+    }
+    if let Some(bytes) = audio_bytes {
+        fs::write(song_path(music_id, "original/audio"), bytes).map_err(|e| e.to_string())?;
+    }
+    fs::write(song_path(music_id, "original/manifest.json"), jzon::stringify(manifest)).map_err(|e| e.to_string())?;
+
+    database::update_song(music_id, &song);
+    database::bump_revision();
+    drop(lock);
+
+    // Replaced cues: the old oggs are content-addressed and may be shared with
+    // another song (or unchanged by this edit) - GC them the same way delete does
+    let kept = [song["sound"]["play"]["md5"].to_string(), song["sound"]["select"]["md5"].to_string()];
+    for key in ["play", "select"] {
+        let md5 = old_song["sound"][key]["md5"].to_string();
+        if !md5.is_empty() && !kept.contains(&md5) && !database::audio_in_use(&md5, music_id) {
+            let _ = fs::remove_file(audio_file_path(&md5));
+        }
+    }
+
+    Ok(())
+}
+
 async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
     if disabled() {
         return HttpResponse::NotFound().finish();
@@ -447,6 +677,35 @@ async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
     println!("UPLOAD5");
     match create_song(uid, &fields) {
         Ok(music_id) => send_json(object!{
+            result: "OK",
+            music_id: music_id
+        }),
+        Err(e) => webui::error(&e)
+    }
+}
+
+// Owner-only: edit a song in place so charters don't have to delete and
+// re-upload, which would assign a new music_id and wipe player score records
+async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
+    if disabled() {
+        return HttpResponse::NotFound().finish();
+    }
+    let Some(uid) = get_session_uid(&req) else {
+        return webui::error("Not logged in");
+    };
+    let fields = match read_multipart(payload).await {
+        Ok(fields) => fields,
+        Err(e) => return webui::error(&e)
+    };
+    let music_id = field_str(&fields, "music_id").parse::<i64>().unwrap_or(0);
+    let Some(owner) = database::get_song_owner(music_id) else {
+        return webui::error("Song not found");
+    };
+    if owner != uid {
+        return webui::error("You can only manage your own songs");
+    }
+    match update_song(music_id, &fields) {
+        Ok(()) => send_json(object!{
             result: "OK",
             music_id: music_id
         }),
@@ -616,8 +875,14 @@ mod tests {
 
     // 2 seconds of a 440Hz sine, encoded to ogg-vorbis in-process
     fn test_ogg() -> Vec<u8> {
+        test_ogg_tone(440.0)
+    }
+
+    // A distinct tone gives a song cues that aren't content-shared with the
+    // other tests' songs (the oggs are content-addressed by md5)
+    fn test_ogg_tone(freq: f32) -> Vec<u8> {
         let samples: Vec<f32> = (0..44100 * 2)
-            .map(|i| (i as f32 * 440.0 * 2.0 * std::f32::consts::PI / 44100.0).sin() * 0.5)
+            .map(|i| (i as f32 * freq * 2.0 * std::f32::consts::PI / 44100.0).sin() * 0.5)
             .collect();
         let mut out = Vec::new();
         let mut builder = vorbis_rs::VorbisEncoderBuilder::new_with_serial(
@@ -711,6 +976,89 @@ mod tests {
         }
         let md5 = imported["sound"]["play"]["md5"].to_string();
         assert_eq!(fs::read(audio_file_path(&md5)).unwrap().len(), imported["sound"]["play"]["size"].as_usize().unwrap());
+    }
+
+    // Updates edit a song in place: the music_id stays, absent fields keep
+    // their stored values, scores re-derive from the resulting state, and the
+    // stored originals follow the edit so exports stay accurate
+    #[test]
+    fn update_edits_in_place() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Original Name");
+        field(&mut fields, "artist", "Original Artist");
+        field(&mut fields, "attribute", "1");
+        field(&mut fields, "level_number_1", "5");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg_tone(660.0));
+        fields.insert(String::from("chart_1"), test_chart());
+        let music_id = create_song(1212, &fields).unwrap();
+        let before = database::get_song(music_id).unwrap();
+        let revision = database::get_revision();
+
+        // Metadata-only edit: present fields replace, absent fields stay, the
+        // cues are untouched and the revision bumps exactly once
+        let mut fields = HashMap::new();
+        field(&mut fields, "music_id", &music_id.to_string());
+        field(&mut fields, "name", "New Name");
+        field(&mut fields, "attribute", "3");
+        update_song(music_id, &fields).unwrap();
+        let song = database::get_song(music_id).unwrap();
+        assert_eq!(song["music_id"], music_id);
+        assert_eq!(song["name"], "New Name");
+        assert_eq!(song["artist"], "Original Artist");
+        assert_eq!(song["attribute"], 3);
+        assert_eq!(song["sound"]["play"]["md5"], before["sound"]["play"]["md5"]);
+        assert_eq!(song["sound"]["select"]["md5"], before["sound"]["select"]["md5"]);
+        assert_eq!(database::get_revision(), revision + 1);
+
+        // Adding a difficulty re-derives scores from the new hardest chart,
+        // and the manifest follows so exports reflect the edited state
+        let mut fields = HashMap::new();
+        fields.insert(String::from("chart_4"), test_chart());
+        field(&mut fields, "level_number_4", "12");
+        update_song(music_id, &fields).unwrap();
+        let song = database::get_song(music_id).unwrap();
+        assert_eq!(song["levels"].len(), 2);
+        let (score, _) = default_scores(3, 12);
+        assert_eq!(song["score"]["s"], score["s"]);
+        assert!(fs::read(song_path(music_id, "chart_4.json")).is_ok());
+        assert!(fs::read(song_path(music_id, "original/chart_4.json")).is_ok());
+        let manifest = jzon::parse(&String::from_utf8_lossy(&fs::read(song_path(music_id, "original/manifest.json")).unwrap())).unwrap();
+        assert_eq!(manifest["name"], "New Name");
+        assert_eq!(manifest["levels"].len(), 2);
+
+        // Difficulty removal: replace+remove conflicts error, removing every
+        // difficulty errors, removing one of two works and deletes its files
+        let mut fields = HashMap::new();
+        field(&mut fields, "remove_chart_4", "1");
+        fields.insert(String::from("chart_4"), test_chart());
+        assert_eq!(update_song(music_id, &fields).unwrap_err(), "Difficulty 4: cannot both replace and remove");
+        let mut fields = HashMap::new();
+        field(&mut fields, "remove_chart_1", "1");
+        field(&mut fields, "remove_chart_4", "1");
+        assert_eq!(update_song(music_id, &fields).unwrap_err(), "At least one difficulty chart is required");
+        let mut fields = HashMap::new();
+        field(&mut fields, "remove_chart_4", "1");
+        update_song(music_id, &fields).unwrap();
+        let song = database::get_song(music_id).unwrap();
+        assert_eq!(song["levels"].len(), 1);
+        assert!(fs::read(song_path(music_id, "chart_4.json")).is_err());
+        assert!(fs::read(song_path(music_id, "original/chart_4.json")).is_err());
+
+        // A preview edit alone re-cuts the select cue from the stored original
+        // audio, keeps the play cue and garbage-collects the old select ogg
+        let mut fields = HashMap::new();
+        field(&mut fields, "preview_start_sec", "0.25");
+        field(&mut fields, "preview_length_sec", "1.0");
+        update_song(music_id, &fields).unwrap();
+        let song = database::get_song(music_id).unwrap();
+        assert_eq!(song["sound"]["play"]["md5"], before["sound"]["play"]["md5"]);
+        assert_ne!(song["sound"]["select"]["md5"], before["sound"]["select"]["md5"]);
+        assert!((song["sound"]["select"]["duration_sec"].as_f64().unwrap() - 1.0).abs() < 0.05);
+        assert!(fs::read(audio_file_path(&song["sound"]["select"]["md5"].to_string())).is_ok());
+        assert!(fs::read(audio_file_path(&before["sound"]["select"]["md5"].to_string())).is_err());
     }
 
     // mp3/wav uploads still work: symphonia decodes them and the play cue is
