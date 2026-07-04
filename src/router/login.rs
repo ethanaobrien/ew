@@ -66,7 +66,7 @@ async fn bonus(req: HttpRequest, body: String) -> impl Responder {
     
     let mut cleared_missions = array![];
     if !to_send.is_empty() {
-        cleared_missions = items::completed_daily_mission(1253003, &mut user_missions);
+        cleared_missions = items::completed_daily_mission(1253003, global::timestamp(), &mut user_missions);
         userdata::save_acc_missions(&key, user_missions);
     }
     

@@ -268,7 +268,7 @@ pub fn gift_item_basic(id: i32, value: i64, ty_pe: i32, reason: &str, user: &mut
 }
 
 pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) -> bool {
-    let now = global::set_time(global::timestamp(), user["user"]["id"].as_i64().unwrap_or(0), false);
+    let now = global::timestamp();
     let max = get_user_rank_data(user["user"]["exp"].as_i64().unwrap())["maxLp"].as_u64().unwrap();
 
     let orig_stamina = user["stamina"]["stamina"].as_u64().unwrap();
@@ -486,32 +486,67 @@ pub fn advance_mission(id: i64, count: i64, max: i64, missions: &mut JsonValue) 
     None
 }
 
-pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
-    let all_daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
-    
+pub const DAILY_MISSION_IDS: [i64; 6] = [1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
+
+pub fn get_expire(now: u64) -> u64 {
+    let jst = now + 9 * 60 * 60;
+    ((jst / 86400 + 1) * 86400 - 9 * 60 * 60) - 1
+}
+
+pub fn refresh_dailies(missions: &mut JsonValue, now: u64) -> bool {
+    let target = get_expire(now);
+    let mut changed = false;
+    for id in DAILY_MISSION_IDS {
+        for mission in missions.members_mut() {
+            if mission["master_mission_id"].as_i64() != Some(id) {
+                continue;
+            }
+            let expire = mission["expire_date_time"].as_u64().unwrap_or(0);
+            if expire == 0 {
+                mission["expire_date_time"] = target.into();
+                changed = true;
+            } else if now > expire {
+                mission["status"] = (1).into();
+                mission["progress"] = (0).into();
+                mission["expire_date_time"] = target.into();
+                changed = true;
+            }
+            break;
+        }
+    }
+    changed
+}
+
+pub fn completed_daily_mission(id: i64, now: u64, missions: &mut JsonValue) -> JsonValue {
+    refresh_dailies(missions, now);
+
     let mission = get_mission_status(id, missions);
-    if mission["expire_date_time"].as_u64().unwrap_or(0) >= global::timestamp() && mission["status"].as_i32().unwrap() > 1 {
+    if mission.is_empty() || mission["status"].as_i32().unwrap_or(0) > 1 {
         return array![];
     }
     let mut rv = array![];
     if id == 1253003 {
         rv = advance_variable_mission(1153001, 1153019, 1, missions);
-    }
-    let mut mission = get_mission_status(1224003, missions);
-    let next_reset = global::timestamp_since_midnight() + (24 * 60 * 60);
-    if mission["expire_date_time"].as_u64().unwrap_or(0) < global::timestamp() {
-        update_mission_status_multi(all_daily_missions, next_reset, false, false, 0, missions);
-        mission = get_mission_status(1224003, missions);
-    }
-    
-    if mission["progress"].as_i32().unwrap_or(0) == 4 {
-        if update_mission_status(1224003, 0, true, false, 1, missions).is_some() {
-            rv.push(1224003).unwrap();
+        if update_mission_status(1653001, 0, true, false, 1, missions).is_some() {
+            rv.push(1653001).unwrap();
         }
-    } else if update_mission_status(1224003, 0, false, false, 1, missions).is_some() {
-        rv.push(1224003).unwrap();
     }
-    if update_mission_status(id, next_reset, true, false, 1, missions).is_some() {
+    for mission in missions.members_mut() {
+        if mission["master_mission_id"].as_i64() != Some(1224003) {
+            continue;
+        }
+        let was_completed = mission["status"] == 2;
+        let progress = mission["progress"].as_i64().unwrap_or(0) + 1;
+        mission["progress"] = progress.into();
+        if progress >= 5 {
+            mission["status"] = (2).into();
+            if !was_completed {
+                rv.push(1224003).unwrap();
+            }
+        }
+        break;
+    }
+    if update_mission_status(id, get_expire(now), true, false, 1, missions).is_some() {
         rv.push(id).unwrap();
     }
     rv

@@ -638,7 +638,7 @@ pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     if body["master_live_id"].to_string().len() > 1 {
         let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
         if (1..=4).contains(&id) {
-            let to_push = items::completed_daily_mission(1273009 + id - 1, &mut user_missions);
+            let to_push = items::completed_daily_mission(1273009 + id - 1, global::timestamp(), &mut user_missions);
             for data in to_push.members() {
                 cleared_missions.push(data.as_i32().unwrap()).unwrap();
             }

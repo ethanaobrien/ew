@@ -185,8 +185,33 @@ pub fn timestamp_since_midnight() -> u64 {
 
     let midnight = unix_timestamp.as_secs() % (24 * 60 * 60);
 
-    
+
     unix_timestamp.as_secs() - midnight
+}
+
+pub fn get_uid(headers: &HeaderMap) -> i64 {
+    let blank_header = HeaderValue::from_static("");
+    headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("").parse::<i64>().unwrap_or(0)
+}
+
+fn civil_from_days(z: i64) -> (i64, i64, i64) {
+    let z = z + 719468;
+    let era = if z >= 0 { z } else { z - 146096 } / 146097;
+    let doe = z - era * 146097;
+    let yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    let y = yoe + era * 400;
+    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+    let mp = (5 * doy + 2) / 153;
+    let d = doy - (153 * mp + 2) / 5 + 1;
+    let m = if mp < 10 { mp + 3 } else { mp - 9 };
+    (if m <= 2 { y + 1 } else { y }, m, d)
+}
+
+pub fn format_datetime(time: u64) -> String {
+    let days = (time / 86400) as i64;
+    let secs = time % 86400;
+    let (y, m, d) = civil_from_days(days);
+    format!("{:04}-{:02}-{:02} {:02}:{:02}:{:02}", y, m, d, secs / 3600, (secs % 3600) / 60, secs % 60)
 }
 
 fn init_time(current_time: u64, server_data: &mut JsonValue, token: &str, max_time: u64, max: bool) {

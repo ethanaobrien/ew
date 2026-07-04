@@ -95,7 +95,7 @@ async fn home(req: HttpRequest) -> impl Responder {
     check_gifts(&mut user);
     
     let mut user_missions = userdata::get_acc_missions(&key);
-    let clear = items::completed_daily_mission(1253003, &mut user_missions);
+    let clear = items::completed_daily_mission(1253003, global::timestamp(), &mut user_missions);
     userdata::save_acc_home(&key, user.clone());
     user["clear_mission_ids"] = clear;
     if !user["clear_mission_ids"].is_empty() {
