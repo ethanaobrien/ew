@@ -425,18 +425,37 @@ async fn initialize(req: HttpRequest, body: String) -> impl Responder {
     masterid += userr;
     
     user["user"]["master_title_ids"][0] = masterid.into();
-    
+
     // User is rewarded with all base cards in the team they chose. This makes up their new deck_list
     
-    for (i, data) in cardstoreward.members().enumerate() {
+    for data in cardstoreward.members() {
         items::give_character(data.as_i64().unwrap(), &mut user, &mut missions, &mut array![], &mut array![]);
-        if i < 9 {
-            user["deck_list"][0]["main_card_ids"][i] = data.clone();
+    }
+
+    let chosen_character = id.parse::<i64>().unwrap();
+    let mut others = array![];
+    for data in cardstoreward.members() {
+        if data.as_i64().unwrap() / 10000 != chosen_character {
+            others.push(data.clone()).unwrap();
         }
     }
-    //todo - should the chosen character be in the team twice?
-    user["deck_list"][0]["main_card_ids"][4] = ur.into();
-    
+    for slot in 0..9 {
+        let card = if slot == 4 {
+            ur
+        } else if slot < 4 {
+            others[slot].as_i64().unwrap_or(0)
+        } else {
+            others[slot - 1].as_i64().unwrap_or(0)
+        };
+        user["deck_list"][0]["main_card_ids"][slot] = card.into();
+    }
+
+    user["character_list"] = array![object!{
+        master_character_id: chosen_character,
+        exp: 1
+    }];
+    items::advance_mission(1158000 + crate::router::live::get_master_id(chosen_character), 1, 1500, &mut missions);
+
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_home(&key, user2);

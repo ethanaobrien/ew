@@ -469,7 +469,7 @@ fn give_mission_rewards(user: &mut JsonValue, home: &mut JsonValue, missions: &J
     }
     rv
 }
-fn get_master_num(id: i64) -> i64 {
+pub fn get_master_num(id: i64) -> i64 {
     let id = id.to_string();
     let mut masterid = 0;
     if id.starts_with('2') {
@@ -482,7 +482,7 @@ fn get_master_num(id: i64) -> i64 {
     masterid
 }
 
-fn get_master_id(id: i64) -> i64 {
+pub fn get_master_id(id: i64) -> i64 {
     get_master_num(id) + id.to_string().char_indices().last().unwrap().1.to_string().parse::<i64>().unwrap()
 }
 
@@ -497,81 +497,93 @@ lazy_static! {
     };
 }
 
-fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue, chats: &mut JsonValue) -> JsonValue {
+fn character_bond(character_list: &JsonValue, character: i64) -> i64 {
+    for c in character_list.members() {
+        if c["master_character_id"].as_i64() == Some(character) {
+            return c["exp"].as_i64().unwrap_or(0);
+        }
+    }
+    0
+}
+
+fn set_character_bond(character_list: &mut JsonValue, character: i64, exp: i64) {
+    for c in character_list.members_mut() {
+        if c["master_character_id"].as_i64() == Some(character) {
+            c["exp"] = exp.into();
+            return;
+        }
+    }
+    character_list.push(object!{
+        master_character_id: character,
+        exp: exp
+    }).unwrap();
+}
+
+fn get_live_character_list(lp_used: i32, deck_id: i32, user: &mut JsonValue, missions: &mut JsonValue, completed_missions: &mut JsonValue, chats: &mut JsonValue) -> JsonValue {
+    let card_list = user["card_list"].clone();
+    let deck = user["deck_list"][(deck_id - 1) as usize]["main_card_ids"].clone();
+    let tutorial_step = user["tutorial_step"].as_i32().unwrap();
+    let mut character_list = user["character_list"].clone();
+
+    // [1,1,2,2,5,2,2,1,1]
+    let mut chars: Vec<i64> = vec![];
+    let mut gains: Vec<i64> = vec![];
+    for data in card_list.members() {
+        let id = data["id"].as_i64().unwrap_or(0);
+        let mcid = data["master_card_id"].as_i64().unwrap_or(0);
+        let index = match deck.members().position(|r| r.as_i64() == Some(id) || r.as_i64() == Some(mcid)) {
+            Some(x) => x,
+            None => continue
+        };
+        let character = match databases::CARD_LIST[mcid.to_string()]["masterCharacterId"].as_i64() {
+            Some(c) => c,
+            None => continue
+        };
+        // Tutorial lives award no bond.
+        let weight = if tutorial_step >= 130 {
+            BOND_WEIGHT[index].as_i64().unwrap_or(0) * (lp_used as i64 / 10)
+        } else {
+            0
+        };
+        if let Some(p) = chars.iter().position(|c| *c == character) {
+            gains[p] += weight;
+        } else {
+            chars.push(character);
+            gains.push(weight);
+        }
+    }
+
     let mut rv = array![];
-    let mut has = array![];
-    let mut has_i = array![];
-    let characters_in_deck = user["deck_list"][(deck_id - 1) as usize]["main_card_ids"].clone();
-    let mut i = 0;
-    for data in user["card_list"].members() {
-        if !characters_in_deck.contains(data["id"].as_i64().unwrap()) && !characters_in_deck.contains(data["master_card_id"].as_i64().unwrap())  {
-            continue;
-        }
-        let character = databases::CARD_LIST[data["master_card_id"].to_string()]["masterCharacterId"].as_i64().unwrap();
-        let mut mission_id = 1158000 + get_master_id(character);
-        let mut full = false;
-        let mut status = items::get_mission_status(mission_id, missions);
-        let mut limit = 1500;
-        
-        if status.is_empty() {
-            mission_id += 39;
-            limit *= 10;
-            status = items::get_mission_status(mission_id, missions);
-            if status["status"].as_i32().unwrap_or(0) > 1 {
-                full = true;
+    for (idx, &character) in chars.iter().enumerate() {
+        let before = character_bond(&character_list, character);
+        let after = (before + gains[idx]).min(MAX_BOND);
+        set_character_bond(&mut character_list, character, after);
+
+        if gains[idx] > 0 {
+            let mut mission_id = 1158000 + get_master_id(character);
+            let mut limit = 1500;
+            let mut status = items::get_mission_status(mission_id, missions);
+            if status.is_empty() {
+                mission_id += 39;
+                limit *= 10;
+                status = items::get_mission_status(mission_id, missions);
             }
-        }
-        
-        let mut index = characters_in_deck.members().position(|r| *r == data["id"]);
-        if index.is_none() {
-            index = characters_in_deck.members().position(|r| *r == data["master_card_id"]);
-        }
-        let exp = BOND_WEIGHT[index.unwrap_or(10)].as_i32().unwrap_or(0) * (lp_used / 10);
-        let additional_exp;
-        if has.contains(character) {
-            additional_exp = 0;
-            let j = has.members().position(|r| r == character).unwrap_or(10);
-            if j != 10 {
-                let start = rv[has_i[j].as_usize().unwrap()]["before_exp"].as_i64().unwrap();
-                let mut bond = start + exp as i64;
-                if bond >= MAX_BOND { bond = MAX_BOND; }
-                if bond > rv[has_i[j].as_usize().unwrap()]["exp"].as_i64().unwrap() {
-                    let completed = bond >= limit;
-                    let mission = items::update_mission_status(mission_id, 0, completed, false, bond - start, missions);
-                    if mission.is_some() {
-                        completed_missions.push(mission.unwrap()).unwrap();
-                    }
-                    rv[has_i[j].as_usize().unwrap()]["exp"] = bond.into();
-                    has_i[j] = i.into();
+            if status["status"].as_i32().unwrap_or(0) <= 1 {
+                let completed = after >= limit;
+                if let Some(m) = items::update_mission_status(mission_id, 0, completed, false, gains[idx], missions) {
+                    completed_missions.push(m).unwrap();
                 }
             }
-        } else {
-            has.push(character).unwrap();
-            has_i.push(i).unwrap();
-            additional_exp = exp;
         }
-        
-        let start = status["progress"].as_i64().unwrap_or(0);
-        let mut bond = start + additional_exp as i64;
-        if bond >= MAX_BOND {
-            bond = MAX_BOND;
-        }
-        if !full && additional_exp > 0 {
-            let completed = bond >= limit;
-            let mission = items::update_mission_status(mission_id, 0, completed, false, bond - start, missions);
-            if mission.is_some() {
-                completed_missions.push(mission.unwrap()).unwrap();
-            }
-        }
-        
+
         rv.push(object!{
             master_character_id: character,
-            exp: bond,
-            before_exp: start
+            exp: after,
+            before_exp: before
         }).unwrap();
-        i += 1;
     }
-    if user["tutorial_step"].as_i32().unwrap() >= 130 {
+
+    if tutorial_step >= 130 {
         for data in rv.members() {
             for chat in CHATS.members() {
                 if chat.as_i64().unwrap() > data["exp"].as_i64().unwrap() {
@@ -585,6 +597,8 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
             }
         }
     }
+
+    user["character_list"] = character_list;
     rv
 }
 
@@ -707,7 +721,7 @@ pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     }
 
     let deck_slot = get_end_live_deck_id(&key, &body).unwrap_or(body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()));
-    let characters = get_live_character_list(lp_used, deck_slot, &user, &mut user_missions, &mut cleared_missions, &mut chats);
+    let characters = get_live_character_list(lp_used, deck_slot, &mut user, &mut user_missions, &mut cleared_missions, &mut chats);
 
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_home(&key, user2.clone());
