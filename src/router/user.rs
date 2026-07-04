@@ -65,9 +65,10 @@ async fn user(req: HttpRequest) -> impl Responder {
 
     user["lottery_list"] = array![];
 
-    // Custom songs visible to this user are unlocked
-    for id in crate::router::custom_song::get_music_ids(user["user"]["id"].as_i64().unwrap()).members() {
-        user["master_music_ids"].push(id.as_i64().unwrap()).unwrap();
+    if crate::router::custom_song::client_supports_custom_songs(&req) {
+        for id in crate::router::custom_song::get_music_ids(user["user"]["id"].as_i64().unwrap()).members() {
+            user["master_music_ids"].push(id.as_i64().unwrap()).unwrap();
+        }
     }
 
     global::api(&req, Some(user))

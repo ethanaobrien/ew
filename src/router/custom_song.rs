@@ -80,6 +80,19 @@ pub fn disabled() -> bool {
     args.hidden || !args.enable_custom_songs
 }
 
+// A client that understands custom songs advertises it with this exact header
+// on its API requests. Old / official clients don't send it, so we must NOT
+// inject custom-song data (custom master_music_ids) into the shared /api/user
+// response for them - the unresolvable ids would break the account
+const SUPPORT_HEADER: &str = "X-Custom-Songs";
+
+pub fn client_supports_custom_songs(req: &HttpRequest) -> bool {
+    req.headers()
+        .get(SUPPORT_HEADER)
+        .and_then(|v| v.to_str().ok())
+        == Some("1")
+}
+
 // The catalog is filtered per requesting user: private songs only show for
 // their owner, shared songs for the owner plus their shared-user list
 async fn list(req: HttpRequest, body: String) -> impl Responder {
@@ -1246,5 +1259,44 @@ mod tests {
             actix_web::body::to_bytes(resp.into_body()).await.unwrap()
         });
         jzon::parse(&String::from_utf8_lossy(&body)).unwrap()
+    }
+
+    // With the feature enabled, custom unlock ids are appended to /api/user ONLY
+    // for clients that send X-Custom-Songs: 1. An old/official client (no
+    // header, or a different value) gets its official unlock list untouched.
+    #[test]
+    fn unlock_ids_gated_on_support_header() {
+        use actix_web::test::TestRequest;
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let owner = 4242;
+        let music_id = database::next_music_id();
+        database::insert_song(music_id, owner, &object!{music_id: music_id}, "public", &array![], false);
+        // Sanity: the feature is on, so the id is visible to get_music_ids
+        assert!(get_music_ids(owner).contains(music_id));
+
+        // Exactly what the /api/user handler appends to master_music_ids
+        let appended = |req: &HttpRequest| -> JsonValue {
+            if client_supports_custom_songs(req) {
+                get_music_ids(owner)
+            } else {
+                array![]
+            }
+        };
+
+        // No header -> unsupported -> nothing appended
+        let without = TestRequest::default().to_http_request();
+        assert!(!client_supports_custom_songs(&without));
+        assert!(appended(&without).is_empty());
+
+        // Correct header -> supported -> custom id appended
+        let with = TestRequest::default().insert_header(("X-Custom-Songs", "1")).to_http_request();
+        assert!(client_supports_custom_songs(&with));
+        assert!(appended(&with).contains(music_id));
+
+        // Any other value is treated as an unsupporting client
+        let wrong = TestRequest::default().insert_header(("X-Custom-Songs", "true")).to_http_request();
+        assert!(!client_supports_custom_songs(&wrong));
+        assert!(appended(&wrong).is_empty());
     }
 }
