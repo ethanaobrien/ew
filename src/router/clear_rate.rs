@@ -230,29 +230,8 @@ async fn get_clearrate_json() -> JsonValue {
     rv
 }
 
-fn strip_custom_clear_rates(mut data: JsonValue) -> JsonValue {
-    let ids = data["master_music_ids"].clone();
-    let rates = data["all_user_clear_rate"].clone();
-    let mut kept_ids = array![];
-    let mut kept_rates = array![];
-    for (i, id) in ids.members().enumerate() {
-        if id.as_i64().unwrap_or(0) >= crate::database::custom_song::FIRST_MUSIC_ID {
-            continue;
-        }
-        kept_ids.push(id.clone()).unwrap();
-        kept_rates.push(rates[i].clone()).unwrap();
-    }
-    data["master_music_ids"] = kept_ids;
-    data["all_user_clear_rate"] = kept_rates;
-    data
-}
-
 pub async fn clearrate(req: HttpRequest) -> impl Responder {
-    let mut data = get_clearrate_json().await;
-    if !crate::router::custom_song::client_supports_custom_songs(&req) {
-        data = strip_custom_clear_rates(data);
-    }
-    global::api(&req, Some(data))
+    global::api(&req, Some(get_clearrate_json().await))
 }
 
 pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {
