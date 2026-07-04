@@ -55,6 +55,8 @@ lazy_static! {
 
     pub static ref LIVE_LIST: JsonValue = index_by(&t("live"), "id");
 
+    pub static ref CLEAR_REWARD: JsonValue = t("live_clear_reward");
+
     pub static ref LIVES: JsonValue = t("live");
 
     pub static ref MISSION_DATA: JsonValue = t("live_mission");

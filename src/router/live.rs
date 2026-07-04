@@ -38,10 +38,40 @@ async fn retire(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn reward(req: HttpRequest, _body: String) -> impl Responder {
+async fn reward(req: HttpRequest, body: String) -> impl Responder {
+    let key = global::get_login(req.headers(), &body);
+    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let user = userdata::get_acc(&key);
+    let live_id = body["master_live_id"].as_i64().unwrap();
+    let cleared = get_clear_count(live_id, &user) > 0;
+
+    let mut ensured_list = array![];
+    let mut random_list = array![];
+    for data in databases::CLEAR_REWARD.members() {
+        if data["masterLiveId"].as_i64().unwrap() != live_id {
+            continue;
+        }
+        if data["getableCount"].as_i64().unwrap() == 0 {
+            continue;
+        }
+        let entry = object!{
+            master_live_clear_reward_id: data["id"].clone(),
+            type: data["type"].clone(),
+            value: data["value"].clone(),
+            amount: data["amount"].clone(),
+            getable_count: data["getableCount"].clone(),
+            received_count: if data["type"] == 1 && cleared { 1 } else { 0 }
+        };
+        if data["type"] == 1 {
+            ensured_list.push(entry).unwrap();
+        } else {
+            random_list.push(entry).unwrap();
+        }
+    }
+
     global::api(&req, Some(object!{
-        "ensured_list": [],
-        "random_list": []
+        "ensured_list": ensured_list,
+        "random_list": random_list
     }))
 }
 
@@ -409,7 +439,16 @@ fn get_live_mission_completed_ids(user: &JsonValue, live_id: i64, score: i64, co
     Some(out)
 }
 
-fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, user_missions: &mut JsonValue, cleared_missions: &mut JsonValue, chats: &mut JsonValue, multiplier: i64) -> JsonValue {
+fn mission_reward_reason(mission_type: i64, jp: bool) -> &'static str {
+    match mission_type {
+        1 => if jp { "楽曲のスコアランク達成報酬です。" } else { "Song Score Rank reward." },
+        2 => if jp { "楽曲のコンボ達成報酬です。" } else { "Song Combo reward." },
+        3 => if jp { "楽曲のフルコンボ達成報酬です。" } else { "Song Full Combo reward." },
+        _ => if jp { "楽曲のクリア回数達成報酬です。" } else { "Song Clear Count reward." },
+    }
+}
+
+fn give_mission_rewards(user: &mut JsonValue, home: &mut JsonValue, missions: &JsonValue, user_missions: &mut JsonValue, cleared_missions: &mut JsonValue, chats: &mut JsonValue, multiplier: i64, jp: bool) -> JsonValue {
     let mut rv = array![];
     for data in databases::MISSION_DATA.members() {
         if !missions.contains(data["id"].as_i32().unwrap()) {
@@ -418,16 +457,15 @@ fn give_mission_rewards(user: &mut JsonValue, missions: &JsonValue, user_mission
         if data["masterLiveMissionRewardId"].as_i64().unwrap() == 0 {
             continue;
         }
-        let mut gift = databases::MISSION_REWARD_DATA[data["masterLiveMissionRewardId"].to_string()].clone();
-        gift["reward_type"] = gift["type"].clone();
-        gift["amount"] = (gift["amount"].as_i64().unwrap() * multiplier).into();
-        items::give_gift(&gift, user, user_missions, cleared_missions, chats);
+        let reward = databases::MISSION_REWARD_DATA[data["masterLiveMissionRewardId"].to_string()].clone();
+        let reason = mission_reward_reason(data["type"].as_i64().unwrap_or(0), jp);
+        items::gift_item_basic(reward["value"].as_i32().unwrap(), reward["amount"].as_i64().unwrap(), reward["type"].as_i32().unwrap(), reason, home);
     }
-    if items::give_gift_basic(3, 16005001, 10 * multiplier, user, user_missions, cleared_missions, chats) {
-        rv.push(object!{"type":3,"value":16005001,"level":0,"amount":10}).unwrap();
+    if items::give_gift_basic(3, 16005001, 5 * multiplier, user, user_missions, cleared_missions, chats) {
+        rv.push(object!{"type":3,"value":16005001,"level":0,"amount":5 * multiplier}).unwrap();
     }
-    if items::give_gift_basic(3, 17001001, 2 * multiplier, user, user_missions, cleared_missions, chats) {
-        rv.push(object!{"type":3,"value":17001001,"level":0,"amount":2}).unwrap();
+    if items::give_gift_basic(3, 17001001, 1, user, user_missions, cleared_missions, chats) {
+        rv.push(object!{"type":3,"value":17001001,"level":0,"amount":1}).unwrap();
     }
     rv
 }
@@ -553,10 +591,15 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &JsonValue, mission
 pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
     let key = global::get_login(req.headers(), body);
     let body = jzon::parse(&encryption::decrypt_packet(body).unwrap()).unwrap();
-    let user2 = userdata::get_acc_home(&key);
+    let mut user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
     let mut chats = userdata::get_acc_chats(&key);
+
+    let jp = items::get_region(req.headers());
+    let first_clear = !skipped
+        && user["tutorial_step"].as_i32().unwrap() >= 130
+        && get_clear_count(body["master_live_id"].as_i64().unwrap(), &user) == 0;
 
     let live = if skipped {
         items::use_item(&object!{
@@ -637,27 +680,44 @@ pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
         clear_master_live_mission_ids: missions.clone()
     });
     
-    let reward_list = give_mission_rewards(&mut user, &missions, &mut user_missions, &mut cleared_missions, &mut chats, body["live_boost"].as_i64().unwrap_or(1));
-    
     let lp_used: i32 = body["use_lp"].as_i32().unwrap_or(10 * body["live_boost"].as_i32().unwrap_or(0));
-    
+
+    let mut reward_list = give_mission_rewards(&mut user, &mut user2, &missions, &mut user_missions, &mut cleared_missions, &mut chats, (lp_used / 10) as i64, jp);
+
     items::lp_modification(&mut user, lp_used as u64, true);
-    
+
     items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
-    
+
+    items::give_points(1, 75 * lp_used as i64, &mut user, &mut user_missions, &mut cleared_missions);
+
+    if first_clear {
+        items::give_primogems(60, &mut user);
+        user["gem"]["total"] = (user["gem"]["charge"].as_i64().unwrap() + user["gem"]["free"].as_i64().unwrap()).into();
+        reward_list.push(object!{
+            type: 1,
+            value: 1,
+            level: 0,
+            amount: 60,
+            drop_info: {
+                first_reward: 1,
+                getable_count: 1,
+                remaining_getable_count: 0
+            }
+        }).unwrap();
+    }
+
     let deck_slot = get_end_live_deck_id(&key, &body).unwrap_or(body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()));
     let characters = get_live_character_list(lp_used, deck_slot, &user, &mut user_missions, &mut cleared_missions, &mut chats);
-    
+
     userdata::save_acc(&key, user.clone());
+    userdata::save_acc_home(&key, user2.clone());
     userdata::save_acc_missions(&key, user_missions);
     userdata::save_acc_chats(&key, chats);
-    
-    object!{
-        "gem": user["gem"].clone(),
-        "high_score": live["high_score"].clone(),
+
+    let mut rv = object!{
         "item_list": user["item_list"].clone(),
         "point_list": user["point_list"].clone(),
-        "live": live,
+        "live": live.clone(),
         "clear_master_live_mission_ids": missions,
         "user": user["user"].clone(),
         "stamina": user["stamina"].clone(),
@@ -669,7 +729,14 @@ pub fn live_end(req: &HttpRequest, body: &str, skipped: bool) -> JsonValue {
         "ranking_change": [],
         "event_member": [],
         "event_ranking_data": []
+    };
+    if first_clear {
+        rv["gem"] = user["gem"].clone();
     }
+    if skipped {
+        rv["high_score"] = live["high_score"].clone();
+    }
+    rv
 }
 
 async fn end(req: HttpRequest, body: String) -> impl Responder {
