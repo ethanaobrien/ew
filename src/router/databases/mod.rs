@@ -246,4 +246,28 @@ lazy_static! {
         }
         info
     };
+
+    pub static ref CARD_RARITY: JsonValue = index_by(&t("card_rarity"), "rarity");
+
+    pub static ref CARD_EVOLVE: JsonValue = index_by(&t("card_evolve"), "rarity");
+
+    pub static ref CARD_LEVEL: JsonValue = {
+        let mut info = object! {};
+        for data in t("card_level").members() {
+            info[format!("{}_{}", data["id"], data["level"])] = data["exp"].clone();
+        }
+        info
+    };
+
+    pub static ref CARD_SKILL_MAX: JsonValue = {
+        let mut info = object! {};
+        for data in t("card_skill_level").members() {
+            let id = data["id"].to_string();
+            let exp = data["exp"].as_i64().unwrap_or(0);
+            if exp > info[&id].as_i64().unwrap_or(0) {
+                info[id] = exp.into();
+            }
+        }
+        info
+    };
 }
