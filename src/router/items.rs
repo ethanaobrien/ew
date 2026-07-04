@@ -517,7 +517,8 @@ pub fn refresh_dailies(missions: &mut JsonValue, now: u64) -> bool {
     changed
 }
 
-pub fn completed_daily_mission(id: i64, now: u64, missions: &mut JsonValue) -> JsonValue {
+pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
+    let now = global::timestamp();
     refresh_dailies(missions, now);
 
     let mission = get_mission_status(id, missions);
