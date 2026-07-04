@@ -6,7 +6,7 @@ use lazy_static::lazy_static;
 
 use crate::encryption;
 use crate::sql::SQLite;
-use crate::router::{databases, global};
+use crate::router::{databases, global, userdata};
 use crate::include_file;
 use crate::router::tools::guest;
 
@@ -235,19 +235,27 @@ pub async fn clearrate(req: HttpRequest) -> impl Responder {
 }
 
 pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {
+    let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+    let self_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
-    
+
     let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(live)).unwrap_or(String::from("[]"));
     let scores = jzon::parse(&info).unwrap();
-    
+
     let mut rank = array![];
-    
+
     for (i, data) in scores.members().enumerate() {
-        let user = guest::get_user(data["user"].as_i64().unwrap(), &object![], guest::UserView::Ranking);
+        let uid = data["user"].as_i64().unwrap();
+        let user = guest::get_user(uid, &object![], guest::UserView::Ranking);
+        let user_obj = if uid == self_id {
+            userdata::get_acc_from_uid(uid)["user"].clone()
+        } else {
+            user["user"].clone()
+        };
         rank.push(object!{
             rank: i + 1,
-            user: user["user"].clone(),
+            user: user_obj,
             score: data["score"].as_i64().unwrap(),
             favorite_card: user["favorite_card"].clone(),
             guest_smile_card: user["guest_smile_card"].clone(),
@@ -255,7 +263,7 @@ pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {
             guest_pure_card: user["guest_pure_card"].clone()
         }).unwrap();
     }
-    
+
     global::api(&req, Some(object!{
         "ranking_list": rank
     }))
