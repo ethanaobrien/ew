@@ -61,6 +61,10 @@ CREATE TABLE IF NOT EXISTS chats (
     user_id          BIGINT NOT NULL PRIMARY KEY,
     chats            TEXT NOT NULL
 );
+CREATE TABLE IF NOT EXISTS exchange (
+    user_id          BIGINT NOT NULL PRIMARY KEY,
+    exchange         TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS event (
     user_id          BIGINT NOT NULL PRIMARY KEY,
     event            TEXT NOT NULL
@@ -78,6 +82,7 @@ CREATE TABLE IF NOT EXISTS webui (
     token        TEXT NOT NULL,
     last_login   BIGINT NOT NULL
 );
+INSERT OR IGNORE INTO exchange (user_id, exchange) SELECT user_id, '[]' FROM userdata;
     ").unwrap();
 }
 
@@ -153,6 +158,10 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
         format!(r#"{{"server_time_set":{},"server_time":1709272800}}"#, global::timestamp())
     ));
     DATABASE.lock_and_exec("INSERT INTO chats (user_id, chats) VALUES (?1, ?2)", params!(
+        uid,
+        "[]"
+    ));
+    DATABASE.lock_and_exec("INSERT INTO exchange (user_id, exchange) VALUES (?1, ?2)", params!(
         uid,
         "[]"
     ));
@@ -303,6 +312,9 @@ pub fn get_server_data(auth_key: &str) -> JsonValue {
 pub fn get_acc_chats(auth_key: &str) -> JsonValue {
     get_data(auth_key, "chats")
 }
+pub fn get_acc_exchange(auth_key: &str) -> JsonValue {
+    get_data(auth_key, "exchange")
+}
 pub fn get_acc_event(auth_key: &str) -> JsonValue {
     let event = get_data(auth_key, "event");
     if event.is_empty() {
@@ -347,6 +359,9 @@ pub fn save_server_data(auth_key: &str, data: JsonValue) {
 }
 pub fn save_acc_chats(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "chats", data);
+}
+pub fn save_acc_exchange(auth_key: &str, data: JsonValue) {
+    save_data(auth_key, "exchange", data);
 }
 pub fn save_acc_sif(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "sifcards", data);
@@ -625,6 +640,7 @@ pub fn purge_accounts() -> usize {
         DATABASE.lock_and_exec("DELETE FROM sifcards WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM friends WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM chats WHERE user_id=?1", params!(user_id));
+        DATABASE.lock_and_exec("DELETE FROM exchange WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM event WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM eventloginbonus WHERE user_id=?1", params!(user_id));
         DATABASE.lock_and_exec("DELETE FROM server_data WHERE user_id=?1", params!(user_id));

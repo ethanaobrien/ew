@@ -238,7 +238,7 @@ pub fn gift_item(item: &JsonValue, reason: &str, user: &mut JsonValue) -> JsonVa
         level: item["level"].clone(),
         amount: item["amount"].clone(),
         created_date_time: global::timestamp(),
-        expire_date_time: global::timestamp() + (5 * (24 * 60 * 60)),
+        expire_date_time: global::timestamp() + (300 * (24 * 60 * 60)),
         received_date_time: 0
     };
     if user["home"]["gift_list"].len() >= GIFT_LIMIT {
@@ -541,9 +541,17 @@ async fn use_item_req(req: HttpRequest, body: String) -> impl Responder {
     }, amount, &mut user);
     
     userdata::save_acc(&key, user.clone());
-    
+
+    let mut used = object!{};
+    for it in user["item_list"].members() {
+        if it["master_item_id"].as_i64() == body["id"].as_i64() {
+            used = it.clone();
+            break;
+        }
+    }
+
     global::api(&req, Some(object!{
-        item_list: user["item_list"].clone(),
+        item_list: [used],
         stamina: user["stamina"].clone()
     }))
 }

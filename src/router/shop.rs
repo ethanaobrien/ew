@@ -25,20 +25,28 @@ async fn buy(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
     let mut user = userdata::get_acc(&key);
-    let user_home = userdata::get_acc_home(&key);
-    
-    let item = &databases::SHOP_INFO[body["master_shop_item_id"].to_string()];
-    
+
+    let shop_item_id = body["master_shop_item_id"].as_i64().unwrap();
+    let item = &databases::SHOP_INFO[shop_item_id.to_string()];
+
     items::remove_gems(&mut user, item["price"].as_i64().unwrap());
-    items::give_shop(item["masterShopRewardId"].as_i64().unwrap(), item["price"].as_i64().unwrap(), &mut user);
+    items::give_shop(shop_item_id, 1, &mut user);
     items::lp_modification(&mut user, item["price"].as_u64().unwrap() / 2, false);
-    
+
     userdata::save_acc(&key, user.clone());
-    
+
+    let mut bought = object!{};
+    for entry in user["shop_list"].members() {
+        if entry["master_shop_item_id"].as_i64() == Some(shop_item_id) {
+            bought = entry.clone();
+            break;
+        }
+    }
+
     global::api(&req, Some(object!{
         "gem": user["gem"].clone(),
-        "shop_list": user["shop_list"].clone(),
-        "gift_list": user_home["home"]["gift_list"].clone(),
+        "shop_list": [bought],
+        "gift_list": [],
         "updated_value_list": {
             "stamina": user["stamina"].clone()
         }
