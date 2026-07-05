@@ -61,6 +61,7 @@ pub fn web_routes(cfg: &mut web::ServiceConfig) {
         web::scope("/custom_song")
             .route("/assets/{music_id}/{file}", web::get().to(assets))
             .route("/audio/{hash}/{file}", web::get().to(audio))
+            .route("/data/{hash}/{file}", web::get().to(data))
             .route("/upload", web::post().to(upload))
             .route("/update", web::post().to(update))
             .route("/mine", web::get().to(mine))
@@ -169,6 +170,36 @@ async fn audio(req: HttpRequest) -> HttpResponse {
     }
 }
 
+// Content-addressed chart/jacket fetch, same '{server}/{hash}/{name}.{ext}'
+// shape as the audio route. The game client builds the URL from the md5 it
+// reads in the catalog (charts -> .json, jackets -> .png); the ext is cosmetic,
+// the md5 resolves the bytes. Visible-to-all like the other asset routes (CDN
+// semantics) - only the feature flag gates it. A changed asset has a new md5,
+// so a stale md5 simply 404s and the client re-downloads under the new one.
+async fn data(req: HttpRequest) -> HttpResponse {
+    if disabled() {
+        return HttpResponse::NotFound().finish();
+    }
+    let hash = req.match_info().get("hash").unwrap_or("").to_string();
+    let file = req.match_info().get("file").unwrap_or("").to_string();
+    if hash.len() != 32 || !hash.chars().all(|c| c.is_ascii_hexdigit()) || !file.starts_with(&format!("{}.", hash)) {
+        return HttpResponse::NotFound().finish();
+    }
+    let Some((music_id, filename)) = database::find_asset_by_md5(&hash) else {
+        return HttpResponse::NotFound().finish();
+    };
+    match fs::read(song_path(music_id, &filename)) {
+        Ok(body) => {
+            let mime = mime_guess::from_path(&filename).first_or_octet_stream();
+            HttpResponse::Ok()
+                .insert_header(ContentType(mime))
+                .insert_header(("content-length", body.len()))
+                .body(body)
+        },
+        Err(_) => HttpResponse::NotFound().finish()
+    }
+}
+
 fn get_session_uid(req: &HttpRequest) -> Option<i64> {
     let token = webui::get_login_token(req)?;
     let login_token = userdata::webui_login_token(&token)?;
@@ -266,6 +297,13 @@ fn cue_json(cue: &audio::Cue, cue_name: String) -> JsonValue {
     }
 }
 
+// (md5-hex, byte-length) of a downloadable asset's served bytes. The client
+// caches charts/jackets content-addressed by this md5, so it must be the hash
+// of the exact bytes the data route returns
+fn asset_meta(bytes: &[u8]) -> (String, usize) {
+    (format!("{:x}", md5::compute(bytes)), bytes.len())
+}
+
 // Score thresholds when the uploader doesn't provide any: take the highest
 // difficulty's full_combo and stars, budget base = full_combo * 200 * (1 + stars / 10)
 // (~200 points per note, scaled up for harder charts), then C/B/A/S at
@@ -343,7 +381,9 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
 
     let suffix = format!("Custom{}", music_id);
     let mut levels = array![];
-    for (level, _, full_combo, level_number, _) in charts.iter() {
+    for (level, chart, full_combo, level_number, _) in charts.iter() {
+        // md5/size over the exact chart JSON bytes written to disk and served
+        let (md5, size) = asset_meta(jzon::stringify(chart.clone()).as_bytes());
         levels.push(object!{
             "level": *level,
             "level_number": *level_number,
@@ -351,9 +391,13 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
             "score_coeff": 1.0,
             // Official convention: the filename difficulty index is level+1
             "note_data_file_name": format!("{}_{}_{}", music_id, level + 1, suffix),
-            "chart": format!("/custom_song/assets/{}/chart_{}.json", music_id, level)
+            "chart": format!("/custom_song/assets/{}/chart_{}.json", music_id, level),
+            "md5": md5,
+            "size": size
         }).unwrap();
     }
+    let (jacket_md5, jacket_size) = asset_meta(&jacket);
+    let (jacket_blur_md5, jacket_blur_size) = asset_meta(&jacket_blur);
 
     let (_, _, hardest_combo, hardest_stars, _) = charts.last().unwrap();
     let (score, multi_score) = default_scores(*hardest_combo, *hardest_stars);
@@ -402,6 +446,11 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         // Combo missions at 25/50/75/100% of the hardest difficulty's full combo
         "mission_combo": [hardest_combo / 4, hardest_combo / 2, hardest_combo * 3 / 4, *hardest_combo],
         "jacket": format!("/custom_song/assets/{}/jacket.png", music_id),
+        "jacket_md5": jacket_md5,
+        "jacket_size": jacket_size,
+        "jacket_blur": format!("/custom_song/assets/{}/jacket_blur.png", music_id),
+        "jacket_blur_md5": jacket_blur_md5,
+        "jacket_blur_size": jacket_blur_size,
         "levels": levels,
         "sound": {
             "cue_sheet": format!("song_{}_{}", music_id, suffix),
@@ -550,7 +599,14 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
 
     let suffix = format!("Custom{}", music_id);
     let mut levels = array![];
-    for (level, _, full_combo, level_number) in charts.iter() {
+    for (level, chart, full_combo, level_number) in charts.iter() {
+        // md5/size track the on-disk bytes: a replaced chart hashes its new
+        // bytes, an unchanged one re-hashes the existing file (so even a song
+        // edited before md5 fields existed gets a complete, correct catalog)
+        let (md5, size) = match chart {
+            Some((chart, _)) => asset_meta(jzon::stringify(chart.clone()).as_bytes()),
+            None => asset_meta(&fs::read(song_path(music_id, &format!("chart_{}.json", level))).map_err(|e| e.to_string())?)
+        };
         levels.push(object!{
             "level": *level,
             "level_number": *level_number,
@@ -558,9 +614,23 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
             "score_coeff": 1.0,
             // Official convention: the filename difficulty index is level+1
             "note_data_file_name": format!("{}_{}_{}", music_id, level + 1, suffix),
-            "chart": format!("/custom_song/assets/{}/chart_{}.json", music_id, level)
+            "chart": format!("/custom_song/assets/{}/chart_{}.json", music_id, level),
+            "md5": md5,
+            "size": size
         }).unwrap();
     }
+    let (jacket_md5, jacket_size, jacket_blur_md5, jacket_blur_size) = match &jacket {
+        Some((jacket, blur)) => {
+            let (jm, js) = asset_meta(jacket);
+            let (bm, bs) = asset_meta(blur);
+            (jm, js, bm, bs)
+        },
+        None => {
+            let (jm, js) = asset_meta(&fs::read(song_path(music_id, "jacket.png")).map_err(|e| e.to_string())?);
+            let (bm, bs) = asset_meta(&fs::read(song_path(music_id, "jacket_blur.png")).map_err(|e| e.to_string())?);
+            (jm, js, bm, bs)
+        }
+    };
 
     // Scores and combo missions always derive from the resulting state, with
     // the same formulas as upload
@@ -618,6 +688,11 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
         // Combo missions at 25/50/75/100% of the hardest difficulty's full combo
         "mission_combo": [hardest_combo / 4, hardest_combo / 2, hardest_combo * 3 / 4, *hardest_combo],
         "jacket": format!("/custom_song/assets/{}/jacket.png", music_id),
+        "jacket_md5": jacket_md5,
+        "jacket_size": jacket_size,
+        "jacket_blur": format!("/custom_song/assets/{}/jacket_blur.png", music_id),
+        "jacket_blur_md5": jacket_blur_md5,
+        "jacket_blur_size": jacket_blur_size,
         "levels": levels,
         "sound": sound
     };
@@ -1298,5 +1373,90 @@ mod tests {
         let wrong = TestRequest::default().insert_header(("X-Custom-Songs", "true")).to_http_request();
         assert!(!client_supports_custom_songs(&wrong));
         assert!(appended(&wrong).is_empty());
+    }
+
+    // Catalog chart/jacket entries carry md5+size, and the content-addressed
+    // data route serves the exact bytes for a known md5 (404 for unknown / off)
+    #[test]
+    fn catalog_md5_and_data_route() {
+        use actix_web::test::TestRequest;
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Data Route");
+        field(&mut fields, "artist", "A");
+        field(&mut fields, "attribute", "1");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg());
+        fields.insert(String::from("chart_1"), test_chart());
+        let music_id = create_song(9191, &fields).unwrap();
+
+        let song = database::get_song(music_id).unwrap();
+        let chart_md5 = song["levels"][0]["md5"].to_string();
+        let jacket_md5 = song["jacket_md5"].to_string();
+        let blur_md5 = song["jacket_blur_md5"].to_string();
+        // Every downloadable asset entry carries a 32-hex md5 and a nonzero size
+        for (md5, size) in [
+            (&chart_md5, song["levels"][0]["size"].as_usize()),
+            (&jacket_md5, song["jacket_size"].as_usize()),
+            (&blur_md5, song["jacket_blur_size"].as_usize())
+        ] {
+            assert_eq!(md5.len(), 32, "md5 {}", md5);
+            assert!(md5.chars().all(|c| c.is_ascii_hexdigit()));
+            assert!(size.unwrap() > 0);
+        }
+        // Audio cues still carry md5+size (unchanged)
+        assert_eq!(song["sound"]["play"]["md5"].to_string().len(), 32);
+        assert!(song["sound"]["select"]["size"].as_usize().unwrap() > 0);
+
+        let call = |hash: &str, ext: &str| -> HttpResponse {
+            let req = TestRequest::default()
+                .param("hash", hash.to_string())
+                .param("file", format!("{}.{}", hash, ext))
+                .to_http_request();
+            actix_web::rt::System::new().block_on(async { data(req).await })
+        };
+        let body_of = |resp: HttpResponse| -> Vec<u8> {
+            actix_web::rt::System::new()
+                .block_on(async { actix_web::body::to_bytes(resp.into_body()).await.unwrap() })
+                .to_vec()
+        };
+
+        // The md5 route serves the exact bytes whose hash IS that md5
+        let resp = call(&chart_md5, "json");
+        assert_eq!(resp.status(), actix_web::http::StatusCode::OK);
+        let body = body_of(resp);
+        assert_eq!(format!("{:x}", md5::compute(&body)), chart_md5);
+        assert_eq!(body.len(), song["levels"][0]["size"].as_usize().unwrap());
+
+        let resp = call(&jacket_md5, "png");
+        assert_eq!(resp.status(), actix_web::http::StatusCode::OK);
+        assert_eq!(format!("{:x}", md5::compute(body_of(resp))), jacket_md5);
+
+        let resp = call(&blur_md5, "png");
+        assert_eq!(resp.status(), actix_web::http::StatusCode::OK);
+        assert_eq!(format!("{:x}", md5::compute(body_of(resp))), blur_md5);
+
+        // Unknown md5 -> 404
+        assert_eq!(call(&"0".repeat(32), "json").status(), actix_web::http::StatusCode::NOT_FOUND);
+        // Malformed hash -> 404
+        assert_eq!(call("nothex", "json").status(), actix_web::http::StatusCode::NOT_FOUND);
+
+        // Feature disabled -> 404 even for a real md5
+        crate::runtime::set_enable_custom_songs(false);
+        assert_eq!(call(&chart_md5, "json").status(), actix_web::http::StatusCode::NOT_FOUND);
+        crate::runtime::set_enable_custom_songs(true);
+
+        // Editing the chart changes its md5 (self-heal): old md5 stops resolving
+        let mut edit = HashMap::new();
+        edit.insert(String::from("chart_1"), jzon::stringify(jzon::array![
+            {"timing_sec": 0.5, "notes_attribute": 1, "notes_level": 1, "effect": 1, "effect_value": 0.0, "position": 4},
+            {"timing_sec": 1.2, "notes_attribute": 1, "notes_level": 1, "effect": 1, "effect_value": 0.0, "position": 8}
+        ]).into_bytes());
+        update_song(music_id, &edit).unwrap();
+        let new_md5 = database::get_song(music_id).unwrap()["levels"][0]["md5"].to_string();
+        assert_ne!(new_md5, chart_md5);
+        assert_eq!(call(&chart_md5, "json").status(), actix_web::http::StatusCode::NOT_FOUND);
+        assert_eq!(call(&new_md5, "json").status(), actix_web::http::StatusCode::OK);
     }
 }

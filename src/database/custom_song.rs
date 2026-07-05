@@ -274,3 +274,28 @@ pub fn dead_music_ids(candidates: &JsonValue) -> JsonValue {
 pub fn audio_in_use(md5: &str, ignored_music_id: i64) -> bool {
     DATABASE.lock_and_select("SELECT music_id FROM songs WHERE music_id!=?1 AND song LIKE ?2", params!(ignored_music_id, format!("%{}%", md5))).is_ok()
 }
+
+// Resolve a content-addressed chart/jacket md5 to the per-song-id file that
+// currently holds those bytes: (music_id, relative filename under
+// custom_songs/{music_id}/). Charts and jackets live in the per-song directory
+// (not a shared md5 store), and their catalog md5 always tracks the on-disk
+// bytes - so this is the index the /custom_song/data/{md5} route serves from,
+// and it self-heals: an edited asset gets a new md5 and old md5s stop resolving.
+// Audio has its own route and is intentionally not resolved here.
+pub fn find_asset_by_md5(md5: &str) -> Option<(i64, String)> {
+    let blob = DATABASE.lock_and_select("SELECT song FROM songs WHERE song LIKE ?1", params!(format!("%{}%", md5))).ok()?;
+    let song = jzon::parse(&blob).ok()?;
+    let music_id = song["music_id"].as_i64()?;
+    if song["jacket_md5"].as_str() == Some(md5) {
+        return Some((music_id, String::from("jacket.png")));
+    }
+    if song["jacket_blur_md5"].as_str() == Some(md5) {
+        return Some((music_id, String::from("jacket_blur.png")));
+    }
+    for level in song["levels"].members() {
+        if level["md5"].as_str() == Some(md5) {
+            return Some((music_id, format!("chart_{}.json", level["level"].as_i64()?)));
+        }
+    }
+    None
+}
