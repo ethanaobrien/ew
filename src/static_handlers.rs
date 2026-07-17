@@ -71,7 +71,7 @@ fn platform_guard(ctx: &guard::GuardContext) -> bool {
         .split('/')
         .nth(1)
         .unwrap_or("");
-    matches!(platform, "Android" | "StandaloneWindows64" | "iOS")
+    matches!(platform, "Android" | "StandaloneWindows64" | "StandaloneLinux64" | "WebGL" | "iOS")
 }
 
 pub fn routes(cfg: &mut web::ServiceConfig) {

@@ -2,6 +2,7 @@
 name = "ew"
 version = "1.1.0"
 edition = "2024"
+exclude = ["assets", "*.db"]
 
 [dependencies]
 actix-web = "4.13"

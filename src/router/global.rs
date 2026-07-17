@@ -17,9 +17,11 @@ struct AssetHashes {
     version_android: &'static str,
     version_ios:     &'static str,
     version_windows: &'static str,
+    version_webgl:   &'static str,
     android:         &'static str,
     ios:             &'static str,
     windows:         &'static str,
+    webgl:           &'static str,
 }
 
 static ASSET_TABLE: &[(&str, AssetHashes)] = &[
@@ -27,17 +29,21 @@ static ASSET_TABLE: &[(&str, AssetHashes)] = &[
         version_android: "4c921d2443335e574a82e04ec9ea243c",
         version_ios:     "4c921d2443335e574a82e04ec9ea243c",
         version_windows: "4c921d2443335e574a82e04ec9ea243c",
+        version_webgl:   "4c921d2443335e574a82e04ec9ea243c",
         android:         "67f8f261c16b3cca63e520a25aad6c1c",
         ios:             "b8975be8300013a168d061d3fdcd4a16",
-        windows:         "eb59fcba5ff6987eff1969dbd97eccde",
+        windows:         "fcc15c3dc02250d49c4c492c3b9d58fc",
+        webgl:           "e1ff7c74b20c8d216507972b6f24b9df",
     }),
     ("GL", AssetHashes {
         version_android: "5260ff15dff8ba0c00ad91400f515f55",
-        version_ios:     "5260ff15dff8ba0c00ad91400f515f55",
+        version_ios:     "5260ff15dff8ba0c00ad91400f515f55",    
         version_windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        version_webgl:   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         android:         "d210b28037885f3ef56b8f8aa45ac95b",
         ios:             "dd7175e4bcdab476f38c33c7f34b5e4d",
         windows:         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        webgl:           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     }),
 ];
 
@@ -49,6 +55,7 @@ impl AssetHashes {
             ("JP", "Android") => (self.android, args.jp_android_asset_hash.as_str()),
             ("JP", "iOS")     => (self.ios,     args.jp_ios_asset_hash.as_str()),
             ("JP", "Windows") => (self.windows, args.windows_asset_hash.as_str()),
+            ("JP", "WebGL") =>   (self.webgl, ""),
             ("GL", "Android") => (self.android, args.en_android_asset_hash.as_str()),
             ("GL", "iOS")     => (self.ios,     args.en_ios_asset_hash.as_str()),
             _                 => return None,
@@ -69,6 +76,7 @@ impl AssetHashes {
             ("JP", "Android") => (self.version_android, ""),
             ("JP", "iOS")     => (self.version_ios,     ""),
             ("JP", "Windows") => (self.version_windows, args.windows_asset_version.as_str()),
+            ("JP", "WebGL") =>   (self.version_webgl, ""),
             ("GL", "Android") => (self.version_android, ""),
             ("GL", "iOS")     => (self.version_ios,     ""),
             ("GL", "Windows") => (self.version_windows, ""),
@@ -108,7 +116,8 @@ pub fn parse_platform(header: &str) -> &str {
         "iphone" => "iOS",
         "windows" => "Windows",
         "windowsplayer" => "Windows",
-        _         => "Android",
+        "webglplayer" => "WebGL",
+        _         => panic!("Unknown platform: {header}"),
     }
 }
 

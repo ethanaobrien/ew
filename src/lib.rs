@@ -17,6 +17,7 @@ mod android;
 mod ios;
 
 use actix_web::{rt, App, HttpServer, web, dev::Service};
+//use actix_cors::Cors;
 use std::time::Duration;
 pub use options::get_args;
 use runtime::get_data_path;
@@ -33,6 +34,7 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
     }
 
     let rv = HttpServer::new(|| App::new()
+    //.wrap(Cors::permissive())
     .wrap_fn(|req, srv| {
         println!("Request: {} {}", req.method(), req.path());
 
