@@ -149,6 +149,26 @@ lazy_static! {
         cardz
     };
 
+    pub static ref STEPUP: JsonValue = {
+        let mut cardz = object! {};
+        let mut seen_ids = array![];
+        for data in t("lottery_stepup").members() {
+            let id = data["masterLotteryId"].to_string();
+            if cardz[&id].is_null() {
+                cardz[&id] = array![];
+                seen_ids.push(id.clone()).unwrap();
+            }
+            cardz[&id].push(data.clone()).unwrap();
+        }
+        for data in g("lottery_stepup").members() {
+            let id = data["masterLotteryId"].to_string();
+            if seen_ids.contains(id.as_str()) { continue; }
+            if cardz[&id].is_null() { cardz[&id] = array![]; }
+            cardz[&id].push(data.clone()).unwrap();
+        }
+        cardz
+    };
+
     pub static ref LOTTERY: JsonValue = {
         let mut cardz = object! {};
         for data in t("lottery").members() {
