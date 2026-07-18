@@ -21,14 +21,19 @@ struct AssetVersion {
 }
 
 static ASSET_VERSIONS: &[AssetVersion] = &[
+    // Default / stock
     AssetVersion { region: "JP", platform: "Android", version: "4c921d2443335e574a82e04ec9ea243c", hash: "67f8f261c16b3cca63e520a25aad6c1c" },
     AssetVersion { region: "JP", platform: "iOS",     version: "4c921d2443335e574a82e04ec9ea243c", hash: "b8975be8300013a168d061d3fdcd4a16" },
-    AssetVersion { region: "JP", platform: "Windows", version: "4c921d2443335e574a82e04ec9ea243c", hash: "937554b736233aa44774f59c74649d7a" },
-    AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df" },
     AssetVersion { region: "GL", platform: "Android", version: "5260ff15dff8ba0c00ad91400f515f55", hash: "d210b28037885f3ef56b8f8aa45ac95b" },
     AssetVersion { region: "GL", platform: "iOS",     version: "5260ff15dff8ba0c00ad91400f515f55", hash: "dd7175e4bcdab476f38c33c7f34b5e4d" },
-    AssetVersion { region: "GL", platform: "Windows", version: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", hash: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
-    AssetVersion { region: "GL", platform: "WebGL",   version: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", hash: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+
+    // Re-written client versions 2.0.0 - 2.1.2
+    AssetVersion { region: "JP", platform: "Windows", version: "4c921d2443335e574a82e04ec9ea243c", hash: "4ed1d077df2d1b29e17d25d64fb37242" },
+
+    // Re-written client versions 2.2.0 - 
+    AssetVersion { region: "JP", platform: "Windows", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "13ff04b7d1e4a7353458b8607307bd6b" },
+    
+    //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df" },
 ];
 
 impl AssetVersion {
