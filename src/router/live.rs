@@ -22,75 +22,8 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
             .route("/continue", web::post().to(continuee))
             .route("/reward", web::post().to(reward))
     );
-    cfg.route("/live3dDeck", web::post().to(live3d_deck));
-    cfg.route("/live3dDeck/save", web::post().to(live3d_deck_save));
 }
 
-async fn live3d_deck(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let user = userdata::get_acc(&key);
-    let deck_list = if user["live_mv_deck_list"].is_array() {
-        user["live_mv_deck_list"].clone()
-    } else {
-        array![]
-    };
-    global::api(&req, Some(object!{
-        "deck_list": deck_list
-    }))
-}
-
-async fn live3d_deck_save(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
-    let mut user = userdata::get_acc(&key);
-
-    if !user["live_mv_deck_list"].is_array() {
-        user["live_mv_deck_list"] = array![];
-    }
-    let music = body["master_music_id"].as_i64().unwrap_or(0);
-    let deck_type = body["deck_type"].as_i32().unwrap_or(0);
-    let clear = body["clear"].as_i32().unwrap_or(0) != 0;
-
-    let mut index = None;
-    for (i, record) in user["live_mv_deck_list"].members().enumerate() {
-        if record["master_music_id"].as_i64().unwrap_or(-1) == music
-            && record["deck_type"].as_i32().unwrap_or(-1) == deck_type {
-            index = Some(i);
-            break;
-        }
-    }
-
-    if clear {
-        if let Some(i) = index {
-            user["live_mv_deck_list"].array_remove(i);
-        }
-    } else {
-        let active = body["active"].as_i32().unwrap_or(0);
-        if active != 0 {
-            for record in user["live_mv_deck_list"].members_mut() {
-                if record["master_music_id"].as_i64().unwrap_or(-1) == music {
-                    record["active"] = 0.into();
-                }
-            }
-        }
-        let record = object!{
-            "master_music_id": music,
-            "deck_type": deck_type,
-            "active": active,
-            "slot_list": body["slot_list"].clone()
-        };
-        match index {
-            Some(i) => user["live_mv_deck_list"][i] = record,
-            None => { user["live_mv_deck_list"].push(record).unwrap(); }
-        }
-    }
-
-    let deck_list = user["live_mv_deck_list"].clone();
-    userdata::save_acc(&key, user);
-    global::api(&req, Some(object!{
-        "deck_list": deck_list
-    }))
-}
 
 async fn retire(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
