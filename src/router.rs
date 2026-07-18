@@ -58,6 +58,16 @@ async fn webui_fallback(req: ServiceRequest, next: Next<impl MessageBody + 'stat
     Ok(next.call(req).await?.map_into_boxed_body())
 }
 
+async fn asset_gate(req: ServiceRequest, next: Next<impl MessageBody + 'static>) -> Result<ServiceResponse<BoxBody>, actix_web::Error> {
+    let check_hash = !matches!(req.path(), "/api/start" | "/api/start/assetHash");
+    if let Some(code) = global::check_asset_headers(req.headers(), check_hash) {
+        let req = req.into_parts().0;
+        let resp = global::api_error(&req, code);
+        return Ok(ServiceResponse::new(req, resp));
+    }
+    Ok(next.call(req).await?.map_into_boxed_body())
+}
+
 fn unhandled(req: &HttpRequest, body: String) -> Option<JsonValue> {
     if body != String::new() {
         println!("{}", encryption::decrypt_packet(&body).unwrap_or(body));
@@ -135,6 +145,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
             .service(
                 actix_web::web::scope("")
                     .wrap(from_fn(webui_fallback))
+                    .wrap(from_fn(asset_gate))
                     // Split between user (claiming) and home (listing)
                     .service(
                         actix_web::web::resource("/gift")

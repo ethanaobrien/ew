@@ -81,17 +81,12 @@ pub fn disabled() -> bool {
     args.hidden || !args.enable_custom_songs
 }
 
-// A client that understands custom songs advertises it with this exact header
-// on its API requests. Old / official clients don't send it, so we must NOT
-// inject custom-song data (custom master_music_ids) into the shared /api/user
-// response for them - the unresolvable ids would break the account
-const SUPPORT_HEADER: &str = "X-Custom-Songs";
-
+// Custom songs need protocol version 1 (global::PROTOCOL_HEADER). Clients
+// below it don't understand the feature, so we must NOT inject custom-song
+// data (custom master_music_ids) into the shared /api/user response for
+// them - the unresolvable ids would break the account
 pub fn client_supports_custom_songs(req: &HttpRequest) -> bool {
-    req.headers()
-        .get(SUPPORT_HEADER)
-        .and_then(|v| v.to_str().ok())
-        == Some("1")
+    global::client_protocol_version(req) >= 1
 }
 
 // The catalog is filtered per requesting user: private songs only show for
@@ -1337,10 +1332,10 @@ mod tests {
     }
 
     // With the feature enabled, custom unlock ids are appended to /api/user ONLY
-    // for clients that send X-Custom-Songs: 1. An old/official client (no
-    // header, or a different value) gets its official unlock list untouched.
+    // for clients whose X-Protocol-Version is >= 1. An old/official client (no
+    // header, or a non-numeric value) gets its official unlock list untouched.
     #[test]
-    fn unlock_ids_gated_on_support_header() {
+    fn unlock_ids_gated_on_protocol_version() {
         use actix_web::test::TestRequest;
         let _lock = crate::runtime::lock_test_data_path();
 
@@ -1359,18 +1354,20 @@ mod tests {
             }
         };
 
-        // No header -> unsupported -> nothing appended
+        // No header -> protocol version 0 -> nothing appended
         let without = TestRequest::default().to_http_request();
         assert!(!client_supports_custom_songs(&without));
         assert!(appended(&without).is_empty());
 
-        // Correct header -> supported -> custom id appended
-        let with = TestRequest::default().insert_header(("X-Custom-Songs", "1")).to_http_request();
+        // Version 1 or higher -> supported -> custom id appended
+        let with = TestRequest::default().insert_header(("X-Protocol-Version", "1")).to_http_request();
         assert!(client_supports_custom_songs(&with));
         assert!(appended(&with).contains(music_id));
+        let newer = TestRequest::default().insert_header(("X-Protocol-Version", "7")).to_http_request();
+        assert!(client_supports_custom_songs(&newer));
 
-        // Any other value is treated as an unsupporting client
-        let wrong = TestRequest::default().insert_header(("X-Custom-Songs", "true")).to_http_request();
+        // A non-numeric value is treated as version 0
+        let wrong = TestRequest::default().insert_header(("X-Protocol-Version", "true")).to_http_request();
         assert!(!client_supports_custom_songs(&wrong));
         assert!(appended(&wrong).is_empty());
     }

@@ -9,11 +9,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/start/assetHash", web::post().to(asset_hash));
 }
 
-fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
-    if global::get_player_region(&body["asset_version"].to_string()).is_none() {
-        println!("Warning! Asset version is not what was expected. (Did the app update?)");
-    }
-
+fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> Option<String> {
     let platform = req.headers()
         .get("aoharu-platform")
         .and_then(|v| v.to_str().ok())
@@ -22,30 +18,42 @@ fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> String {
 
     println!("Login on platform: {}", platform);
 
-    global::get_asset_hash(&body["asset_version"].to_string(), platform).unwrap()
+    let rv = global::get_asset_hash(&body["asset_version"].to_string(), platform);
+    if rv.is_none() {
+        println!("Unknown asset version {}; telling the client to update.", body["asset_version"]);
+    }
+    rv
 }
 
 async fn asset_hash(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
-    global::api(&req, Some(object!{
-        "asset_hash": get_asset_hash(&req, &body)
-    }))
+    match get_asset_hash(&req, &body) {
+        Some(hash) => global::api(&req, Some(object!{
+            "asset_hash": hash
+        })),
+        None => global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED),
+    }
 }
 
 async fn start(req: HttpRequest, body: String) -> impl Responder {
     let key = global::get_login(req.headers(), &body);
     let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+
+    let Some(asset_hash) = get_asset_hash(&req, &body) else {
+        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+    };
+
     let mut user = userdata::get_acc(&key);
-    
+
     println!("Signin from uid: {}", user["user"]["id"].clone());
-    
+
     user["user"]["last_login_time"] = global::timestamp().into();
-    
+
     userdata::save_acc(&key, user);
-    
+
     global::api(&req, Some(object!{
-        "asset_hash": get_asset_hash(&req, &body),
+        "asset_hash": asset_hash,
         "token": hex::encode("Hello") //what is this?
     }))
 }

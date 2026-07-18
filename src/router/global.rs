@@ -13,82 +13,77 @@ use crate::router::{items, userdata};
 use crate::database::gree;
 use crate::runtime::get_easter_mode;
 
-struct AssetHashes {
-    version_android: &'static str,
-    version_ios:     &'static str,
-    version_windows: &'static str,
-    version_webgl:   &'static str,
-    android:         &'static str,
-    ios:             &'static str,
-    windows:         &'static str,
-    webgl:           &'static str,
+struct AssetVersion {
+    region:   &'static str,
+    platform: &'static str,
+    version:  &'static str,
+    hash:     &'static str,
 }
 
-static ASSET_TABLE: &[(&str, AssetHashes)] = &[
-    ("JP", AssetHashes {
-        version_android: "4c921d2443335e574a82e04ec9ea243c",
-        version_ios:     "4c921d2443335e574a82e04ec9ea243c",
-        version_windows: "4c921d2443335e574a82e04ec9ea243c",
-        version_webgl:   "4c921d2443335e574a82e04ec9ea243c",
-        android:         "67f8f261c16b3cca63e520a25aad6c1c",
-        ios:             "b8975be8300013a168d061d3fdcd4a16",
-        windows:         "fcc15c3dc02250d49c4c492c3b9d58fc",
-        webgl:           "e1ff7c74b20c8d216507972b6f24b9df",
-    }),
-    ("GL", AssetHashes {
-        version_android: "5260ff15dff8ba0c00ad91400f515f55",
-        version_ios:     "5260ff15dff8ba0c00ad91400f515f55",    
-        version_windows: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        version_webgl:   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        android:         "d210b28037885f3ef56b8f8aa45ac95b",
-        ios:             "dd7175e4bcdab476f38c33c7f34b5e4d",
-        windows:         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        webgl:           "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    }),
+static ASSET_VERSIONS: &[AssetVersion] = &[
+    AssetVersion { region: "JP", platform: "Android", version: "4c921d2443335e574a82e04ec9ea243c", hash: "67f8f261c16b3cca63e520a25aad6c1c" },
+    AssetVersion { region: "JP", platform: "iOS",     version: "4c921d2443335e574a82e04ec9ea243c", hash: "b8975be8300013a168d061d3fdcd4a16" },
+    AssetVersion { region: "JP", platform: "Windows", version: "4c921d2443335e574a82e04ec9ea243c", hash: "937554b736233aa44774f59c74649d7a" },
+    AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df" },
+    AssetVersion { region: "GL", platform: "Android", version: "5260ff15dff8ba0c00ad91400f515f55", hash: "d210b28037885f3ef56b8f8aa45ac95b" },
+    AssetVersion { region: "GL", platform: "iOS",     version: "5260ff15dff8ba0c00ad91400f515f55", hash: "dd7175e4bcdab476f38c33c7f34b5e4d" },
+    AssetVersion { region: "GL", platform: "Windows", version: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", hash: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+    AssetVersion { region: "GL", platform: "WebGL",   version: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", hash: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
 ];
 
-impl AssetHashes {
-    fn resolve(&self, platform: &str, region: &str, easter_hash: Option<&str>) -> Option<String> {
+impl AssetVersion {
+    fn version(&self, current: bool) -> String {
         let args = crate::get_args();
 
-        let (base, override_hash) = match (region, platform) {
-            ("JP", "Android") => (self.android, args.jp_android_asset_hash.as_str()),
-            ("JP", "iOS")     => (self.ios,     args.jp_ios_asset_hash.as_str()),
-            ("JP", "Windows") => (self.windows, args.windows_asset_hash.as_str()),
-            ("JP", "WebGL") =>   (self.webgl, ""),
-            ("GL", "Android") => (self.android, args.en_android_asset_hash.as_str()),
-            ("GL", "iOS")     => (self.ios,     args.en_ios_asset_hash.as_str()),
-            _                 => return None,
+        let override_version = match (current, self.region, self.platform) {
+            (true, "JP", "Windows") => args.windows_asset_version.as_str(),
+            _                       => "",
         };
 
-        Some(if !override_hash.is_empty() {
-            override_hash
-        } else if let Some(easter) = easter_hash {
-            easter
+        if override_version.is_empty() {
+            self.version
         } else {
-            base
-        }.to_string())
-    }
-    fn version_for(&self, platform: &str, region: &str) -> Option<String> {
-        let args = crate::get_args();
-
-        let (base, override_version) = match (region, platform) {
-            ("JP", "Android") => (self.version_android, ""),
-            ("JP", "iOS")     => (self.version_ios,     ""),
-            ("JP", "Windows") => (self.version_windows, args.windows_asset_version.as_str()),
-            ("JP", "WebGL") =>   (self.version_webgl, ""),
-            ("GL", "Android") => (self.version_android, ""),
-            ("GL", "iOS")     => (self.version_ios,     ""),
-            ("GL", "Windows") => (self.version_windows, ""),
-            _                 => return None,
-        };
-
-        Some(if !override_version.is_empty() {
             override_version
-        } else {
-            base
-        }.to_string())
+        }.to_string()
     }
+    fn hash(&self, current: bool) -> String {
+        let args = crate::get_args();
+
+        let override_hash = match (current, self.region, self.platform) {
+            (true, "JP", "Android") => args.jp_android_asset_hash.as_str(),
+            (true, "JP", "iOS")     => args.jp_ios_asset_hash.as_str(),
+            (true, "JP", "Windows") => args.windows_asset_hash.as_str(),
+            (true, "GL", "Android") => args.en_android_asset_hash.as_str(),
+            (true, "GL", "iOS")     => args.en_ios_asset_hash.as_str(),
+            _                       => "",
+        };
+        if !override_hash.is_empty() {
+            return override_hash.to_string();
+        }
+
+        if current && self.platform == "Android" && get_easter_mode() {
+            if let Some((_, easter)) = EASTER_HASHES.iter().find(|(r, _)| *r == self.region) {
+                return easter.to_string();
+            }
+        }
+
+        self.hash.to_string()
+    }
+}
+
+fn find_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
+    let mut seen_regions: Vec<&str> = Vec::new();
+    for entry in ASSET_VERSIONS {
+        if entry.platform != platform {
+            continue;
+        }
+        let current = !seen_regions.contains(&entry.region);
+        seen_regions.push(entry.region);
+        if entry.version(current) == asset_version {
+            return Some(entry.hash(current));
+        }
+    }
+    None
 }
 
 static EASTER_HASHES: &[(&str, &str)] = &[
@@ -96,15 +91,25 @@ static EASTER_HASHES: &[(&str, &str)] = &[
     ("GL", "da7ae831381c3f29337caa9891db7e6a"),
 ];
 
+pub const RESULT_GAME_VERSION_UPDATED: i32 = 12;
+
+pub const RESULT_RESOURCE_UPDATED: i32 = 13;
+
+pub const PROTOCOL_HEADER: &str = "X-Protocol-Version";
+
+pub fn client_protocol_version(req: &HttpRequest) -> u32 {
+    req.headers()
+        .get(PROTOCOL_HEADER)
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.trim().parse().ok())
+        .unwrap_or(0)
+}
+
 pub fn get_player_region(asset_version: &str) -> Option<String> {
-    ASSET_TABLE
+    ASSET_VERSIONS
         .iter()
-        .find(|(_, h)| {
-            h.version_android == asset_version ||
-                h.version_ios     == asset_version ||
-                h.version_windows == asset_version
-        })
-        .map(|(region, _)| region.to_string())
+        .find(|entry| entry.version == asset_version)
+        .map(|entry| entry.region.to_string())
 }
 
 pub fn parse_platform(header: &str) -> &str {
@@ -122,19 +127,37 @@ pub fn parse_platform(header: &str) -> &str {
 }
 
 pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
-    let easter = get_easter_mode();
-
-    let (region, hashes) = ASSET_TABLE
-        .iter()
-        .find(|(region, h)| h.version_for(platform, region).as_deref() == Some(asset_version))?;
-
-    let easter_hash = (easter && platform == "Android")
-        .then(|| EASTER_HASHES.iter().find(|(r, _)| r == region).map(|(_, h)| *h))
-        .flatten();
-
-    let rv = hashes.resolve(platform, region, easter_hash);
+    let rv = find_asset_hash(asset_version, platform);
     println!("Get asset hash: {platform}. {rv:?}");
-    return rv;
+    rv
+}
+
+pub fn check_asset_headers(headers: &HeaderMap, check_hash: bool) -> Option<i32> {
+    let blank_header = HeaderValue::from_static("");
+    let asset_version = headers.get("aoharu-asset-version").unwrap_or(&blank_header).to_str().unwrap_or("");
+    if asset_version.is_empty() {
+        return None;
+    }
+
+    let platform = match headers.get("aoharu-platform").and_then(|v| v.to_str().ok()) {
+        Some(header) => parse_platform(header),
+        None => return None,
+    };
+
+    let current = match find_asset_hash(asset_version, platform) {
+        Some(hash) => hash,
+        None => return Some(RESULT_GAME_VERSION_UPDATED),
+    };
+    if !check_hash {
+        return None;
+    }
+
+    let asset_hash = headers.get("aoharu-asset-hash").unwrap_or(&blank_header).to_str().unwrap_or("");
+    if asset_hash.is_empty() || asset_hash == current {
+        None
+    } else {
+        Some(RESULT_RESOURCE_UPDATED)
+    }
 }
 
 pub fn create_token() -> String {
@@ -301,6 +324,15 @@ pub fn api(req: &HttpRequest, data: Option<JsonValue>) -> HttpResponse {
         }
     };
     send(rv, uid, req.headers())
+}
+
+pub fn api_error(req: &HttpRequest, code: i32) -> HttpResponse {
+    let uid = get_uid(req.headers());
+    send(object!{
+        "code": code,
+        "server_time": timestamp(),
+        "message": ""
+    }, uid, req.headers())
 }
 
 pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) -> bool {
