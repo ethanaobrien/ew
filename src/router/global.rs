@@ -28,14 +28,12 @@ static ASSET_VERSIONS: &[AssetVersion] = &[
     AssetVersion { region: "GL", platform: "Android", version: "5260ff15dff8ba0c00ad91400f515f55", hash: "d210b28037885f3ef56b8f8aa45ac95b", latest: true },
     AssetVersion { region: "GL", platform: "iOS",     version: "5260ff15dff8ba0c00ad91400f515f55", hash: "dd7175e4bcdab476f38c33c7f34b5e4d", latest: true },
 
-    // Re-written client versions 2.0.0 - 2.1.2
+    // Re-written client versions 2.0.0 - 2.1.2 (windows only)
     AssetVersion { region: "JP", platform: "Windows", version: "4c921d2443335e574a82e04ec9ea243c", hash: "4ed1d077df2d1b29e17d25d64fb37242", latest: false },
 
     // Re-written client versions 2.2.0 -
-    AssetVersion { region: "JP", platform: "Windows", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "52a35644bacaefe8f0ae71a1f4d1c217", latest: true },
-    
-    // For the unity editor
-    AssetVersion { region: "JP", platform: "Android", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "0f09d2da7580a6e7dfe44b6094a0e433", latest: false },
+    AssetVersion { region: "JP", platform: "Windows", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "755ecc4001f761532816e0fec6ef75ab", latest: true },
+    AssetVersion { region: "JP", platform: "Android", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "755ecc4001f761532816e0fec6ef75ab", latest: false },
 
     //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df", latest: true },
 ];
