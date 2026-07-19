@@ -35,7 +35,7 @@ static ASSET_VERSIONS: &[AssetVersion] = &[
     AssetVersion { region: "JP", platform: "Windows", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "52a35644bacaefe8f0ae71a1f4d1c217", latest: true },
     
     // For the unity editor
-    AssetVersion { region: "JP", platform: "Android", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "67676767676767676767676767676767", latest: false },
+    AssetVersion { region: "JP", platform: "Android", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "0f09d2da7580a6e7dfe44b6094a0e433", latest: false },
 
     //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df", latest: true },
 ];
