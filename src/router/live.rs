@@ -761,3 +761,104 @@ async fn end(req: HttpRequest, body: String) -> impl Responder {
 async fn skip(req: HttpRequest, body: String) -> impl Responder {
     global::api(&req, Some(live_end(&req, &body, true)))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::test::TestRequest;
+
+    const STOCK_LIVE_ID: i64 = 1100101;
+
+    fn register_account(token: &str) {
+        let mut user = userdata::get_acc(token);
+        user["tutorial_step"] = 130.into();
+        userdata::save_acc(token, user);
+    }
+
+    fn record_clear(token: &str, live_id: i64, level: i64, score: i64, combo: i64) {
+        let mut user = userdata::get_acc(token);
+        update_live_data(&mut user, &object!{
+            master_live_id: live_id,
+            level: level,
+            live_score: { score: score, max_combo: combo }
+        }, true);
+        userdata::save_acc(token, user);
+    }
+
+    fn pulled_clear_count(token: &str, live_id: i64) -> i64 {
+        get_clear_count(live_id, &userdata::get_acc(token))
+    }
+
+    #[test]
+    fn clear_count_persists_with_custom_songs_disabled() {
+        let _lock = crate::runtime::lock_test_data_path();
+        crate::runtime::set_enable_custom_songs(false);
+
+        let token = "cc_control_disabled";
+        register_account(token);
+
+        record_clear(token, STOCK_LIVE_ID, 4, 500000, 320);
+        assert_eq!(pulled_clear_count(token, STOCK_LIVE_ID), 1);
+
+        record_clear(token, STOCK_LIVE_ID, 4, 480000, 300);
+        assert_eq!(pulled_clear_count(token, STOCK_LIVE_ID), 2);
+
+        let user = userdata::get_acc(token);
+        let live = user["live_list"].members().find(|l| l["master_live_id"] == STOCK_LIVE_ID).unwrap();
+        assert_eq!(live["clear_count"], 2);
+        assert_eq!(live["high_score"], 500000);
+    }
+
+    #[test]
+    fn clear_count_survives_custom_songs_enabled() {
+        let _lock = crate::runtime::lock_test_data_path();
+        crate::runtime::set_enable_custom_songs(true);
+
+        let token = "cc_custom_enabled";
+        register_account(token);
+
+        record_clear(token, STOCK_LIVE_ID, 4, 500000, 320);
+        assert_eq!(pulled_clear_count(token, STOCK_LIVE_ID), 1);
+    }
+
+    #[test]
+    fn custom_song_cleanup_keeps_stock_lives() {
+        let _lock = crate::runtime::lock_test_data_path();
+        crate::runtime::set_enable_custom_songs(true);
+
+        let token = "cc_mixed_ids";
+        register_account(token);
+
+        record_clear(token, STOCK_LIVE_ID, 4, 500000, 320);
+        record_clear(token, crate::database::custom_song::FIRST_MUSIC_ID, 1, 100, 10);
+
+        let user = userdata::get_acc(token);
+        assert_eq!(get_clear_count(STOCK_LIVE_ID, &user), 1);
+    }
+
+    fn asset_gate(version: &str, platform: &str, hash: &str) -> Option<i32> {
+        let mut rb = TestRequest::default()
+            .insert_header(("aoharu-asset-version", version.to_string()))
+            .insert_header(("aoharu-platform", platform.to_string()));
+        if !hash.is_empty() {
+            rb = rb.insert_header(("aoharu-asset-hash", hash.to_string()));
+        }
+        let req = rb.to_http_request();
+        global::check_asset_headers(req.headers(), true)
+    }
+
+    #[test]
+    fn asset_gate_is_platform_conditional() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let current = "ced44f266b4e4c8eb05fe417fd5f3d1b";
+        let stock = "4c921d2443335e574a82e04ec9ea243c";
+
+        assert_eq!(asset_gate(current, "Windows", ""), None);
+        assert_eq!(asset_gate(current, "android", ""), None);
+        assert_eq!(asset_gate(current, "ios", ""), Some(global::RESULT_GAME_VERSION_UPDATED));
+
+        assert_eq!(asset_gate(stock, "android", ""), None);
+        assert_eq!(asset_gate(stock, "ios", ""), None);
+        assert_eq!(asset_gate(stock, "Windows", ""), None);
+    }
+}

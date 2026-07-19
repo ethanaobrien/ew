@@ -249,7 +249,7 @@ fn remove_deleted_custom_songs(user: &mut JsonValue) -> bool {
     for key in ["live_list", "live_mission_list"] {
         for data in user[key].members() {
             let id = data["master_live_id"].as_i64().unwrap_or(0);
-            if id >= custom_song::FIRST_MUSIC_ID && !candidates.contains(id) {
+            if id >= custom_song::FIRST_MUSIC_ID && id <= custom_song::LAST_MUSIC_ID && !candidates.contains(id) {
                 candidates.push(id).unwrap();
             }
         }
@@ -672,7 +672,10 @@ mod tests {
         let private_id = custom_song::next_music_id();
         custom_song::insert_song(private_id, 1, &object!{music_id: private_id}, "private", &array![], false);
 
-        for id in [1001, deleted_id, private_id] {
+        // 1100101 is a real stock live-id shape (7-digit, >= FIRST_MUSIC_ID): it
+        // must survive the custom-song wipe, unlike an unrealistic sub-10000 id
+        let stock_id = 1100101;
+        for id in [stock_id, deleted_id, private_id] {
             user["live_list"].push(object!{
                 master_live_id: id,
                 level: 4,
@@ -699,7 +702,7 @@ mod tests {
         assert!(!user["live_list"].members().any(|data| data["master_live_id"] == deleted_id));
         assert!(!user["live_mission_list"].members().any(|data| data["master_live_id"] == deleted_id));
         // Official records are untouchable, invisible-but-alive songs survive
-        assert!(user["live_list"].members().any(|data| data["master_live_id"] == 1001));
+        assert!(user["live_list"].members().any(|data| data["master_live_id"] == stock_id));
         assert!(user["live_list"].members().any(|data| data["master_live_id"] == private_id));
         assert_eq!(user["live_list"].len(), 2);
         assert_eq!(user["live_mission_list"].len(), 2);

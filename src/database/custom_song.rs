@@ -95,8 +95,11 @@ pub fn bump_revision() {
 // + 異次元フェス) along with bgm 310090xx/320090xx, so the custom range gets
 // the 5-digit space to itself (10000 -> bgm 31010000/32010000). Ids are never
 // reused after a delete, so a client's cached copy of a dead id can't get
-// confused with a new upload
+// confused with a new upload. Stock live ids (master_live_id) are 7-digit
+// (>= 1_000_000), so the custom range stops below them - a stock clear must
+// never be mistaken for a deleted custom song
 pub const FIRST_MUSIC_ID: i64 = 10000;
+pub const LAST_MUSIC_ID: i64 = 999_999;
 
 pub fn next_music_id() -> i64 {
     let issued = DATABASE.lock_and_select("SELECT last_music_id FROM revision WHERE id=1", params!()).unwrap_or_default().parse::<i64>().unwrap_or(0);
@@ -252,7 +255,7 @@ pub fn dead_music_ids(candidates: &JsonValue) -> JsonValue {
     let mut ids: Vec<i64> = Vec::new();
     for id in candidates.members() {
         let Some(id) = id.as_i64() else { continue; };
-        if id >= FIRST_MUSIC_ID && !ids.contains(&id) {
+        if id >= FIRST_MUSIC_ID && id <= LAST_MUSIC_ID && !ids.contains(&id) {
             ids.push(id);
         }
     }
