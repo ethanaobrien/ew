@@ -18,77 +18,92 @@ struct AssetVersion {
     platform: &'static str,
     version:  &'static str,
     hash:     &'static str,
+    latest:   bool,
 }
 
 static ASSET_VERSIONS: &[AssetVersion] = &[
     // Default / stock
-    AssetVersion { region: "JP", platform: "Android", version: "4c921d2443335e574a82e04ec9ea243c", hash: "67f8f261c16b3cca63e520a25aad6c1c" },
-    AssetVersion { region: "JP", platform: "iOS",     version: "4c921d2443335e574a82e04ec9ea243c", hash: "b8975be8300013a168d061d3fdcd4a16" },
-    AssetVersion { region: "GL", platform: "Android", version: "5260ff15dff8ba0c00ad91400f515f55", hash: "d210b28037885f3ef56b8f8aa45ac95b" },
-    AssetVersion { region: "GL", platform: "iOS",     version: "5260ff15dff8ba0c00ad91400f515f55", hash: "dd7175e4bcdab476f38c33c7f34b5e4d" },
+    AssetVersion { region: "JP", platform: "Android", version: "4c921d2443335e574a82e04ec9ea243c", hash: "67f8f261c16b3cca63e520a25aad6c1c", latest: true },
+    AssetVersion { region: "JP", platform: "iOS",     version: "4c921d2443335e574a82e04ec9ea243c", hash: "b8975be8300013a168d061d3fdcd4a16", latest: true },
+    AssetVersion { region: "GL", platform: "Android", version: "5260ff15dff8ba0c00ad91400f515f55", hash: "d210b28037885f3ef56b8f8aa45ac95b", latest: true },
+    AssetVersion { region: "GL", platform: "iOS",     version: "5260ff15dff8ba0c00ad91400f515f55", hash: "dd7175e4bcdab476f38c33c7f34b5e4d", latest: true },
 
     // Re-written client versions 2.0.0 - 2.1.2
-    AssetVersion { region: "JP", platform: "Windows", version: "4c921d2443335e574a82e04ec9ea243c", hash: "4ed1d077df2d1b29e17d25d64fb37242" },
+    AssetVersion { region: "JP", platform: "Windows", version: "4c921d2443335e574a82e04ec9ea243c", hash: "4ed1d077df2d1b29e17d25d64fb37242", latest: false },
 
-    // Re-written client versions 2.2.0 - 
-    AssetVersion { region: "JP", platform: "Windows", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "13ff04b7d1e4a7353458b8607307bd6b" },
-    
-    //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df" },
+    // Re-written client versions 2.2.0 -
+    AssetVersion { region: "JP", platform: "Windows", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "13ff04b7d1e4a7353458b8607307bd6b", latest: true },
+
+    //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df", latest: true },
 ];
 
 impl AssetVersion {
-    fn version(&self, current: bool) -> String {
-        let args = crate::get_args();
-
-        let override_version = match (current, self.region, self.platform) {
-            (true, "JP", "Windows") => args.windows_asset_version.as_str(),
-            _                       => "",
-        };
-
-        if override_version.is_empty() {
-            self.version
-        } else {
-            override_version
-        }.to_string()
-    }
-    fn hash(&self, current: bool) -> String {
-        let args = crate::get_args();
-
-        let override_hash = match (current, self.region, self.platform) {
-            (true, "JP", "Android") => args.jp_android_asset_hash.as_str(),
-            (true, "JP", "iOS")     => args.jp_ios_asset_hash.as_str(),
-            (true, "JP", "Windows") => args.windows_asset_hash.as_str(),
-            (true, "GL", "Android") => args.en_android_asset_hash.as_str(),
-            (true, "GL", "iOS")     => args.en_ios_asset_hash.as_str(),
-            _                       => "",
-        };
-        if !override_hash.is_empty() {
-            return override_hash.to_string();
-        }
-
-        if current && self.platform == "Android" && get_easter_mode() {
+    fn stock_hash(&self) -> String {
+        if self.latest && self.platform == "Android" && get_easter_mode() {
             if let Some((_, easter)) = EASTER_HASHES.iter().find(|(r, _)| *r == self.region) {
                 return easter.to_string();
             }
         }
-
         self.hash.to_string()
+    }
+
+    fn override_pair(&self) -> Option<(String, String)> {
+        let args = crate::get_args();
+        let (ov, oh) = match (self.region, self.platform) {
+            ("JP", "Windows") => (args.windows_asset_version.as_str(), args.windows_asset_hash.as_str()),
+            ("JP", "Android") => ("", args.jp_android_asset_hash.as_str()),
+            ("JP", "iOS")     => ("", args.jp_ios_asset_hash.as_str()),
+            ("GL", "Android") => ("", args.en_android_asset_hash.as_str()),
+            ("GL", "iOS")     => ("", args.en_ios_asset_hash.as_str()),
+            _                 => ("", ""),
+        };
+        if ov.is_empty() && oh.is_empty() {
+            return None;
+        }
+        let version = if ov.is_empty() { self.version } else { ov };
+        let hash    = if oh.is_empty() { self.hash    } else { oh };
+        Some((version.to_string(), hash.to_string()))
     }
 }
 
-fn find_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
-    let mut seen_regions: Vec<&str> = Vec::new();
+fn valid_hashes(asset_version: &str, platform: &str) -> Vec<String> {
+    let mut out = Vec::new();
     for entry in ASSET_VERSIONS {
         if entry.platform != platform {
             continue;
         }
-        let current = !seen_regions.contains(&entry.region);
-        seen_regions.push(entry.region);
-        if entry.version(current) == asset_version {
-            return Some(entry.hash(current));
+        if entry.version == asset_version {
+            out.push(entry.stock_hash());
+        }
+        if entry.latest {
+            if let Some((ov, oh)) = entry.override_pair() {
+                if ov == asset_version {
+                    out.push(oh);
+                }
+            }
         }
     }
-    None
+    out
+}
+
+fn preferred_hash(asset_version: &str, platform: &str) -> Option<String> {
+    let mut stock = None;
+    for entry in ASSET_VERSIONS {
+        if entry.platform != platform {
+            continue;
+        }
+        if entry.latest {
+            if let Some((ov, oh)) = entry.override_pair() {
+                if ov == asset_version {
+                    return Some(oh);
+                }
+            }
+        }
+        if entry.version == asset_version && stock.is_none() {
+            stock = Some(entry.stock_hash());
+        }
+    }
+    stock
 }
 
 static EASTER_HASHES: &[(&str, &str)] = &[
@@ -111,10 +126,19 @@ pub fn client_protocol_version(req: &HttpRequest) -> u32 {
 }
 
 pub fn get_player_region(asset_version: &str) -> Option<String> {
-    ASSET_VERSIONS
-        .iter()
-        .find(|entry| entry.version == asset_version)
-        .map(|entry| entry.region.to_string())
+    for entry in ASSET_VERSIONS {
+        if entry.version == asset_version {
+            return Some(entry.region.to_string());
+        }
+        if entry.latest {
+            if let Some((ov, _)) = entry.override_pair() {
+                if ov == asset_version {
+                    return Some(entry.region.to_string());
+                }
+            }
+        }
+    }
+    None
 }
 
 pub fn parse_platform(header: &str) -> &str {
@@ -132,7 +156,7 @@ pub fn parse_platform(header: &str) -> &str {
 }
 
 pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
-    let rv = find_asset_hash(asset_version, platform);
+    let rv = preferred_hash(asset_version, platform);
     println!("Get asset hash: {platform}. {rv:?}");
     rv
 }
@@ -149,16 +173,16 @@ pub fn check_asset_headers(headers: &HeaderMap, check_hash: bool) -> Option<i32>
         None => return None,
     };
 
-    let current = match find_asset_hash(asset_version, platform) {
-        Some(hash) => hash,
-        None => return Some(RESULT_GAME_VERSION_UPDATED),
-    };
+    let valid = valid_hashes(asset_version, platform);
+    if valid.is_empty() {
+        return Some(RESULT_GAME_VERSION_UPDATED);
+    }
     if !check_hash {
         return None;
     }
 
     let asset_hash = headers.get("aoharu-asset-hash").unwrap_or(&blank_header).to_str().unwrap_or("");
-    if asset_hash.is_empty() || asset_hash == current {
+    if asset_hash.is_empty() || valid.iter().any(|h| h == asset_hash) {
         None
     } else {
         Some(RESULT_RESOURCE_UPDATED)
