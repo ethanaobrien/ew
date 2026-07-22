@@ -113,6 +113,13 @@ pub fn get_music_ids(uid: i64) -> JsonValue {
     database::get_music_ids_for_user(uid)
 }
 
+pub fn hidden_live_ids() -> JsonValue {
+    if disabled() {
+        return array![];
+    }
+    database::non_public_music_ids()
+}
+
 fn song_path(music_id: i64, file: &str) -> String {
     get_data_path(&format!("custom_songs/{}/{}", music_id, file))
 }
@@ -882,6 +889,7 @@ async fn visibility(req: HttpRequest, body: String) -> HttpResponse {
         database::set_downloads_disabled(music_id, body["downloads_disabled"].as_bool().unwrap_or(false));
     }
     database::bump_revision();
+    crate::router::clear_rate::invalidate_cache();
 
     send_json(object!{
         result: "OK"

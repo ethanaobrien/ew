@@ -122,6 +122,10 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
 pub fn purge_live(live_id: i64) {
     DATABASE.lock_and_exec("DELETE FROM lives WHERE live_id=?1", params!(live_id));
     DATABASE.lock_and_exec("DELETE FROM scores WHERE live_id=?1", params!(live_id));
+    invalidate_cache();
+}
+
+pub fn invalidate_cache() {
     crate::lock_onto_mutex!(CACHED_DATA).take();
     crate::lock_onto_mutex!(CACHED_HTML_DATA).take();
 }
@@ -184,9 +188,13 @@ fn get_pass_percent(failed: i64, pass: i64) -> String {
 
 fn get_json() -> JsonValue {
     let lives = DATABASE.lock_and_select_all("SELECT live_id FROM lives", params!()).unwrap();
+    let hidden = crate::router::custom_song::hidden_live_ids();
     let mut rates = array![];
     let mut ids = array![];
     for id in lives.members() {
+        if hidden.contains(id.as_i64().unwrap()) {
+            continue;
+        }
         let info = DATABASE.get_live_data(id.as_i64().unwrap());
         if info.is_err() {
             continue;
@@ -271,11 +279,15 @@ pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {
 
 fn get_html() -> JsonValue {
     let lives = DATABASE.lock_and_select_all("SELECT live_id FROM lives", params!()).unwrap();
+    let hidden = crate::router::custom_song::hidden_live_ids();
 
     let mut table = String::new();
 
     for id in lives.members() {
         let live_id = id.as_i64().unwrap();
+        if hidden.contains(live_id) {
+            continue;
+        }
 
         let info = match DATABASE.get_live_data(live_id) {
             Ok(i) => i,
