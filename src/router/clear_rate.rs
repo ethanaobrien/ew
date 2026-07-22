@@ -188,13 +188,9 @@ fn get_pass_percent(failed: i64, pass: i64) -> String {
 
 fn get_json() -> JsonValue {
     let lives = DATABASE.lock_and_select_all("SELECT live_id FROM lives", params!()).unwrap();
-    let hidden = crate::router::custom_song::hidden_live_ids();
     let mut rates = array![];
     let mut ids = array![];
     for id in lives.members() {
-        if hidden.contains(id.as_i64().unwrap()) {
-            continue;
-        }
         let info = DATABASE.get_live_data(id.as_i64().unwrap());
         if info.is_err() {
             continue;
@@ -239,7 +235,24 @@ async fn get_clearrate_json() -> JsonValue {
 }
 
 pub async fn clearrate(req: HttpRequest) -> impl Responder {
-    global::api(&req, Some(get_clearrate_json().await))
+    let mut data = get_clearrate_json().await;
+    let hidden = crate::router::custom_song::hidden_live_ids_for_user(global::get_uid(req.headers()));
+    if !hidden.is_empty() {
+        let rates = data["all_user_clear_rate"].clone();
+        let ids = data["master_music_ids"].clone();
+        let mut new_rates = array![];
+        let mut new_ids = array![];
+        for (i, rate) in rates.members().enumerate() {
+            if hidden.contains(rate["master_live_id"].as_i64().unwrap()) {
+                continue;
+            }
+            new_rates.push(rate.clone()).unwrap();
+            new_ids.push(ids[i].clone()).unwrap();
+        }
+        data["all_user_clear_rate"] = new_rates;
+        data["master_music_ids"] = new_ids;
+    }
+    global::api(&req, Some(data))
 }
 
 pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {

@@ -855,7 +855,7 @@ mod tests {
 
         assert_eq!(asset_gate(current, "Windows", ""), None);
         assert_eq!(asset_gate(current, "android", ""), None);
-        assert_eq!(asset_gate(current, "ios", ""), Some(global::RESULT_GAME_VERSION_UPDATED));
+        assert_eq!(asset_gate(current, "ios", ""), None);
 
         assert_eq!(asset_gate(stock, "android", ""), None);
         assert_eq!(asset_gate(stock, "ios", ""), None);

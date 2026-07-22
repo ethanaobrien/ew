@@ -251,6 +251,14 @@ pub fn non_public_music_ids() -> JsonValue {
     DATABASE.lock_and_select_all("SELECT music_id FROM songs WHERE visibility!='public' ORDER BY music_id", params!()).unwrap_or(array![])
 }
 
+pub fn non_public_music_ids_for(user_id: i64) -> JsonValue {
+    DATABASE.lock_and_select_all("
+    SELECT music_id FROM songs
+    WHERE visibility!='public' AND owner_id!=?1
+    AND music_id NOT IN (SELECT music_id FROM shared_users WHERE user_id=?1)
+    ORDER BY music_id", params!(user_id)).unwrap_or(array![])
+}
+
 // Which of these candidate ids no longer exist in the catalog. Only the custom
 // range is ever considered, so official songs can't come back from this. A song
 // that's merely private/shared still has its row - only genuinely deleted ids

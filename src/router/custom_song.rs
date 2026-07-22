@@ -120,6 +120,13 @@ pub fn hidden_live_ids() -> JsonValue {
     database::non_public_music_ids()
 }
 
+pub fn hidden_live_ids_for_user(uid: i64) -> JsonValue {
+    if disabled() {
+        return array![];
+    }
+    database::non_public_music_ids_for(uid)
+}
+
 fn song_path(music_id: i64, file: &str) -> String {
     get_data_path(&format!("custom_songs/{}/{}", music_id, file))
 }
@@ -1463,5 +1470,62 @@ mod tests {
         assert_ne!(new_md5, chart_md5);
         assert_eq!(call(&chart_md5, "json").status(), actix_web::http::StatusCode::NOT_FOUND);
         assert_eq!(call(&new_md5, "json").status(), actix_web::http::StatusCode::OK);
+    }
+
+    // The JSON clear-rate endpoint filters non-public custom songs per requesting
+    // user: the owner sees all of theirs, a shared user sees the songs shared with
+    // them, everyone else sees only public ones. Official (stock) live ids are
+    // always visible. The parallel master_music_ids array must stay index-aligned
+    // with all_user_clear_rate after filtering.
+    #[test]
+    fn clearrate_hides_custom_songs_per_user() {
+        use actix_web::{test::TestRequest, Responder};
+        use crate::router::clear_rate;
+        let _lock = crate::runtime::lock_test_data_path();
+        crate::runtime::set_enable_custom_songs(true);
+
+        let owner = 5001;
+        let shared_user = 5002;
+        let outsider = 5003;
+
+        let public_id = database::next_music_id();
+        database::insert_song(public_id, owner, &object!{music_id: public_id}, "public", &array![], false);
+        let private_id = database::next_music_id();
+        database::insert_song(private_id, owner, &object!{music_id: private_id}, "private", &array![], false);
+        let shared_id = database::next_music_id();
+        database::insert_song(shared_id, owner, &object!{music_id: shared_id}, "shared", &array![shared_user], false);
+        // A stock live id, outside the custom range - never filtered
+        let stock_id: i64 = 1_500_123;
+
+        for id in [public_id, private_id, shared_id, stock_id] {
+            clear_rate::live_completed(id, 1, false, 100, owner);
+        }
+        clear_rate::invalidate_cache();
+
+        // master_live_ids the endpoint serves to this uid, with an index-alignment guard
+        let visible_to = |uid: i64| -> Vec<i64> {
+            let req = TestRequest::default().insert_header(("aoharu-user-id", uid.to_string())).to_http_request();
+            let body = actix_web::rt::System::new().block_on(async {
+                let resp = clear_rate::clearrate(req.clone()).await.respond_to(&req).map_into_boxed_body();
+                actix_web::body::to_bytes(resp.into_body()).await.unwrap()
+            });
+            let json = jzon::parse(&crate::encryption::decrypt_packet(&String::from_utf8_lossy(&body)).unwrap()).unwrap();
+            let rates = &json["data"]["all_user_clear_rate"];
+            let ids = &json["data"]["master_music_ids"];
+            assert_eq!(rates.len(), ids.len(), "parallel arrays must stay aligned for uid {}", uid);
+            rates.members().map(|r| r["master_live_id"].as_i64().unwrap()).collect()
+        };
+        let sees = |uid: i64, id: i64| visible_to(uid).contains(&id);
+
+        // Owner sees every song of theirs plus the stock id
+        assert!(sees(owner, public_id) && sees(owner, private_id) && sees(owner, shared_id) && sees(owner, stock_id));
+        // Shared user sees public + shared + stock, never the private one
+        assert!(sees(shared_user, public_id) && sees(shared_user, shared_id) && sees(shared_user, stock_id));
+        assert!(!sees(shared_user, private_id));
+        // Outsider and anonymous (uid 0) see public + stock only
+        for uid in [outsider, 0] {
+            assert!(sees(uid, public_id) && sees(uid, stock_id));
+            assert!(!sees(uid, private_id) && !sees(uid, shared_id));
+        }
     }
 }
