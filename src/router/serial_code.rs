@@ -1,8 +1,7 @@
 use jzon::{array, object};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{global, userdata, items};
-use crate::encryption;
+use crate::router::{global, userdata, items, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -18,9 +17,7 @@ async fn events(req: HttpRequest) -> impl Responder {
     }))
 }
 
-async fn serial_code(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn serial_code(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     
     let mut itemz = array![];

@@ -1,8 +1,7 @@
 use jzon::{JsonValue, object};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::encryption;
-use crate::router::{userdata, global};
+use crate::router::{userdata, global, Body, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/start", web::post().to(start));
@@ -25,8 +24,7 @@ fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> Option<String> {
     rv
 }
 
-async fn asset_hash(req: HttpRequest, body: String) -> impl Responder {
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn asset_hash(req: HttpRequest, Body(body): Body) -> impl Responder {
 
     match get_asset_hash(&req, &body) {
         Some(hash) => global::api(&req, Some(object!{
@@ -36,9 +34,7 @@ async fn asset_hash(req: HttpRequest, body: String) -> impl Responder {
     }
 }
 
-async fn start(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn start(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
 
     let Some(asset_hash) = get_asset_hash(&req, &body) else {
         return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);

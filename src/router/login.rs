@@ -1,7 +1,7 @@
 use jzon::{object, array, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{global, userdata, items, databases};
+use crate::router::{global, userdata, items, databases, Login};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/dummy/login", web::post().to(dummy));
@@ -9,8 +9,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/login_bonus/event", web::post().to(bonus_event));
 }
 
-async fn dummy(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
+async fn dummy(req: HttpRequest, Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
 
     global::api(&req, Some(object!{
@@ -53,8 +52,7 @@ fn do_bonus(user_home: &mut JsonValue, bonuses: &mut JsonValue) -> JsonValue {
     to_send
 }
 
-async fn bonus(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
+async fn bonus(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user_home = userdata::get_acc_home(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
     
@@ -80,8 +78,7 @@ async fn bonus(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn bonus_event(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
+async fn bonus_event(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user_home = userdata::get_acc_home(&key);
     
     let mut bonuses = userdata::get_acc_eventlogin(&key);

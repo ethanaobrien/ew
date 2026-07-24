@@ -1,8 +1,7 @@
 use jzon::{array, object};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{global, userdata};
-use crate::encryption;
+use crate::router::{global, userdata, Login, Session};
 use crate::router::tools::guest;
 
 pub const FRIEND_LIMIT: usize = 40;
@@ -21,9 +20,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn friend(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn friend(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -50,15 +47,13 @@ async fn friend(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn ids(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn ids(req: HttpRequest, Login(key): Login) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
 
     global::api(&req, Some(friends))
 }
 
-async fn recommend(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
+async fn recommend(req: HttpRequest, Login(key): Login) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -83,9 +78,7 @@ async fn recommend(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn search(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn search(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
 
     let uid = body["user_id"].as_i64().unwrap();
@@ -98,9 +91,7 @@ async fn search(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn request(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn request(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 
@@ -116,9 +107,7 @@ async fn request(req: HttpRequest, body: String) -> impl Responder {
     global::api(&req, Some(array![]))
 }
 
-async fn approve(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn approve(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 
@@ -137,9 +126,7 @@ async fn approve(req: HttpRequest, body: String) -> impl Responder {
     global::api(&req, Some(array![]))
 }
 
-async fn cancel(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn cancel(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 
@@ -154,9 +141,7 @@ async fn cancel(req: HttpRequest, body: String) -> impl Responder {
     global::api(&req, Some(array![]))
 }
 
-async fn delete(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn delete(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 

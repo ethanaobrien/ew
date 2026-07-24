@@ -1,15 +1,13 @@
 use jzon::{object, array, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{global, userdata, items, databases};
-use crate::encryption;
+use crate::router::{global, userdata, items, databases, Login, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(web::resource("/exchange").route(web::get().to(exchange)).route(web::post().to(exchange_post)));
 }
 
-async fn exchange(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn exchange(req: HttpRequest, Login(key): Login) -> impl Responder {
     let exchange = userdata::get_acc_exchange(&key);
     global::api(&req, Some(object!{
         "exchange_list": exchange
@@ -34,9 +32,7 @@ fn exchange_updated_value_list(is_card: bool, granted_id: i64, consumed_id: i64,
     rv
 }
 
-async fn exchange_post(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn exchange_post(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut missions = userdata::get_acc_missions(&key);
     let mut chats = userdata::get_acc_chats(&key);

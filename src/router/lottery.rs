@@ -2,8 +2,7 @@ use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 
-use crate::router::{global, userdata, items, databases};
-use crate::encryption;
+use crate::router::{global, userdata, items, databases, Body, Login, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -13,8 +12,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn tutorial(req: HttpRequest, body: String) -> impl Responder {
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn tutorial(req: HttpRequest, Body(body): Body) -> impl Responder {
     
     let id = body["master_character_id"].to_string();
     let user = &id[id.len() - 2..].parse::<i32>().unwrap();
@@ -189,17 +187,14 @@ fn get_lottery_list(user: &JsonValue) -> JsonValue {
     rv
 }
 
-async fn lottery(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn lottery(req: HttpRequest, Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
     global::api(&req, Some(object!{
         "lottery_list": get_lottery_list(&user)
     }))
 }
 
-async fn lottery_post(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     //println!("lottery: {}", body);
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);

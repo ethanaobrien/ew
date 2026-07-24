@@ -1,8 +1,7 @@
 use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{global, userdata, items, databases};
-use crate::encryption;
+use crate::router::{global, userdata, items, databases, Login, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -15,8 +14,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 
 const VARIABLE_MISSIONS: [[i64; 2]; 5] = [[1153001, 1153019], [1105001, 1105017], [1101001, 1101030], [1121001, 1121019], [1112001, 1112033]];
 
-async fn mission(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn mission(req: HttpRequest, Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
     let step = user["tutorial_step"].as_i64().unwrap_or(0);
 
@@ -36,11 +34,8 @@ async fn mission(req: HttpRequest) -> impl Responder {
     }))
 }
 
-async fn clear(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-
+async fn clear(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut missions = userdata::get_acc_missions(&key);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
     let mut cleared = array![];
     for id in body["master_mission_ids"].members() {
@@ -59,9 +54,7 @@ async fn clear(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn receive(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn receive(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let uid = global::get_uid(req.headers());
     let now = global::timestamp();
 

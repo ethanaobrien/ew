@@ -2,8 +2,7 @@ use jzon::{object, array, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 use lazy_static::lazy_static;
 
-use crate::router::{global, userdata, items};
-use crate::encryption;
+use crate::router::{global, userdata, items, Login, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -14,9 +13,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn preset(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn preset(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     
     for data in user["home"]["preset_setting"].members_mut() {
@@ -41,8 +38,7 @@ fn check_gifts(user: &mut JsonValue) {
     }
 }
 
-pub async fn gift_get(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+pub async fn gift_get(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     check_gifts(&mut user);
 
@@ -51,8 +47,7 @@ pub async fn gift_get(req: HttpRequest) -> impl Responder {
     }))
 }
 
-async fn preset_get(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn preset_get(req: HttpRequest, Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
 
     global::api(&req, Some(object!{
@@ -88,8 +83,7 @@ lazy_static! {
     };
 }
 
-async fn home(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn home(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     
     check_gifts(&mut user);

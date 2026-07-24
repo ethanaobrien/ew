@@ -14,6 +14,6 @@ async fn reward(req: HttpRequest) -> impl Responder {
     }))
 }
 
-async fn reward_post(req: HttpRequest, _body: String) -> impl Responder {
+async fn reward_post(req: HttpRequest) -> impl Responder {
     global::api(&req, Some(array![]))
 }

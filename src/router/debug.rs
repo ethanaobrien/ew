@@ -1,15 +1,13 @@
 use jzon::object;
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::encryption;
-use crate::router::global;
+use crate::router::{global, Body};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/debug/error", web::post().to(error));
 }
 
-async fn error(req: HttpRequest, body: String) -> impl Responder {
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn error(req: HttpRequest, Body(body): Body) -> impl Responder {
 
     println!("client error: {}", body["code"]);
 

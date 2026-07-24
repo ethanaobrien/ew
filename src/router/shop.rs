@@ -1,8 +1,7 @@
 use jzon::{object};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{userdata, global, items, databases};
-use crate::encryption;
+use crate::router::{userdata, global, items, databases, Login, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -12,8 +11,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn shop(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn shop(req: HttpRequest, Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
 
     global::api(&req, Some(object!{
@@ -21,9 +19,7 @@ async fn shop(req: HttpRequest) -> impl Responder {
     }))
 }
 
-async fn buy(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn buy(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
 
     let shop_item_id = body["master_shop_item_id"].as_i64().unwrap();

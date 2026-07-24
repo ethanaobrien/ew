@@ -7,7 +7,6 @@ use sha1::Sha1;
 use sha1::Digest;
 use rsa::pkcs8::DecodePublicKey;
 
-use crate::encryption;
 use crate::router::{global, userdata};
 use crate::sql::SQLite;
 
@@ -72,7 +71,6 @@ fn verify_signature(signature: &[u8], message: &[u8], public_key: &str) -> bool 
 }
 
 pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
-    let body = encryption::decrypt_packet(body).unwrap();
     let blank_header = HeaderValue::from_static("");
     let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
     let uid = headers.get("aoharu-user-id").unwrap_or(&blank_header).to_str().unwrap_or("");

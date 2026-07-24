@@ -1,8 +1,7 @@
 use jzon::{object, array, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{userdata, global, items, databases};
-use crate::encryption;
+use crate::router::{userdata, global, items, databases, Session};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -106,9 +105,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
     object!{}
 }
 
-async fn reinforce(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn reinforce(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut clear_mission_ids = array![];
     
@@ -124,9 +121,7 @@ async fn reinforce(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn skill_reinforce(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn skill_reinforce(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut clear_mission_ids = array![];
     
@@ -142,9 +137,7 @@ async fn skill_reinforce(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn evolve(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn evolve(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut chats = userdata::get_acc_chats(&key);
     let mut missions = userdata::get_acc_missions(&key);

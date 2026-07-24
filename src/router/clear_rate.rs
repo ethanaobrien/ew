@@ -4,9 +4,8 @@ use rusqlite::params;
 use std::sync::Mutex;
 use lazy_static::lazy_static;
 
-use crate::encryption;
 use crate::sql::SQLite;
-use crate::router::{databases, global, userdata};
+use crate::router::{databases, global, userdata, Session};
 use crate::include_file;
 use crate::router::tools::guest;
 
@@ -255,9 +254,7 @@ pub async fn clearrate(req: HttpRequest) -> impl Responder {
     global::api(&req, Some(data))
 }
 
-pub async fn ranking(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+pub async fn ranking(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let self_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
 

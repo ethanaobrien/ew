@@ -35,13 +35,65 @@ mod tools;
 use actix_web::{
     HttpResponse,
     HttpRequest,
+    FromRequest,
     body::{BoxBody, MessageBody},
-    dev::{ServiceRequest, ServiceResponse},
+    dev::{Payload, ServiceRequest, ServiceResponse},
     middleware::{from_fn, Next},
     http::header::HeaderMap
 };
+use futures_util::future::LocalBoxFuture;
+use futures_util::FutureExt;
 use jzon::{JsonValue, object};
 use crate::encryption;
+
+pub struct Body(pub JsonValue);
+
+pub struct Login(pub String);
+
+pub struct Session {
+    pub key: String,
+    pub body: JsonValue,
+}
+
+impl FromRequest for Body {
+    type Error = actix_web::Error;
+    type Future = LocalBoxFuture<'static, Result<Self, Self::Error>>;
+
+    fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
+        let fut = String::from_request(req, payload);
+        async move {
+            Ok(Body(jzon::parse(&encryption::decrypt_packet(&fut.await?).unwrap()).unwrap()))
+        }.boxed_local()
+    }
+}
+
+impl FromRequest for Login {
+    type Error = actix_web::Error;
+    type Future = LocalBoxFuture<'static, Result<Self, Self::Error>>;
+
+    fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
+        let headers = req.headers().clone();
+        let fut = String::from_request(req, payload);
+        async move {
+            Ok(Login(global::get_login(&headers, &encryption::decrypt_packet(&fut.await?).unwrap())))
+        }.boxed_local()
+    }
+}
+
+impl FromRequest for Session {
+    type Error = actix_web::Error;
+    type Future = LocalBoxFuture<'static, Result<Self, Self::Error>>;
+
+    fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
+        let headers = req.headers().clone();
+        let fut = String::from_request(req, payload);
+        async move {
+            let body = encryption::decrypt_packet(&fut.await?).unwrap();
+            let key = global::get_login(&headers, &body);
+            Ok(Session { key, body: jzon::parse(&body).unwrap() })
+        }.boxed_local()
+    }
+}
 
 // Requests without client headers (a browser) get the webui
 async fn webui_fallback(req: ServiceRequest, next: Next<impl MessageBody + 'static>) -> Result<ServiceResponse<BoxBody>, actix_web::Error> {

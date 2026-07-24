@@ -11,7 +11,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::sync::Mutex;
 
-use crate::router::{global, userdata, webui};
+use crate::router::{global, userdata, webui, Login};
 use crate::database::custom_song as database;
 use crate::runtime::get_data_path;
 use crate::lock_onto_mutex;
@@ -91,12 +91,11 @@ pub fn client_supports_custom_songs(req: &HttpRequest) -> bool {
 
 // The catalog is filtered per requesting user: private songs only show for
 // their owner, shared songs for the owner plus their shared-user list
-async fn list(req: HttpRequest, body: String) -> impl Responder {
+async fn list(req: HttpRequest, Login(key): Login) -> impl Responder {
     if disabled() {
         // As if the endpoint doesn't exist - the client treats this as feature-off
         return global::api(&req, None);
     }
-    let key = global::get_login(req.headers(), &body);
     let uid = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     global::api(&req, Some(object!{
         "revision": database::get_revision(),

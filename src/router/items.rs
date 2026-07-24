@@ -1,9 +1,8 @@
 use jzon::{array, object, JsonValue};
 use rand::RngExt;
 use actix_web::{web, HttpRequest, Responder, http::header::{HeaderMap, HeaderValue}};
-use crate::encryption;
 
-use crate::router::{userdata, global, databases};
+use crate::router::{userdata, global, databases, Session};
 
 pub fn remove_gems(user: &mut JsonValue, amount: i64) {
     let mut amount = amount;
@@ -557,9 +556,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/item/use", web::post().to(use_item_req));
 }
 
-async fn use_item_req(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn use_item_req(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     
     let item = &databases::ITEM_INFO[body["id"].to_string()];

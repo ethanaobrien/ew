@@ -2,8 +2,7 @@ use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 use sha1::{Digest, Sha1};
 
-use crate::encryption;
-use crate::router::{global, items, userdata};
+use crate::router::{global, items, userdata, Body, Login, Session};
 use crate::include_file;
 use crate::router::tools::guest;
 
@@ -26,9 +25,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/album/sif", web::get().to(sif));
 }
 
-async fn deck(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn deck(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     
     for (i, data) in user["deck_list"].clone().members().enumerate() {
@@ -59,8 +56,7 @@ async fn deck(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn user(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn user(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc(&key);
 
     user["lottery_list"] = array![];
@@ -74,9 +70,7 @@ async fn user(req: HttpRequest) -> impl Responder {
     global::api(&req, Some(user))
 }
 
-pub async fn gift(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+pub async fn gift(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     
     let mut user = userdata::get_acc_home(&key);
     let mut userr = userdata::get_acc(&key);
@@ -132,9 +126,7 @@ pub async fn gift(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn user_post(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn user_post(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
 
     let mut user = userdata::get_acc(&key);
     
@@ -181,8 +173,7 @@ async fn user_post(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-pub async fn announcement(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+pub async fn announcement(req: HttpRequest, Login(key): Login) -> impl Responder {
     
     let mut user = userdata::get_acc_home(&key);
     
@@ -195,8 +186,7 @@ pub async fn announcement(req: HttpRequest) -> impl Responder {
     }))
 }
 
-async fn get_migration_code(req: HttpRequest, body: String) -> impl Responder {
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn get_migration_code(req: HttpRequest, Body(body): Body) -> impl Responder {
 
     let Some(user_id) = body["user_id"].as_i64() else { return global::api(&req, None); };
     let code = userdata::user::migration::get_acc_token(user_id);
@@ -206,9 +196,7 @@ async fn get_migration_code(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn register_password(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn register_password(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     
     let user = userdata::get_acc(&key);
     
@@ -217,8 +205,7 @@ async fn register_password(req: HttpRequest, body: String) -> impl Responder {
     global::api(&req, Some(array![]))
 }
 
-async fn verify_migration_code(req: HttpRequest, body: String) -> impl Responder {
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn verify_migration_code(req: HttpRequest, Body(body): Body) -> impl Responder {
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
@@ -235,8 +222,7 @@ async fn verify_migration_code(req: HttpRequest, body: String) -> impl Responder
         "free": data_user["gem"]["free"].clone()
     }))
 }
-async fn request_migration_code(req: HttpRequest, body: String) -> impl Responder {
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn request_migration_code(req: HttpRequest, Body(body): Body) -> impl Responder {
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
@@ -248,17 +234,14 @@ async fn request_migration_code(req: HttpRequest, body: String) -> impl Responde
         "twxuid": user["login_token"].to_string()
     }))
 }
-async fn migration(req: HttpRequest, body: String) -> impl Responder {
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn migration(req: HttpRequest, Body(body): Body) -> impl Responder {
 
     let user = userdata::get_name_and_rank(body["user_id"].to_string().parse::<i64>().unwrap());
 
     global::api(&req, Some(user))
 }
 
-async fn detail(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn detail(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
     
     let mut user_detail_list = array![];
@@ -272,8 +255,7 @@ async fn detail(req: HttpRequest, body: String) -> impl Responder {
     }))
 }
 
-async fn sif(req: HttpRequest) -> impl Responder {
-    let key = global::get_login(req.headers(), "");
+async fn sif(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut cards = userdata::get_acc_sif(&key);
     
@@ -291,7 +273,7 @@ async fn sif(req: HttpRequest) -> impl Responder {
     }))
 }
 
-async fn sifas_migrate(req: HttpRequest, _body: String) -> impl Responder {
+async fn sifas_migrate(req: HttpRequest) -> impl Responder {
     global::api(&req, Some(object!{
         "ss_migrate_status": 1,
         "user": null,
@@ -342,10 +324,8 @@ fn clean_sif_data(current: &JsonValue) -> JsonValue {
     rv
 }
 
-async fn sif_migrate(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
+async fn sif_migrate(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
 
     let id = generate_passcode_sha1(body["sif_user_id"].to_string(), body["password"].to_string());
     let user_info = npps4_req(id).await;
@@ -373,7 +353,7 @@ async fn sif_migrate(req: HttpRequest, body: String) -> impl Responder {
 
 }
 
-async fn getregisteredplatformlist(req: HttpRequest, _body: String) -> impl Responder {
+async fn getregisteredplatformlist(req: HttpRequest) -> impl Responder {
     global::api(&req, Some(object!{
         "google": 0,
         "apple": 0,
@@ -381,9 +361,7 @@ async fn getregisteredplatformlist(req: HttpRequest, _body: String) -> impl Resp
     }))
 }
 
-async fn initialize(req: HttpRequest, body: String) -> impl Responder {
-    let key = global::get_login(req.headers(), &body);
-    let body = jzon::parse(&encryption::decrypt_packet(&body).unwrap()).unwrap();
+async fn initialize(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     
     let mut user = userdata::get_acc(&key);
     let mut user2 = userdata::get_acc_home(&key);
