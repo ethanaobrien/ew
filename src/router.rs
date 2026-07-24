@@ -36,10 +36,10 @@ use actix_web::{
     HttpResponse,
     HttpRequest,
     FromRequest,
+    Responder,
     body::{BoxBody, MessageBody},
     dev::{Payload, ServiceRequest, ServiceResponse},
     middleware::{from_fn, Next},
-    http::header::HeaderMap
 };
 use futures_util::future::LocalBoxFuture;
 use futures_util::FutureExt;
@@ -53,6 +53,26 @@ pub struct Login(pub String);
 pub struct Session {
     pub key: String,
     pub body: JsonValue,
+}
+
+pub trait ApiBody {
+    fn into_json(self) -> JsonValue;
+}
+
+impl ApiBody for JsonValue {
+    fn into_json(self) -> JsonValue {
+        self
+    }
+}
+
+pub struct Api<T = JsonValue>(pub Option<T>);
+
+impl<T: ApiBody> Responder for Api<T> {
+    type Body = BoxBody;
+
+    fn respond_to(self, req: &HttpRequest) -> HttpResponse {
+        global::api(req, self.0.map(ApiBody::into_json))
+    }
 }
 
 impl FromRequest for Body {
@@ -101,7 +121,7 @@ async fn webui_fallback(req: ServiceRequest, next: Next<impl MessageBody + 'stat
     if !is_from_game {
         let req = req.into_parts().0;
         let resp = if crate::get_args().hidden {
-            not_found(req.headers())
+            not_found(&req)
         } else {
             webui::main(req.clone())
         };
@@ -128,20 +148,20 @@ fn unhandled(req: &HttpRequest, body: String) -> Option<JsonValue> {
     None
 }
 
-fn not_found(headers: &HeaderMap) -> HttpResponse {
+fn not_found(req: &HttpRequest) -> HttpResponse {
     let rv = object!{
         "code": 4,
         "server_time": global::timestamp(),
         "message": ""
     };
-    global::send(rv, 0, headers)
+    global::send(rv, 0, req)
 }
 
 // Fallback for paths no actix route matched. Game endpoints live in each module's routes()
 async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
     let args = crate::get_args();
     if args.hidden && (req.path().starts_with("/api/webui/") || !(req.path().starts_with("/api") || req.path().starts_with("/v1.0"))) {
-        return not_found(req.headers());
+        return not_found(&req);
     } else if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
         return webui::main(req);
     }
@@ -153,11 +173,11 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
     let args = crate::get_args();
     let headers = req.headers();
     if args.hidden && (req.path().starts_with("/api/webui/") || req.path().starts_with("/live_clear_rate.html")) {
-        return not_found(headers);
+        return not_found(&req);
     }
     if headers.get("aoharu-asset-version").is_none() && req.path().starts_with("/api") && !req.path().starts_with("/api/webui") {
         if args.hidden {
-            return not_found(headers);
+            return not_found(&req);
         } else {
             return webui::main(req);
         }

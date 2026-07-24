@@ -1,7 +1,7 @@
 use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{global, userdata, items, databases, Login, Session};
+use crate::router::{global, userdata, items, databases, Login, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -14,12 +14,12 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 
 const VARIABLE_MISSIONS: [[i64; 2]; 5] = [[1153001, 1153019], [1105001, 1105017], [1101001, 1101030], [1121001, 1121019], [1112001, 1112033]];
 
-async fn mission(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn mission(Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
     let step = user["tutorial_step"].as_i64().unwrap_or(0);
 
     if (1..130).contains(&step) {
-        return global::api(&req, Some(object!{
+        return Api(Some(object!{
             "mission_list": array![]
         }));
     }
@@ -29,12 +29,12 @@ async fn mission(req: HttpRequest, Login(key): Login) -> impl Responder {
         userdata::save_acc_missions(&key, missions.clone());
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "mission_list": missions
     }))
 }
 
-async fn clear(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn clear(Session { key, body }: Session) -> impl Responder {
     let mut missions = userdata::get_acc_missions(&key);
 
     let mut cleared = array![];
@@ -49,7 +49,7 @@ async fn clear(req: HttpRequest, Session { key, body }: Session) -> impl Respond
 
     userdata::save_acc_missions(&key, missions);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "clear_mission_ids": cleared
     }))
 }
@@ -175,7 +175,7 @@ async fn receive(req: HttpRequest, Session { key, body }: Session) -> impl Respo
         updated_value_list["point_list"] = point_list;
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "reward_list": rewards,
         "gift_list": array![],
         "updated_value_list": updated_value_list,

@@ -324,14 +324,14 @@ pub fn set_time(current_time: u64, uid: i64, max: bool) -> u64 {
     return server_time + time_since_set;
 }
 
-pub fn send(mut data: JsonValue, uid: i64, headers: &HeaderMap) -> HttpResponse {
+pub fn send(mut data: JsonValue, uid: i64, req: &HttpRequest) -> HttpResponse {
     //println!("{}", jzon::stringify(data.clone()));
     data["server_time"] = set_time(data["server_time"].as_u64().unwrap_or(0), uid, true).into();
 
     if !data["data"]["item_list"].is_empty() || !data["data"]["updated_value_list"]["item_list"].is_empty() {
-        items::check_for_region(&mut data, headers);
+        items::check_for_region(&mut data, req.headers());
     }
-    
+
     let encrypted = encryption::encrypt_packet(&jzon::stringify(data)).unwrap();
     let resp = encrypted.into_bytes();
 
@@ -354,7 +354,7 @@ pub fn api(req: &HttpRequest, data: Option<JsonValue>) -> HttpResponse {
             "message": ""
         }
     };
-    send(rv, uid, req.headers())
+    send(rv, uid, req)
 }
 
 pub fn api_error(req: &HttpRequest, code: i32) -> HttpResponse {
@@ -363,7 +363,7 @@ pub fn api_error(req: &HttpRequest, code: i32) -> HttpResponse {
         "code": code,
         "server_time": timestamp(),
         "message": ""
-    }, uid, req.headers())
+    }, uid, req)
 }
 
 pub fn start_login_bonus(id: i64, bonus: &mut JsonValue) -> bool {

@@ -1,13 +1,13 @@
 use jzon::{object};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{global, userdata, databases, Session};
+use crate::router::{userdata, databases, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/story/read", web::post().to(read));
 }
 
-async fn read(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn read(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let part = body["master_story_part_id"].as_i64().unwrap();
     let master_id = databases::STORY[part.to_string()]["masterStoryId"].as_i64().unwrap();
@@ -30,7 +30,7 @@ async fn read(req: HttpRequest, Session { key, body }: Session) -> impl Responde
     userdata::save_acc(&key, user.clone());
 
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "gift_list":[],
         "updated_value_list":{
             "story_list": user["story_list"].clone()

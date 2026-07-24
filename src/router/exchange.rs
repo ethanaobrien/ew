@@ -1,15 +1,15 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{global, userdata, items, databases, Login, Session};
+use crate::router::{userdata, items, databases, Login, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(web::resource("/exchange").route(web::get().to(exchange)).route(web::post().to(exchange_post)));
 }
 
-async fn exchange(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn exchange(Login(key): Login) -> impl Responder {
     let exchange = userdata::get_acc_exchange(&key);
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "exchange_list": exchange
     }))
 }
@@ -32,7 +32,7 @@ fn exchange_updated_value_list(is_card: bool, granted_id: i64, consumed_id: i64,
     rv
 }
 
-async fn exchange_post(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn exchange_post(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut missions = userdata::get_acc_missions(&key);
     let mut chats = userdata::get_acc_chats(&key);
@@ -77,7 +77,7 @@ async fn exchange_post(req: HttpRequest, Session { key, body }: Session) -> impl
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_exchange(&key, exchanges);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "clear_mission_ids": cleared_missions,
         "exchange": {
             master_exchange_item_id: exchange_id,

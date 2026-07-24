@@ -3,7 +3,7 @@ use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 use lazy_static::lazy_static;
 
-use crate::router::{databases, global, items, userdata, Login, Session};
+use crate::router::{databases, global, items, userdata, Login, Session, Api};
 use crate::router::clear_rate::live_completed;
 use crate::router::tools::guest;
 
@@ -24,19 +24,19 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 }
 
 
-async fn retire(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn retire(Session { key, body }: Session) -> impl Responder {
     live_retire(&key, &body);
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
         live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
     }
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "stamina": {},
         "item_list": [],
         "event_point_list": []
     }))
 }
 
-async fn reward(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn reward(Session { key, body }: Session) -> impl Responder {
     let user = userdata::get_acc(&key);
     let live_id = body["master_live_id"].as_i64().unwrap();
     let cleared = get_clear_count(live_id, &user) > 0;
@@ -65,7 +65,7 @@ async fn reward(req: HttpRequest, Session { key, body }: Session) -> impl Respon
         }
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "ensured_list": ensured_list,
         "random_list": random_list
     }))
@@ -80,7 +80,7 @@ fn random_number(lowest: usize, highest: usize) -> usize {
     rand::rng().random_range(lowest..highest + 1)
 }
 
-async fn guest(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn guest(Login(key): Login) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
     let user = userdata::get_acc(&key);
@@ -203,14 +203,14 @@ async fn guest(req: HttpRequest, Login(key): Login) -> impl Responder {
         }
     }
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "guest_list": guest_list
     }))
 }
 
-async fn mission(req: HttpRequest) -> impl Responder {
+async fn mission() -> impl Responder {
     //todo
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "score_ranking": "",
         "combo_ranking": "",
         "clear_count_ranking": ""
@@ -278,24 +278,24 @@ fn start_live(login_token: &str, body: &JsonValue) {
     userdata::save_server_data(login_token, server_data);
 }
 
-async fn start(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn start(Session { key, body }: Session) -> impl Responder {
     start_live(&key, &body);
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }
 
-pub async fn event_start(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+pub async fn event_start(Session { key, body }: Session) -> impl Responder {
     start_live(&key, &body);
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }
 
-async fn continuee(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn continuee(Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     
     items::remove_gems(&mut user, 100);
     
     userdata::save_acc(&key, user.clone());
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         gem: user["gem"].clone()
     }))
 }
@@ -742,11 +742,11 @@ pub fn live_end(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -
 }
 
 async fn end(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
-    global::api(&req, Some(live_end(&req, &key, &body, false)))
+    Api(Some(live_end(&req, &key, &body, false)))
 }
 
 async fn skip(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
-    global::api(&req, Some(live_end(&req, &key, &body, true)))
+    Api(Some(live_end(&req, &key, &body, true)))
 }
 
 #[cfg(test)]

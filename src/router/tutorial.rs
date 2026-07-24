@@ -1,13 +1,13 @@
 use jzon::{array};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{userdata, global, Session};
+use crate::router::{userdata, global, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/tutorial", web::post().to(tutorial));
 }
 
-async fn tutorial(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn tutorial(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
 
     if user["tutorial_step"].as_i32().unwrap() < 130 {
@@ -17,5 +17,5 @@ async fn tutorial(req: HttpRequest, Session { key, body }: Session) -> impl Resp
         userdata::save_acc(&key, user);
     }
     
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }

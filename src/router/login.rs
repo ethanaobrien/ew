@@ -1,7 +1,7 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{global, userdata, items, databases, Login};
+use crate::router::{global, userdata, items, databases, Login, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/dummy/login", web::post().to(dummy));
@@ -9,10 +9,10 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/login_bonus/event", web::post().to(bonus_event));
 }
 
-async fn dummy(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn dummy(Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "user_id": user["user"]["id"].clone()
     }))
 }
@@ -52,7 +52,7 @@ fn do_bonus(user_home: &mut JsonValue, bonuses: &mut JsonValue) -> JsonValue {
     to_send
 }
 
-async fn bonus(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn bonus(Login(key): Login) -> impl Responder {
     let mut user_home = userdata::get_acc_home(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
     
@@ -71,14 +71,14 @@ async fn bonus(req: HttpRequest, Login(key): Login) -> impl Responder {
     userdata::save_acc_loginbonus(&key, bonuses.clone());
     userdata::save_acc_home(&key, user_home.clone());
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "login_bonus_list": to_send,
         "start_time": bonuses["start_time"].clone(),
         "clear_mission_ids": cleared_missions
     }))
 }
 
-async fn bonus_event(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn bonus_event(Login(key): Login) -> impl Responder {
     let mut user_home = userdata::get_acc_home(&key);
     
     let mut bonuses = userdata::get_acc_eventlogin(&key);
@@ -90,7 +90,7 @@ async fn bonus_event(req: HttpRequest, Login(key): Login) -> impl Responder {
     userdata::save_acc_eventlogin(&key, bonuses.clone());
     userdata::save_acc_home(&key, user_home.clone());
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "login_bonus_list": to_send,
         "start_time": bonuses["start_time"].clone(),
         "clear_mission_ids": []

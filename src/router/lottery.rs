@@ -1,8 +1,8 @@
 use jzon::{array, object, JsonValue};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 use rand::RngExt;
 
-use crate::router::{global, userdata, items, databases, Body, Login, Session};
+use crate::router::{global, userdata, items, databases, Body, Login, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -12,7 +12,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn tutorial(req: HttpRequest, Body(body): Body) -> impl Responder {
+async fn tutorial(Body(body): Body) -> impl Responder {
     
     let id = body["master_character_id"].to_string();
     let user = &id[id.len() - 2..].parse::<i32>().unwrap();
@@ -26,7 +26,7 @@ async fn tutorial(req: HttpRequest, Body(body): Body) -> impl Responder {
     }
     lotteryid += user;
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "lottery_list": [
             {
                 "master_lottery_id": lotteryid,
@@ -187,14 +187,14 @@ fn get_lottery_list(user: &JsonValue) -> JsonValue {
     rv
 }
 
-async fn lottery(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn lottery(Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "lottery_list": get_lottery_list(&user)
     }))
 }
 
-async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn lottery_post(Session { key, body }: Session) -> impl Responder {
     //println!("lottery: {}", body);
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);
@@ -290,7 +290,7 @@ async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl 
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "lottery_item_list": lottery_list,
         "updated_value_list": {
             "card_list": new_cards,

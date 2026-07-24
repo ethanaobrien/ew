@@ -5,7 +5,7 @@ use std::sync::Mutex;
 use lazy_static::lazy_static;
 
 use crate::sql::SQLite;
-use crate::router::{databases, global, userdata, Session};
+use crate::router::{databases, global, userdata, Session, Api};
 use crate::include_file;
 use crate::router::tools::guest;
 
@@ -251,10 +251,10 @@ pub async fn clearrate(req: HttpRequest) -> impl Responder {
         data["all_user_clear_rate"] = new_rates;
         data["master_music_ids"] = new_ids;
     }
-    global::api(&req, Some(data))
+    Api(Some(data))
 }
 
-pub async fn ranking(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+pub async fn ranking(Session { key, body }: Session) -> impl Responder {
     let self_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
 
@@ -282,7 +282,7 @@ pub async fn ranking(req: HttpRequest, Session { key, body }: Session) -> impl R
         }).unwrap();
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "ranking_list": rank
     }))
 }

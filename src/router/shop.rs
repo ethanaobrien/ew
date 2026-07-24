@@ -1,7 +1,7 @@
 use jzon::{object};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{userdata, global, items, databases, Login, Session};
+use crate::router::{userdata, items, databases, Login, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -11,15 +11,15 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn shop(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn shop(Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "shop_list": user["shop_list"].clone()
     }))
 }
 
-async fn buy(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn buy(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
 
     let shop_item_id = body["master_shop_item_id"].as_i64().unwrap();
@@ -39,7 +39,7 @@ async fn buy(req: HttpRequest, Session { key, body }: Session) -> impl Responder
         }
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "gem": user["gem"].clone(),
         "shop_list": [bought],
         "gift_list": [],

@@ -2,7 +2,7 @@ use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 use sha1::{Digest, Sha1};
 
-use crate::router::{global, items, userdata, Body, Login, Session};
+use crate::router::{global, items, userdata, Body, Login, Session, Api};
 use crate::include_file;
 use crate::router::tools::guest;
 
@@ -25,7 +25,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/album/sif", web::get().to(sif));
 }
 
-async fn deck(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn deck(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     
     for (i, data) in user["deck_list"].clone().members().enumerate() {
@@ -46,7 +46,7 @@ async fn deck(req: HttpRequest, Session { key, body }: Session) -> impl Responde
     }
     userdata::save_acc(&key, user.clone());
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "deck": {
             "slot": body["slot"].clone(),
             "leader_role": 0,
@@ -67,10 +67,10 @@ async fn user(req: HttpRequest, Login(key): Login) -> impl Responder {
         }
     }
 
-    global::api(&req, Some(user))
+    Api(Some(user))
 }
 
-pub async fn gift(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+pub async fn gift(Session { key, body }: Session) -> impl Responder {
     
     let mut user = userdata::get_acc_home(&key);
     let mut userr = userdata::get_acc(&key);
@@ -113,7 +113,7 @@ pub async fn gift(req: HttpRequest, Session { key, body }: Session) -> impl Resp
     userdata::save_acc(&key, userr.clone());
     let userr = userdata::get_acc(&key);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "failed_gift_ids": failed,
         "updated_value_list": {
             "gem": userr["gem"].clone(),
@@ -126,7 +126,7 @@ pub async fn gift(req: HttpRequest, Session { key, body }: Session) -> impl Resp
     }))
 }
 
-async fn user_post(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn user_post(Session { key, body }: Session) -> impl Responder {
 
     let mut user = userdata::get_acc(&key);
     
@@ -167,13 +167,13 @@ async fn user_post(req: HttpRequest, Session { key, body }: Session) -> impl Res
     
     userdata::save_acc(&key, user.clone());
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "user": user["user"].clone(),
         "clear_mission_ids": []
     }))
 }
 
-pub async fn announcement(req: HttpRequest, Login(key): Login) -> impl Responder {
+pub async fn announcement(Login(key): Login) -> impl Responder {
     
     let mut user = userdata::get_acc_home(&key);
     
@@ -181,67 +181,67 @@ pub async fn announcement(req: HttpRequest, Login(key): Login) -> impl Responder
     
     userdata::save_acc_home(&key, user);
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         new_announcement_flag: 0
     }))
 }
 
-async fn get_migration_code(req: HttpRequest, Body(body): Body) -> impl Responder {
+async fn get_migration_code(Body(body): Body) -> impl Responder {
 
-    let Some(user_id) = body["user_id"].as_i64() else { return global::api(&req, None); };
+    let Some(user_id) = body["user_id"].as_i64() else { return Api(None); };
     let code = userdata::user::migration::get_acc_token(user_id);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "migrationCode": code
     }))
 }
 
-async fn register_password(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn register_password(Session { key, body }: Session) -> impl Responder {
     
     let user = userdata::get_acc(&key);
     
     userdata::user::migration::save_acc_transfer(user["user"]["id"].as_i64().unwrap(), &body["pass"].to_string());
     
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }
 
-async fn verify_migration_code(req: HttpRequest, Body(body): Body) -> impl Responder {
+async fn verify_migration_code(Body(body): Body) -> impl Responder {
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
-        return global::api(&req, None);
+        return Api(None);
     }
 
     let data_user = userdata::get_acc(&user["login_token"].to_string());
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "user_id": user["user_id"].clone(),
         "uuid": user["login_token"].to_string(),
         "charge": data_user["gem"]["charge"].clone(),
         "free": data_user["gem"]["free"].clone()
     }))
 }
-async fn request_migration_code(req: HttpRequest, Body(body): Body) -> impl Responder {
+async fn request_migration_code(Body(body): Body) -> impl Responder {
     
     let user = userdata::user::migration::get_acc_transfer(&body["migrationCode"].to_string(), &body["pass"].to_string());
     
     if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
-        return global::api(&req, None);
+        return Api(None);
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "twxuid": user["login_token"].to_string()
     }))
 }
-async fn migration(req: HttpRequest, Body(body): Body) -> impl Responder {
+async fn migration(Body(body): Body) -> impl Responder {
 
     let user = userdata::get_name_and_rank(body["user_id"].to_string().parse::<i64>().unwrap());
 
-    global::api(&req, Some(user))
+    Api(Some(user))
 }
 
-async fn detail(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn detail(Session { key, body }: Session) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
     
     let mut user_detail_list = array![];
@@ -250,12 +250,12 @@ async fn detail(req: HttpRequest, Session { key, body }: Session) -> impl Respon
         let user = guest::get_user(uid, &friends, guest::UserView::Detail);
         user_detail_list.push(user).unwrap();
     }
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         user_detail_list: user_detail_list
     }))
 }
 
-async fn sif(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn sif(Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut cards = userdata::get_acc_sif(&key);
     
@@ -268,13 +268,13 @@ async fn sif(req: HttpRequest, Login(key): Login) -> impl Responder {
         userdata::save_acc(&key, user);
     }
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         cards: cards
     }))
 }
 
-async fn sifas_migrate(req: HttpRequest) -> impl Responder {
-    global::api(&req, Some(object!{
+async fn sifas_migrate() -> impl Responder {
+    Api(Some(object!{
         "ss_migrate_status": 1,
         "user": null,
         "gift_list": null,
@@ -324,13 +324,13 @@ fn clean_sif_data(current: &JsonValue) -> JsonValue {
     rv
 }
 
-async fn sif_migrate(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn sif_migrate(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
 
     let id = generate_passcode_sha1(body["sif_user_id"].to_string(), body["password"].to_string());
     let user_info = npps4_req(id).await;
     if user_info.is_none() {
-        return global::api(&req, Some(object!{
+        return Api(Some(object!{
             sif_migrate_status: 38
         }));
     }
@@ -345,7 +345,7 @@ async fn sif_migrate(req: HttpRequest, Session { key, body }: Session) -> impl R
     userdata::save_acc_sif(&key, clean_sif_data(&user_info["units"]));
     userdata::save_acc(&key, user.clone());
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "sif_migrate_status": 0,
         "user": user["user"].clone(),
         "master_title_ids": user["master_title_ids"].clone()
@@ -353,15 +353,15 @@ async fn sif_migrate(req: HttpRequest, Session { key, body }: Session) -> impl R
 
 }
 
-async fn getregisteredplatformlist(req: HttpRequest) -> impl Responder {
-    global::api(&req, Some(object!{
+async fn getregisteredplatformlist() -> impl Responder {
+    Api(Some(object!{
         "google": 0,
         "apple": 0,
         "twitter": 0
     }))
 }
 
-async fn initialize(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn initialize(Session { key, body }: Session) -> impl Responder {
     
     let mut user = userdata::get_acc(&key);
     let mut user2 = userdata::get_acc_home(&key);
@@ -399,7 +399,7 @@ async fn initialize(req: HttpRequest, Session { key, body }: Session) -> impl Re
         cardstoreward = array![40010001, 40020001, 40030001, 40040001, 40050001, 40060001, 40070001, 40080001, 40090001]; //liella
         masterid += 9 + 9 + 12; //nijigasaki
     } else {
-        return global::api(&req, None);
+        return Api(None);
     }
     masterid += userr;
     
@@ -440,5 +440,5 @@ async fn initialize(req: HttpRequest, Session { key, body }: Session) -> impl Re
     userdata::save_acc_home(&key, user2);
     userdata::save_acc_missions(&key, missions);
 
-    global::api(&req, Some(user["user"].clone()))
+    Api(Some(user["user"].clone()))
 }

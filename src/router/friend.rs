@@ -1,7 +1,7 @@
 use jzon::{array, object};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{global, userdata, Login, Session};
+use crate::router::{global, userdata, Login, Session, Api};
 use crate::router::tools::guest;
 
 pub const FRIEND_LIMIT: usize = 40;
@@ -20,7 +20,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn friend(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn friend(Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -42,18 +42,18 @@ async fn friend(req: HttpRequest, Session { key, body }: Session) -> impl Respon
         rv.push(user).unwrap();
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "friend_list": rv
     }))
 }
 
-async fn ids(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn ids(Login(key): Login) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
 
-    global::api(&req, Some(friends))
+    Api(Some(friends))
 }
 
-async fn recommend(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn recommend(Login(key): Login) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -73,25 +73,25 @@ async fn recommend(req: HttpRequest, Login(key): Login) -> impl Responder {
         rv.push(user).unwrap();
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         friend_list: rv
     }))
 }
 
-async fn search(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn search(Session { key, body }: Session) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
 
     let uid = body["user_id"].as_i64().unwrap();
     let user = guest::get_user(uid, &friends, guest::UserView::Detail);
 
-    global::api(&req, Some(if user.is_empty() {
+    Api(Some(if user.is_empty() {
         array![]
     } else {
         user
     }))
 }
 
-async fn request(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn request(Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 
@@ -104,10 +104,10 @@ async fn request(req: HttpRequest, Session { key, body }: Session) -> impl Respo
         userdata::friend_request(uid, user_id);
     }
 
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }
 
-async fn approve(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn approve(Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 
@@ -123,10 +123,10 @@ async fn approve(req: HttpRequest, Session { key, body }: Session) -> impl Respo
         userdata::save_acc_friends(&key, friends);
     }
 
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }
 
-async fn cancel(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn cancel(Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 
@@ -138,10 +138,10 @@ async fn cancel(req: HttpRequest, Session { key, body }: Session) -> impl Respon
     userdata::friend_request_approve(uid, user_id, false, "pending_user_id_list");
     userdata::save_acc_friends(&key, friends);
 
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }
 
-async fn delete(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn delete(Session { key, body }: Session) -> impl Responder {
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut friends = userdata::get_acc_friends(&key);
 
@@ -153,5 +153,5 @@ async fn delete(req: HttpRequest, Session { key, body }: Session) -> impl Respon
     userdata::friend_remove(uid, user_id);
     userdata::save_acc_friends(&key, friends);
 
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }

@@ -1,7 +1,7 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{userdata, global, items, databases, Session};
+use crate::router::{userdata, items, databases, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -105,7 +105,7 @@ fn do_reinforce(user: &mut JsonValue, body: &JsonValue, exp_id: &str, money_mult
     object!{}
 }
 
-async fn reinforce(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn reinforce(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut clear_mission_ids = array![];
     
@@ -113,7 +113,7 @@ async fn reinforce(req: HttpRequest, Session { key, body }: Session) -> impl Res
 
     userdata::save_acc(&key, user.clone());
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         card: card,
         item_list: material_item_list(&user, &body),
         point_list: user["point_list"].clone(),
@@ -121,7 +121,7 @@ async fn reinforce(req: HttpRequest, Session { key, body }: Session) -> impl Res
     }))
 }
 
-async fn skill_reinforce(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn skill_reinforce(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut clear_mission_ids = array![];
     
@@ -129,7 +129,7 @@ async fn skill_reinforce(req: HttpRequest, Session { key, body }: Session) -> im
 
     userdata::save_acc(&key, user.clone());
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         card: card,
         item_list: material_item_list(&user, &body),
         point_list: user["point_list"].clone(),
@@ -137,7 +137,7 @@ async fn skill_reinforce(req: HttpRequest, Session { key, body }: Session) -> im
     }))
 }
 
-async fn evolve(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn evolve(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc(&key);
     let mut chats = userdata::get_acc_chats(&key);
     let mut missions = userdata::get_acc_missions(&key);
@@ -149,7 +149,7 @@ async fn evolve(req: HttpRequest, Session { key, body }: Session) -> impl Respon
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         card: card,
         item_list: material_item_list(&user, &body),
         point_list: user["point_list"].clone(),

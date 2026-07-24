@@ -1,7 +1,7 @@
 use jzon::{array, object};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::{global, userdata, items, Session};
+use crate::router::{userdata, items, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -11,13 +11,13 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn events(req: HttpRequest) -> impl Responder {
-    global::api(&req, Some(object!{
+async fn events() -> impl Responder {
+    Api(Some(object!{
         "serial_code_list": []
     }))
 }
 
-async fn serial_code(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn serial_code(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     
     let mut itemz = array![];
@@ -183,7 +183,7 @@ async fn serial_code(req: HttpRequest, Session { key, body }: Session) -> impl R
         itemz.push(items::gift_item_basic(30010001, 500, 3, "Okay...............", &mut user)).unwrap();
         itemz.push(items::gift_item_basic(15540001, 500, 3, "Okay...............", &mut user)).unwrap();
     } else {
-        return global::api(&req, Some(object!{
+        return Api(Some(object!{
             "result_code": 3
         }));
     }
@@ -192,7 +192,7 @@ async fn serial_code(req: HttpRequest, Session { key, body }: Session) -> impl R
         userdata::save_acc_home(&key, user.clone());
     }
     
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "serial_code_event": {"id":1,"name":"Serial Code Reward","unique_limit_count":0,"min_user_rank":0,"max_user_rank":0,"end_date":null},
         "reward_list": itemz,
         "result_code": 0,

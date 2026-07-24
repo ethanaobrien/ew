@@ -1,14 +1,14 @@
 use jzon::object;
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 
-use crate::router::global;
+use crate::router::Api;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/purchase", web::get().to(purchase));
 }
 
-async fn purchase(req: HttpRequest) -> impl Responder {
-    global::api(&req, Some(object!{
+async fn purchase() -> impl Responder {
+    Api(Some(object!{
         "product_list": [//Client will error if this is an empty array
             {
                 "product_id": "com.bushiroad.global.lovelive.sif2.google.promo.4199",

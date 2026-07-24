@@ -1,8 +1,8 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{web, HttpRequest, Responder};
+use actix_web::{web, Responder};
 use lazy_static::lazy_static;
 
-use crate::router::{global, userdata, items, Login, Session};
+use crate::router::{global, userdata, items, Login, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -13,7 +13,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn preset(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn preset(Session { key, body }: Session) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     
     for data in user["home"]["preset_setting"].members_mut() {
@@ -23,7 +23,7 @@ async fn preset(req: HttpRequest, Session { key, body }: Session) -> impl Respon
     }
     userdata::save_acc_home(&key, user);
 
-    global::api(&req, Some(array![]))
+    Api(Some(array![]))
 }
 
 fn check_gifts(user: &mut JsonValue) {
@@ -38,19 +38,19 @@ fn check_gifts(user: &mut JsonValue) {
     }
 }
 
-pub async fn gift_get(req: HttpRequest, Login(key): Login) -> impl Responder {
+pub async fn gift_get(Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     check_gifts(&mut user);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "gift_list": user["home"]["gift_list"].clone()
     }))
 }
 
-async fn preset_get(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn preset_get(Login(key): Login) -> impl Responder {
     let user = userdata::get_acc(&key);
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         "master_preset_background_ids": [1,2,3,4,5],
         "master_preset_foreground_ids": [1,2,3],
         "card_list": user["card_list"].clone()
@@ -83,7 +83,7 @@ lazy_static! {
     };
 }
 
-async fn home(req: HttpRequest, Login(key): Login) -> impl Responder {
+async fn home(Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc_home(&key);
     
     check_gifts(&mut user);
@@ -127,5 +127,5 @@ async fn home(req: HttpRequest, Login(key): Login) -> impl Responder {
     //todo
     user["home"]["beginner_mission_complete"] = 1.into();
 
-    global::api(&req, Some(user))
+    Api(Some(user))
 }

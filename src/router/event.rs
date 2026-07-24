@@ -3,7 +3,7 @@ use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 
 use crate::include_file;
-use crate::router::{userdata, global, databases, Body, Session};
+use crate::router::{userdata, global, databases, Body, Session, Api};
 
 // I believe(?) this is all?
 const STAR_EVENT_IDS: [u32; 3] = [127, 135, 139];
@@ -113,7 +113,7 @@ fn init_star_event(event: &mut JsonValue) {
     switch_music(event, 5);
 }
 
-async fn event(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn event(Session { key, body }: Session) -> impl Responder {
     let master_event_id = body["master_event_id"].as_u32().unwrap();
     let mut event = get_event_data(&key, master_event_id);
 
@@ -153,10 +153,10 @@ async fn event(req: HttpRequest, Session { key, body }: Session) -> impl Respond
         }
     }
 
-    global::api(&req, Some(event))
+    Api(Some(event))
 }
 
-async fn star_event(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn star_event(Session { key, body }: Session) -> impl Responder {
     let user = userdata::get_acc(&key);
     let master_event_id = body["master_event_id"].as_u32().unwrap();
 
@@ -170,14 +170,14 @@ async fn star_event(req: HttpRequest, Session { key, body }: Session) -> impl Re
 
     save_event_data(&key, master_event_id, event.clone());
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         star_event: star_event,
         gift_list: [],
         reward_list: []
     }))
 }
 
-async fn change_target_music(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn change_target_music(Session { key, body }: Session) -> impl Responder {
     let master_event_id = body["master_event_id"].as_u32().unwrap();
 
     let mut event = get_event_data(&key, master_event_id);
@@ -188,10 +188,10 @@ async fn change_target_music(req: HttpRequest, Session { key, body }: Session) -
 
     save_event_data(&key, master_event_id, event.clone());
 
-    global::api(&req, Some(event["star_event"].clone()))
+    Api(Some(event["star_event"].clone()))
 }
 
-async fn set_member(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+async fn set_member(Session { key, body }: Session) -> impl Responder {
     let master_event_id = body["master_event_id"].as_u32().unwrap();
 
     let mut event = get_event_data(&key, master_event_id);
@@ -204,7 +204,7 @@ async fn set_member(req: HttpRequest, Session { key, body }: Session) -> impl Re
 
     save_event_data(&key, master_event_id, event.clone());
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         event_member: event["member_ranking"].clone()
     }))
 }
@@ -222,7 +222,7 @@ fn get_rank(event: u32, user_id: u64) -> u32 {
     0
 }
 
-async fn ranking(req: HttpRequest, Body(body): Body) -> impl Responder {
+async fn ranking(Body(body): Body) -> impl Responder {
     let master_event_id = body["master_event_id"].as_u32().unwrap();
     let scores = crate::router::event_ranking::get_scores_json().await[master_event_id as usize].clone();
     let mut rv = array![];
@@ -238,7 +238,7 @@ async fn ranking(req: HttpRequest, Body(body): Body) -> impl Responder {
         }
     }
 
-    global::api(&req, Some(object!{
+    Api(Some(object!{
         ranking_detail_list: rv
     }))
 }
@@ -357,9 +357,9 @@ fn event_live(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -> 
 }
 
 async fn event_end(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
-    global::api(&req, event_live(&req, &key, &body, false))
+    Api(event_live(&req, &key, &body, false))
 }
 
 async fn event_skip(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
-    global::api(&req, event_live(&req, &key, &body, true))
+    Api(event_live(&req, &key, &body, true))
 }
