@@ -70,27 +70,28 @@ async fn receive(req: HttpRequest, Session { key, body }: Session) -> impl Respo
     for mission in body["master_mission_ids"].members() {
         let mid = mission.as_i64().unwrap();
         let mission_info = databases::MISSION_LIST[mid.to_string()].clone();
-        let master = databases::MISSION_REWARD[mission_info["masterMissionRewardId"].to_string()].clone();
-        let reward_type = master["type"].as_i64().unwrap();
+        for master in databases::MISSION_REWARDS[mission_info["masterMissionRewardId"].to_string()].members() {
+            let reward_type = master["type"].as_i64().unwrap();
 
-        rewards.push(object!{
-            give_type: master["giveType"].clone(),
-            type: master["type"].clone(),
-            value: master["value"].clone(),
-            level: master["level"].clone(),
-            amount: master["amount"].clone()
-        }).unwrap();
+            rewards.push(object!{
+                give_type: master["giveType"].clone(),
+                type: master["type"].clone(),
+                value: master["value"].clone(),
+                level: master["level"].clone(),
+                amount: master["amount"].clone()
+            }).unwrap();
 
-        items::give_gift(&object!{
-            reward_type: reward_type,
-            value: master["value"].clone(),
-            amount: master["amount"].clone()
-        }, &mut user, &mut missions, &mut array![], &mut chats);
+            items::give_gift(&object!{
+                reward_type: reward_type,
+                value: master["value"].clone(),
+                amount: master["amount"].clone()
+            }, &mut user, &mut missions, &mut array![], &mut chats);
 
-        match reward_type {
-            1 => touched_gem = true,
-            4 => touched_coin = true,
-            _ => { touched_items.push(master["value"].clone()).unwrap(); }
+            match reward_type {
+                1 => touched_gem = true,
+                4 => touched_coin = true,
+                _ => { touched_items.push(master["value"].clone()).unwrap(); }
+            }
         }
 
         let mut variable = false;

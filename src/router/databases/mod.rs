@@ -223,6 +223,18 @@ lazy_static! {
 
     pub static ref MISSION_REWARD: JsonValue = index_by(&t("mission_reward"), "id");
 
+    pub static ref MISSION_REWARDS: JsonValue = {
+        let mut info = object! {};
+        for data in t("mission_reward").members() {
+            let id = data["id"].to_string();
+            if info[&id].is_null() {
+                info[&id] = array![];
+            }
+            info[&id].push(data.clone()).unwrap();
+        }
+        info
+    };
+
     pub static ref ITEM_INFO: JsonValue = index_by(&t("item"), "id");
 
     pub static ref MUSIC: JsonValue = {
