@@ -51,13 +51,14 @@ impl AssetVersion {
 
     fn override_pair(&self) -> Option<(String, String)> {
         let args = crate::get_args();
-        let (ov, oh) = match (self.region, self.platform) {
-            ("JP", "Windows") => (args.windows_asset_version.as_str(), args.windows_asset_hash.as_str()),
-            ("JP", "Android") => ("", args.jp_android_asset_hash.as_str()),
-            ("JP", "iOS")     => ("", args.jp_ios_asset_hash.as_str()),
-            ("GL", "Android") => ("", args.en_android_asset_hash.as_str()),
-            ("GL", "iOS")     => ("", args.en_ios_asset_hash.as_str()),
-            _                 => ("", ""),
+        let ov = args.asset_version.as_str();
+        let oh = match (self.region, self.platform) {
+            ("JP", "Windows") => args.windows_asset_hash.as_str(),
+            ("JP", "Android") => args.jp_android_asset_hash.as_str(),
+            ("JP", "iOS")     => args.jp_ios_asset_hash.as_str(),
+            ("GL", "Android") => args.en_android_asset_hash.as_str(),
+            ("GL", "iOS")     => args.en_ios_asset_hash.as_str(),
+            _                 => "",
         };
         if ov.is_empty() && oh.is_empty() {
             return None;

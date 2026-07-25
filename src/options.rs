@@ -62,8 +62,8 @@ pub struct Args {
     #[arg(long, default_value = "", help = "Asset hash for JP Android client.")]
     pub jp_android_asset_hash: String,
 
-    #[arg(long, default_value = "", help = "Asset version for windows client.")]
-    pub windows_asset_version: String,
+    #[arg(long, default_value = "", help = "Asset version for overridden asset hashes.")]
+    pub asset_version: String,
 
     #[arg(long, default_value = "", help = "Asset hash for windows client.")]
     pub windows_asset_hash: String,
