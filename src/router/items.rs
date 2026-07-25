@@ -367,6 +367,22 @@ pub fn give_exp(amount: i32, user: &mut JsonValue, mission: &mut JsonValue, rv: 
     if current_rank["rank"] != new_rank["rank"] {
         user["stamina"]["stamina"] = (user["stamina"]["stamina"].as_i64().unwrap() + new_rank["maxLp"].as_i64().unwrap()).into();
 
+        let from = current_rank["rank"].as_i64().unwrap();
+        let to = new_rank["rank"].as_i64().unwrap();
+        for rank in databases::RANKS.members() {
+            let num = rank["rank"].as_i64().unwrap();
+            if num <= from || num > to {
+                continue;
+            }
+            for reward in databases::USER_RANK_REWARD[rank["masterUserRankRewardId"].to_string()].members() {
+                give_gift(&object!{
+                    reward_type: reward["type"].clone(),
+                    value: reward["value"].clone(),
+                    amount: reward["amount"].clone()
+                }, user, mission, &mut array![], &mut array![]);
+            }
+        }
+
         let status = get_mission_status(get_variable_mission_num(1101001, 1101030, mission), mission);
         if status.is_empty() {
             return;

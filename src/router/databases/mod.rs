@@ -271,6 +271,18 @@ lazy_static! {
 
     pub static ref RANKS: JsonValue = t("user_rank");
 
+    pub static ref USER_RANK_REWARD: JsonValue = {
+        let mut info = object! {};
+        for data in t("user_rank_reward").members() {
+            let id = data["id"].to_string();
+            if info[&id].is_null() {
+                info[&id] = array![];
+            }
+            info[&id].push(data.clone()).unwrap();
+        }
+        info
+    };
+
     pub static ref EVOLVE_COST: JsonValue = {
         let mut info = object! {};
         for data in t("card_evolve").members() {
