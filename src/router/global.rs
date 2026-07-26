@@ -154,13 +154,16 @@ pub fn parse_platform(header: &str) -> &str {
         "windows" => "Windows",
         "windowsplayer" => "Windows",
         "webglplayer" => "WebGL",
+        "editor"  => "Editor",
         _         => panic!("Unknown platform: {header}"),
     }
 }
 
 pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
+    if platform == "Editor" {
+        return Some("a".repeat(32));
+    }
     let rv = preferred_hash(asset_version, platform);
-    println!("Get asset hash: {platform}. {rv:?}");
     rv
 }
 
@@ -175,6 +178,9 @@ pub fn check_asset_headers(headers: &HeaderMap, check_hash: bool) -> Option<i32>
         Some(header) => parse_platform(header),
         None => return None,
     };
+    if platform == "Editor" {
+        return None;
+    }
 
     let valid = valid_hashes(asset_version, platform);
     if valid.is_empty() {
