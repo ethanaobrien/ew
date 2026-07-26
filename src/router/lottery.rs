@@ -1,5 +1,5 @@
 use jzon::{array, object, JsonValue};
-use actix_web::{web, Responder};
+use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 
 use crate::router::{global, userdata, items, databases, Body, Login, Session, Api};
@@ -194,7 +194,7 @@ async fn lottery(Login(key): Login) -> impl Responder {
     }))
 }
 
-async fn lottery_post(Session { key, body }: Session) -> impl Responder {
+async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     //println!("lottery: {}", body);
     let mut user = userdata::get_acc(&key);
     let user2 = userdata::get_acc(&key);
@@ -204,6 +204,11 @@ async fn lottery_post(Session { key, body }: Session) -> impl Responder {
     
     let lottery_id = body["master_lottery_id"].as_i64().unwrap();
     let price_number = body["master_lottery_price_number"].as_i64().unwrap();
+
+    // Custom lotteries live in the 6M band (below TUTORIAL_MIN_LOTTERY_ID; 1-5M/7M/8M official)
+    if (6_000_000..7_000_000).contains(&lottery_id) && !crate::router::card::client_supports_custom_cards(&req) {
+        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+    }
 
     let lottery = &databases::LOTTERY[lottery_id.to_string()];
     let lottery_type = lottery["category"].as_i32().unwrap();
@@ -290,7 +295,7 @@ async fn lottery_post(Session { key, body }: Session) -> impl Responder {
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions);
 
-    Api(Some(object!{
+    global::api(&req, Some(object!{
         "lottery_item_list": lottery_list,
         "updated_value_list": {
             "card_list": new_cards,
@@ -309,3 +314,19 @@ async fn lottery_post(Session { key, body }: Session) -> impl Responder {
 
 
 
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn custom_banner_draw() {
+        for lid in [6110001i64, 6110002, 6110003, 6110004] {
+            let cards = super::get_random_cards(lid, 11);
+            assert_eq!(cards.len(), 11, "banner {lid}");
+            for c in cards.members() {
+                let id = c["master_card_id"].as_i64().unwrap();
+                let rarity = crate::router::items::get_rarity(id);
+                assert!((1..=3).contains(&rarity), "card {id} rarity {rarity}");
+            }
+        }
+    }
+}

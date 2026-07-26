@@ -254,7 +254,8 @@ pub async fn clearrate(req: HttpRequest) -> impl Responder {
     Api(Some(data))
 }
 
-pub async fn ranking(Session { key, body }: Session) -> impl Responder {
+pub async fn ranking(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
     let self_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
 
@@ -265,7 +266,7 @@ pub async fn ranking(Session { key, body }: Session) -> impl Responder {
 
     for (i, data) in scores.members().enumerate() {
         let uid = data["user"].as_i64().unwrap();
-        let user = guest::get_user(uid, &object![], guest::UserView::Ranking);
+        let user = guest::get_user(uid, &object![], guest::UserView::Ranking, custom_cards);
         let user_obj = if uid == self_id {
             userdata::get_acc_from_uid(uid)["user"].clone()
         } else {

@@ -65,7 +65,47 @@ pub enum UserView {
     Ranking,
 }
 
-pub fn get_user(id: i64, friends: &JsonValue, view: UserView) -> JsonValue {
+fn proxy_card_id(id: i64) -> i64 {
+    let prefix = id / 10000;
+    if prefix < 10000 {
+        id
+    } else if prefix < 14000 {
+        (prefix - 9000) * 10000 + 1
+    } else {
+        10010001
+    }
+}
+
+pub fn proxy_user_cards(user: &mut JsonValue) {
+    for key in ["favorite_master_card_id", "guest_smile_master_card_id", "guest_cool_master_card_id", "guest_pure_master_card_id"] {
+        let id = user["user"][key].as_i64().unwrap_or(0);
+        if crate::router::card::is_custom(id) {
+            user["user"][key] = proxy_card_id(id).into();
+        }
+    }
+    for key in ["favorite_card", "guest_smile_card", "guest_cool_card", "guest_pure_card"] {
+        let id = user[key]["master_card_id"].as_i64().unwrap_or(0);
+        if crate::router::card::is_custom(id) {
+            user[key]["master_card_id"] = proxy_card_id(id).into();
+        }
+    }
+    if !user["main_deck_detail"].is_empty() {
+        for id in user["main_deck_detail"]["deck"]["main_card_ids"].members_mut() {
+            let card = id.as_i64().unwrap_or(0);
+            if crate::router::card::is_custom(card) {
+                *id = proxy_card_id(card).into();
+            }
+        }
+        for card in user["main_deck_detail"]["card_list"].members_mut() {
+            let id = card["master_card_id"].as_i64().unwrap_or(0);
+            if crate::router::card::is_custom(id) {
+                card["master_card_id"] = proxy_card_id(id).into();
+            }
+        }
+    }
+}
+
+pub fn get_user(id: i64, friends: &JsonValue, view: UserView, custom_cards: bool) -> JsonValue {
     let user = userdata::get_acc_from_uid(id);
     if !user["error"].is_empty() {
         return object!{};
@@ -113,6 +153,10 @@ pub fn get_user(id: i64, friends: &JsonValue, view: UserView) -> JsonValue {
                 0
             }.into();
         }
+    }
+
+    if !custom_cards {
+        proxy_user_cards(&mut rv);
     }
 
     rv

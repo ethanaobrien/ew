@@ -1,7 +1,7 @@
 use jzon::{object, array, JsonValue};
-use actix_web::{web, Responder};
+use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{userdata, items, databases, Session, Api};
+use crate::router::{global, userdata, items, databases, Session, Api};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -10,6 +10,21 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
             .route("/skill/reinforce", web::post().to(skill_reinforce))
             .route("/evolve", web::post().to(evolve))
     );
+}
+
+// Custom cards live at id prefix 10000+ (imported 10000-14999, new 15000+).
+// Like custom songs they need a protocol version (2, global::PROTOCOL_HEADER):
+// clients below it can't resolve the ids
+pub fn is_custom(master_card_id: i64) -> bool {
+    master_card_id >= 100_000_000
+}
+
+pub fn client_supports_custom_cards(req: &HttpRequest) -> bool {
+    global::client_protocol_version(req) >= 2
+}
+
+pub fn owns_custom(user: &JsonValue) -> bool {
+    user["card_list"].members().any(|card| is_custom(card["master_card_id"].as_i64().unwrap_or(0)))
 }
 
 fn exp_cap(master_card_id: i64, evolved: bool) -> i64 {

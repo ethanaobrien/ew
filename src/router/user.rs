@@ -59,6 +59,11 @@ async fn deck(Session { key, body }: Session) -> impl Responder {
 async fn user(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc(&key);
 
+    // An account holding custom cards would break clients below protocol 2
+    if !crate::router::card::client_supports_custom_cards(&req) && crate::router::card::owns_custom(&user) {
+        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+    }
+
     user["lottery_list"] = array![];
 
     if crate::router::custom_song::client_supports_custom_songs(&req) {
@@ -67,7 +72,7 @@ async fn user(req: HttpRequest, Login(key): Login) -> impl Responder {
         }
     }
 
-    Api(Some(user))
+    global::api(&req, Some(user))
 }
 
 pub async fn gift(Session { key, body }: Session) -> impl Responder {
@@ -241,13 +246,14 @@ async fn migration(Body(body): Body) -> impl Responder {
     Api(Some(user))
 }
 
-async fn detail(Session { key, body }: Session) -> impl Responder {
+async fn detail(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
+    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
     
     let mut user_detail_list = array![];
     for data in body["user_ids"].members() {
         let uid = data.as_i64().unwrap();
-        let user = guest::get_user(uid, &friends, guest::UserView::Detail);
+        let user = guest::get_user(uid, &friends, guest::UserView::Detail, custom_cards);
         user_detail_list.push(user).unwrap();
     }
     Api(Some(object!{

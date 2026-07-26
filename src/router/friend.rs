@@ -1,5 +1,5 @@
 use jzon::{array, object};
-use actix_web::{web, Responder};
+use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{global, userdata, Login, Session, Api};
 use crate::router::tools::guest;
@@ -20,7 +20,8 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
     );
 }
 
-async fn friend(Session { key, body }: Session) -> impl Responder {
+async fn friend(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -37,7 +38,7 @@ async fn friend(Session { key, body }: Session) -> impl Responder {
     };
 
     for uid in rv_data.members() {
-        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card);
+        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards);
         user["user"]["last_login_time"] = global::set_time(user["user"]["last_login_time"].as_u64().unwrap_or(0), user_id, false).into();
         rv.push(user).unwrap();
     }
@@ -53,7 +54,8 @@ async fn ids(Login(key): Login) -> impl Responder {
     Api(Some(friends))
 }
 
-async fn recommend(Login(key): Login) -> impl Responder {
+async fn recommend(req: HttpRequest, Login(key): Login) -> impl Responder {
+    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -65,7 +67,7 @@ async fn recommend(Login(key): Login) -> impl Responder {
 
     let mut rv = array![];
     for uid in random.members() {
-        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card);
+        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards);
         if user["user"]["friend_request_disabled"] == 1 || user.is_empty() {
             continue;
         }
@@ -78,11 +80,11 @@ async fn recommend(Login(key): Login) -> impl Responder {
     }))
 }
 
-async fn search(Session { key, body }: Session) -> impl Responder {
+async fn search(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
 
     let uid = body["user_id"].as_i64().unwrap();
-    let user = guest::get_user(uid, &friends, guest::UserView::Detail);
+    let user = guest::get_user(uid, &friends, guest::UserView::Detail, crate::router::card::client_supports_custom_cards(&req));
 
     Api(Some(if user.is_empty() {
         array![]

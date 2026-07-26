@@ -82,7 +82,7 @@ fn get_json() -> JsonValue {
 
         let mut i = 1;
         for score in scores.members() {
-            let user = guest::get_user(score["user"].as_i64().unwrap(), &object![], guest::UserView::Ranking);
+            let user = guest::get_user(score["user"].as_i64().unwrap(), &object![], guest::UserView::Ranking, true);
             rv[event.to_string()].push(object!{
                 "rank": i,
                 "user_detail": user,

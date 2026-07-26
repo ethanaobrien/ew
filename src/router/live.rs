@@ -80,7 +80,8 @@ fn random_number(lowest: usize, highest: usize) -> usize {
     rand::rng().random_range(lowest..highest + 1)
 }
 
-async fn guest(Login(key): Login) -> impl Responder {
+async fn guest(req: HttpRequest, Login(key): Login) -> impl Responder {
+    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
     let user = userdata::get_acc(&key);
@@ -135,7 +136,7 @@ async fn guest(Login(key): Login) -> impl Responder {
         }).unwrap();
     } else {
         if !friends["friend_user_id_list"].is_empty() {
-            guest_list.push(guest::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends, guest::UserView::Card)).unwrap();
+            guest_list.push(guest::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards)).unwrap();
         }
         let expected: usize = 5;
         if guest_list.len() < expected {
@@ -146,7 +147,7 @@ async fn guest(Login(key): Login) -> impl Responder {
             }
             
             for uid in random.members() {
-                let guest = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card);
+                let guest = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards);
                 if guest["user"]["friend_request_disabled"] == 1 || guest.is_empty() {
                     continue;
                 }

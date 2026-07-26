@@ -222,7 +222,8 @@ fn get_rank(event: u32, user_id: u64) -> u32 {
     0
 }
 
-async fn ranking(Body(body): Body) -> impl Responder {
+async fn ranking(req: HttpRequest, Body(body): Body) -> impl Responder {
+    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
     let master_event_id = body["master_event_id"].as_u32().unwrap();
     let scores = crate::router::event_ranking::get_scores_json().await[master_event_id as usize].clone();
     let mut rv = array![];
@@ -230,7 +231,11 @@ async fn ranking(Body(body): Body) -> impl Responder {
     let start = if body["user_id"] == 0 { body["start_rank"].as_u32().unwrap() } else { get_rank(master_event_id, body["user_id"].as_u64().unwrap()) };
     for score in scores.members() {
         if i >= start && start + body["count"].as_u32().unwrap() >= i {
-            rv.push(score.clone()).unwrap();
+            let mut entry = score.clone();
+            if !custom_cards {
+                crate::router::tools::guest::proxy_user_cards(&mut entry["user_detail"]);
+            }
+            rv.push(entry).unwrap();
             i += 1;
         }
         if start + body["count"].as_u32().unwrap() >= i {
