@@ -296,7 +296,7 @@ fn event_live(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -> 
     let mut user = userdata::get_acc(&key);
 
     let live_id = databases::LIVE_LIST[body["master_live_id"].to_string()]["masterMusicId"].as_i64().unwrap();
-    let raw_score = body["live_score"]["score"].as_u64().unwrap_or(resp["high_score"].as_u64().unwrap());
+    let raw_score = body["live_score"]["score"].as_u64().or_else(|| resp["high_score"].as_u64()).unwrap_or(0);
 
     let bonus_event = event["star_event"]["star_event_bonus_daily_count"].as_u64().unwrap();
     let bonus_play_times = event["star_event"]["star_event_play_times_bonus_count"].as_u64().unwrap();
