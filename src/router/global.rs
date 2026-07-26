@@ -154,7 +154,10 @@ pub fn parse_platform(header: &str) -> &str {
         "windows" => "Windows",
         "windowsplayer" => "Windows",
         "webglplayer" => "WebGL",
-        "editor"  => "Editor",
+        "editor" => "Editor",
+        "windowseditor" => "Editor",
+        "osxeditor" => "Editor",
+        "linuxeditor" => "Editor",
         _         => panic!("Unknown platform: {header}"),
     }
 }
