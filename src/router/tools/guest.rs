@@ -65,15 +65,23 @@ pub enum UserView {
     Ranking,
 }
 
+const DEFAULT_CARD: i64 = 10010001;
+
 fn proxy_card_id(id: i64) -> i64 {
     let prefix = id / 10000;
     if prefix < 10000 {
-        id
-    } else if prefix < 14000 {
+        return id;
+    }
+    let rv = if prefix < 14000 {
         (prefix - 9000) * 10000 + 1
     } else {
-        10010001
+        DEFAULT_CARD
+    };
+    // Not every prefix has a real character behind it
+    if crate::router::databases::CARD_LIST[rv.to_string()].is_empty() {
+        return DEFAULT_CARD;
     }
+    rv
 }
 
 pub fn proxy_user_cards(user: &mut JsonValue) {

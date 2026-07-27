@@ -16,6 +16,7 @@ use crate::database::gree::*;
 const APP_ID: &str = "232610769078541";
 const SRC_APP_ID: &str = "100900301";
 const HMAC_SECRET_HEX: &str = "6438663638653238346566646636306262616563326432323563306366643432";
+const ERROR_MIGRATED_DEVICE: i32 = 20;
 
 struct RequireGreeAuth;
 
@@ -84,7 +85,7 @@ fn get_uid(req: &HttpRequest) -> String {
     req.headers()
         .get("Authorization")
         .and_then(|h| h.to_str().ok())
-        .and_then(|auth| auth.split(",xoauth_requestor_id=\"").nth(1))
+        .and_then(|auth| auth.split("xoauth_requestor_id=\"").nth(1))
         .and_then(|s| s.split('"').next())
         .unwrap_or("")
         .to_string()
@@ -95,13 +96,13 @@ fn send(req: HttpRequest, resp: JsonValue) -> impl Responder {
     jzon::stringify(resp)
 }
 
-async fn not_found() -> impl Responder {
+async fn not_found(req: HttpRequest) -> impl Responder {
     let resp = object!{
         code: 10001,
         message: "Not Found",
         result: "NG"
     };
-    jzon::stringify(resp)
+    send(req, resp)
 }
 
 async fn initialize(req: HttpRequest, body: String) -> impl Responder {
@@ -119,8 +120,17 @@ async fn initialize(req: HttpRequest, body: String) -> impl Responder {
 }
 
 async fn authorize(req: HttpRequest, _body: String) -> impl Responder {
-    let resp = object!{
-        result: "OK"
+    let resp = if is_registered(&get_uid(&req)) {
+        object!{
+            result: "OK"
+        }
+    } else {
+        println!("Unregistered device authorizing: {}", get_uid(&req));
+        object!{
+            result: "NG",
+            code: ERROR_MIGRATED_DEVICE,
+            message: "Device is not registered"
+        }
     };
 
     send(req, resp)

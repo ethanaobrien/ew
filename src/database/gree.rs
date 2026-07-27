@@ -60,9 +60,20 @@ fn vacuum_database() {
     DATABASE.lock_and_exec("VACUUM", params!());
 }
 
+pub fn is_registered(uuid: &str) -> bool {
+    match DATABASE.lock_and_select("SELECT cert FROM users WHERE uuid=?1;", params!(uuid)) {
+        Ok(cert) => cert != "none",
+        Err(_) => false
+    }
+}
+
 fn verify_signature(signature: &[u8], message: &[u8], public_key: &str) -> bool {
-    let pem = pem::parse(public_key).unwrap();
-    let public_key = RsaPublicKey::from_public_key_der(&pem.contents()).unwrap();
+    let Ok(pem) = pem::parse(public_key) else {
+        return false;
+    };
+    let Ok(public_key) = RsaPublicKey::from_public_key_der(&pem.contents()) else {
+        return false;
+    };
     let digest = Sha1::digest(message);
 
     public_key
@@ -80,7 +91,9 @@ pub fn get_uuid(headers: &HeaderMap, body: &str) -> String {
         return String::new();
     }
 
-    let cert = DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)).unwrap();
+    let Ok(cert) = DATABASE.lock_and_select("SELECT cert FROM users WHERE user_id=?1;", params!(uid)) else {
+        return String::new();
+    };
 
     let data = format!("{}{}{}{}{}", uid, "sk1bdzb310n0s9tl", version, timestamp, body);
     let encoded = general_purpose::STANDARD.encode(data.as_bytes());

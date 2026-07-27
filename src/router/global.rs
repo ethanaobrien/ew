@@ -118,6 +118,8 @@ pub const RESULT_GAME_VERSION_UPDATED: i32 = 12;
 
 pub const RESULT_RESOURCE_UPDATED: i32 = 13;
 
+pub const RESULT_SESSION: i32 = 14;
+
 pub const PROTOCOL_HEADER: &str = "X-Protocol-Version";
 
 pub fn client_protocol_version(req: &HttpRequest) -> u32 {
@@ -230,11 +232,7 @@ pub fn get_login(headers: &HeaderMap, body: &str) -> String {
         Some(token) => {
             token
         },
-        None => {
-            let rv = gree::get_uuid(headers, body);
-            assert!(rv != String::new());
-            rv
-        },
+        None => gree::get_uuid(headers, body),
     }
 }
 

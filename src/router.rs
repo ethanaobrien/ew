@@ -50,6 +50,27 @@ pub struct Body(pub JsonValue);
 
 pub struct Login(pub String);
 
+struct SessionError(HttpRequest);
+
+impl std::fmt::Debug for SessionError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "invalid session for uid {}", global::get_uid(self.0.headers()))
+    }
+}
+
+impl std::fmt::Display for SessionError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl actix_web::ResponseError for SessionError {
+    fn error_response(&self) -> HttpResponse {
+        println!("Rejecting request from uid {}: bad session", global::get_uid(self.0.headers()));
+        global::api_error(&self.0, global::RESULT_SESSION)
+    }
+}
+
 pub struct Session {
     pub key: String,
     pub body: JsonValue,
@@ -93,9 +114,14 @@ impl FromRequest for Login {
 
     fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
         let headers = req.headers().clone();
-        let fut = String::from_request(req, payload);
+        let req = req.clone();
+        let fut = String::from_request(&req, payload);
         async move {
-            Ok(Login(global::get_login(&headers, &encryption::decrypt_packet(&fut.await?).unwrap())))
+            let key = global::get_login(&headers, &encryption::decrypt_packet(&fut.await?).unwrap());
+            if key.is_empty() {
+                return Err(SessionError(req).into());
+            }
+            Ok(Login(key))
         }.boxed_local()
     }
 }
@@ -106,10 +132,14 @@ impl FromRequest for Session {
 
     fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
         let headers = req.headers().clone();
-        let fut = String::from_request(req, payload);
+        let req = req.clone();
+        let fut = String::from_request(&req, payload);
         async move {
             let body = encryption::decrypt_packet(&fut.await?).unwrap();
             let key = global::get_login(&headers, &body);
+            if key.is_empty() {
+                return Err(SessionError(req).into());
+            }
             Ok(Session { key, body: jzon::parse(&body).unwrap() })
         }.boxed_local()
     }
