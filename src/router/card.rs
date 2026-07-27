@@ -13,17 +13,23 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 }
 
 // Custom cards live at id prefix 10000+ (imported 10000-14999, new 15000+).
-// Like custom songs they need a protocol version (2, global::PROTOCOL_HEADER):
+// Like custom songs they need a protocol version (global::PROTOCOL_HEADER):
 // clients below it can't resolve the ids
+pub const PROTOCOL_VERSION: u32 = 2;
+
 pub fn is_custom(master_card_id: i64) -> bool {
     master_card_id >= 100_000_000
 }
 
 pub fn client_supports_custom_cards(req: &HttpRequest) -> bool {
-    global::client_protocol_version(req) >= 2
+    global::client_protocol_version(req) >= PROTOCOL_VERSION
 }
 
-pub fn owns_custom(user: &JsonValue) -> bool {
+pub fn account_supports_custom_cards(auth_key: &str) -> bool {
+    userdata::get_protocol_version(auth_key) >= PROTOCOL_VERSION
+}
+
+pub fn account_has_custom_cards(user: &JsonValue) -> bool {
     user["card_list"].members().any(|card| is_custom(card["master_card_id"].as_i64().unwrap_or(0)))
 }
 

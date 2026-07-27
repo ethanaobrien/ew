@@ -83,25 +83,44 @@ pub fn proxy_user_cards(user: &mut JsonValue) {
             user["user"][key] = proxy_card_id(id).into();
         }
     }
+    // A card's id is its master_card_id, so both sides need proxying
     for key in ["favorite_card", "guest_smile_card", "guest_cool_card", "guest_pure_card"] {
         let id = user[key]["master_card_id"].as_i64().unwrap_or(0);
         if crate::router::card::is_custom(id) {
+            user[key]["id"] = proxy_card_id(id).into();
             user[key]["master_card_id"] = proxy_card_id(id).into();
         }
     }
     if !user["main_deck_detail"].is_empty() {
+        let mut used = array![];
         for id in user["main_deck_detail"]["deck"]["main_card_ids"].members_mut() {
-            let card = id.as_i64().unwrap_or(0);
-            if crate::router::card::is_custom(card) {
-                *id = proxy_card_id(card).into();
+            let card = proxy_card_id(id.as_i64().unwrap_or(0));
+            // Whole characters share one proxy, and the client can't hold the
+            // same card twice
+            if card == 0 || used.contains(card) {
+                *id = (0).into();
+                continue;
             }
+            used.push(card).unwrap();
+            *id = card.into();
         }
-        for card in user["main_deck_detail"]["card_list"].members_mut() {
+        let mut cards = array![];
+        let mut ids = array![];
+        for card in user["main_deck_detail"]["card_list"].members() {
             let id = card["master_card_id"].as_i64().unwrap_or(0);
-            if crate::router::card::is_custom(id) {
-                card["master_card_id"] = proxy_card_id(id).into();
+            let proxy = proxy_card_id(id);
+            if ids.contains(proxy) {
+                continue;
             }
+            ids.push(proxy).unwrap();
+            let mut card = card.clone();
+            if proxy != id {
+                card["id"] = proxy.into();
+                card["master_card_id"] = proxy.into();
+            }
+            cards.push(card).unwrap();
         }
+        user["main_deck_detail"]["card_list"] = cards;
     }
 }
 

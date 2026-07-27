@@ -7,6 +7,7 @@ use rand::RngExt;
 
 use crate::router::global;
 use crate::router::items;
+use crate::router::card;
 use crate::database::custom_song;
 use crate::sql::SQLite;
 use crate::include_file;
@@ -35,7 +36,8 @@ CREATE TABLE IF NOT EXISTS tokens (
 CREATE TABLE IF NOT EXISTS userdata (
     user_id                  BIGINT NOT NULL PRIMARY KEY,
     userdata                 TEXT NOT NULL,
-    friend_request_disabled  INT NOT NULL
+    friend_request_disabled  INT NOT NULL,
+    protocol_version         INT NOT NULL DEFAULT 0
 );
 CREATE TABLE IF NOT EXISTS userhome (
     user_id          BIGINT NOT NULL PRIMARY KEY,
@@ -84,7 +86,62 @@ CREATE TABLE IF NOT EXISTS webui (
 );
 INSERT OR IGNORE INTO exchange (user_id, exchange) SELECT user_id, '[]' FROM userdata;
     ").unwrap();
+
+
+    let is_updated = conn.prepare("SELECT protocol_version FROM userdata LIMIT 1;").is_ok();
+    if !is_updated {
+        println!("Upgrading userdata table");
+        conn.execute("ALTER TABLE userdata ADD COLUMN protocol_version INT NOT NULL DEFAULT 0;", []).unwrap();
+    }
 }
+
+// maybe we will use this later
+/*
+pub fn downgrade_account_cards(user: &JsonValue) -> JsonValue {
+    let mut rv = user.clone();
+
+    let mut cards = array![];
+    let mut ids = array![];
+    for data in user["card_list"].members() {
+        let id = data["master_card_id"].as_i64().unwrap_or(0);
+        let downgraded = guest::proxy_card_id(id);
+        // Whole characters share one downgrade, and the client can't hold the
+        // same card twice
+        if ids.contains(downgraded) {
+            continue;
+        }
+        ids.push(downgraded).unwrap();
+        let mut data = data.clone();
+        if downgraded != id {
+            data["id"] = downgraded.into();
+            data["master_card_id"] = downgraded.into();
+        }
+        cards.push(data).unwrap();
+    }
+    rv["card_list"] = cards;
+
+    for deck in rv["deck_list"].members_mut() {
+        let mut used = array![];
+        for slot in deck["main_card_ids"].members_mut() {
+            let id = guest::proxy_card_id(slot.as_i64().unwrap_or(0));
+            // Cards the downgrade merged away leave the slot empty
+            if id == 0 || used.contains(id) {
+                *slot = (0).into();
+                continue;
+            }
+            used.push(id).unwrap();
+            *slot = id.into();
+        }
+    }
+
+    for key in ["favorite_master_card_id", "guest_smile_master_card_id", "guest_cool_master_card_id", "guest_pure_master_card_id"] {
+        let id = rv["user"][key].as_i64().unwrap_or(0);
+        rv["user"][key] = guest::proxy_card_id(id).into();
+    }
+
+    rv
+}
+*/
 
 fn acc_exists(uid: i64) -> bool {
     DATABASE.lock_and_select("SELECT user_id FROM userdata WHERE user_id=?1", params!(uid)).is_ok()
@@ -120,10 +177,11 @@ fn add_user_to_database(uid: i64, user: JsonValue, user_home: JsonValue, user_mi
     let missions = jzon::stringify(user_missions.clone());
     let cards = jzon::stringify(sif_cards.clone());
     
-    DATABASE.lock_and_exec("INSERT INTO userdata (user_id, userdata, friend_request_disabled) VALUES (?1, ?2, ?3)", params!(
+    DATABASE.lock_and_exec("INSERT INTO userdata (user_id, userdata, friend_request_disabled, protocol_version) VALUES (?1, ?2, ?3, ?4)", params!(
         uid,
         jzon::stringify(user.clone()),
-        user["user"]["friend_request_disabled"].as_i32().unwrap()
+        user["user"]["friend_request_disabled"].as_i32().unwrap(),
+        if card::account_has_custom_cards(&user) { card::PROTOCOL_VERSION } else { 0 }
     ));
     DATABASE.lock_and_exec("INSERT INTO userhome (user_id, userhome) VALUES (?1, ?2)", params!(
         uid,
@@ -325,6 +383,9 @@ pub fn get_acc_event(auth_key: &str) -> JsonValue {
 pub fn get_acc_eventlogin(auth_key: &str) -> JsonValue {
     get_data(auth_key, "eventloginbonus")
 }
+pub fn get_protocol_version(auth_key: &str) -> u32 {
+    DATABASE.lock_and_select("SELECT protocol_version FROM userdata WHERE user_id=?1", params!(get_key(auth_key))).unwrap_or_default().parse::<u32>().unwrap_or(0)
+}
 
 pub fn save_data(auth_key: &str, row: &str, data: JsonValue) {
     let key = get_key(auth_key);
@@ -362,6 +423,10 @@ pub fn save_acc_chats(auth_key: &str, data: JsonValue) {
 }
 pub fn save_acc_exchange(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "exchange", data);
+}
+
+pub fn save_protocol_version(auth_key: &str, version: u32) {
+    DATABASE.lock_and_exec("UPDATE userdata SET protocol_version=?1 WHERE user_id=?2 AND protocol_version<?1", params!(version as i64, get_key(auth_key)));
 }
 pub fn save_acc_sif(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "sifcards", data);

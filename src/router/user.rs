@@ -59,11 +59,6 @@ async fn deck(Session { key, body }: Session) -> impl Responder {
 async fn user(req: HttpRequest, Login(key): Login) -> impl Responder {
     let mut user = userdata::get_acc(&key);
 
-    // An account holding custom cards would break clients below protocol 2
-    if !crate::router::card::client_supports_custom_cards(&req) && crate::router::card::owns_custom(&user) {
-        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
-    }
-
     user["lottery_list"] = array![];
 
     if crate::router::custom_song::client_supports_custom_songs(&req) {

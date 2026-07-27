@@ -268,7 +268,14 @@ pub async fn ranking(req: HttpRequest, Session { key, body }: Session) -> impl R
         let uid = data["user"].as_i64().unwrap();
         let user = guest::get_user(uid, &object![], guest::UserView::Ranking, custom_cards);
         let user_obj = if uid == self_id {
-            userdata::get_acc_from_uid(uid)["user"].clone()
+            // The client wants the fields get_user hides from other players
+            let mut self_user = object!{
+                user: userdata::get_acc_from_uid(uid)["user"].clone()
+            };
+            if !custom_cards {
+                guest::proxy_user_cards(&mut self_user);
+            }
+            self_user["user"].clone()
         } else {
             user["user"].clone()
         };

@@ -25,7 +25,6 @@ fn get_asset_hash(req: &HttpRequest, body: &JsonValue) -> Option<String> {
 }
 
 async fn asset_hash(req: HttpRequest, Body(body): Body) -> impl Responder {
-
     match get_asset_hash(&req, &body) {
         Some(hash) => global::api(&req, Some(object!{
             "asset_hash": hash
@@ -35,7 +34,6 @@ async fn asset_hash(req: HttpRequest, Body(body): Body) -> impl Responder {
 }
 
 async fn start(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
-
     let Some(asset_hash) = get_asset_hash(&req, &body) else {
         return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
     };
@@ -47,6 +45,11 @@ async fn start(req: HttpRequest, Session { key, body }: Session) -> impl Respond
     user["user"]["last_login_time"] = global::timestamp().into();
 
     userdata::save_acc(&key, user);
+    userdata::save_protocol_version(&key, global::client_protocol_version(&req));
+
+    if !crate::router::card::client_supports_custom_cards(&req) && crate::router::card::account_supports_custom_cards(&key) {
+        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED); // todo - maybe compatibility layer?
+    }
 
     global::api(&req, Some(object!{
         "asset_hash": asset_hash,
