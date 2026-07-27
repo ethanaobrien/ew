@@ -460,21 +460,9 @@ fn give_mission_rewards(user: &mut JsonValue, home: &mut JsonValue, missions: &J
     }
     rv
 }
-pub fn get_master_num(id: i64) -> i64 {
-    let id = id.to_string();
-    let mut masterid = 0;
-    if id.starts_with('2') {
-        masterid += 9;
-    } else if id.starts_with('3') {
-        masterid += 9 + 9;
-    } else if id.starts_with('4') {
-        masterid += 9 + 9 + 12;
-    }
-    masterid
-}
-
-pub fn get_master_id(id: i64) -> i64 {
-    get_master_num(id) + id.to_string().char_indices().last().unwrap().1.to_string().parse::<i64>().unwrap()
+// [requiredBond, missionId] pairs for a character's bond missions, lowest first.
+pub fn bond_missions(character: i64) -> &'static JsonValue {
+    &databases::CHARACTER_BOND_MISSIONS[character.to_string()]
 }
 
 const MAX_BOND: i64 = 500000;
@@ -550,18 +538,17 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &mut JsonValue, mis
         let after = (before + gains[idx]).min(MAX_BOND);
         set_character_bond(&mut character_list, character, after);
 
-        if gains[idx] > 0 {
-            let mut mission_id = 1158000 + get_master_id(character);
-            let mut limit = 1500;
-            let mut status = items::get_mission_status(mission_id, missions);
-            if status.is_empty() {
-                mission_id += 39;
-                limit *= 10;
-                status = items::get_mission_status(mission_id, missions);
+        let tiers = bond_missions(character);
+        if gains[idx] > 0 && !tiers.is_empty() {
+            let mut tier = 0;
+            let mut status = items::get_mission_status(tiers[0][1].as_i64().unwrap(), missions);
+            if status.is_empty() && tiers.len() > 1 {
+                tier = 1;
+                status = items::get_mission_status(tiers[1][1].as_i64().unwrap(), missions);
             }
             if status["status"].as_i32().unwrap_or(0) <= 1 {
-                let completed = after >= limit;
-                if let Some(m) = items::update_mission_status(mission_id, 0, completed, false, gains[idx], missions) {
+                let completed = after >= tiers[tier][0].as_i64().unwrap();
+                if let Some(m) = items::update_mission_status(tiers[tier][1].as_i64().unwrap(), 0, completed, false, gains[idx], missions) {
                     completed_missions.push(m).unwrap();
                 }
             }
@@ -576,14 +563,17 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &mut JsonValue, mis
 
     if tutorial_step >= 130 {
         for data in rv.members() {
-            for chat in CHATS.members() {
+            let character = data["master_character_id"].as_i64().unwrap();
+            let chat_missions = &databases::CHARACTER_CHAT_MISSIONS[character.to_string()];
+            for (step, chat) in CHATS.members().enumerate() {
                 if chat.as_i64().unwrap() > data["exp"].as_i64().unwrap() {
                     break;
                 }
-                if crate::router::chat::add_chat(data["master_character_id"].as_i64().unwrap(), 1, chats) {
-                    let mission_id = 1958000 + (get_master_id(data["master_character_id"].as_i64().unwrap()) * CHATS.len() as i64);
-                    items::update_mission_status(mission_id, 0, true, true, 1, missions);
-                    completed_missions.push(mission_id).unwrap();
+                if crate::router::chat::add_chat(character, 1, chats) {
+                    if let Some(mission_id) = chat_missions[step][1].as_i64() {
+                        items::update_mission_status(mission_id, 0, true, true, 1, missions);
+                        completed_missions.push(mission_id).unwrap();
+                    }
                 }
             }
         }
@@ -848,5 +838,38 @@ mod tests {
         assert_eq!(asset_gate(stock, "android", ""), None);
         assert_eq!(asset_gate(stock, "ios", ""), None);
         assert_eq!(asset_gate(stock, "Windows", ""), None);
+    }
+
+    fn bond_ids(character: i64) -> Vec<i64> {
+        bond_missions(character).members().map(|m| m[1].as_i64().unwrap()).collect()
+    }
+
+    #[test]
+    fn bond_missions_match_masterdata() {
+        assert_eq!(bond_ids(1001), vec![1158001, 1158040]);
+        // Not contiguous with character order, and previously derived from the
+        // id's last digit: 3010/3011/3012 and 4010/4011 all resolved to another
+        // character's mission.
+        assert_eq!(bond_ids(3010), vec![1158028, 1158067]);
+        assert_eq!(bond_ids(3012), vec![1158030, 1158069]);
+        assert_eq!(bond_ids(4010), vec![1158079, 1158081]);
+        assert_eq!(bond_ids(4011), vec![1158080, 1158082]);
+
+        // Bands with no bond missions must map to nothing rather than collide
+        // with a mu's character: 6xxx is official, 5xxx is the SIF1 card import.
+        assert!(bond_missions(6001).is_empty());
+        assert!(bond_missions(5001).is_empty());
+        assert!(bond_missions(5172).is_empty());
+    }
+
+    #[test]
+    fn chat_missions_align_with_bond_steps() {
+        let chats = &databases::CHARACTER_CHAT_MISSIONS["1001"];
+        assert_eq!(chats.len(), CHATS.len());
+        for (step, threshold) in CHATS.members().enumerate() {
+            assert_eq!(chats[step][0].as_i64(), threshold.as_i64());
+            assert_eq!(chats[step][1].as_i64(), Some(1958001 + step as i64));
+        }
+        assert!(databases::CHARACTER_CHAT_MISSIONS["5001"].is_empty());
     }
 }

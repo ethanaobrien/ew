@@ -434,7 +434,10 @@ async fn initialize(Session { key, body }: Session) -> impl Responder {
         master_character_id: chosen_character,
         exp: 1
     }];
-    items::advance_mission(1158000 + crate::router::live::get_master_id(chosen_character), 1, 1500, &mut missions);
+    let bond = crate::router::live::bond_missions(chosen_character);
+    if !bond.is_empty() {
+        items::advance_mission(bond[0][1].as_i64().unwrap(), 1, bond[0][0].as_i64().unwrap(), &mut missions);
+    }
 
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_chats(&key, chats);

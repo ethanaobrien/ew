@@ -16,6 +16,34 @@ fn index_by(items: &JsonValue, key: &str) -> JsonValue {
     info
 }
 
+// Missions in an id band grouped by the character they target, as
+// [requiredBond, missionId] ordered by required bond. Read from masterdata
+// rather than derived from the character id: the ids do not follow character
+// order (4010/4011 sit at 1158079/1158080, after the 15000 tier), and
+// characters added by a card import have none at all.
+fn missions_by_character(lo: i64, hi: i64) -> JsonValue {
+    let mut acc: std::collections::HashMap<String, Vec<(i64, i64)>> = std::collections::HashMap::new();
+    for data in t("mission").members() {
+        let id = data["id"].as_i64().unwrap_or(0);
+        if id < lo || id >= hi || data["conditionValues"].len() != 1 {
+            continue;
+        }
+        acc.entry(data["conditionValues"][0].to_string())
+            .or_default()
+            .push((data["conditionNumber"].as_i64().unwrap_or(0), id));
+    }
+    let mut info = object! {};
+    for (character, mut list) in acc {
+        list.sort();
+        let mut entries = array![];
+        for (required, id) in list {
+            entries.push(array![required, id]).unwrap();
+        }
+        info[&character] = entries;
+    }
+    info
+}
+
 lazy_static! {
     pub static ref STORY: JsonValue = index_by(&t("story_part"), "id");
 
@@ -202,6 +230,11 @@ lazy_static! {
     };
 
     pub static ref MISSION_LIST: JsonValue = index_by(&t("mission"), "id");
+
+    pub static ref CHARACTER_BOND_MISSIONS: JsonValue = missions_by_character(1158000, 1159000);
+
+    // 15 per character, aligned with live::CHATS.
+    pub static ref CHARACTER_CHAT_MISSIONS: JsonValue = missions_by_character(1958000, 1960000);
 
     pub static ref CHARACTER_CHATS: JsonValue = {
         let mut info = object! {};
