@@ -40,27 +40,6 @@ fn region_subdir(region: Region) -> &'static str {
     }
 }
 
-pub fn get_all(region: Region) -> JsonValue {
-    let mut rv = object!{};
-
-    for file in dir_for(region).files() {
-        let table_name = file.path()
-            .file_stem()
-            .and_then(|s| s.to_str())
-            .unwrap_or_default();
-
-        if table_name.is_empty() {
-            continue;
-        }
-
-        if let Some(bytes) = csv_bytes(region, table_name) {
-            rv[table_name] = String::from_utf8(bytes).unwrap_or_default().into();
-        }
-    }
-
-    rv
-}
-
 pub fn csv_bytes(region: Region, name: &str) -> Option<Vec<u8>> {
     let rel = format!("{}/{}.csv", region_subdir(region), name);
     if let Some(bytes) = crate::runtime::read_masterdata_file(&rel) {

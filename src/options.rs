@@ -71,7 +71,7 @@ pub struct Args {
     #[arg(long, default_value = "", help = "Path to image assets.")]
     pub image_asset_path: String,
 
-    #[arg(long, default_value = "", help = "Optional directory to load asset lists and master data CSVs from at runtime. Layout mirrors the bundled assets (asset_lists/, csv/, csv-en/). Missing files fall back to the internal copies.")]
+    #[arg(long, default_value = "", help = "Optional directory to load master data CSVs from at runtime. Layout mirrors the bundled assets (csv/, csv-en/). Missing files fall back to the internal copies.")]
     pub masterdata: String
 }
 

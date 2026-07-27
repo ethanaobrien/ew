@@ -28,8 +28,6 @@ pub mod items;
 pub mod databases;
 pub mod location;
 pub mod event_ranking;
-pub mod asset_lists;
-mod master_data;
 mod tools;
 
 use actix_web::{
@@ -242,8 +240,6 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.configure(crate::static_handlers::routes);
     cfg.service(
         actix_web::web::scope("/api")
-            .configure(asset_lists::routes)
-            .configure(master_data::routes)
             .service(
                 actix_web::web::scope("")
                     .wrap(from_fn(webui_fallback))
