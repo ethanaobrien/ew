@@ -16,6 +16,7 @@ use crate::database::gree::*;
 const APP_ID: &str = "232610769078541";
 const SRC_APP_ID: &str = "100900301";
 const HMAC_SECRET_HEX: &str = "6438663638653238346566646636306262616563326432323563306366643432";
+const ERROR_INVALID_SIGNATURE: i32 = 4;
 const ERROR_MIGRATED_DEVICE: i32 = 20;
 
 struct RequireGreeAuth;
@@ -52,6 +53,8 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
             .service(
                 web::scope("/migration")
                     .route("", web::post().to(migration))
+                    .route("/auth/initialize", web::post().to(initialize))
+                    .route("/user/token", web::post().to(migration_user_token))
                     .route("/code", web::get().to(migration_code))
                     .route("/code/verify", web::post().to(migration_verify))
                     .route("/password/register", web::post().to(migration_password_register))
@@ -229,6 +232,36 @@ async fn migration(req: HttpRequest, body: String) -> impl Responder {
 
     let resp = object!{
         result: "OK"
+    };
+
+    send(req, resp)
+}
+
+async fn migration_user_token(req: HttpRequest, body: String) -> impl Responder {
+    let body = jzon::parse(&body).unwrap_or(object!{});
+    let uuid = body["uuid"].to_string();
+
+    let resp = if let Some((user_id, cert)) = get_user_cert(&uuid) {
+        if verify_fingerprint(&uuid, &body["fingerprint"].to_string(), &cert) {
+            update_cert(user_id, &body["token"].to_string());
+            object!{
+                result: "OK"
+            }
+        } else {
+            println!("Rejecting device token update for {}: bad fingerprint", uuid);
+            object!{
+                result: "NG",
+                code: ERROR_INVALID_SIGNATURE,
+                message: "Invalid fingerprint"
+            }
+        }
+    } else {
+        println!("Rejecting device token update for unregistered device {}", uuid);
+        object!{
+            result: "NG",
+            code: ERROR_MIGRATED_DEVICE,
+            message: "Device is not registered"
+        }
     };
 
     send(req, resp)

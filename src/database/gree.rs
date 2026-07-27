@@ -60,11 +60,26 @@ fn vacuum_database() {
     DATABASE.lock_and_exec("VACUUM", params!());
 }
 
+pub fn get_user_cert(uuid: &str) -> Option<(i64, String)> {
+    let user_id = DATABASE.lock_and_select("SELECT user_id FROM users WHERE uuid=?1;", params!(uuid)).ok()?.parse::<i64>().ok()?;
+    let cert = DATABASE.lock_and_select("SELECT cert FROM users WHERE uuid=?1;", params!(uuid)).ok()?;
+
+    Some((user_id, cert))
+}
+
 pub fn is_registered(uuid: &str) -> bool {
-    match DATABASE.lock_and_select("SELECT cert FROM users WHERE uuid=?1;", params!(uuid)) {
-        Ok(cert) => cert != "none",
-        Err(_) => false
+    match get_user_cert(uuid) {
+        Some((_, cert)) => pem::parse(&cert).is_ok(),
+        None => false
     }
+}
+
+pub fn verify_fingerprint(uuid: &str, fingerprint: &str, cert: &str) -> bool {
+    let Ok(signature) = general_purpose::STANDARD.decode(fingerprint) else {
+        return false;
+    };
+
+    verify_signature(&signature, uuid.as_bytes(), cert)
 }
 
 fn verify_signature(signature: &[u8], message: &[u8], public_key: &str) -> bool {
