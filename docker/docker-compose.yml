@@ -19,14 +19,15 @@ services:
       #MASTERDATA: /masterdata/ # Override bundled CSVs / new_user.json at runtime (missing files fall back to the internal copies)
 
       # Asset hash / version overrides. Leave unset to use the values bundled in
-      # the binary; set one to make the server report a different hash/version
-      # to that client (e.g. to track a newer client build).
+      # the binary. ASSET_VERSION is the one version every override below is
+      # served for; each hash replaces what that client is told to expect
+      # (e.g. to track a newer client build).
+      #ASSET_VERSION: ""
       #JP_ANDROID_ASSET_HASH: ""
       #JP_IOS_ASSET_HASH: ""
       #EN_ANDROID_ASSET_HASH: ""
       #EN_IOS_ASSET_HASH: ""
-      #WINDOWS_ASSET_VERSION: "" # Windows asset version (JP only; GL Windows is unused)
-      #WINDOWS_ASSET_HASH: ""    # Windows asset hash (JP only)
+      #WINDOWS_ASSET_HASH: "" # Windows asset hash (JP only; GL Windows is unused)
 
       # Everything below is for the "Help" page
       #ANDROID_GLOBAL: "link.to/patched/android/global.apk"
@@ -41,6 +42,6 @@ services:
       # You can download from https://git.ethanthesleepy.one/ethanaobrien/ew-webui/releases/download/images/card-thumbnails.zip
       # No, you should not have a nested folder EXAMPLE: `images/FILENAME.webp`
       #- ./images:/images
-      # Mirrors the bundled layout: asset_lists/{Bundle,Movie,Sound}.json, csv/<table>.csv, csv-en/<table>.csv, userdata/new_user.json
+      # Mirrors the bundled layout: csv/<table>.csv, csv-en/<table>.csv, userdata/new_user.json
       #- ./masterdata:/masterdata
     restart: unless-stopped

@@ -23,11 +23,11 @@ add_opt() {
 }
 
 # Asset hash / version overrides
+add_opt "${ASSET_VERSION:-}"         --asset-version
 add_opt "${JP_ANDROID_ASSET_HASH:-}" --jp-android-asset-hash
 add_opt "${JP_IOS_ASSET_HASH:-}"     --jp-ios-asset-hash
 add_opt "${EN_ANDROID_ASSET_HASH:-}" --en-android-asset-hash
 add_opt "${EN_IOS_ASSET_HASH:-}"     --en-ios-asset-hash
-add_opt "${WINDOWS_ASSET_VERSION:-}" --windows-asset-version
 add_opt "${WINDOWS_ASSET_HASH:-}"    --windows-asset-hash
 
 # Asset / image paths.
