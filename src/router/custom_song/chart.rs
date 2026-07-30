@@ -13,10 +13,16 @@ use jzon::{object, JsonValue};
 //
 // Mapping rules:
 // - line = position - 1 (both are right-to-left)
-// - effect 1 (and 2, the "parallel" marker) -> type 1 (tap)
+// - effect 1 (note_normal) and 2 (note_event) -> type 1 (tap). note_event is an ordinary
+//   note that also fed SIF1's event scoring; it plays identically and SIF2 has no
+//   equivalent, so the distinction is dropped. Simultaneous hits are expressed by sharing
+//   a spawn num, not by the effect.
 // - effect 3 (hold) -> head note (type 1) at timing_sec plus a SYNTHESIZED tail note
 //   (type 1, same line) at timing_sec + effect_value, linked through parent/child ids
-// - effect 4 (bomb_1, drawn as SIF1's star note) -> type 3
+// - effect 4/5/6/7 (bomb_1/3/5/9, SIF1's star notes) -> type 3, SIF2's bomb note. SIF1
+//   varies the blast width per effect; SIF2 has one bomb with one damage value, so the
+//   four collapse into type 3 and only the radius is lost. Previously only bomb_1 mapped
+//   here and the three wider ones arrived as ordinary taps.
 // - effect 11/12 (slide) -> type 2, SIF2's flick. These are SIF1's swipe notes; sending
 //   them as taps made a swipe chart playable as a tap chart.
 // - effect 13 (slide hold) -> a flick HEAD (type 2) plus the same synthesized tail as
@@ -25,8 +31,8 @@ use jzon::{object, JsonValue};
 //   (so the head demands a swipe) while InputType.Released rejects a Flick outright
 //   (so a flick tail could never be released). Previously effect 13 lost BOTH halves —
 //   no swipe and no hold, just a lone tap.
-// - effect 5/6/7 (bomb_3/5/9) and anything unknown -> plain type 1 tap. SIF2 has no
-//   multi-lane bomb, so there is nothing better to send.
+// - effect 0 (random) and anything else unknown -> plain type 1 tap. Every effect the game
+//   actually defines is covered above, so this is only a floor for hand-authored charts.
 // - notes_attribute is dropped (SIF2 has no per-note attribute). notes_level is dropped
 //   too: in SIF1 a notes_level > 1 marks a simultaneous-hit group (notes.lua groups on it
 //   regardless of effect, so it is NOT the slide chain). SIF2's force_sync_group_id is the
@@ -56,6 +62,15 @@ fn is_hold(effect: i64) -> bool {
 // LiveModel.NoteEffect.isSlide
 fn is_slide(effect: i64) -> bool {
     effect >= 11
+}
+
+// SIF1's star notes: note_bomb_1/3/5/9. The suffix is the blast width — star_icon.lua maps
+// them to 0/1/2/4 extra lanes either side, damaging that spread when the note is missed.
+// SIF2 has a single bomb note with one damage value (LiveInputResultMst._bombLifeDamage,
+// applied by LiveLifeControl.CheckLife for type 3, and drawn with the star mark by
+// MarkerUI), so all four map to type 3 and only the radius is lost.
+fn is_bomb(effect: i64) -> bool {
+    (4..=7).contains(&effect)
 }
 
 fn parse_sif_note(data: &JsonValue, index: usize) -> Result<(f64, i64, f64, i64), String> {
@@ -97,7 +112,7 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
         work.push(WorkNote {
             time: timing,
             line: position - 1,
-            kind: if is_slide(effect) { 2 } else if effect == 4 { 3 } else { 1 },
+            kind: if is_slide(effect) { 2 } else if is_bomb(effect) { 3 } else { 1 },
             head: None
         });
         if is_hold(effect) {
@@ -333,9 +348,37 @@ mod tests {
     }
 
     #[test]
-    fn unknown_effects_stay_taps() {
-        // bomb_3/5/9 have no SIF2 equivalent; they must not become flicks
-        for effect in [5, 6, 7] {
+    fn every_bomb_width_is_a_star_note() {
+        // note_bomb_1/3/5/9. SIF2 has one bomb note, so all four land on type 3; before,
+        // only bomb_1 did and the wider three arrived as ordinary taps.
+        for effect in [4, 5, 6, 7] {
+            let (chart, combo) = transcode(&jzon::array![sif_note(1.0, 5, effect, 0.0)]).unwrap();
+            assert_eq!(chart["notes"][1]["type"], 3, "effect {}", effect);
+            // Bombs are instantaneous — no tail, and they count for combo
+            assert_eq!(chart["notes"].len(), 2, "effect {}", effect);
+            assert_eq!(chart["notes"][1]["child_id"], 0, "effect {}", effect);
+            assert_eq!(combo, 1, "effect {}", effect);
+        }
+    }
+
+    #[test]
+    fn every_defined_effect_maps_to_a_real_note_type() {
+        // The whole LiveModel.NoteEffect vocabulary, and what each must become
+        for (effect, kind) in [(1, 1), (2, 1), (3, 1), (4, 3), (5, 3), (6, 3), (7, 3), (11, 2), (12, 2), (13, 2)] {
+            let (chart, _) = transcode(&jzon::array![sif_note(1.0, 5, effect, 1.0)]).unwrap();
+            assert_eq!(chart["notes"][1]["type"], kind, "effect {}", effect);
+            // Whatever it is, the client must be able to resolve it
+            for data in chart["notes"].members().skip(1) {
+                let t = data["type"].as_i64().unwrap();
+                assert!((1..=3).contains(&t), "effect {} produced unresolvable type {}", effect, t);
+            }
+        }
+    }
+
+    #[test]
+    fn undefined_effects_fall_back_to_taps() {
+        // Not part of NoteEffect; a hand-authored chart must still transcode to something valid
+        for effect in [0, 8, 9, 10] {
             let (chart, _) = transcode(&jzon::array![sif_note(1.0, 5, effect, 0.0)]).unwrap();
             assert_eq!(chart["notes"][1]["type"], 1, "effect {}", effect);
         }
