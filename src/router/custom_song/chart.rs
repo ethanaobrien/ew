@@ -8,8 +8,17 @@ use jzon::{object, JsonValue};
 // note_bomb_3 5, note_bomb_5 6, note_bomb_9 7, note_slide 11, note_slide_event 12,
 // note_slide_hold 13, with isHold(e) = e == 3 and isSlide(e) = e >= 11.
 //
-// SIF2 note types, from Aoharu.LiveTimeController.ToMarkerType: 1 tap, 2 flick, 3 skill.
-// Anything outside 1..3 becomes MarkerType.None, so those three are the whole vocabulary.
+// SIF2 side: `type` only distinguishes an ordinary note (1) from a star/bomb note (3).
+// LiveTimeController.ToMarkerType accepts 1..3 and maps anything else to None; type 2 exists in
+// the enum but appears in ZERO of the 2146 shipped charts, so nothing emits it here.
+//
+// A SLIDE is structural, not a type. MarkerData derives it from the parent/child chain:
+//   IsSliderMarker      chained and the child is on a DIFFERENT line  -> a slide segment
+//   IsSliderLongMarker  chained, child SAME line, parent different    -> a slide ending in a hold
+//   IsDistanceMarker    has both a parent and a child                 -> a middle segment
+// So a hold is a chain that stays in its lane and a slide is a chain that moves across lanes;
+// both are type 1. This is also how the client counts combo (NoteData.CalcMaxCombo: a note whose
+// child shares its line does not count, its tail does).
 //
 // Mapping rules:
 // - line = position - 1 (both are right-to-left)
@@ -23,20 +32,18 @@ use jzon::{object, JsonValue};
 //   varies the blast width per effect; SIF2 has one bomb with one damage value, so the
 //   four collapse into type 3 and only the radius is lost. Previously only bomb_1 mapped
 //   here and the three wider ones arrived as ordinary taps.
-// - effect 11/12 (slide) -> type 2, SIF2's flick. These are SIF1's swipe notes; sending
-//   them as taps made a swipe chart playable as a tap chart.
-// - effect 13 (slide hold) -> a flick HEAD (type 2) plus the same synthesized tail as
-//   effect 3, tail as type 1. SIF1 wants the swipe on entry and a plain release, and SIF2
-//   agrees on both counts: LiveInputControl judges a Flick root through InputType.Flick
-//   (so the head demands a swipe) while InputType.Released rejects a Flick outright
-//   (so a flick tail could never be released). Previously effect 13 lost BOTH halves —
-//   no swipe and no hold, just a lone tap.
-// - effect 0 (random) and anything else unknown -> plain type 1 tap. Every effect the game
+// - effect 11/12/13 (slide) -> CHAINED across lanes, all type 1. Slides sharing a notes_level
+//   form one run: sorted by time and linked parent -> child, so each link crosses lanes and
+//   the client sees a slider. A run ends on effect 13 (slide hold), whose synthesized
+//   same-line tail then makes it IsSliderLongMarker — the slide settling into a hold the
+//   player releases. Verified against a real upload: every notes_level shared by more than
+//   one note held exactly the slide-effect notes, each a monotonic sweep like
+//   pos 9->8->7->6 with effects 11,11,11,13.
+//   A lone slide with no chain partner stays a plain tap: a slider needs a cross-lane child.
+// - effect 0 (random) and anything else unknown -> plain type 1. Every effect the game
 //   actually defines is covered above, so this is only a floor for hand-authored charts.
-// - notes_attribute is dropped (SIF2 has no per-note attribute). notes_level is dropped
-//   too: in SIF1 a notes_level > 1 marks a simultaneous-hit group (notes.lua groups on it
-//   regardless of effect, so it is NOT the slide chain). SIF2's force_sync_group_id is the
-//   equivalent and is left at 0 for now.
+// - notes_attribute is dropped (SIF2 has no per-note attribute). notes_level is consumed as
+//   the chain id above and not emitted; force_sync_group_id stays 0.
 // - ids are sequential from 1 in time order. num is the spawn group: the dummy
 //   header occupies 100, real groups count up from 101, and notes that hit
 //   simultaneously (equal timing_sec, which covers SIF1 effect 2 pairs) share one num.
@@ -49,8 +56,10 @@ struct WorkNote {
     time: f64,
     line: i64,
     kind: i64,
-    // Index into the work list of the hold head this tail belongs to
-    head: Option<usize>
+    // Chain links, as indices into the work list. A hold is parent -> child on the SAME line;
+    // a slide is parent -> child across DIFFERENT lines (see MarkerData.IsSliderMarker).
+    parent: Option<usize>,
+    child: Option<usize>
 }
 
 // LiveModel.NoteEffect.isHold, widened to note_slide_hold: both carry a duration in
@@ -73,11 +82,14 @@ fn is_bomb(effect: i64) -> bool {
     (4..=7).contains(&effect)
 }
 
-fn parse_sif_note(data: &JsonValue, index: usize) -> Result<(f64, i64, f64, i64), String> {
+fn parse_sif_note(data: &JsonValue, index: usize) -> Result<(f64, i64, f64, i64, i64), String> {
     let timing = data["timing_sec"].as_f64().ok_or(format!("Note {}: missing timing_sec", index))?;
     let effect = data["effect"].as_i64().ok_or(format!("Note {}: missing effect", index))?;
     let effect_value = data["effect_value"].as_f64().unwrap_or(0.0);
     let position = data["position"].as_i64().ok_or(format!("Note {}: missing position", index))?;
+    // Slide chain id. SIF1 keeps it at 1 for unchained notes; editors emit an arbitrary
+    // per-chain number, so it is only meaningful as "these slides belong together".
+    let group = data["notes_level"].as_i64().unwrap_or(1);
 
     if !(1..=9).contains(&position) {
         return Err(format!("Note {}: position {} is outside 1-9", index, position));
@@ -89,7 +101,7 @@ fn parse_sif_note(data: &JsonValue, index: usize) -> Result<(f64, i64, f64, i64)
         return Err(format!("Note {}: hold with effect_value {} (must be > 0)", index, effect_value));
     }
 
-    Ok((timing, effect, effect_value, position))
+    Ok((timing, effect, effect_value, position, group))
 }
 
 // Returns the chart JSON and its max_combo_count (== the difficulty's full_combo)
@@ -99,8 +111,10 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
     }
 
     let mut work: Vec<WorkNote> = Vec::new();
+    // Slide chain id -> the work indices in that chain, in input order
+    let mut chains: Vec<(i64, Vec<usize>)> = Vec::new();
     for (i, data) in beatmap.members().enumerate() {
-        let (timing, effect, effect_value, position) = parse_sif_note(data, i)?;
+        let (timing, effect, effect_value, position, group) = parse_sif_note(data, i)?;
 
         for other in beatmap.members().take(i) {
             if other["timing_sec"].as_f64() == Some(timing) && other["position"].as_i64() == Some(position) && other["effect"].as_i64() != Some(effect) {
@@ -112,18 +126,54 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
         work.push(WorkNote {
             time: timing,
             line: position - 1,
-            kind: if is_slide(effect) { 2 } else if is_bomb(effect) { 3 } else { 1 },
-            head: None
+            kind: if is_bomb(effect) { 3 } else { 1 },
+            parent: None,
+            child: None
         });
+        // notes_level > 1 identifies the chain; 1 is SIF1's "not chained" default and must NOT be
+        // treated as a group, or every unchained slide in the song would link into one run
+        // (notes.lua guards its own grouping the same way: `if 1 < notes_level`).
+        if is_slide(effect) && group > 1 {
+            match chains.iter_mut().find(|(id, _)| *id == group) {
+                Some((_, members)) => members.push(head),
+                None => chains.push((group, vec![head]))
+            }
+        }
         if is_hold(effect) {
-            // Tail is always a tap: a flick tail is unreleasable (InputType.Released rejects
-            // MarkerType.Flick), so the swipe stays on the head where SIF1 puts it.
+            let tail = work.len();
             work.push(WorkNote {
                 time: timing + effect_value,
                 line: position - 1,
                 kind: 1,
-                head: Some(head)
+                parent: Some(head),
+                child: None
             });
+            work[head].child = Some(tail);
+        }
+    }
+
+    // Link each slide chain in time order. Consecutive members sit on different lines, which is
+    // exactly what makes SIF2 treat the run as a slider rather than a hold. A member that already
+    // has a child is a slide-hold, i.e. the end of the run, so the chain stops there — its tail
+    // stays its child and the cross-lane parent link makes it IsSliderLongMarker.
+    for (_, members) in chains.iter() {
+        if members.len() < 2 {
+            // A lone slide cannot be a slider: SIF2 needs a cross-lane child. Leave it a tap.
+            continue;
+        }
+        let mut ordered = members.clone();
+        ordered.sort_by(|a, b| work[*a].time.partial_cmp(&work[*b].time).unwrap());
+        for pair in ordered.windows(2) {
+            let (a, b) = (pair[0], pair[1]);
+            if work[a].child.is_some() || work[b].parent.is_some() {
+                break;
+            }
+            if work[a].line == work[b].line {
+                // Same lane would read as a hold, not a slide; skip the link rather than lie
+                continue;
+            }
+            work[a].child = Some(b);
+            work[b].parent = Some(a);
         }
     }
 
@@ -145,13 +195,6 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
         nums[*index] = num;
     }
 
-    let mut tail_of = vec![0usize; work.len()];
-    for (i, note) in work.iter().enumerate() {
-        if let Some(head) = note.head {
-            tail_of[head] = i;
-        }
-    }
-
     let mut notes = jzon::array![{
         "id": 0, "num": 100, "line": 0, "time": 0.0, "type": 0,
         "parent_id": 0, "child_id": 0, "child_num": 0, "child_line": 0,
@@ -160,12 +203,12 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
     let mut max_combo_count = 0;
     for index in order.iter() {
         let note = &work[*index];
-        let tail = tail_of[*index];
-        let is_head = tail != 0;
 
-        // Same-lane hold heads don't count toward the combo, their tail does
-        if !(is_head && work[tail].line == note.line) {
-            max_combo_count += 1;
+        // NoteData.CalcMaxCombo: a note whose child is on the SAME line (a hold) does not count,
+        // its tail does. A cross-lane child (a slide segment) counts normally.
+        match note.child {
+            Some(child) if work[child].line == note.line => {},
+            _ => max_combo_count += 1
         }
 
         notes.push(object!{
@@ -174,10 +217,10 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
             "line": note.line,
             "time": note.time,
             "type": note.kind,
-            "parent_id": if let Some(head) = note.head { ids[head] } else { 0 },
-            "child_id": if is_head { ids[tail] } else { 0 },
-            "child_num": if is_head { nums[tail] } else { 0 },
-            "child_line": if is_head { work[tail].line } else { 0 },
+            "parent_id": if let Some(parent) = note.parent { ids[parent] } else { 0 },
+            "child_id": if let Some(child) = note.child { ids[child] } else { 0 },
+            "child_num": if let Some(child) = note.child { nums[child] } else { 0 },
+            "child_line": if let Some(child) = note.child { work[child].line } else { 0 },
             "force_sync_group_id": 0
         }).unwrap();
     }
@@ -203,6 +246,29 @@ mod tests {
             "effect_value": effect_value,
             "position": position
         }
+    }
+
+    // A slide carrying its chain id; slides sharing one belong to the same run
+    fn sif_slide(timing_sec: f64, position: i64, effect: i64, effect_value: f64, group: i64) -> JsonValue {
+        object!{
+            "timing_sec": timing_sec,
+            "notes_attribute": 1,
+            "notes_level": group,
+            "effect": effect,
+            "effect_value": effect_value,
+            "position": position
+        }
+    }
+
+    // (line, type, parent_id, child_id, child_line) for each note after the dummy header
+    fn shape(chart: &JsonValue) -> Vec<(i64, i64, i64, i64, i64)> {
+        chart["notes"].members().skip(1).map(|d| (
+            d["line"].as_i64().unwrap(),
+            d["type"].as_i64().unwrap(),
+            d["parent_id"].as_i64().unwrap(),
+            d["child_id"].as_i64().unwrap(),
+            d["child_line"].as_i64().unwrap()
+        )).collect()
     }
 
     #[test]
@@ -280,7 +346,7 @@ mod tests {
             sif_note(2.0, 3, 3, 1.5),  // hold: head at 2.0, tail at 3.5
             sif_note(2.5, 7, 4, 0.0),  // star
             sif_note(3.5, 1, 2, 2.0),  // parallel with the hold tail
-            sif_note(4.0, 9, 11, 0.0)  // slide -> flick
+            sif_note(4.0, 9, 11, 0.0)  // lone slide, no chain partner -> stays a tap
         ];
         let (chart, combo) = transcode(&beatmap).unwrap();
 
@@ -293,7 +359,7 @@ mod tests {
         assert_eq!(chart["notes"][4]["parent_id"], 2);
         // The tail and the parallel tap at 3.5 share a spawn group
         assert_eq!(chart["notes"][4]["num"], chart["notes"][5]["num"].clone());
-        assert_eq!(chart["notes"][6]["type"], 2);
+        assert_eq!(chart["notes"][6]["type"], 1);
         // Ids stay sequential in time order
         for (i, data) in chart["notes"].members().enumerate() {
             assert_eq!(data["id"], i);
@@ -301,43 +367,94 @@ mod tests {
     }
 
     #[test]
-    fn slides_become_flicks() {
-        // note_slide and note_slide_event are both plain swipes
+    fn slide_chain_links_across_lanes() {
+        // A three-note sweep right to left, one chain. Every link must cross lanes, which is
+        // what MarkerData.IsSliderMarker keys on.
         let beatmap = jzon::array![
-            sif_note(1.0, 1, 11, 0.0),
-            sif_note(2.0, 9, 12, 0.0)
+            sif_slide(1.0, 9, 11, 0.0, 500),
+            sif_slide(1.2, 8, 11, 0.0, 500),
+            sif_slide(1.4, 7, 12, 0.0, 500)
         ];
         let (chart, combo) = transcode(&beatmap).unwrap();
 
-        assert_eq!(combo, 2);
-        assert_eq!(chart["notes"].len(), 3);
-        assert_eq!(chart["notes"][1]["type"], 2);
-        assert_eq!(chart["notes"][2]["type"], 2);
-        // A plain slide is not a hold, so neither gets a tail
-        assert_eq!(chart["notes"][1]["child_id"], 0);
-        assert_eq!(chart["notes"][2]["child_id"], 0);
+        // No tails: nothing here is a hold
+        assert_eq!(chart["notes"].len(), 4);
+        // Slides are ordinary notes; the chain carries the meaning
+        assert_eq!(shape(&chart), vec![
+            (8, 1, 0, 2, 7),   // root, child on line 7
+            (7, 1, 1, 3, 6),   // middle: has parent AND child -> IsDistanceMarker
+            (6, 1, 2, 0, 0)    // last of the run
+        ]);
+        // Every link crosses lanes, so all three count for combo
+        assert_eq!(combo, 3);
     }
 
     #[test]
-    fn slide_hold_keeps_swipe_and_hold() {
-        // Regression: effect 13 used to lose both halves and arrive as one plain tap.
+    fn separate_chains_do_not_link() {
         let beatmap = jzon::array![
-            sif_note(1.0, 3, 13, 2.5)
+            sif_slide(1.0, 9, 11, 0.0, 500),
+            sif_slide(1.2, 8, 11, 0.0, 500),
+            sif_slide(2.0, 4, 11, 0.0, 501),
+            sif_slide(2.2, 3, 11, 0.0, 501)
+        ];
+        let (chart, _) = transcode(&beatmap).unwrap();
+        assert_eq!(shape(&chart), vec![
+            (8, 1, 0, 2, 7),
+            (7, 1, 1, 0, 0),   // chain 500 ends here, does not reach chain 501
+            (3, 1, 0, 4, 2),
+            (2, 1, 3, 0, 0)
+        ]);
+    }
+
+    #[test]
+    fn default_notes_level_does_not_chain() {
+        // notes_level 1 is SIF1's "unchained" default. Treating it as a group id would link every
+        // slide in the song into one run spanning the whole track.
+        let beatmap = jzon::array![
+            sif_note(1.0, 9, 11, 0.0),
+            sif_note(1.2, 8, 11, 0.0),
+            sif_note(40.0, 2, 11, 0.0)
+        ];
+        let (chart, combo) = transcode(&beatmap).unwrap();
+        assert_eq!(shape(&chart), vec![
+            (8, 1, 0, 0, 0),
+            (7, 1, 0, 0, 0),
+            (1, 1, 0, 0, 0)
+        ]);
+        assert_eq!(combo, 3);
+    }
+
+    #[test]
+    fn lone_slide_stays_a_tap() {
+        // Nothing to chain to, and a slider needs a cross-lane child
+        let (chart, combo) = transcode(&jzon::array![sif_slide(1.0, 5, 11, 0.0, 500)]).unwrap();
+        assert_eq!(chart["notes"].len(), 2);
+        assert_eq!(shape(&chart), vec![(4, 1, 0, 0, 0)]);
+        assert_eq!(combo, 1);
+    }
+
+    #[test]
+    fn slide_chain_ends_in_a_hold() {
+        // A sweep terminating on effect 13: the run settles into a hold on the last lane.
+        // Regression: effect 13 used to lose its hold entirely and arrive as a lone note.
+        let beatmap = jzon::array![
+            sif_slide(1.0, 9, 11, 0.0, 500),
+            sif_slide(1.2, 8, 11, 0.0, 500),
+            sif_slide(1.4, 7, 13, 0.5, 500)
         ];
         let (chart, combo) = transcode(&beatmap).unwrap();
 
-        assert_eq!(combo, 1);
-        assert_eq!(chart["notes"].len(), 3);
-        let head = &chart["notes"][1];
-        let tail = &chart["notes"][2];
-        // Swipe on entry, plain release: flick head, tap tail
-        assert_eq!(head["type"], 2);
-        assert_eq!(tail["type"], 1);
-        // ... linked as a hold, exactly like effect 3
-        assert_eq!(head["child_id"], 2);
-        assert_eq!(head["child_line"], 2);
-        assert_eq!(tail["parent_id"], 1);
-        assert_eq!(tail["time"].as_f64().unwrap(), 3.5);
+        assert_eq!(chart["notes"].len(), 5);
+        assert_eq!(shape(&chart), vec![
+            (8, 1, 0, 2, 7),   // root of the slide
+            (7, 1, 1, 3, 6),   // middle
+            (6, 1, 2, 4, 6),   // parent on line 7, child on line 6 -> IsSliderLongMarker
+            (6, 1, 3, 0, 0)    // the hold tail, released normally
+        ]);
+        // The tail sits at the slide-hold's time plus its duration
+        assert_eq!(chart["notes"][4]["time"].as_f64().unwrap(), 1.9);
+        // The same-lane hold head does not count; its tail does
+        assert_eq!(combo, 3);
     }
 
     #[test]
@@ -364,7 +481,7 @@ mod tests {
     #[test]
     fn every_defined_effect_maps_to_a_real_note_type() {
         // The whole LiveModel.NoteEffect vocabulary, and what each must become
-        for (effect, kind) in [(1, 1), (2, 1), (3, 1), (4, 3), (5, 3), (6, 3), (7, 3), (11, 2), (12, 2), (13, 2)] {
+        for (effect, kind) in [(1, 1), (2, 1), (3, 1), (4, 3), (5, 3), (6, 3), (7, 3), (11, 1), (12, 1), (13, 1)] {
             let (chart, _) = transcode(&jzon::array![sif_note(1.0, 5, effect, 1.0)]).unwrap();
             assert_eq!(chart["notes"][1]["type"], kind, "effect {}", effect);
             // Whatever it is, the client must be able to resolve it
@@ -394,24 +511,23 @@ mod tests {
         let beatmap = jzon::array![
             object!{ "timing_sec": 22.0, "effect": 11, "effect_value": 2.0, "notes_attribute": 2, "notes_level": 38615, "position": 9 },
             object!{ "timing_sec": 22.166666666666668, "effect": 11, "effect_value": 2.0, "notes_attribute": 2, "notes_level": 38615, "position": 8 },
+            object!{ "timing_sec": 22.333333333333332, "effect": 11, "effect_value": 2.0, "notes_attribute": 2, "notes_level": 38615, "position": 7 },
             object!{ "timing_sec": 22.5, "effect": 13, "effect_value": 0.33333333333333215, "notes_attribute": 2, "notes_level": 38615, "position": 6 }
         ];
         let (chart, combo) = transcode(&beatmap).unwrap();
 
-        // 3 source notes + the slide-hold's tail; the same-lane head does not count for combo
-        assert_eq!(chart["notes"].len(), 5);
-        assert_eq!(combo, 3);
-        // Both plain slides are flicks with no tail
-        assert_eq!(chart["notes"][1]["type"], 2);
-        assert_eq!(chart["notes"][1]["line"], 8);
-        assert_eq!(chart["notes"][1]["child_id"], 0);
-        assert_eq!(chart["notes"][2]["type"], 2);
-        assert_eq!(chart["notes"][2]["line"], 7);
-        // The slide-hold is a flick head linked to a tap tail
-        assert_eq!(chart["notes"][3]["type"], 2);
-        assert_eq!(chart["notes"][3]["child_id"], 4);
-        assert_eq!(chart["notes"][4]["type"], 1);
-        assert_eq!(chart["notes"][4]["parent_id"], 3);
+        // 4 source notes + the slide-hold's tail, plus the dummy header
+        assert_eq!(chart["notes"].len(), 6);
+        // One slider running 9 -> 8 -> 7 -> 6 (lines 8..5), the last settling into a hold
+        assert_eq!(shape(&chart), vec![
+            (8, 1, 0, 2, 7),
+            (7, 1, 1, 3, 6),
+            (6, 1, 2, 4, 5),
+            (5, 1, 3, 5, 5),   // slide into hold
+            (5, 1, 4, 0, 0)    // tail
+        ]);
+        // The same-lane hold head is the only note that does not count
+        assert_eq!(combo, 4);
         // Every type must be one ToMarkerType resolves; 0 would silently become MarkerType.None
         for data in chart["notes"].members().skip(1) {
             let kind = data["type"].as_i64().unwrap();
