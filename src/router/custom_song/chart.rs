@@ -43,10 +43,22 @@ use jzon::{object, JsonValue};
 // - effect 0 (random) and anything else unknown -> plain type 1. Every effect the game
 //   actually defines is covered above, so this is only a floor for hand-authored charts.
 // - notes_attribute is dropped (SIF2 has no per-note attribute). notes_level is consumed as
-//   the chain id above and not emitted; force_sync_group_id stays 0.
+//   the chain id above and not emitted.
 // - ids are sequential from 1 in time order. num is the spawn group: the dummy
-//   header occupies 100, real groups count up from 101, and notes that hit
-//   simultaneously (equal timing_sec, which covers SIF1 effect 2 pairs) share one num.
+//   header occupies 100 and real groups count up from 101. The client spawns markers one
+//   num-group at a time, and LiveMarkerControl.CreateMarkerUI (list overload) plain-RETURNS
+//   when the group holds more than 2 markers — so a num may be shared by AT MOST two notes,
+//   or the whole group's head markers never render (hold bands are created by the separate,
+//   unguarded CreateLongMarkerBandUI call, which is why 4 simultaneous holds showed trails
+//   with no heads). Simultaneous notes (equal final time, which covers SIF1 effect 2 pairs
+//   AND synthesized hold tails) are therefore sorted by lane and chunked into pairs: each
+//   chunk gets its own num, and every chunk after the first carries the PREVIOUS chunk's num
+//   in force_sync_group_id. That is exactly the official encoding — all 4292 shipped NoteData
+//   assets have num groups of only 1 or 2, and the 15 charts with 3-4 simultaneous notes
+//   (SIFAC ports, e.g. 1132_5_Sn, 1136_5_An) pair the lowest lanes under the first num and
+//   point the later chunk's m_ForceSyncGroupID at it. The client turns that into the extra
+//   connector line (LiveTimeController.CreateMarkerTimeData force-group pass matches
+//   ForceGroupId against the other chunk's GroupId and links the lane-closest pair).
 // - notes[0] is ALWAYS the dummy header (id 0, num 100, type 0) - the client
 //   deserializes it verbatim.
 // - max_combo_count = all real notes EXCEPT hold heads whose tail is on the same
@@ -183,16 +195,33 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
 
     let mut ids = vec![0i64; work.len()];
     let mut nums = vec![0i64; work.len()];
+    let mut force_sync = vec![0i64; work.len()];
     let mut num = 100;
-    let mut last_time = f64::NEG_INFINITY;
     for (i, index) in order.iter().enumerate() {
         ids[*index] = (i + 1) as i64;
-        // Simultaneous notes share a spawn group
-        if work[*index].time != last_time {
-            num += 1;
-            last_time = work[*index].time;
+    }
+    // Spawn groups: at most TWO notes per num (see the header comment — a bigger group's head
+    // markers never render). A cluster of simultaneous notes is sorted by lane and chunked into
+    // pairs; the leftmost pair takes the first num, and each later chunk points its
+    // force_sync_group_id at the previous chunk's num, matching the official SIFAC-port encoding.
+    let mut start = 0;
+    while start < order.len() {
+        let mut end = start + 1;
+        while end < order.len() && work[order[end]].time == work[order[start]].time {
+            end += 1;
         }
-        nums[*index] = num;
+        let mut cluster: Vec<usize> = order[start..end].to_vec();
+        cluster.sort_by_key(|index| work[*index].line);
+        let mut prev_num = 0;
+        for chunk in cluster.chunks(2) {
+            num += 1;
+            for index in chunk {
+                nums[*index] = num;
+                force_sync[*index] = prev_num;
+            }
+            prev_num = num;
+        }
+        start = end;
     }
 
     let mut notes = jzon::array![{
@@ -221,7 +250,7 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
             "child_id": if let Some(child) = note.child { ids[child] } else { 0 },
             "child_num": if let Some(child) = note.child { nums[child] } else { 0 },
             "child_line": if let Some(child) = note.child { work[child].line } else { 0 },
-            "force_sync_group_id": 0
+            "force_sync_group_id": force_sync[*index]
         }).unwrap();
     }
 
@@ -324,6 +353,22 @@ mod tests {
         assert_eq!(tail["time"].as_f64().unwrap(), 3.5);
     }
 
+    // The client spawns markers one num-group at a time and CreateMarkerUI refuses lists of
+    // more than 2, so no num may ever be shared by 3+ notes (official charts never do)
+    fn assert_spawn_groups_hold_at_most_two(chart: &JsonValue) {
+        let mut counts: Vec<(i64, i64)> = Vec::new();
+        for data in chart["notes"].members().skip(1) {
+            let num = data["num"].as_i64().unwrap();
+            match counts.iter_mut().find(|(n, _)| *n == num) {
+                Some((_, c)) => *c += 1,
+                None => counts.push((num, 1))
+            }
+        }
+        for (num, count) in counts {
+            assert!(count <= 2, "num {} is shared by {} notes; the client renders no heads for such a group", num, count);
+        }
+    }
+
     #[test]
     fn parallel_pair() {
         let beatmap = jzon::array![
@@ -337,6 +382,83 @@ mod tests {
         assert_eq!(chart["notes"][1]["num"], chart["notes"][2]["num"].clone());
         assert_eq!(chart["notes"][1]["type"], 1);
         assert_eq!(chart["notes"][2]["type"], 1);
+        // A plain pair is the GroupSync path; the force-group field stays clear
+        assert_eq!(chart["notes"][1]["force_sync_group_id"], 0);
+        assert_eq!(chart["notes"][2]["force_sync_group_id"], 0);
+    }
+
+    #[test]
+    fn three_simultaneous_notes_split_into_pair_plus_force_synced_single() {
+        // Official encoding (e.g. 1132_5_Sn, 1136_5_An: the only shipped charts with 3-4
+        // simultaneous notes): the cluster is sorted by lane, the lowest two lanes share the
+        // first num, and the leftover note takes the NEXT num with force_sync_group_id pointing
+        // back at the pair's num. Input arrives lane-scrambled to prove the chunking sorts.
+        let beatmap = jzon::array![
+            sif_note(1.0, 8, 1, 0.0),
+            sif_note(1.0, 2, 1, 0.0),
+            sif_note(1.0, 5, 1, 0.0)
+        ];
+        let (chart, combo) = transcode(&beatmap).unwrap();
+
+        assert_eq!(combo, 3);
+        assert_eq!(chart["notes"].len(), 4);
+        assert_spawn_groups_hold_at_most_two(&chart);
+        // Emission keeps input order on time ties; grouping is by lane
+        let (right, left, mid) = (&chart["notes"][1], &chart["notes"][2], &chart["notes"][3]);
+        assert_eq!(left["line"], 1);
+        assert_eq!(mid["line"], 4);
+        assert_eq!(right["line"], 7);
+        // Lanes 1 and 4 pair under the first num, force-clear
+        assert_eq!(left["num"], 101);
+        assert_eq!(mid["num"], 101);
+        assert_eq!(left["force_sync_group_id"], 0);
+        assert_eq!(mid["force_sync_group_id"], 0);
+        // Lane 7 rides the next num and force-syncs against the pair's num
+        assert_eq!(right["num"], 102);
+        assert_eq!(right["force_sync_group_id"], 101);
+    }
+
+    #[test]
+    fn four_simultaneous_holds_pair_heads_and_tails() {
+        // Second field report: 4 holds hitting together rendered their bands but no head
+        // markers — all four heads shared one num, and the client's CreateMarkerUI refuses
+        // groups over 2 while CreateLongMarkerBandUI (a separate, unguarded call) still drew
+        // the bands. Officially both the head cluster AND the tail cluster split 2+2 with the
+        // second chunk force-synced to the first (1132_5_Sn time 12.208 does this to tails).
+        let beatmap = jzon::array![
+            sif_note(1.0, 3, 3, 2.0),
+            sif_note(1.0, 4, 3, 2.0),
+            sif_note(1.0, 6, 3, 2.0),
+            sif_note(1.0, 7, 3, 2.0)
+        ];
+        let (chart, combo) = transcode(&beatmap).unwrap();
+
+        // Same-lane hold heads don't count; the four tails do
+        assert_eq!(combo, 4);
+        assert_eq!(chart["notes"].len(), 9);
+        assert_spawn_groups_hold_at_most_two(&chart);
+
+        // Heads at 1.0: lanes 2,3 share num 101; lanes 5,6 share num 102 force-synced to 101
+        for (index, line, num, fs) in [(1, 2, 101, 0), (2, 3, 101, 0), (3, 5, 102, 101), (4, 6, 102, 101)] {
+            let head = &chart["notes"][index];
+            assert_eq!(head["line"], line, "head {}", index);
+            assert_eq!(head["num"], num, "head {}", index);
+            assert_eq!(head["force_sync_group_id"], fs, "head {}", index);
+            assert_eq!(head["parent_id"], 0, "head {}", index);
+        }
+        // Tails at 3.0: the SAME pairing applies to the synthesized cluster
+        for (index, line, num, fs) in [(5, 2, 103, 0), (6, 3, 103, 0), (7, 5, 104, 103), (8, 6, 104, 103)] {
+            let tail = &chart["notes"][index];
+            assert_eq!(tail["line"], line, "tail {}", index);
+            assert_eq!(tail["num"], num, "tail {}", index);
+            assert_eq!(tail["force_sync_group_id"], fs, "tail {}", index);
+            assert_eq!(tail["child_id"], 0, "tail {}", index);
+        }
+        // The chains still line up: each head's child_num names the tail's spawn group
+        assert_eq!(chart["notes"][1]["child_id"], 5);
+        assert_eq!(chart["notes"][1]["child_num"], 103);
+        assert_eq!(chart["notes"][3]["child_id"], 7);
+        assert_eq!(chart["notes"][3]["child_num"], 104);
     }
 
     #[test]

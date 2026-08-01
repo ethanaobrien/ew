@@ -770,7 +770,6 @@ async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
             }
         }
     }
-    println!("UPLOAD5");
     match create_song(uid, &fields) {
         Ok(music_id) => send_json(object!{
             result: "OK",
