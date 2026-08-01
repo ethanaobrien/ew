@@ -223,7 +223,7 @@ fn get_rank(event: u32, user_id: u64) -> u32 {
 }
 
 async fn ranking(req: HttpRequest, Body(body): Body) -> impl Responder {
-    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
+    let protocol = crate::router::global::client_protocol_version(&req);
     let master_event_id = body["master_event_id"].as_u32().unwrap();
     let scores = crate::router::event_ranking::get_scores_json().await[master_event_id as usize].clone();
     let mut rv = array![];
@@ -232,9 +232,7 @@ async fn ranking(req: HttpRequest, Body(body): Body) -> impl Responder {
     for score in scores.members() {
         if i >= start && start + body["count"].as_u32().unwrap() >= i {
             let mut entry = score.clone();
-            if !custom_cards {
-                crate::router::tools::guest::proxy_user_cards(&mut entry["user_detail"]);
-            }
+            crate::router::tools::guest::proxy_user_cards(&mut entry["user_detail"], protocol);
             rv.push(entry).unwrap();
             i += 1;
         }

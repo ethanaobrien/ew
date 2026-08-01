@@ -82,7 +82,9 @@ fn get_json() -> JsonValue {
 
         let mut i = 1;
         for score in scores.members() {
-            let user = guest::get_user(score["user"].as_i64().unwrap(), &object![], guest::UserView::Ranking, true);
+            // The cached ranking json keeps every card unproxied; event.rs
+            // re-proxies per requesting client's protocol version
+            let user = guest::get_user(score["user"].as_i64().unwrap(), &object![], guest::UserView::Ranking, u32::MAX);
             rv[event.to_string()].push(object!{
                 "rank": i,
                 "user_detail": user,

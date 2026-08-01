@@ -51,6 +51,13 @@ async fn start(req: HttpRequest, Session { key, body }: Session) -> impl Respond
         return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED); // todo - maybe compatibility layer?
     }
 
+    // An account holding a runtime custom card (protocol 3) can't run on a
+    // client that only understands the baked band - card_list would carry ids
+    // it can't resolve
+    if !crate::router::custom_card::client_supports(&req) && crate::router::custom_card::account_supports(&key) {
+        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+    }
+
     global::api(&req, Some(object!{
         "asset_hash": asset_hash,
         "token": hex::encode("Hello") //what is this?

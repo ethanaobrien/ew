@@ -21,6 +21,7 @@ pub mod web;
 pub mod card;
 pub mod shop;
 pub mod custom_song;
+pub mod custom_card;
 pub mod webui;
 pub mod clear_rate;
 pub mod exchange;
@@ -217,6 +218,8 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/import" => webui::import(req, body),
             "/api/webui/set_time" => webui::set_time(req, body),
             "/api/webui/cheat" => webui::cheat(req, body),
+            "/api/webui/grantPermission" => webui::grant_permission(req, body),
+            "/api/webui/revokePermission" => webui::revoke_permission(req, body),
             _ => api_req(req, body).await
         }
     } else {
@@ -231,6 +234,11 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/listMusic" => webui::get_music_info(req),
             "/api/webui/listLoginBonus" => webui::list_login_bonus(req),
             "/api/webui/listItems" => webui::list_items(req),
+            "/api/webui/listPermissions" => webui::list_permissions(req),
+            "/api/webui/listCharacters" => webui::list_characters(req),
+            "/api/webui/listSkillCenters" => webui::list_skill_centers(req),
+            "/api/webui/customCardLimits" => webui::custom_card_limits(req),
+            "/api/webui/myScopes" => webui::my_scopes(req),
             _ => api_req(req, body).await
         }
     }
@@ -253,6 +261,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
                     .configure(card::routes)
                     .configure(chat::routes)
                     .configure(custom_song::routes)
+                    .configure(custom_card::routes)
                     .configure(debug::routes)
                     .configure(event::routes)
                     .configure(exchange::routes)
@@ -279,4 +288,5 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
             .configure(gree::routes)
     );
     cfg.configure(custom_song::web_routes);
+    cfg.configure(custom_card::web_routes);
 }

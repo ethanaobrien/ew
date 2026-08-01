@@ -300,8 +300,10 @@ pub fn lp_modification(user: &mut JsonValue, change_amount: u64, remove: bool) -
     stamina != orig_stamina || anchor != orig_anchor
 }
 
+// Falls through to the custom-card db for the runtime band (card_info), so
+// duplicate conversion / evolve costs / give_character work on those too
 pub fn get_rarity(id: i64) -> i32 {
-    databases::CARD_LIST[id.to_string()]["rarity"].as_i32().unwrap_or(0)
+    crate::router::custom_card::card_info(id)["rarity"].as_i32().unwrap_or(0)
 }
 
 // true - added

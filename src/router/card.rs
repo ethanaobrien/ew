@@ -33,8 +33,11 @@ pub fn account_has_custom_cards(user: &JsonValue) -> bool {
     user["card_list"].members().any(|card| is_custom(card["master_card_id"].as_i64().unwrap_or(0)))
 }
 
+// Card rows come through custom_card::card_info: the baked CARD_LIST for
+// official/imported ids, the custom-card db for the runtime band - a runtime
+// card has no CARD_LIST row and would otherwise cap at 0 here
 fn exp_cap(master_card_id: i64, evolved: bool) -> i64 {
-    let card = &databases::CARD_LIST[master_card_id.to_string()];
+    let card = crate::router::custom_card::card_info(master_card_id);
     let rarity = card["rarity"].to_string();
     let curve = card["masterCardLevelId"].as_i64().unwrap_or(0);
     let max_level = if evolved {
@@ -46,7 +49,7 @@ fn exp_cap(master_card_id: i64, evolved: bool) -> i64 {
 }
 
 fn skill_exp_cap(master_card_id: i64) -> i64 {
-    let card = &databases::CARD_LIST[master_card_id.to_string()];
+    let card = crate::router::custom_card::card_info(master_card_id);
     let rarity = card["rarity"].to_string();
     let skill_curve = databases::CARD_RARITY[&rarity]["masterCardSkillLevelId"].to_string();
     databases::CARD_SKILL_MAX[skill_curve].as_i64().unwrap_or(i64::MAX)

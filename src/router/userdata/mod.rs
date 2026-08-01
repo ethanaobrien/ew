@@ -9,6 +9,7 @@ use crate::router::global;
 use crate::router::items;
 use crate::router::card;
 use crate::database::custom_song;
+use crate::database::custom_card;
 use crate::sql::SQLite;
 use crate::include_file;
 
@@ -332,10 +333,66 @@ fn remove_deleted_custom_songs(user: &mut JsonValue) -> bool {
     true
 }
 
+// Deleted custom cards leave stale card_list rows behind - and a card_list id
+// the client can't resolve aborts its whole login. Wiped lazily when the
+// userdata is pulled, mirroring remove_deleted_custom_songs: only the runtime
+// band is a candidate (official/imported ids never are), ids are never
+// reused, so the wipe is final. A card that still exists but is unpublished
+// is NOT wiped - existence is what's checked, and the catalog keeps serving
+// owned ids (custom_card::owned_runtime_ids) so holders still resolve them
+fn remove_deleted_custom_cards(user: &mut JsonValue) -> bool {
+    // Feature off: never touch custom_cards.db, leave userdata untouched
+    if crate::router::custom_card::disabled() {
+        return false;
+    }
+    let mut candidates = array![];
+    for data in user["card_list"].members() {
+        let id = data["master_card_id"].as_i64().unwrap_or(0);
+        if id >= custom_card::FIRST_CARD_ID && id <= custom_card::LAST_CARD_ID && !candidates.contains(id) {
+            candidates.push(id).unwrap();
+        }
+    }
+    if candidates.is_empty() {
+        return false;
+    }
+    let dead = custom_card::dead_card_ids(&candidates);
+    if dead.is_empty() {
+        return false;
+    }
+    let mut i = 0;
+    while i < user["card_list"].len() {
+        if dead.contains(user["card_list"][i]["master_card_id"].as_i64().unwrap_or(0)) {
+            user["card_list"].array_remove(i);
+        } else {
+            i += 1;
+        }
+    }
+    for deck in user["deck_list"].members_mut() {
+        for slot in deck["main_card_ids"].members_mut() {
+            if dead.contains(slot.as_i64().unwrap_or(0)) {
+                *slot = (0).into();
+            }
+        }
+    }
+    // A dead favorite/guest card repoints to the account's first remaining
+    // card (every account has its tutorial cards; the fallback can't trigger
+    // in practice)
+    let fallback = user["card_list"][0]["master_card_id"].as_i64().unwrap_or(10010001);
+    for key in ["favorite_master_card_id", "guest_smile_master_card_id", "guest_cool_master_card_id", "guest_pure_master_card_id"] {
+        if dead.contains(user["user"][key].as_i64().unwrap_or(0)) {
+            user["user"][key] = fallback.into();
+        }
+    }
+    true
+}
+
 pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     cleanup_account(&mut user);
     let mut changed = remove_deleted_custom_songs(&mut user);
+    if remove_deleted_custom_cards(&mut user) {
+        changed = true;
+    }
 
     if items::lp_modification(&mut user, 0, false) {
         changed = true;
@@ -776,5 +833,58 @@ mod tests {
         let stored = get_data(token, "userdata");
         assert!(!stored["live_list"].members().any(|data| data["master_live_id"] == deleted_id));
         assert!(!stored["live_mission_list"].members().any(|data| data["master_live_id"] == deleted_id));
+    }
+
+    // User draws a custom card -> the card is deleted -> the next userdata
+    // pull drops the dead card from card_list, empties its deck slots and
+    // repoints favorite/guest references; unpublished-but-alive cards survive
+    #[test]
+    fn deleted_custom_card_records_are_wiped_on_pull() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let token = "userdata-card-test-token";
+        let mut user = get_acc(token);
+
+        let deleted_id = custom_card::next_card_id();
+        custom_card::insert_card(deleted_id, 1001, 1, &jzon::object!{ "master_card_id": deleted_id, "rarity": 1 }, true, true);
+        // Exists but was unpublished - must survive the wipe
+        let unpublished_id = custom_card::next_card_id();
+        custom_card::insert_card(unpublished_id, 1001, 1, &jzon::object!{ "master_card_id": unpublished_id, "rarity": 1 }, false, false);
+
+        for id in [deleted_id, unpublished_id] {
+            user["card_list"].push(jzon::object!{
+                "id": id,
+                "master_card_id": id,
+                "exp": 0,
+                "skill_exp": 0,
+                "evolve": [],
+                "created_date_time": 0
+            }).unwrap();
+        }
+        user["deck_list"][0]["main_card_ids"][0] = deleted_id.into();
+        user["deck_list"][0]["main_card_ids"][1] = unpublished_id.into();
+        user["user"]["favorite_master_card_id"] = deleted_id.into();
+        save_acc(token, user);
+
+        // Both cards still exist: nothing gets wiped
+        let user = get_acc(token);
+        assert!(user["card_list"].members().any(|data| data["master_card_id"] == deleted_id));
+
+        custom_card::delete_card(deleted_id);
+
+        // The next pull drops the dead card's records and only those
+        let user = get_acc(token);
+        assert!(!user["card_list"].members().any(|data| data["master_card_id"] == deleted_id));
+        assert!(user["card_list"].members().any(|data| data["master_card_id"] == unpublished_id));
+        assert_eq!(user["deck_list"][0]["main_card_ids"][0].as_i64(), Some(0));
+        assert_eq!(user["deck_list"][0]["main_card_ids"][1].as_i64(), Some(unpublished_id));
+        // The dead favorite repointed to the first remaining card
+        assert_eq!(user["user"]["favorite_master_card_id"].as_i64(), user["card_list"][0]["master_card_id"].as_i64());
+
+        // The wipe persisted to the database, not just the served copy
+        let stored = get_data(token, "userdata");
+        assert!(!stored["card_list"].members().any(|data| data["master_card_id"] == deleted_id));
+
+        custom_card::delete_card(unpublished_id);
     }
 }

@@ -2,7 +2,8 @@ use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 
-use crate::router::{global, userdata, items, databases, Body, Login, Session, Api};
+use crate::router::{global, userdata, items, databases, custom_card, Body, Login, Session, Api};
+use crate::database::custom_card as custom_card_db;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
@@ -102,6 +103,85 @@ fn get_random_cards(id: i64, mut count: usize) -> JsonValue {
                 break;
             }
         }
+    }
+    rv
+}
+
+// The runtime custom-card banner (lottery id 6900001). The CLIENT synthesizes
+// its lottery/price/rarity/item masterdata from the catalog; the server only
+// handles the draw. Cost and rarity structure mirror the baked SIF1-import
+// banners 6110001-6110004 (lottery_price.csv / lottery_rarity.csv):
+//   price 1 = 11 draws / 3000 free gems, price 2 = 1 draw / 300 free gems
+//   normal roll r1 6800 / r2 2600 / r3 600; multi draws replace one roll with
+//   an ensured r2-or-better at 8125 / 1875
+// Wire contract for the drawn items (the client synthesizes matching
+// LotteryItemMst rows): master_lottery_item_id = 690000100 + rarity,
+// master_lottery_item_number = master_card_id - 150000000
+const CUSTOM_BANNER_RATIO: &[(i64, i64)] = &[(1, 6800), (2, 2600), (3, 600)];
+const CUSTOM_BANNER_ENSURED: &[(i64, i64)] = &[(2, 8125), (3, 1875)];
+
+fn custom_banner_price(price_number: i64) -> JsonValue {
+    match price_number {
+        1 => object!{"masterItemId": 0, "consumeType": 1, "count": 11, "price": 3000},
+        2 => object!{"masterItemId": 0, "consumeType": 1, "count": 1, "price": 300},
+        _ => JsonValue::Null
+    }
+}
+
+// One roll: weighted rarity over the rarities that actually have published +
+// obtainable cards, then a uniform card within the rarity. None when every
+// pool is empty
+fn custom_banner_roll(table: &[(i64, i64)], pools: &[Vec<i64>; 3], rng: &mut rand::rngs::ThreadRng) -> Option<(i64, i64)> {
+    let available: Vec<&(i64, i64)> = table.iter().filter(|(rarity, _)| !pools[(*rarity - 1) as usize].is_empty()).collect();
+    let total: i64 = available.iter().map(|(_, ratio)| ratio).sum();
+    if total <= 0 {
+        return None;
+    }
+    let roll = rng.random_range(1..=total);
+    let mut cumulative = 0;
+    for (rarity, ratio) in available {
+        cumulative += ratio;
+        if roll <= cumulative {
+            let pool = &pools[(*rarity - 1) as usize];
+            return Some((*rarity, pool[rng.random_range(0..pool.len())]));
+        }
+    }
+    None
+}
+
+// The draw, in the same result shape get_random_cards produces so the stock
+// grant loop consumes it unchanged. Empty when there is nothing obtainable -
+// the caller bails before charging
+fn custom_banner_cards(count: usize) -> JsonValue {
+    let pools: [Vec<i64>; 3] = [
+        custom_card_db::obtainable_card_ids(1),
+        custom_card_db::obtainable_card_ids(2),
+        custom_card_db::obtainable_card_ids(3)
+    ];
+    let mut rng = rand::rng();
+    let mut rv = array![];
+    let mut remaining = count;
+    if count > 1 {
+        // The ensured slot falls back to a normal roll when no r2/r3 exists
+        if let Some((rarity, card)) = custom_banner_roll(CUSTOM_BANNER_ENSURED, &pools, &mut rng)
+            .or_else(|| custom_banner_roll(CUSTOM_BANNER_RATIO, &pools, &mut rng)) {
+            rv.push(object!{
+                "id": card,
+                "master_card_id": card,
+                "master_lottery_item_id": 690_000_100 + rarity,
+                "master_lottery_item_number": card - 150_000_000
+            }).unwrap();
+            remaining -= 1;
+        }
+    }
+    for _ in 0..remaining {
+        let Some((rarity, card)) = custom_banner_roll(CUSTOM_BANNER_RATIO, &pools, &mut rng) else { break; };
+        rv.push(object!{
+            "id": card,
+            "master_card_id": card,
+            "master_lottery_item_id": 690_000_100 + rarity,
+            "master_lottery_item_number": card - 150_000_000
+        }).unwrap();
     }
     rv
 }
@@ -209,28 +289,52 @@ async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl 
     if (6_000_000..7_000_000).contains(&lottery_id) && !crate::router::card::client_supports_custom_cards(&req) {
         return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
     }
+    // The runtime custom-card banner additionally needs the catalog protocol
+    let is_custom_banner = lottery_id == custom_card::CUSTOM_LOTTERY_ID;
+    if is_custom_banner && (custom_card::disabled() || !custom_card::client_supports(&req)) {
+        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+    }
 
-    let lottery = &databases::LOTTERY[lottery_id.to_string()];
-    let lottery_type = lottery["category"].as_i32().unwrap();
-    let exchange_id = lottery["exchangeMasterItemId"].as_i64().unwrap_or(0);
-
-    let (price_id, rarity_id) = if is_stepup(lottery_id) && price_number == 1 {
-        let step = stepup_step(lottery_id, get_draw_count(&user, lottery_id, 1));
-        (step["masterLotteryPriceId"].as_i64().unwrap(), step["masterLotteryRarityId"].as_i64().unwrap())
+    let (price, cardstogive, lottery_type, exchange_id) = if is_custom_banner {
+        let price = custom_banner_price(price_number);
+        if price.is_null() {
+            return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+        }
+        let drawn = custom_banner_cards(price["count"].as_usize().unwrap());
+        if drawn.is_empty() {
+            // Nothing published + obtainable: nothing charged, nothing drawn.
+            // The client only synthesizes the banner when the pool is
+            // non-empty, so this is a stale-catalog race, not a normal path
+            return global::api(&req, Some(object!{
+                "lottery_item_list": [],
+                "updated_value_list": {},
+                "gift_list": user2["home"]["gift_list"].clone(),
+                "clear_mission_ids": [],
+                "draw_count_list": []
+            }));
+        }
+        (price, drawn, 1, 0)
     } else {
-        (lottery["masterLotteryPriceId"].as_i64().unwrap_or(lottery_id), lottery["masterLotteryRarityId"].as_i64().unwrap_or(lottery_id))
+        let lottery = &databases::LOTTERY[lottery_id.to_string()];
+        let lottery_type = lottery["category"].as_i32().unwrap();
+        let exchange_id = lottery["exchangeMasterItemId"].as_i64().unwrap_or(0);
+
+        let (price_id, rarity_id) = if is_stepup(lottery_id) && price_number == 1 {
+            let step = stepup_step(lottery_id, get_draw_count(&user, lottery_id, 1));
+            (step["masterLotteryPriceId"].as_i64().unwrap(), step["masterLotteryRarityId"].as_i64().unwrap())
+        } else {
+            (lottery["masterLotteryPriceId"].as_i64().unwrap_or(lottery_id), lottery["masterLotteryRarityId"].as_i64().unwrap_or(lottery_id))
+        };
+        let price = databases::PRICE[price_id.to_string()][price_number.to_string()].clone();
+        let count = price["count"].as_usize().unwrap();
+        (price, get_random_cards(rarity_id, count), lottery_type, exchange_id)
     };
-    let price = databases::PRICE[price_id.to_string()][price_number.to_string()].clone();
 
     items::use_item(&object!{
         value: price["masterItemId"].clone(),
         amount: price["price"].clone(),
         consumeType: price["consumeType"].clone()
     }, 1, &mut user);
-
-    let count = price["count"].as_usize().unwrap();
-
-    let cardstogive = get_random_cards(rarity_id, count);
 
     let mut new_cards = array![];
     let mut lottery_list = array![];
@@ -295,9 +399,19 @@ async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl 
     userdata::save_acc_chats(&key, chats);
     userdata::save_acc_missions(&key, missions);
 
+    // An account holding a runtime custom card needs a catalog-fetching
+    // client from now on; start.rs enforces it (monotonic, like the level-2
+    // flag for the baked band)
+    if cardstogive.members().any(|card| custom_card::is_custom_runtime(card["master_card_id"].as_i64().unwrap_or(0))) {
+        userdata::save_protocol_version(&key, custom_card::PROTOCOL_VERSION);
+    }
+
     global::api(&req, Some(object!{
         "lottery_item_list": lottery_list,
         "updated_value_list": {
+            // The draw can charge gems (the custom banners do); without this
+            // the client's balance drifts until the next /api/user pull
+            "gem": user["gem"].clone(),
             "card_list": new_cards,
             "item_list": user["item_list"].clone()
         },
@@ -317,6 +431,64 @@ async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl 
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
+    // The runtime banner draws only published + obtainable cards, honors the
+    // ensured slot, and speaks the agreed lottery_item id/number convention
+    #[test]
+    fn runtime_custom_banner_draw() {
+        let _lock = crate::runtime::lock_test_data_path();
+        crate::router::custom_card::tests::wipe(6001);
+
+        // Nothing obtainable: the draw comes back empty (the route then bails
+        // before charging)
+        assert!(custom_banner_cards(11).is_empty());
+
+        let mut r1_ids = Vec::new();
+        for seed in 0..3 {
+            let id = custom_card_db::next_card_id();
+            custom_card_db::insert_card(id, 1001, 6001, &object!{ "master_card_id": id, "rarity": 1, "seed": seed }, true, true);
+            r1_ids.push(id);
+        }
+        let r2 = custom_card_db::next_card_id();
+        custom_card_db::insert_card(r2, 1001, 6001, &object!{ "master_card_id": r2, "rarity": 2 }, true, true);
+        let r3 = custom_card_db::next_card_id();
+        custom_card_db::insert_card(r3, 1001, 6001, &object!{ "master_card_id": r3, "rarity": 3 }, true, true);
+        // Draft / unobtainable cards must never come out of the pool
+        let draft = custom_card_db::next_card_id();
+        custom_card_db::insert_card(draft, 1001, 6001, &object!{ "master_card_id": draft, "rarity": 1 }, false, true);
+        let unobtainable = custom_card_db::next_card_id();
+        custom_card_db::insert_card(unobtainable, 1001, 6001, &object!{ "master_card_id": unobtainable, "rarity": 1 }, true, false);
+
+        let drawn = custom_banner_cards(11);
+        assert_eq!(drawn.len(), 11);
+        // The ensured slot is drawn first: rarity 2 or 3
+        let first = drawn[0]["master_card_id"].as_i64().unwrap();
+        assert!(first == r2 || first == r3, "ensured slot drew {}", first);
+        for card in drawn.members() {
+            let id = card["master_card_id"].as_i64().unwrap();
+            assert!(r1_ids.contains(&id) || id == r2 || id == r3, "drew {}", id);
+            let rarity = custom_card_db::get_card(id).unwrap()["rarity"].as_i64().unwrap();
+            // The contract the client synthesizes its LotteryItemMst rows to
+            assert_eq!(card["master_lottery_item_id"].as_i64(), Some(690_000_100 + rarity));
+            assert_eq!(card["master_lottery_item_number"].as_i64(), Some(id - 150_000_000));
+            assert_eq!(card["id"], card["master_card_id"]);
+        }
+
+        // Single draws have no ensured slot but still only draw the pool
+        let single = custom_banner_cards(1);
+        assert_eq!(single.len(), 1);
+
+        // Price rows mirror the baked banners; unknown numbers are refused
+        assert_eq!(custom_banner_price(1)["price"].as_i64(), Some(3000));
+        assert_eq!(custom_banner_price(1)["count"].as_i64(), Some(11));
+        assert_eq!(custom_banner_price(2)["price"].as_i64(), Some(300));
+        assert_eq!(custom_banner_price(2)["count"].as_i64(), Some(1));
+        assert!(custom_banner_price(3).is_null());
+
+        crate::router::custom_card::tests::wipe(6001);
+    }
+
     #[test]
     fn custom_banner_draw() {
         for lid in [6110001i64, 6110002, 6110003, 6110004] {

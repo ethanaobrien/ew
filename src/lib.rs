@@ -27,6 +27,8 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
     let args = get_args();
     let port = args.port;
 
+    runtime::update_owners(&args.owner);
+
     if args.purge {
         println!("Purging accounts...");
         let ct = crate::router::userdata::purge_accounts();

@@ -21,7 +21,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 }
 
 async fn friend(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
-    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
+    let protocol = crate::router::global::client_protocol_version(&req);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -38,7 +38,7 @@ async fn friend(req: HttpRequest, Session { key, body }: Session) -> impl Respon
     };
 
     for uid in rv_data.members() {
-        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards);
+        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, protocol);
         user["user"]["last_login_time"] = global::set_time(user["user"]["last_login_time"].as_u64().unwrap_or(0), user_id, false).into();
         rv.push(user).unwrap();
     }
@@ -55,7 +55,7 @@ async fn ids(Login(key): Login) -> impl Responder {
 }
 
 async fn recommend(req: HttpRequest, Login(key): Login) -> impl Responder {
-    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
+    let protocol = crate::router::global::client_protocol_version(&req);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
 
@@ -67,7 +67,7 @@ async fn recommend(req: HttpRequest, Login(key): Login) -> impl Responder {
 
     let mut rv = array![];
     for uid in random.members() {
-        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards);
+        let mut user = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, protocol);
         if user["user"]["friend_request_disabled"] == 1 || user.is_empty() {
             continue;
         }
@@ -84,7 +84,7 @@ async fn search(req: HttpRequest, Session { key, body }: Session) -> impl Respon
     let friends = userdata::get_acc_friends(&key);
 
     let uid = body["user_id"].as_i64().unwrap();
-    let user = guest::get_user(uid, &friends, guest::UserView::Detail, crate::router::card::client_supports_custom_cards(&req));
+    let user = guest::get_user(uid, &friends, guest::UserView::Detail, crate::router::global::client_protocol_version(&req));
 
     Api(Some(if user.is_empty() {
         array![]

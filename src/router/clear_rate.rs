@@ -255,7 +255,7 @@ pub async fn clearrate(req: HttpRequest) -> impl Responder {
 }
 
 pub async fn ranking(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
-    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
+    let protocol = crate::router::global::client_protocol_version(&req);
     let self_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let live = body["master_live_id"].as_i64().unwrap();
 
@@ -266,15 +266,13 @@ pub async fn ranking(req: HttpRequest, Session { key, body }: Session) -> impl R
 
     for (i, data) in scores.members().enumerate() {
         let uid = data["user"].as_i64().unwrap();
-        let user = guest::get_user(uid, &object![], guest::UserView::Ranking, custom_cards);
+        let user = guest::get_user(uid, &object![], guest::UserView::Ranking, protocol);
         let user_obj = if uid == self_id {
             // The client wants the fields get_user hides from other players
             let mut self_user = object!{
                 user: userdata::get_acc_from_uid(uid)["user"].clone()
             };
-            if !custom_cards {
-                guest::proxy_user_cards(&mut self_user);
-            }
+            guest::proxy_user_cards(&mut self_user, protocol);
             self_user["user"].clone()
         } else {
             user["user"].clone()

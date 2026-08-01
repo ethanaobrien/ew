@@ -7,6 +7,7 @@ use std::fs;
 lazy_static! {
     static ref RUNNING: RwLock<bool> = RwLock::new(false);
     static ref DATAPATH: RwLock<String> = RwLock::new(String::new());
+    static ref OWNERS: RwLock<Vec<i64>> = RwLock::new(Vec::new());
     static ref MASTERDATA_PATH: RwLock<String> = RwLock::new(String::new());
     static ref MASTERDATA_WARNED: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
     static ref EASTER: RwLock<bool> = RwLock::new(false);
@@ -23,12 +24,29 @@ pub struct HostConfig {
     pub jp_android_asset_hash: String,
     pub en_android_asset_hash: String,
     pub enable_custom_songs: bool,
+    pub enable_custom_cards: bool,
 }
 
 // Lets an embedding app (or the tests) enable the opt-in custom songs feature
 // without a command-line flag
 pub fn set_enable_custom_songs(enabled: bool) {
     HOST_CONFIG.write().unwrap().enable_custom_songs = enabled;
+}
+
+pub fn set_enable_custom_cards(enabled: bool) {
+    HOST_CONFIG.write().unwrap().enable_custom_cards = enabled;
+}
+
+// The --owner uids: the permission system's bootstrap grantors. Process-level
+// state rather than db rows so they work on a fresh install and can't be
+// revoked through the webui
+pub fn update_owners(uids: &[i64]) {
+    let mut w = OWNERS.write().unwrap();
+    *w = uids.to_vec();
+}
+
+pub fn get_owners() -> Vec<i64> {
+    OWNERS.read().unwrap().clone()
 }
 
 pub fn set_running(running: bool) {
@@ -144,10 +162,13 @@ pub fn overlay_args(args: &mut crate::options::Args) {
     }
     overlay_str!(jp_android_asset_hash);
     overlay_str!(en_android_asset_hash);
-    // Overlay only ever enables the feature; a command-line --enable-custom-songs
-    // is never overridden back to off
+    // Overlay only ever enables the features; a command-line --enable-custom-songs
+    // / --enable-custom-cards is never overridden back to off
     if cfg.enable_custom_songs {
         args.enable_custom_songs = true;
+    }
+    if cfg.enable_custom_cards {
+        args.enable_custom_cards = true;
     }
 }
 
@@ -167,7 +188,9 @@ lazy_static! {
 pub fn lock_test_data_path() -> std::sync::MutexGuard<'static, ()> {
     let guard = crate::lock_onto_mutex!(TEST_LOCK);
     update_data_path(&TEST_DATA_DIR);
-    // The feature is off by default; tests exercise it, so turn it on while holding the lock
+    // The features are off by default; tests exercise them, so turn them on
+    // while holding the lock
     set_enable_custom_songs(true);
+    set_enable_custom_cards(true);
     guard
 }

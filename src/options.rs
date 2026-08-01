@@ -41,6 +41,12 @@ pub struct Args {
     #[arg(long, default_value_t = false, help = "Enable the custom songs feature (upload/browse/download). Disabled by default; every custom-songs endpoint and webui element is hidden unless this is set")]
     pub enable_custom_songs: bool,
 
+    #[arg(long, default_value_t = false, help = "Enable the custom cards feature (upload/manage runtime cards and characters). Disabled by default; every custom-cards endpoint and webui element is hidden unless this is set")]
+    pub enable_custom_cards: bool,
+
+    #[arg(long, value_delimiter = ',', help = "User id(s) of the server owner(s), repeatable or comma separated. Owner accounts implicitly hold every permission scope and are the only ones able to grant scopes on a fresh install")]
+    pub owner: Vec<i64>,
+
     #[arg(long, default_value_t = false, help = "Purge dead user accounts on startup")]
     pub purge: bool,
 

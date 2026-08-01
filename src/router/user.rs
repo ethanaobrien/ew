@@ -67,6 +67,12 @@ async fn user(req: HttpRequest, Login(key): Login) -> impl Responder {
         }
     }
 
+    // Runtime custom cards are unresolvable below protocol 3. start.rs blocks
+    // flagged accounts on old clients, so this is belt-and-braces
+    if !crate::router::custom_card::client_supports(&req) {
+        crate::router::custom_card::strip_unsupported(&mut user);
+    }
+
     global::api(&req, Some(user))
 }
 
@@ -243,12 +249,12 @@ async fn migration(Body(body): Body) -> impl Responder {
 
 async fn detail(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let friends = userdata::get_acc_friends(&key);
-    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
-    
+    let protocol = crate::router::global::client_protocol_version(&req);
+
     let mut user_detail_list = array![];
     for data in body["user_ids"].members() {
         let uid = data.as_i64().unwrap();
-        let user = guest::get_user(uid, &friends, guest::UserView::Detail, custom_cards);
+        let user = guest::get_user(uid, &friends, guest::UserView::Detail, protocol);
         user_detail_list.push(user).unwrap();
     }
     Api(Some(object!{

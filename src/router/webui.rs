@@ -4,12 +4,13 @@ use actix_web::{
     http::header::HeaderValue,
     http::header::ContentType
 };
-use jzon::{JsonValue, object};
+use jzon::{array, JsonValue, object};
 use lazy_static::lazy_static;
 use include_dir::{include_dir, Dir};
 use std::fs;
 
 use crate::include_file;
+use crate::database::permissions;
 use crate::router::{userdata, items};
 use crate::router::databases::csv::Region;
 
@@ -28,6 +29,12 @@ pub fn get_login_token(req: &HttpRequest) -> Option<String> {
         return None;
     }
     Some(cookies.split("ew_token=").last().unwrap_or("").split(';').collect::<Vec<_>>()[0].to_string())
+}
+
+fn session_uid(req: &HttpRequest) -> Option<i64> {
+    let token = get_login_token(req)?;
+    let login_token = userdata::webui_login_token(&token)?;
+    userdata::get_acc(&login_token)["user"]["id"].as_i64()
 }
 
 pub fn error(msg: &str) -> HttpResponse {
@@ -221,6 +228,7 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
         data: {
             account_import: get_config()["import"].as_bool().unwrap(),
             custom_songs: !crate::router::custom_song::disabled(),
+            custom_cards: !crate::router::custom_card::disabled(),
             links: {
                 global: args.global_android,
                 japan: args.japan_android,
@@ -358,6 +366,192 @@ pub fn list_items(_req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(ITEM.clone()))
 }
 
+lazy_static! {
+    // The selectable character list for the custom-card form: every official
+    // and SIF1-imported character in the baked csv, by name. The import band
+    // starts at 5001 (5001-5172 + 6001-6009); official ids top out at 4014
+    static ref CHARACTER_CHOICES: JsonValue = {
+        let mut rv = jzon::array![];
+        for row in crate::router::databases::csv::table(Region::Jp, "character").members() {
+            let Some(id) = row["id"].as_i64() else { continue; };
+            rv.push(object!{
+                id: id,
+                name: row["name"].clone(),
+                name_en: row["nameEn"].clone(),
+                category: if id >= 5000 { "imported" } else { "official" }
+            }).unwrap();
+        }
+        rv
+    };
+
+    // The skill_center table with its display strings, for picking a center
+    // skill by name instead of by raw id
+    static ref SKILL_CENTER_CHOICES: JsonValue = {
+        let mut en_rows = object!{};
+        for row in crate::router::databases::csv::table(Region::En, "skill_center").members() {
+            en_rows[row["id"].to_string()] = row.clone();
+        }
+        let mut rv = jzon::array![];
+        for row in crate::router::databases::csv::table(Region::Jp, "skill_center").members() {
+            let en = &en_rows[row["id"].to_string()];
+            rv.push(object!{
+                id: row["id"].clone(),
+                name: row["name"].clone(),
+                name_en: en["name"].clone(),
+                detail_text: row["detailText"].clone(),
+                detail_text_en: en["detailText"].clone()
+            }).unwrap();
+        }
+        rv
+    };
+}
+
+// The characters a card upload may reference, for the webui's searchable
+// picker: the baked official + imported list, plus the custom characters
+// this session may build on (their own and the publicly visible ones)
+pub fn list_characters(req: HttpRequest) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    let mut characters = CHARACTER_CHOICES.clone();
+    if !crate::router::custom_card::disabled() {
+        for character in crate::database::custom_card::get_selectable_characters(uid).members() {
+            characters.push(object!{
+                id: character["master_character_id"].clone(),
+                name: character["name"].clone(),
+                name_en: character["name_en"].clone(),
+                category: "custom"
+            }).unwrap();
+        }
+    }
+    let resp = object!{
+        result: "OK",
+        characters: characters
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+pub fn list_skill_centers(req: HttpRequest) -> HttpResponse {
+    if session_uid(&req).is_none() {
+        return error("Not logged in");
+    }
+    let resp = object!{
+        result: "OK",
+        skill_centers: SKILL_CENTER_CHOICES.clone()
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+// The concrete upload bounds (per-rarity stat caps, enum ranges, skill array
+// lengths) so the form enforces them before submitting
+pub fn custom_card_limits(req: HttpRequest) -> HttpResponse {
+    if session_uid(&req).is_none() {
+        return error("Not logged in");
+    }
+    let resp = object!{
+        result: "OK",
+        data: crate::router::custom_card::upload_limits()
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+// The requesting user's own effective scopes, for webui nav gating. Any
+// session may ask - it only ever reveals what the user themselves holds
+pub fn my_scopes(req: HttpRequest) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    let resp = object!{
+        result: "OK",
+        data: {
+            uid: uid,
+            scopes: permissions::scopes_for(uid),
+            can_upload_cards: permissions::has(uid, permissions::CARD_UPLOAD),
+            can_publish_cards: permissions::has(uid, permissions::CARD_PUBLISH),
+            can_edit_any_cards: permissions::has(uid, permissions::CARD_EDIT),
+            can_manage_permissions: permissions::has(uid, permissions::PERMISSION_GRANT)
+                || permissions::has(uid, permissions::PERMISSION_REVOKE)
+        }
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+// The admin view: every grant plus the grantable vocabulary. Needs a
+// permission.* scope - my_scopes is the anyone-can-ask endpoint
+pub fn list_permissions(req: HttpRequest) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    let can_grant = permissions::has(uid, permissions::PERMISSION_GRANT);
+    let can_revoke = permissions::has(uid, permissions::PERMISSION_REVOKE);
+    if !can_grant && !can_revoke {
+        return error("You do not have permission to manage scopes");
+    }
+    let mut available = array![];
+    for scope in permissions::SCOPES {
+        available.push(*scope).unwrap();
+    }
+    let resp = object!{
+        result: "OK",
+        data: {
+            uid: uid,
+            can_grant: can_grant,
+            can_revoke: can_revoke,
+            scopes: permissions::scopes_for(uid),
+            available: available,
+            grants: permissions::grants()
+        }
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+pub fn grant_permission(req: HttpRequest, body: String) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    let body = jzon::parse(&body).unwrap_or(object!{});
+    let target = body["uid"].as_i64().unwrap_or(0);
+    let scope = body["scope"].to_string();
+    if userdata::get_login_token(target) == String::new() {
+        return error(&format!("User {} does not exist", target));
+    }
+    if let Err(e) = permissions::grant(target, &scope, uid) {
+        return error(&e);
+    }
+    let resp = object!{
+        result: "OK"
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+pub fn revoke_permission(req: HttpRequest, body: String) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    let body = jzon::parse(&body).unwrap_or(object!{});
+    if let Err(e) = permissions::revoke(body["uid"].as_i64().unwrap_or(0), &body["scope"].to_string(), uid) {
+        return error(&e);
+    }
+    let resp = object!{
+        result: "OK"
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
 pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
     let token = get_login_token(&req);
     if token.is_none() {
@@ -396,4 +590,33 @@ pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType::json())
         .body(jzon::stringify(resp))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // The picker lists the card form searches by name: every baked character
+    // (official + SIF1 import, badged apart) and every skill_center row with
+    // its JP and EN display strings
+    #[test]
+    fn character_and_skill_center_choices_are_wellformed() {
+        assert!(CHARACTER_CHOICES.len() > 200, "got {}", CHARACTER_CHOICES.len());
+        let honoka = CHARACTER_CHOICES.members().find(|row| row["id"] == 1001).unwrap();
+        assert_eq!(honoka["name_en"].as_str(), Some("Honoka Kosaka"));
+        assert_eq!(honoka["category"].as_str(), Some("official"));
+        let imported = CHARACTER_CHOICES.members().find(|row| row["id"] == 5153).unwrap();
+        assert_eq!(imported["category"].as_str(), Some("imported"));
+        for row in CHARACTER_CHOICES.members() {
+            assert!(row["id"].as_i64().unwrap() > 0);
+            assert!(!row["name"].to_string().is_empty());
+        }
+
+        assert!(SKILL_CENTER_CHOICES.len() > 60, "got {}", SKILL_CENTER_CHOICES.len());
+        let first = SKILL_CENTER_CHOICES.members().find(|row| row["id"] == 100001).unwrap();
+        assert_eq!(first["name_en"].as_str(), Some("Smile Heart"));
+        assert_eq!(first["detail_text_en"].as_str(), Some("Smile points increased by 3%"));
+        assert!(!first["name"].to_string().is_empty());
+        assert!(!first["detail_text"].to_string().is_empty());
+    }
 }

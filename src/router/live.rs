@@ -81,7 +81,7 @@ fn random_number(lowest: usize, highest: usize) -> usize {
 }
 
 async fn guest(req: HttpRequest, Login(key): Login) -> impl Responder {
-    let custom_cards = crate::router::card::client_supports_custom_cards(&req);
+    let protocol = crate::router::global::client_protocol_version(&req);
     let user_id = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let friends = userdata::get_acc_friends(&key);
     let user = userdata::get_acc(&key);
@@ -136,7 +136,7 @@ async fn guest(req: HttpRequest, Login(key): Login) -> impl Responder {
         }).unwrap();
     } else {
         if !friends["friend_user_id_list"].is_empty() {
-            guest_list.push(guest::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards)).unwrap();
+            guest_list.push(guest::get_user(friends["friend_user_id_list"][random_number(0, friends["friend_user_id_list"].len() - 1)].as_i64().unwrap(), &friends, guest::UserView::Card, protocol)).unwrap();
         }
         let expected: usize = 5;
         if guest_list.len() < expected {
@@ -147,7 +147,7 @@ async fn guest(req: HttpRequest, Login(key): Login) -> impl Responder {
             }
             
             for uid in random.members() {
-                let guest = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, custom_cards);
+                let guest = guest::get_user(uid.as_i64().unwrap(), &friends, guest::UserView::Card, protocol);
                 if guest["user"]["friend_request_disabled"] == 1 || guest.is_empty() {
                     continue;
                 }
@@ -514,7 +514,9 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &mut JsonValue, mis
             Some(x) => x,
             None => continue
         };
-        let character = match databases::CARD_LIST[mcid.to_string()]["masterCharacterId"].as_i64() {
+        // card_info falls through to the custom-card db, so a runtime card in
+        // the deck still earns its character's bond
+        let character = match crate::router::custom_card::card_info(mcid)["masterCharacterId"].as_i64() {
             Some(c) => c,
             None => continue
         };
