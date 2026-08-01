@@ -173,7 +173,20 @@ fn get_song_title(live_id: i32, english: bool) -> String {
     if !details.is_null() {
         return details["name"].to_string();
     }
+    // Custom songs aren't in the official music mst (their live_id ==
+    // music_id). PUBLIC ones show their real title; private/shared ones are
+    // already filtered out of the page and would stay "Unknown Song" even if
+    // one slipped through - the lookup only ever answers for public songs
+    if let Some(title) = crate::router::custom_song::public_song_title(live_id as i64, english) {
+        return title;
+    }
     String::from("Unknown Song")
+}
+
+// Titles land inside HTML text and attributes; custom song names are user
+// input, so escape them (official names contain nothing that needs it)
+fn html_escape(text: &str) -> String {
+    text.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;")
 }
 
 fn get_pass_percent(failed: i64, pass: i64) -> String {
@@ -315,8 +328,8 @@ fn get_html() -> JsonValue {
             if total == 0 { 0.0 } else { pass as f64 / total as f64 }
         };
 
-        let title_jp = get_song_title(info.live_id, false);
-        let title_en = get_song_title(info.live_id, true);
+        let title_jp = html_escape(&get_song_title(info.live_id, false));
+        let title_en = html_escape(&get_song_title(info.live_id, true));
 
         let normal_txt = get_pass_percent(info.normal_failed, info.normal_pass);
         let hard_txt = get_pass_percent(info.hard_failed, info.hard_pass);

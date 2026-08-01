@@ -239,6 +239,24 @@ pub fn export_allowed(music_id: i64, viewer: Option<i64>) -> Result<(), &'static
     Ok(())
 }
 
+// The display title for a PUBLIC custom song, for the clear-rate page.
+// Private/shared songs return None - their names (and existence) must not
+// leak beyond the visibility rules, so this never falls back past the
+// explicit visibility check (an absent row is None, not "public")
+pub fn public_song_title(music_id: i64, english: bool) -> Option<String> {
+    if !(FIRST_MUSIC_ID..=LAST_MUSIC_ID).contains(&music_id) {
+        return None;
+    }
+    let visibility = DATABASE.lock_and_select("SELECT visibility FROM songs WHERE music_id=?1", params!(music_id)).ok()?;
+    if visibility != "public" {
+        return None;
+    }
+    let song = get_song(music_id)?;
+    let name = song["name"].as_str().unwrap_or("").to_string();
+    let name_en = song["name_en"].as_str().unwrap_or("").to_string();
+    Some(if english && !name_en.is_empty() { name_en } else { name })
+}
+
 pub fn get_music_ids_for_user(user_id: i64) -> JsonValue {
     DATABASE.lock_and_select_all("
     SELECT music_id FROM songs

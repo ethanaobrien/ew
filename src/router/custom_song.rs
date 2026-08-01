@@ -124,6 +124,15 @@ pub fn hidden_live_ids() -> JsonValue {
     database::non_public_music_ids()
 }
 
+// The clear-rate page shows real titles for PUBLIC custom songs; anything
+// else stays exactly as hidden as before
+pub fn public_song_title(music_id: i64, english: bool) -> Option<String> {
+    if disabled() {
+        return None;
+    }
+    database::public_song_title(music_id, english)
+}
+
 pub fn hidden_live_ids_for_user(uid: i64) -> JsonValue {
     if disabled() {
         return array![];
@@ -1577,6 +1586,51 @@ mod tests {
         assert_ne!(new_md5, chart_md5);
         assert_eq!(call(&chart_md5, "json").status(), actix_web::http::StatusCode::NOT_FOUND);
         assert_eq!(call(&new_md5, "json").status(), actix_web::http::StatusCode::OK);
+    }
+
+    // The public clear-rate HTML page shows the REAL title for public custom
+    // songs (escaped - names are user input), keeps private songs entirely
+    // absent, and prefers name_en for the EN title attribute
+    #[test]
+    fn clearrate_html_shows_public_custom_song_titles() {
+        use actix_web::test::TestRequest;
+        use crate::router::clear_rate;
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let public_id = database::next_music_id();
+        database::insert_song(public_id, 6100, &object!{
+            music_id: public_id,
+            name: "Public <Song> & \"Co\"",
+            name_en: "Public Song EN"
+        }, "public", &array![], false);
+        let private_id = database::next_music_id();
+        database::insert_song(private_id, 6100, &object!{
+            music_id: private_id,
+            name: "Top Secret Anthem"
+        }, "private", &array![], false);
+        for id in [public_id, private_id] {
+            clear_rate::live_completed(id, 1, false, 100, 6100);
+        }
+        clear_rate::invalidate_cache();
+
+        let html = actix_web::rt::System::new().block_on(async {
+            let resp = clear_rate::clearrate_html(TestRequest::default().to_http_request()).await;
+            let body = actix_web::body::to_bytes(resp.into_body()).await.unwrap();
+            String::from_utf8_lossy(&body).to_string()
+        });
+        // The public song's real (escaped) title, JP cell and EN attribute
+        assert!(html.contains("Public &lt;Song&gt; &amp; &quot;Co&quot;"), "public title missing");
+        assert!(html.contains("Public Song EN"), "EN title missing");
+        // Never the raw unescaped markup
+        assert!(!html.contains("Public <Song>"), "title not escaped");
+        // The private song leaks neither name nor row
+        assert!(!html.contains("Top Secret Anthem"), "private name leaked");
+
+        // The title lookup itself only answers for public songs
+        assert_eq!(database::public_song_title(public_id, false), Some(String::from("Public <Song> & \"Co\"")));
+        assert_eq!(database::public_song_title(public_id, true), Some(String::from("Public Song EN")));
+        assert_eq!(database::public_song_title(private_id, false), None);
+        assert_eq!(database::public_song_title(private_id + 5000, false), None);
     }
 
     // The JSON clear-rate endpoint filters non-public custom songs per requesting
