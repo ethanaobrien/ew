@@ -2,6 +2,9 @@
 // in-process symphonia + vorbis machinery
 pub mod audio;
 mod chart;
+// One-time startup regroup of charts stored before the spawn-group pairing rule; called from
+// run_server, no-op when the feature is disabled or every chart is already correctly grouped
+pub mod migrate;
 mod package;
 
 use jzon::{array, object, JsonValue};
@@ -1013,6 +1016,102 @@ mod tests {
 
     fn field(fields: &mut HashMap<String, Vec<u8>>, key: &str, value: &str) {
         fields.insert(String::from(key), value.as_bytes().to_vec());
+    }
+
+    // A SIF1 chart whose transcode contains 3+ simultaneous notes: 4 parallel holds into a
+    // full 9-lane wall (the shape of the field-reported chart that exposed the old encoding)
+    fn wall_chart() -> Vec<u8> {
+        let mut beatmap = jzon::array![];
+        for position in [2, 4, 6, 8] {
+            beatmap.push(jzon::object!{
+                "timing_sec": 1.0, "notes_attribute": 1, "notes_level": 1,
+                "effect": 3, "effect_value": 1.0, "position": position
+            }).unwrap();
+        }
+        for position in 1..=9 {
+            beatmap.push(jzon::object!{
+                "timing_sec": 2.75, "notes_attribute": 1, "notes_level": 1,
+                "effect": 1, "effect_value": 0.0, "position": position
+            }).unwrap();
+        }
+        jzon::stringify(beatmap).into_bytes()
+    }
+
+    // The startup migration: a chart stored with the PRE-pairing encoding (whole equal-time
+    // clusters sharing one num) is regrouped in place, its catalog md5/size follow the new
+    // bytes, the revision bumps exactly once, correctly-encoded songs stay byte-identical,
+    // and a second run is a complete no-op
+    #[test]
+    fn startup_migration_regroups_pre_fix_charts() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Migration Target");
+        field(&mut fields, "artist", "Wall Artist");
+        field(&mut fields, "attribute", "1");
+        field(&mut fields, "level_number_4", "15");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg_tone(550.0));
+        fields.insert(String::from("chart_4"), wall_chart());
+        let target = create_song(3333, &fields).unwrap();
+
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Migration Control");
+        field(&mut fields, "artist", "Control Artist");
+        field(&mut fields, "attribute", "2");
+        field(&mut fields, "level_number_1", "5");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg_tone(770.0));
+        fields.insert(String::from("chart_1"), test_chart());
+        let control = create_song(4444, &fields).unwrap();
+
+        // The upload stored the CURRENT encoding; capture it, then doctor the store back to
+        // the pre-pairing form exactly as an old server would have written it: squashed
+        // chart bytes on disk and the catalog md5/size matching those bytes
+        let path = song_path(target, "chart_4.json");
+        let fixed_bytes = fs::read(&path).unwrap();
+        let mut squashed = jzon::parse(&String::from_utf8_lossy(&fixed_bytes)).unwrap();
+        chart::squash_to_pre_fix(&mut squashed);
+        let squashed_bytes = jzon::stringify(squashed).into_bytes();
+        assert_ne!(squashed_bytes, fixed_bytes);
+        fs::write(&path, &squashed_bytes).unwrap();
+        let mut song = database::get_song(target).unwrap();
+        let (md5, size) = asset_meta(&squashed_bytes);
+        for entry in song["levels"].members_mut() {
+            if entry["level"] == 4 {
+                entry["md5"] = md5.clone().into();
+                entry["size"] = size.into();
+            }
+        }
+        database::update_song(target, &song);
+
+        let control_bytes = fs::read(song_path(control, "chart_1.json")).unwrap();
+        let control_song = database::get_song(control).unwrap();
+        let revision = database::get_revision();
+
+        migrate::run();
+
+        // The target chart is byte-identical to what the current transcoder stores, and the
+        // catalog follows the new bytes
+        let migrated = fs::read(&path).unwrap();
+        assert_eq!(migrated, fixed_bytes);
+        let song = database::get_song(target).unwrap();
+        let level = song["levels"].members().find(|l| l["level"] == 4).unwrap();
+        let (md5, size) = asset_meta(&fixed_bytes);
+        assert_eq!(level["md5"].to_string(), md5);
+        assert_eq!(level["size"].as_usize().unwrap(), size);
+        // full_combo never depended on grouping and must not move
+        assert_eq!(level["full_combo"], 9 + 4);
+
+        // Exactly one revision bump, and the control song is untouched
+        assert_eq!(database::get_revision(), revision + 1);
+        assert_eq!(fs::read(song_path(control, "chart_1.json")).unwrap(), control_bytes);
+        assert_eq!(jzon::stringify(database::get_song(control).unwrap()), jzon::stringify(control_song));
+
+        // Idempotent: a second boot changes nothing and bumps nothing
+        migrate::run();
+        assert_eq!(fs::read(&path).unwrap(), fixed_bytes);
+        assert_eq!(database::get_revision(), revision + 1);
     }
 
     // Export a song, import the package as another user, and the served song

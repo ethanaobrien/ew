@@ -87,9 +87,12 @@ const CARD_TYPE_MAX: i64 = 4;
 const CARD_RARITY_MIN: i64 = 1;
 const CARD_RARITY_MAX: i64 = 3;
 const RARITY_NAMES: &[&str] = &["R", "SR", "UR"];
-// Sanity ceilings for the level-indexed skill arrays
-const SKILL_PROBABILITY_MAX: i64 = 1_000_000;
-const SKILL_MILLI_SECS_MAX: i64 = 600_000;
+// Indexed by effect_type (0 unused)
+const EFFECT_NAMES: &[&str] = &[
+    "none", "smile p up", "pure p up", "cool p up", "score up",
+    "perfect window", "stamina recovery", "skill chance up",
+    "skill level boost", "param sync", "combo fever", "skill repeat"
+];
 
 struct ArtKind {
     kind: &'static str,
@@ -144,6 +147,36 @@ const MAX_VOICE_SECONDS: f64 = 30.0;
 
 type Fields = HashMap<String, Vec<u8>>;
 
+// new_skill's level-array columns come out of the csv layer as either
+// [number] (a single plain value) or ["a/b/c"] (the slash-packed string) -
+// flatten both into the numeric values
+fn shipped_values(cell: &JsonValue) -> Vec<i64> {
+    let mut rv = Vec::new();
+    let mut sources: Vec<String> = Vec::new();
+    for member in cell.members() {
+        if let Some(value) = member.as_i64() {
+            rv.push(value);
+        } else if let Some(s) = member.as_str() {
+            sources.push(s.to_string());
+        }
+    }
+    if !cell.is_array() {
+        if let Some(value) = cell.as_i64() {
+            rv.push(value);
+        } else if let Some(s) = cell.as_str() {
+            sources.push(s.to_string());
+        }
+    }
+    for source in sources {
+        for part in source.split('/') {
+            if let Ok(value) = part.trim().parse::<i64>() {
+                rv.push(value);
+            }
+        }
+    }
+    rv
+}
+
 lazy_static! {
     // Id allocation and the insert must not race between two uploads
     static ref UPLOAD_LOCK: Mutex<()> = Mutex::new(());
@@ -178,6 +211,70 @@ lazy_static! {
             rv.insert(rarity, *per_curve.get(&curve).unwrap_or(&0));
         }
         rv
+    };
+
+    // Skill MAGNITUDE envelopes derived from the shipped new_skill.csv, the
+    // same way STAT_CAPS derives from card.csv. Enums are bounded elsewhere;
+    // these bound the numbers (a 40-second buff and a 1e8 score-up both got
+    // uploaded before this existed). Official rows (id < 100M) define the
+    // range; effect types no official row uses (1-3, 7-11 - the SIF1-port
+    // additions) fall back to the imported band's engineered range, flagged
+    // so the error message says which. (min, max, "official"/"imported")
+    static ref SKILL_VALUE_RANGES: HashMap<i64, (i64, i64, &'static str)> = {
+        let mut official: HashMap<i64, (i64, i64)> = HashMap::new();
+        let mut imported: HashMap<i64, (i64, i64)> = HashMap::new();
+        for row in table(Region::Jp, "new_skill").members() {
+            let Some(id) = row["id"].as_i64() else { continue; };
+            let Some(effect) = row["effectType"].as_i64() else { continue; };
+            let into = if id < 100_000_000 { &mut official } else { &mut imported };
+            for value in shipped_values(&row["effectiveValues"]) {
+                let entry = into.entry(effect).or_insert((value, value));
+                entry.0 = entry.0.min(value);
+                entry.1 = entry.1.max(value);
+            }
+        }
+        let mut rv = HashMap::new();
+        for (effect, (min, max)) in imported {
+            rv.insert(effect, (min, max, "imported"));
+        }
+        for (effect, (min, max)) in official {
+            rv.insert(effect, (min, max, "official"));
+        }
+        rv
+    };
+
+    // trigger -> (min, max) trigger_value over the official rows (trigger 4 =
+    // SECOND counts in milliseconds, hence its larger numbers)
+    static ref SKILL_TRIGGER_RANGES: HashMap<i64, (i64, i64)> = {
+        let mut rv: HashMap<i64, (i64, i64)> = HashMap::new();
+        for row in table(Region::Jp, "new_skill").members() {
+            if row["id"].as_i64().unwrap_or(i64::MAX) >= 100_000_000 { continue; }
+            let Some(trigger) = row["trigger"].as_i64() else { continue; };
+            for value in shipped_values(&row["triggerValue"]) {
+                let entry = rv.entry(trigger).or_insert((value, value));
+                entry.0 = entry.0.min(value);
+                entry.1 = entry.1.max(value);
+            }
+        }
+        rv
+    };
+
+    // (probability, effective_milli_secs) global (min, max) over official rows
+    static ref SKILL_SCALAR_RANGES: ((i64, i64), (i64, i64)) = {
+        let mut prob = (i64::MAX, 0);
+        let mut ms = (i64::MAX, 0);
+        for row in table(Region::Jp, "new_skill").members() {
+            if row["id"].as_i64().unwrap_or(i64::MAX) >= 100_000_000 { continue; }
+            for value in shipped_values(&row["probability"]) {
+                prob.0 = prob.0.min(value);
+                prob.1 = prob.1.max(value);
+            }
+            for value in shipped_values(&row["effectiveMilliSecs"]) {
+                ms.0 = ms.0.min(value);
+                ms.1 = ms.1.max(value);
+            }
+        }
+        (prob, ms)
     };
 
     // rarity -> (hp, smile, cool, pure) ceilings: the maximum any official
@@ -367,6 +464,24 @@ pub fn upload_limits() -> JsonValue {
             "name_en": row["nameEn"].clone()
         }).unwrap();
     }
+    // The skill magnitude envelopes, so the form's number inputs carry real
+    // min/max and reject out-of-range (and e-notation) before submitting
+    let mut effect_value_ranges = object!{};
+    for (effect, (min, max, source)) in SKILL_VALUE_RANGES.iter() {
+        effect_value_ranges[effect.to_string()] = object!{
+            "min": *min,
+            "max": *max,
+            "source": *source
+        };
+    }
+    let mut trigger_value_ranges = object!{};
+    for (trigger, (min, max)) in SKILL_TRIGGER_RANGES.iter() {
+        trigger_value_ranges[trigger.to_string()] = object!{
+            "min": *min,
+            "max": *max
+        };
+    }
+    let ((prob_min, prob_max), (ms_min, ms_max)) = *SKILL_SCALAR_RANGES;
     object!{
         "stat_caps": stat_caps,
         "skill_levels": skill_levels,
@@ -377,8 +492,12 @@ pub fn upload_limits() -> JsonValue {
         "effect_type_max": SKILL_EFFECT_TYPE_MAX,
         "sub_target_max": SKILL_SUB_TARGET_MAX,
         "school_grade_max": SKILL_SCHOOL_GRADE_MAX,
-        "probability_max": SKILL_PROBABILITY_MAX,
-        "milli_secs_max": SKILL_MILLI_SECS_MAX,
+        "skill_ranges": {
+            "effect_values": effect_value_ranges,
+            "trigger_values": trigger_value_ranges,
+            "probability": { "min": prob_min, "max": prob_max },
+            "milli_secs": { "min": ms_min, "max": ms_max }
+        },
         "min_source_dim": art::MIN_SOURCE_DIM
     }
 }
@@ -903,22 +1022,32 @@ fn build_card(master_card_id: i64, master_character_id: i64, fields: &Fields, st
     }
 
     // The client walks these in lockstep with the skill level, so each must
-    // carry exactly one value per level of the rarity's curve. Shipped
+    // carry exactly one value per level of the rarity's curve (shipped
     // masterdata also allows a single constant duration, so
-    // effective_milli_secs may be 1 long
+    // effective_milli_secs may be 1 long). MAGNITUDES are clamped to the
+    // ranges the shipped skill rows actually use - a 40-second buff and a
+    // 1e8 score-up both made it through before these bounds existed
+    let (trigger_min, trigger_max) = *SKILL_TRIGGER_RANGES.get(&trigger).unwrap_or(&(1, 1));
+    let (value_min, value_max, value_source) = *SKILL_VALUE_RANGES.get(&effect_type).unwrap_or(&(1, 1, "official"));
+    let ((prob_min, prob_max), (ms_min, ms_max)) = *SKILL_SCALAR_RANGES;
+    let bounds = [
+        ("skill_trigger_value", "trigger_value", trigger_min, trigger_max,
+         format!("for trigger {} (the official range)", trigger)),
+        ("skill_probability", "probability", prob_min, prob_max,
+         format!("({}%-{}%, the official range)", prob_min / 1000, prob_max / 1000)),
+        ("skill_effective_milli_secs", "effective_milli_secs", ms_min, ms_max,
+         String::from("milliseconds (the official range)")),
+        ("skill_effective_values", "effective_values", value_min, value_max,
+         format!("for effect_type {} ({}) (the {} range)", effect_type, EFFECT_NAMES[effect_type as usize], value_source))
+    ];
     let mut arrays: HashMap<&str, Vec<i64>> = HashMap::new();
-    for (form, key, max) in [
-        ("skill_trigger_value", "trigger_value", u32::MAX as i64),
-        ("skill_probability", "probability", SKILL_PROBABILITY_MAX),
-        ("skill_effective_milli_secs", "effective_milli_secs", SKILL_MILLI_SECS_MAX),
-        ("skill_effective_values", "effective_values", u32::MAX as i64)
-    ] {
+    for (form, key, min, max, label) in bounds {
         let values = levels_of(fields, form, &stored_skill, key)?;
         if values.len() != levels && !(key == "effective_milli_secs" && values.len() == 1) {
             return Err(format!("{} needs exactly {} values for a rarity {} card, got {}", form, levels, rarity, values.len()));
         }
-        if let Some(value) = values.iter().find(|v| **v > max) {
-            return Err(format!("{}: '{}' exceeds the maximum of {}", form, value, max));
+        if let Some(value) = values.iter().find(|v| **v < min || **v > max) {
+            return Err(format!("{}: '{}' is out of range - values must be {}-{} {}", form, value, min, max, label));
         }
         arrays.insert(key, values);
     }
@@ -1624,6 +1753,31 @@ pub mod tests {
         wipe(4010);
     }
 
+    // Diagnostic + sanity guard for the derived skill magnitude envelopes
+    #[test]
+    fn skill_ranges_derive_from_shipped_rows() {
+        println!("effect_values:");
+        for effect in 1..=11i64 {
+            let (min, max, source) = SKILL_VALUE_RANGES.get(&effect).copied().unwrap_or((0, 0, "MISSING"));
+            println!("  {} ({}): {}..{} [{}]", effect, EFFECT_NAMES[effect as usize], min, max, source);
+            assert!(min >= 1 && max >= min, "effect {} has no sane range", effect);
+        }
+        println!("trigger_values:");
+        for trigger in 1..=4i64 {
+            let (min, max) = SKILL_TRIGGER_RANGES.get(&trigger).copied().unwrap_or((0, 0));
+            println!("  {}: {}..{}", trigger, min, max);
+            assert!(min >= 1 && max >= min, "trigger {} has no sane range", trigger);
+        }
+        let ((prob_min, prob_max), (ms_min, ms_max)) = *SKILL_SCALAR_RANGES;
+        println!("probability: {}..{}", prob_min, prob_max);
+        println!("milli_secs: {}..{}", ms_min, ms_max);
+        // The two incidents must be outside whatever derives
+        assert!(prob_min >= 1000 && prob_max <= 100_000);
+        assert!(ms_min >= 500 && ms_max < 40_000, "40s buffs must be out of range");
+        let (_, value_max, _) = SKILL_VALUE_RANGES[&4];
+        assert!(value_max < 100_000_000, "1e8 score-ups must be out of range");
+    }
+
     // A full create: derived ids, pinned columns, art md5s and the catalog
     // shape the client parses
     #[test]
@@ -1806,9 +1960,34 @@ pub mod tests {
         assert!(run(&mutated("skill_effective_values", "1/2/x")).unwrap_err().contains("not a number"));
         assert!(run(&mutated("skill_trigger_value", "")).unwrap_err().contains("skill_trigger_value"));
         assert!(run(&mutated("skill_effective_milli_secs", "2000")).is_ok());
-        assert!(run(&mutated("skill_probability", "2000000/1/1")).unwrap_err().contains("maximum"));
         // Rarity 2 wants 5 entries, so the rarity-1 arrays no longer fit
         assert!(run(&mutated("rarity", "2")).unwrap_err().contains("needs exactly 5"));
+
+        // Skill MAGNITUDES clamp to the shipped ranges - both real incidents:
+        // the 40-second buff and the 1e8 score-up
+        let ms_err = run(&mutated("skill_effective_milli_secs", "40000/40000/40000")).unwrap_err();
+        assert!(ms_err.contains("skill_effective_milli_secs") && ms_err.contains("2000-6000"), "{}", ms_err);
+        let value_err = run(&mutated("skill_effective_values", "100000000/100000000/100000000")).unwrap_err();
+        assert!(value_err.contains("91-439") && value_err.contains("score up") && value_err.contains("official"), "{}", value_err);
+        // Literal e-notation never even parses as an integer
+        assert!(run(&mutated("skill_effective_values", "1e8/1e8/1e8")).unwrap_err().contains("not a number"));
+        // Boundary accept/reject for effect 4 (score up), official 91-439
+        assert!(run(&mutated("skill_effective_values", "91/200/439")).is_ok());
+        assert!(run(&mutated("skill_effective_values", "91/200/440")).unwrap_err().contains("out of range"));
+        assert!(run(&mutated("skill_effective_values", "90/200/439")).unwrap_err().contains("out of range"));
+        // A SIF1-port effect type bounds to the imported band's range
+        let mut fields = base_fields();
+        field(&mut fields, "skill_effect_type", "5");
+        field(&mut fields, "skill_effective_values", "1/2/2");
+        assert!(run(&fields).is_ok());
+        field(&mut fields, "skill_effect_type", "7");
+        let err = run(&fields).unwrap_err();
+        assert!(err.contains("1090-2600") && err.contains("imported"), "{}", err);
+        // Trigger values bound per trigger (trigger 3 = PERFECTs, 13-30) and
+        // probability to the official 16%-75%
+        assert!(run(&mutated("skill_trigger_value", "13/20/31")).unwrap_err().contains("13-30"));
+        assert!(run(&mutated("skill_probability", "80000/39000/39000")).unwrap_err().contains("16000-75000"));
+        assert!(run(&mutated("skill_probability", "15999/39000/39000")).unwrap_err().contains("out of range"));
 
         // Stat bounds, computed from the official card.csv: hp really is a
         // tiny per-rarity constant (R 2 / SR 3 / UR 4), so an R card allows
@@ -1871,8 +2050,8 @@ pub mod tests {
         fields.insert(String::from("pr"), seeded_png(32, 32, 9));
         assert!(runc(&fields).unwrap_err().contains("at least"));
 
-        // Only the two deliberate successes above wrote rows
-        assert_eq!(database::card_count_for_owner(4004), 2);
+        // Only the deliberate successes above wrote rows
+        assert_eq!(database::card_count_for_owner(4004), 4);
         wipe(4004);
     }
 
@@ -1930,10 +2109,12 @@ pub mod tests {
         let before = database::get_card(id).unwrap();
 
         // The sc_00 override is deliberately the wrong size: an update crops
-        // it to target just like create does
+        // it to target just like create does. The effect change brings values
+        // in that effect's shipped range along (the old ones are out of it)
         let mut edit = Fields::new();
         field(&mut edit, "name", "Renamed");
         field(&mut edit, "skill_effect_type", "7");
+        field(&mut edit, "skill_effective_values", "1090/2000/2600");
         edit.insert(String::from("sc_00"), seeded_png(700, 900, 99));
         with_permissions(4007, &[permissions::CARD_UPLOAD], || update_card(4007, id, &edit).unwrap());
 

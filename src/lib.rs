@@ -35,6 +35,11 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
         println!("Purged {} accounts", ct);
     }
 
+    // One-time, idempotent: charts stored before the custom-song spawn-group pairing rule are
+    // regrouped in place and their catalog md5s refreshed, so clients re-download the fixed
+    // encoding. No-op when custom songs are disabled or nothing needs rewriting.
+    router::custom_song::migrate::run();
+
     let rv = HttpServer::new(|| App::new()
     //.wrap(Cors::permissive())
     .wrap_fn(|req, srv| {

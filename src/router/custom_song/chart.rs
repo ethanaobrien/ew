@@ -262,6 +262,113 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
     }, max_combo_count))
 }
 
+// Regroups a STORED transcoded chart whose spawn groups predate the pairing rule above: the
+// old transcoder gave every note of an equal-time cluster one shared num (force_sync_group_id
+// always 0), and the client renders no head markers for a group of 3+ (see the header
+// comment). This rebuilds num / force_sync_group_id in place with the same clustering the
+// transcoder now uses — equal final time, lane-sorted, chunks of two, chained
+// force_sync_group_id — and re-points child_num at each child's renumbered spawn group.
+// Everything else (ids, times, lines, types, parent/child links, max_combo_count — combo
+// counting never depended on grouping) is untouched, so on a chart the current transcoder
+// produced this reproduces the stored bytes exactly.
+//
+// Returns false (chart untouched) unless some num is shared by MORE than two notes. That
+// makes it a safe no-op on current uploads AND on official-style encodings (whose num values
+// differ from ours — e.g. gaps of 3 — but whose groups never exceed two).
+pub fn regroup(chart: &mut JsonValue) -> bool {
+    // (id, time, line) per real note; the dummy header at [0] stays untouched
+    let notes: Vec<(i64, f64, i64)> = chart["notes"].members().skip(1).map(|n| (
+        n["id"].as_i64().unwrap_or(0),
+        n["time"].as_f64().unwrap_or(0.0),
+        n["line"].as_i64().unwrap_or(0)
+    )).collect();
+
+    // Only a pre-pairing chart (some num shared 3+ ways) is rewritten
+    let mut group_sizes: Vec<(i64, i64)> = Vec::new();
+    for data in chart["notes"].members().skip(1) {
+        let num = data["num"].as_i64().unwrap_or(0);
+        match group_sizes.iter_mut().find(|(n, _)| *n == num) {
+            Some((_, count)) => *count += 1,
+            None => group_sizes.push((num, 1))
+        }
+    }
+    if group_sizes.iter().all(|(_, count)| *count <= 2) {
+        return false;
+    }
+
+    // Time order; ids break ties (transcode issues them in time order, so this reproduces
+    // the emission order the grouping pass originally saw)
+    let mut order: Vec<usize> = (0..notes.len()).collect();
+    order.sort_by(|a, b| notes[*a].1.total_cmp(&notes[*b].1).then(notes[*a].0.cmp(&notes[*b].0)));
+
+    // id -> (new num, new force_sync_group_id)
+    let mut assigned: Vec<(i64, i64, i64)> = Vec::with_capacity(notes.len());
+    let mut num = 100;
+    let mut start = 0;
+    while start < order.len() {
+        let mut end = start + 1;
+        while end < order.len() && notes[order[end]].1 == notes[order[start]].1 {
+            end += 1;
+        }
+        let mut cluster: Vec<usize> = order[start..end].to_vec();
+        cluster.sort_by_key(|index| notes[*index].2);
+        let mut prev_num = 0;
+        for chunk in cluster.chunks(2) {
+            num += 1;
+            for index in chunk {
+                assigned.push((notes[*index].0, num, prev_num));
+            }
+            prev_num = num;
+        }
+        start = end;
+    }
+    let lookup = |id: i64| assigned.iter().find(|(i, _, _)| *i == id).map(|(_, n, f)| (*n, *f));
+
+    for data in chart["notes"].members_mut().skip(1) {
+        let Some((new_num, force)) = lookup(data["id"].as_i64().unwrap_or(0)) else { continue; };
+        data["num"] = new_num.into();
+        data["force_sync_group_id"] = force.into();
+        let child = data["child_id"].as_i64().unwrap_or(0);
+        if child != 0 {
+            // child_num names the child's spawn group and must follow its new num
+            data["child_num"] = lookup(child).map(|(n, _)| n).unwrap_or(0).into();
+        }
+    }
+    true
+}
+
+// Test helper: fabricates what pre-pairing servers stored, by squashing a current chart back
+// to the OLD encoding — one shared num per equal-time cluster, force_sync_group_id 0, and
+// child_num following. Lives outside the tests module so the migration tests in
+// router/custom_song.rs can build realistic pre-fix fixtures from transcode output.
+#[cfg(test)]
+pub fn squash_to_pre_fix(chart: &mut JsonValue) {
+    let notes: Vec<(i64, f64)> = chart["notes"].members().skip(1)
+        .map(|n| (n["id"].as_i64().unwrap(), n["time"].as_f64().unwrap()))
+        .collect();
+    let mut order: Vec<usize> = (0..notes.len()).collect();
+    order.sort_by(|a, b| notes[*a].1.total_cmp(&notes[*b].1).then(notes[*a].0.cmp(&notes[*b].0)));
+    let mut nums: Vec<(i64, i64)> = Vec::new();
+    let mut num = 100;
+    let mut last_time = f64::NEG_INFINITY;
+    for index in order {
+        if notes[index].1 != last_time {
+            num += 1;
+            last_time = notes[index].1;
+        }
+        nums.push((notes[index].0, num));
+    }
+    let lookup = |id: i64| nums.iter().find(|(i, _)| *i == id).map(|(_, n)| *n).unwrap_or(0);
+    for data in chart["notes"].members_mut().skip(1) {
+        data["num"] = lookup(data["id"].as_i64().unwrap()).into();
+        data["force_sync_group_id"] = 0.into();
+        let child = data["child_id"].as_i64().unwrap_or(0);
+        if child != 0 {
+            data["child_num"] = lookup(child).into();
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -655,6 +762,94 @@ mod tests {
             let kind = data["type"].as_i64().unwrap();
             assert!((1..=3).contains(&kind), "unresolvable type {}", kind);
         }
+    }
+
+    // The 10011 field shape: 4 parallel holds into a full 9-lane wall into a triple. Squashing
+    // transcode output reproduces the old encoding exactly (one num per cluster, no force
+    // links); regroup must restore the current encoding BYTE-IDENTICALLY, child_num included.
+    #[test]
+    fn regroup_restores_pre_fix_wall_and_parallel_holds() {
+        let beatmap = jzon::array![
+            sif_note(1.0, 2, 3, 1.0), sif_note(1.0, 4, 3, 1.0),
+            sif_note(1.0, 6, 3, 1.0), sif_note(1.0, 8, 3, 1.0),
+            sif_note(2.75, 1, 1, 0.0), sif_note(2.75, 2, 1, 0.0), sif_note(2.75, 3, 1, 0.0),
+            sif_note(2.75, 4, 1, 0.0), sif_note(2.75, 5, 1, 0.0), sif_note(2.75, 6, 1, 0.0),
+            sif_note(2.75, 7, 1, 0.0), sif_note(2.75, 8, 1, 0.0), sif_note(2.75, 9, 1, 0.0),
+            sif_note(3.625, 3, 1, 0.0), sif_note(3.625, 5, 1, 0.0), sif_note(3.625, 7, 1, 0.0)
+        ];
+        let (expected, _) = transcode(&beatmap).unwrap();
+
+        let mut chart = expected.clone();
+        squash_to_pre_fix(&mut chart);
+        // Sanity: the squash really is the old encoding — whole clusters share one num
+        assert_eq!(chart["notes"][1]["num"], 101);
+        assert_eq!(chart["notes"][4]["num"], 101);   // all 4 hold heads
+        assert_eq!(chart["notes"][9]["num"], 103);
+        assert_eq!(chart["notes"][17]["num"], 103);  // all 9 wall notes
+        assert_eq!(chart["notes"][1]["child_num"], 102, "squashed child_num must follow");
+        for data in chart["notes"].members() {
+            assert_eq!(data["force_sync_group_id"], 0);
+        }
+
+        assert!(regroup(&mut chart), "a squashed chart must be rewritten");
+        assert_eq!(jzon::stringify(chart.clone()), jzon::stringify(expected.clone()),
+            "regroup must reproduce the current transcoder's output exactly");
+
+        // Spell the wall out: adjacent-lane pairs, each later chunk force-synced to the
+        // previous one (heads 101/102, tails 103/104, wall 105..109, triple 110/111)
+        assert_spawn_groups_hold_at_most_two(&chart);
+        let wall: Vec<(i64, i64, i64)> = chart["notes"].members()
+            .filter(|d| d["time"].as_f64() == Some(2.75))
+            .map(|d| (d["line"].as_i64().unwrap(), d["num"].as_i64().unwrap(), d["force_sync_group_id"].as_i64().unwrap()))
+            .collect();
+        let mut wall_sorted = wall.clone();
+        wall_sorted.sort();
+        assert_eq!(wall_sorted, vec![
+            (0, 105, 0), (1, 105, 0),
+            (2, 106, 105), (3, 106, 105),
+            (4, 107, 106), (5, 107, 106),
+            (6, 108, 107), (7, 108, 107),
+            (8, 109, 108)
+        ]);
+        // child_num follows the child's NEW num: each head's child_num names a tail group
+        for head in chart["notes"].members().filter(|d| d["time"].as_f64() == Some(1.0)) {
+            let child_id = head["child_id"].as_i64().unwrap();
+            let tail = chart["notes"].members().find(|d| d["id"].as_i64() == Some(child_id)).unwrap();
+            assert_eq!(head["child_num"], tail["num"].clone());
+            assert!([103, 104].contains(&tail["num"].as_i64().unwrap()));
+        }
+    }
+
+    #[test]
+    fn regroup_is_a_no_op_on_current_encoding() {
+        let beatmap = jzon::array![
+            sif_note(1.0, 2, 1, 0.0), sif_note(1.0, 5, 1, 0.0), sif_note(1.0, 8, 1, 0.0),
+            sif_note(2.0, 4, 3, 1.5)
+        ];
+        let (chart, _) = transcode(&beatmap).unwrap();
+        let before = jzon::stringify(chart.clone());
+        let mut chart = chart;
+        assert!(!regroup(&mut chart));
+        assert_eq!(jzon::stringify(chart), before);
+    }
+
+    // Official-shaped encodings (1132_5_Sn t=9.781: num gaps of 3, force_sync naming the other
+    // pair) have groups of at most two and must never be "normalized" to our num sequence
+    #[test]
+    fn regroup_is_a_no_op_on_official_shaped_charts() {
+        let mut chart = object!{
+            "max_lane": 9, "sound_name": "", "max_combo_count": 4,
+            "notes": [
+                {"id": 0, "num": 100, "line": 0, "time": 0.0, "type": 0, "parent_id": 0, "child_id": 0, "child_num": 0, "child_line": 0, "force_sync_group_id": 0},
+                {"id": 45, "num": 145, "line": 0, "time": 9.781, "type": 1, "parent_id": 0, "child_id": 0, "child_num": 0, "child_line": 0, "force_sync_group_id": 0},
+                {"id": 46, "num": 145, "line": 1, "time": 9.781, "type": 1, "parent_id": 0, "child_id": 0, "child_num": 0, "child_line": 0, "force_sync_group_id": 0},
+                {"id": 47, "num": 148, "line": 7, "time": 9.781, "type": 1, "parent_id": 0, "child_id": 0, "child_num": 0, "child_line": 0, "force_sync_group_id": 145},
+                {"id": 48, "num": 148, "line": 8, "time": 9.781, "type": 1, "parent_id": 0, "child_id": 0, "child_num": 0, "child_line": 0, "force_sync_group_id": 145}
+            ]
+        };
+        let before = jzon::stringify(chart.clone());
+        assert!(!regroup(&mut chart));
+        assert_eq!(jzon::stringify(chart), before);
     }
 
     #[test]
