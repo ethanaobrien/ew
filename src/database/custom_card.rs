@@ -339,6 +339,21 @@ pub fn obtainable_card_ids(rarity: i64) -> Vec<i64> {
 // on-disk bytes - so this is the index the /custom_card/data/{md5} route
 // serves from, and it self-heals: a replaced file gets a new md5 and the old
 // one simply stops resolving
+// Resolve a voiceline md5 to its ogg under custom_cards/. Voicelines live in
+// the character blob's `voice` array and on disk under the character's own
+// voice/ subdirectory, so they share the art routes' self-healing property
+pub fn find_voice_by_md5(md5: &str) -> Option<String> {
+    let blob = DATABASE.lock_and_select("SELECT character FROM characters WHERE character LIKE ?1", params!(format!("%{}%", md5))).ok()?;
+    let character = jzon::parse(&blob).ok()?;
+    let id = character["master_character_id"].as_i64()?;
+    for line in character["voice"].members() {
+        if line["md5"].as_str() == Some(md5) {
+            return Some(format!("characters/{}/voice/{}.ogg", id, md5));
+        }
+    }
+    None
+}
+
 pub fn find_asset_by_md5(md5: &str) -> Option<String> {
     let like = format!("%{}%", md5);
     if let Ok(blob) = DATABASE.lock_and_select("SELECT card FROM cards WHERE card LIKE ?1", params!(like.clone())) {

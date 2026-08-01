@@ -11,6 +11,7 @@ use std::sync::Mutex;
 
 use crate::router::{databases, global, userdata, webui, Login, Api};
 use crate::router::databases::csv::{table, Region};
+use crate::router::custom_song::audio;
 use crate::database::custom_card as database;
 use crate::database::permissions;
 use crate::runtime::get_data_path;
@@ -123,6 +124,24 @@ const CHARACTER_ART: &[ArtKind] = &[
     ArtKind { kind: "character", width: 600, height: 920 }
 ];
 
+// Optional voicelines per character. Multipart fields per line:
+//   voice_{kind}_{index}          audio file (any format symphonia reads;
+//                                 transcoded to ogg-vorbis, stored
+//                                 content-addressed like the art)
+//   voice_{kind}_{index}_text     caption, may be empty
+//   voice_{kind}_{index}_text_en  English caption, may be empty
+//   voice_{kind}_{index}_delete   flag: remove this line
+// Absent slots keep their stored line, captions without a file update the
+// stored line's captions, and surviving lines are renumbered contiguously
+// per kind (1..n) after every edit
+const VOICE_KINDS: &[&str] = &[
+    "live_start", "live_success", "live_failed", "result_bond",
+    "skill_smile", "skill_pure", "skill_cool"
+];
+const MAX_VOICE_VARIANTS: usize = 9;
+const MAX_VOICE_BYTES: usize = 4 * 1024 * 1024;
+const MAX_VOICE_SECONDS: f64 = 30.0;
+
 type Fields = HashMap<String, Vec<u8>>;
 
 lazy_static! {
@@ -199,6 +218,7 @@ pub fn web_routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/custom_card")
             .route("/data/{hash}/{file}", web::get().to(data))
+            .route("/voice/{hash}/{file}", web::get().to(voice))
             .route("/create", web::post().to(create))
             .route("/update", web::post().to(update))
             .route("/publish", web::post().to(publish))
@@ -423,6 +443,31 @@ async fn data(req: HttpRequest) -> HttpResponse {
         Ok(body) => {
             HttpResponse::Ok()
                 .insert_header(ContentType::png())
+                .insert_header(("content-length", body.len()))
+                .body(body)
+        },
+        Err(_) => HttpResponse::NotFound().finish()
+    }
+}
+
+// Voiceline oggs, same sessionless content-addressed semantics as the art
+// data route: '{server}/custom_card/voice/{md5}/{md5}.ogg'
+async fn voice(req: HttpRequest) -> HttpResponse {
+    if disabled() {
+        return HttpResponse::NotFound().finish();
+    }
+    let hash = req.match_info().get("hash").unwrap_or("").to_string();
+    let file = req.match_info().get("file").unwrap_or("").to_string();
+    if hash.len() != 32 || !hash.chars().all(|c| c.is_ascii_hexdigit()) || file != format!("{}.ogg", hash) {
+        return HttpResponse::NotFound().finish();
+    }
+    let Some(relative) = database::find_voice_by_md5(&hash) else {
+        return HttpResponse::NotFound().finish();
+    };
+    match fs::read(asset_path(&relative)) {
+        Ok(body) => {
+            HttpResponse::Ok()
+                .insert_header(("content-type", "audio/ogg"))
                 .insert_header(("content-length", body.len()))
                 .body(body)
         },
@@ -667,6 +712,93 @@ fn write_art(dir: &str, pending: &[PendingArt]) -> Result<(), String> {
         fs::write(format!("{}/{}", dir, art.file), &art.bytes).map_err(|e| e.to_string())?;
     }
     Ok(())
+}
+
+// The character's voiceline set after applying this form: stored lines kept
+// unless deleted, new files decoded + transcoded to ogg-vorbis, captions
+// updated in place, and each kind's survivors renumbered 1..n. Returns the
+// wire-shape array and the new (md5, ogg bytes) files to write
+fn collect_voice(fields: &Fields, stored_voice: &JsonValue) -> Result<(JsonValue, Vec<(String, Vec<u8>)>), String> {
+    let mut rv = array![];
+    let mut files: Vec<(String, Vec<u8>)> = Vec::new();
+    for kind in VOICE_KINDS {
+        let mut lines: Vec<JsonValue> = Vec::new();
+        for index in 1..=MAX_VOICE_VARIANTS {
+            let base = format!("voice_{}_{}", kind, index);
+            let stored_line = stored_voice.members().find(|line| line["kind"] == *kind && line["index"] == index);
+            if field_flag(fields, &format!("{}_delete", base)) {
+                if file_of(fields, &base).is_some() {
+                    return Err(format!("'{}': cannot both replace and delete the same line", base));
+                }
+                continue;
+            }
+            let text = |suffix: &str| -> String {
+                let key = format!("{}_{}", base, suffix);
+                if fields.contains_key(&key) {
+                    field_str(fields, &key)
+                } else {
+                    stored_line.map(|line| line[suffix].as_str().unwrap_or("").to_string()).unwrap_or_default()
+                }
+            };
+            if let Some(bytes) = file_of(fields, &base) {
+                if bytes.len() > MAX_VOICE_BYTES {
+                    return Err(format!("'{}' exceeds the {} MB per-file limit for voicelines", base, MAX_VOICE_BYTES / (1024 * 1024)));
+                }
+                let clip = audio::process_one_shot(bytes, MAX_VOICE_SECONDS).map_err(|e| format!("'{}': {}", base, e))?;
+                lines.push(object!{
+                    "kind": *kind,
+                    "index": 0,
+                    "md5": clip.md5.clone(),
+                    "size": clip.bytes.len(),
+                    "text": text("text"),
+                    "text_en": text("text_en")
+                });
+                files.push((clip.md5, clip.bytes));
+            } else if let Some(stored_line) = stored_line {
+                lines.push(object!{
+                    "kind": *kind,
+                    "index": 0,
+                    "md5": stored_line["md5"].clone(),
+                    "size": stored_line["size"].clone(),
+                    "text": text("text"),
+                    "text_en": text("text_en")
+                });
+            }
+            // Caption fields for a slot with neither a file nor a stored line
+            // are ignored, like unknown multipart fields everywhere else
+        }
+        for (i, mut line) in lines.into_iter().enumerate() {
+            line["index"] = (i as i64 + 1).into();
+            rv.push(line).unwrap();
+        }
+    }
+    Ok((rv, files))
+}
+
+fn voice_path(master_character_id: i64, md5: &str) -> String {
+    format!("{}/voice/{}.ogg", character_dir(master_character_id), md5)
+}
+
+fn write_voice(master_character_id: i64, files: &[(String, Vec<u8>)]) -> Result<(), String> {
+    if files.is_empty() {
+        return Ok(());
+    }
+    fs::create_dir_all(format!("{}/voice", character_dir(master_character_id))).map_err(|e| e.to_string())?;
+    for (md5, bytes) in files {
+        fs::write(voice_path(master_character_id, md5), bytes).map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
+
+// Files whose md5 no longer appears in the voice array are gone for good
+// (their old catalog md5 404s, exactly like replaced art)
+fn gc_voice(master_character_id: i64, old_voice: &JsonValue, new_voice: &JsonValue) {
+    for old in old_voice.members() {
+        let md5 = old["md5"].to_string();
+        if !md5.is_empty() && !new_voice.members().any(|line| line["md5"] == old["md5"]) {
+            let _ = fs::remove_file(voice_path(master_character_id, &md5));
+        }
+    }
 }
 
 // card.upload manages your own uploads, card.edit is moderation over anybody's
@@ -1006,9 +1138,10 @@ pub fn create_character(uid: i64, fields: &Fields) -> Result<i64, String> {
     if !permissions::has(uid, permissions::CARD_UPLOAD) {
         return Err(String::from("You do not have permission to upload characters"));
     }
-    // Fail fast: cheap text validation before any image work
+    // Fail fast: cheap text validation before any image/audio work
     build_character(0, fields, &object!{})?;
     let character_art = collect_character_art(fields, true)?;
+    let (voice, voice_files) = collect_voice(fields, &array![])?;
 
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     let master_character_id = database::next_character_id();
@@ -1021,8 +1154,12 @@ pub fn create_character(uid: i64, fields: &Fields) -> Result<i64, String> {
 
     let mut character = build_character(master_character_id, fields, &object!{})?;
     character["art"] = merge_art(&array![], &character_art);
+    if !voice.is_empty() {
+        character["voice"] = voice;
+    }
 
     write_art(&character_dir(master_character_id), &character_art)?;
+    write_voice(master_character_id, &voice_files)?;
     database::insert_character(master_character_id, uid, &character);
     database::bump_revision();
     drop(lock);
@@ -1039,16 +1176,25 @@ pub fn update_character(uid: i64, master_character_id: i64, fields: &Fields) -> 
     }
     let stored = database::get_character(master_character_id).ok_or(String::from("Character not found"))?;
 
-    // Field validation first (cheap), art processing second - fail fast
+    // Field validation first (cheap), image/audio processing second - fail fast
     let mut character = build_character(master_character_id, fields, &stored)?;
     let character_art = collect_character_art(fields, false)?;
+    let (voice, voice_files) = collect_voice(fields, &stored["voice"])?;
     character["art"] = merge_art(&stored["art"], &character_art);
+    if !voice.is_empty() {
+        character["voice"] = voice.clone();
+    }
 
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     write_art(&character_dir(master_character_id), &character_art)?;
+    write_voice(master_character_id, &voice_files)?;
     database::update_character(master_character_id, &character);
     database::bump_revision();
     drop(lock);
+
+    // Replaced/deleted lines: their oggs are per-character, so a md5 gone
+    // from the blob is safe to remove
+    gc_voice(master_character_id, &stored["voice"], &voice);
 
     Ok(())
 }
@@ -1354,6 +1500,128 @@ pub mod tests {
             let _ = delete_character(uid, character["master_character_id"].as_i64().unwrap());
         }
         crate::runtime::update_owners(&[]);
+    }
+
+    // Seeded 44.1kHz 16-bit mono wav, so different seeds give different md5s
+    pub fn test_wav(seconds: f64, seed: u8) -> Vec<u8> {
+        let sample_rate: u32 = 44100;
+        let frames = (seconds * sample_rate as f64) as u32;
+        let data_len = frames * 2;
+        let mut rv = Vec::new();
+        rv.extend(b"RIFF");
+        rv.extend((36 + data_len).to_le_bytes());
+        rv.extend(b"WAVEfmt ");
+        rv.extend(16u32.to_le_bytes());
+        rv.extend(1u16.to_le_bytes());
+        rv.extend(1u16.to_le_bytes());
+        rv.extend(sample_rate.to_le_bytes());
+        rv.extend((sample_rate * 2).to_le_bytes());
+        rv.extend(2u16.to_le_bytes());
+        rv.extend(16u16.to_le_bytes());
+        rv.extend(b"data");
+        rv.extend(data_len.to_le_bytes());
+        for i in 0..frames {
+            let sample = (((i as f64 * (220.0 + seed as f64) * 2.0 * std::f64::consts::PI / sample_rate as f64).sin()) * 8000.0) as i16;
+            rv.extend(sample.to_le_bytes());
+        }
+        rv
+    }
+
+    // Voicelines: transcode to ogg, wire shape + captions, renumbering,
+    // caption-only edits, replacement GC, deletion, the caps, and the
+    // content-addressed voice route index
+    #[test]
+    fn character_voicelines() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(4010);
+
+        let mut fields = character_fields();
+        // Sparse indexes on purpose: 1 and 5 must renumber to 1 and 2
+        fields.insert(String::from("voice_live_start_1"), test_wav(1.0, 1));
+        field(&mut fields, "voice_live_start_1_text", "いくよー！");
+        field(&mut fields, "voice_live_start_1_text_en", "Here we go!");
+        fields.insert(String::from("voice_live_start_5"), test_wav(1.0, 2));
+        fields.insert(String::from("voice_skill_smile_1"), test_wav(0.5, 3));
+        // Index 10 is out of range and ignored entirely
+        fields.insert(String::from("voice_live_start_10"), test_wav(1.0, 4));
+        let id = with_permissions(4010, &[permissions::CARD_UPLOAD], || create_character(4010, &fields).unwrap());
+
+        let character = database::get_character(id).unwrap();
+        let voice = &character["voice"];
+        assert_eq!(voice.len(), 3);
+        let live: Vec<&JsonValue> = voice.members().filter(|line| line["kind"] == "live_start").collect();
+        assert_eq!(live.len(), 2);
+        assert_eq!(live[0]["index"].as_i64(), Some(1));
+        assert_eq!(live[1]["index"].as_i64(), Some(2));
+        assert_eq!(live[0]["text"].as_str(), Some("いくよー！"));
+        assert_eq!(live[0]["text_en"].as_str(), Some("Here we go!"));
+        assert_eq!(live[1]["text"].as_str(), Some(""));
+        for line in voice.members() {
+            let md5 = line["md5"].to_string();
+            assert_eq!(md5.len(), 32);
+            let path = format!("{}/voice/{}.ogg", character_dir(id), md5);
+            let bytes = fs::read(&path).unwrap();
+            assert!(bytes.starts_with(b"OggS"), "transcoded to ogg");
+            assert_eq!(format!("{:x}", md5::compute(&bytes)), md5);
+            assert_eq!(bytes.len(), line["size"].as_usize().unwrap());
+            // The voice route's index resolves the md5 to this exact file
+            assert_eq!(database::find_voice_by_md5(&md5), Some(format!("characters/{}/voice/{}.ogg", id, md5)));
+        }
+
+        // Caption-only edit: md5 untouched, captions replaced
+        let old_md5 = live[0]["md5"].to_string();
+        let mut edit = Fields::new();
+        field(&mut edit, "voice_live_start_1_text_en", "Let's gooo!");
+        with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit).unwrap());
+        let line = database::get_character(id).unwrap()["voice"].members()
+            .find(|line| line["kind"] == "live_start" && line["index"] == 1).unwrap().clone();
+        assert_eq!(line["md5"].to_string(), old_md5);
+        assert_eq!(line["text_en"].as_str(), Some("Let's gooo!"));
+        assert_eq!(line["text"].as_str(), Some("いくよー！"));
+
+        // Replacing a line swaps the md5 and garbage-collects the old ogg
+        let mut edit = Fields::new();
+        edit.insert(String::from("voice_live_start_1"), test_wav(1.0, 9));
+        with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit).unwrap());
+        let updated = database::get_character(id).unwrap();
+        let new_md5 = updated["voice"].members()
+            .find(|line| line["kind"] == "live_start" && line["index"] == 1).unwrap()["md5"].to_string();
+        assert_ne!(new_md5, old_md5);
+        assert!(fs::read(format!("{}/voice/{}.ogg", character_dir(id), old_md5)).is_err());
+        assert!(fs::read(format!("{}/voice/{}.ogg", character_dir(id), new_md5)).is_ok());
+        assert_eq!(database::find_voice_by_md5(&old_md5), None);
+
+        // Deleting line 2 removes its file and leaves a contiguous single line
+        let gone_md5 = updated["voice"].members()
+            .find(|line| line["kind"] == "live_start" && line["index"] == 2).unwrap()["md5"].to_string();
+        let mut edit = Fields::new();
+        field(&mut edit, "voice_live_start_2_delete", "1");
+        with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit).unwrap());
+        let after = database::get_character(id).unwrap();
+        let live: Vec<JsonValue> = after["voice"].members().filter(|line| line["kind"] == "live_start").cloned().collect();
+        assert_eq!(live.len(), 1);
+        assert_eq!(live[0]["index"].as_i64(), Some(1));
+        assert!(fs::read(format!("{}/voice/{}.ogg", character_dir(id), gone_md5)).is_err());
+
+        // Replace + delete on the same slot is contradictory
+        let mut edit = Fields::new();
+        field(&mut edit, "voice_live_start_1_delete", "1");
+        edit.insert(String::from("voice_live_start_1"), test_wav(1.0, 5));
+        assert!(with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit))
+            .unwrap_err().contains("cannot both replace and delete"));
+
+        // The caps: over-long and undecodable clips are refused by name
+        let mut edit = Fields::new();
+        edit.insert(String::from("voice_result_bond_1"), test_wav(31.0, 6));
+        let err = with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit)).unwrap_err();
+        assert!(err.contains("voice_result_bond_1") && err.contains("maximum is 30"), "{}", err);
+        let mut edit = Fields::new();
+        edit.insert(String::from("voice_result_bond_1"), b"definitely not audio".to_vec());
+        assert!(with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit))
+            .unwrap_err().contains("Could not read audio file"));
+
+        assert_eq!(database::find_voice_by_md5(&"0".repeat(32)), None);
+        wipe(4010);
     }
 
     // A full create: derived ids, pinned columns, art md5s and the catalog

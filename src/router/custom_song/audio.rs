@@ -137,6 +137,25 @@ fn cue(bytes: Vec<u8>, duration_sec: f64) -> Cue {
     }
 }
 
+// A one-shot line (custom-character voicelines): decode anything symphonia
+// reads, keep it as-is when it's already ogg-vorbis, otherwise transcode. No
+// cuts, fades, loop points or preview split - mono or stereo as-sourced
+pub fn process_one_shot(bytes: &[u8], max_duration_sec: f64) -> Result<Cue, String> {
+    let audio = decode(bytes)?;
+    let duration = audio.duration();
+    if duration < 0.2 {
+        return Err(String::from("Audio clip is shorter than 0.2 seconds"));
+    }
+    if duration > max_duration_sec {
+        return Err(format!("Audio clip is {:.1} seconds long - the maximum is {:.0} seconds", duration, max_duration_sec));
+    }
+    if is_ogg_vorbis(bytes) {
+        return Ok(cue(bytes.to_vec(), duration));
+    }
+    let planar: Vec<&[f32]> = audio.channels.iter().map(|samples| samples.as_slice()).collect();
+    Ok(cue(encode(&planar, audio.sample_rate)?, duration))
+}
+
 // The play cue is the full track, the select cue is a preview cut with short
 // fades. Both are stored content-addressed by the md5 of the final ogg bytes -
 // the client validates md5(file) against the value served in the catalog

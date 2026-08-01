@@ -1,4 +1,6 @@
-mod audio;
+// audio is shared: custom_card voicelines transcode through the same
+// in-process symphonia + vorbis machinery
+pub mod audio;
 mod chart;
 mod package;
 
@@ -1398,7 +1400,15 @@ mod tests {
         field(&mut fields, "attribute", "1");
         fields.insert(String::from("jacket"), test_png());
         fields.insert(String::from("audio"), test_ogg());
-        fields.insert(String::from("chart_1"), test_chart());
+        // A chart UNIQUE to this test: the self-heal assert below relies on
+        // the old md5 resolving nowhere, and the shared test_chart() bytes
+        // also live in other tests' songs (the md5 index is content-addressed
+        // across all songs, so identical charts alias)
+        fields.insert(String::from("chart_1"), jzon::stringify(jzon::array![
+            {"timing_sec": 0.25, "notes_attribute": 1, "notes_level": 1, "effect": 1, "effect_value": 0.0, "position": 2},
+            {"timing_sec": 0.75, "notes_attribute": 1, "notes_level": 1, "effect": 1, "effect_value": 0.0, "position": 6},
+            {"timing_sec": 1.25, "notes_attribute": 1, "notes_level": 1, "effect": 1, "effect_value": 0.0, "position": 9}
+        ]).into_bytes());
         let music_id = create_song(9191, &fields).unwrap();
 
         let song = database::get_song(music_id).unwrap();

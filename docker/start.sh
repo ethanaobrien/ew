@@ -14,6 +14,7 @@ args=(
 [ "${DISABLE_IMPORTS:-}" = "true" ] && args+=(--disable-imports)
 [ "${DISABLE_EXPORTS:-}" = "true" ] && args+=(--disable-exports)
 [ "${ENABLE_CUSTOM_SONGS:-}" = "true" ] && args+=(--enable-custom-songs)
+[ "${ENABLE_CUSTOM_CARDS:-}" = "true" ] && args+=(--enable-custom-cards)
 
 add_opt() {
   local value="$1" flag="$2"
@@ -29,6 +30,9 @@ add_opt "${JP_IOS_ASSET_HASH:-}"     --jp-ios-asset-hash
 add_opt "${EN_ANDROID_ASSET_HASH:-}" --en-android-asset-hash
 add_opt "${EN_IOS_ASSET_HASH:-}"     --en-ios-asset-hash
 add_opt "${WINDOWS_ASSET_HASH:-}"    --windows-asset-hash
+
+# Server owner uid(s) for the permission system (comma-separated)
+add_opt "${OWNER:-}" --owner
 
 # Asset / image paths.
 add_opt "${IMAGE_ASSET_PATH:-}" --image-asset-path
