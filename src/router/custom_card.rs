@@ -9,7 +9,7 @@ use std::collections::{HashMap, HashSet};
 use std::fs;
 use std::sync::Mutex;
 
-use crate::router::{databases, global, userdata, webui, Login, Api};
+use crate::router::{databases, global, rich_text, userdata, webui, Login, Api};
 use crate::router::databases::csv::{table, Region};
 use crate::router::custom_song::audio;
 use crate::database::custom_card as database;
@@ -859,6 +859,10 @@ fn collect_voice(fields: &Fields, stored_voice: &JsonValue) -> Result<(JsonValue
                     stored_line.map(|line| line[suffix].as_str().unwrap_or("").to_string()).unwrap_or_default()
                 }
             };
+            // Captions are drawn as live subtitles by the same unescaped TMP path
+            for suffix in ["text", "text_en"] {
+                rich_text::reject_tags(&format!("'{}_{}'", base, suffix), &text(suffix), &[])?;
+            }
             if let Some(bytes) = file_of(fields, &base) {
                 if bytes.len() > MAX_VOICE_BYTES {
                     return Err(format!("'{}' exceeds the {} MB per-file limit for voicelines", base, MAX_VOICE_BYTES / (1024 * 1024)));
@@ -950,9 +954,13 @@ fn validate_character_ref(uid: i64, master_character_id: i64) -> Result<(), Stri
 // about. Returns the catalog blob, ready to store and serve verbatim
 fn build_card(master_card_id: i64, master_character_id: i64, fields: &Fields, stored: &JsonValue) -> Result<JsonValue, String> {
     for (key, label) in [("name", "Card name"), ("name_en", "Card English name")] {
-        if text_of(fields, key, stored, key).is_empty() {
+        let text = text_of(fields, key, stored, key);
+        if text.is_empty() {
             return Err(format!("{} is required", label));
         }
+        // The client renders these through TMP with rich text on and no escaping; official card
+        // names carry no markup (rich_text.rs)
+        rich_text::reject_tags(label, &text, &[])?;
     }
 
     let card_type = number_of(fields, "type", stored, "type");
@@ -995,9 +1003,13 @@ fn build_card(master_card_id: i64, master_character_id: i64, fields: &Fields, st
         ("skill_detail_text", "Skill description"),
         ("skill_detail_text_en", "Skill English description")
     ] {
-        if text_of(fields, key, &stored_skill, &key["skill_".len()..]).is_empty() {
+        let text = text_of(fields, key, &stored_skill, &key["skill_".len()..]);
+        if text.is_empty() {
             return Err(format!("{} is required", label));
         }
+        // Descriptions may wrap, like the official skill_center detailText rows; nothing else
+        let allowed: &[&str] = if key.ends_with("detail_text") || key.ends_with("detail_text_en") { &["br"] } else { &[] };
+        rich_text::reject_tags(label, &text, allowed)?;
     }
 
     let trigger = number_of(fields, "skill_trigger", &stored_skill, "trigger");
@@ -1113,9 +1125,24 @@ fn build_character(master_character_id: i64, fields: &Fields, stored: &JsonValue
         ("character_name_richtext_gacha", "Character gacha display name"),
         ("character_name_richtext_gacha_en", "Character English gacha display name")
     ] {
-        if text_of(fields, key, stored, &key["character_".len()..]).is_empty() {
+        let text = text_of(fields, key, stored, &key["character_".len()..]);
+        if text.is_empty() {
             return Err(format!("{} is required", label));
         }
+        // The gacha display name is the ONE column official data formats, and only ever with
+        // <size=NN> (character.csv nameRichtextGacha); descriptions may wrap; names carry nothing
+        let allowed: &[&str] = if key.starts_with("character_name_richtext_gacha") {
+            &["size"]
+        } else if key.starts_with("character_detail_text") {
+            &["br"]
+        } else {
+            &[]
+        };
+        rich_text::reject_tags(label, &text, allowed)?;
+    }
+    // The remaining free-text profile columns: shown on the member page, same TMP treatment
+    for key in ["height", "blood_type", "blood_type_en", "birthday", "birthday_en", "voice_actor", "voice_actor_en"] {
+        rich_text::reject_tags(key, &text_of(fields, &format!("character_{}", key), stored, key), &[])?;
     }
     for key in ["character_image_color", "character_image_color_dark"] {
         if !valid_color(&text_of(fields, key, stored, &key["character_".len()..])) {
@@ -1656,6 +1683,49 @@ pub mod tests {
         rv
     }
 
+    // Character text and voiceline captions land in the same unescaped TMP labels as card text.
+    // The gacha display name is the one column official data formats, and only with <size=NN>
+    #[test]
+    fn character_text_may_not_carry_rich_text_tags() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(4014);
+
+        let run = |fields: &Fields| with_permissions(4014, &[permissions::CARD_UPLOAD], || create_character(4014, fields));
+        let mutated = |key: &str, value: &str| {
+            let mut fields = character_fields();
+            field(&mut fields, key, value);
+            fields
+        };
+
+        for key in ["character_name", "character_name_en", "character_name_ruby", "character_name_ruby_en"] {
+            let error = run(&mutated(key, "<size=400%>x")).unwrap_err();
+            assert!(error.contains("<size>"), "{} -> {}", key, error);
+        }
+        // Profile columns too
+        assert!(run(&mutated("character_height", "<b>170cm</b>")).unwrap_err().contains("<b>"));
+        assert!(run(&mutated("character_voice_actor", "<sprite=2>")).unwrap_err().contains("<sprite>"));
+        // Descriptions wrap; nothing else
+        assert!(run(&mutated("character_detail_text", "<rotate=45>x")).unwrap_err().contains("<rotate>"));
+        // The gacha display name keeps <size>, still nothing else
+        assert!(run(&mutated("character_name_richtext_gacha", "<sprite=1>")).unwrap_err().contains("<sprite>"));
+
+        // Voiceline captions are subtitles - a caption with a tag is rejected before anything
+        // is written
+        let mut fields = character_fields();
+        fields.insert(String::from("voice_live_start_1"), test_wav(1.0, 1));
+        field(&mut fields, "voice_live_start_1_text", "<color=red>x");
+        assert!(run(&fields).unwrap_err().contains("<color>"));
+
+        // The official shape uploads: <size=NN> on the gacha name, <br> in a description
+        let mut fields = character_fields();
+        field(&mut fields, "character_name_richtext_gacha", "<size=80>Test</size>");
+        field(&mut fields, "character_detail_text", "line one<br>line two");
+        let id = run(&fields).unwrap();
+        let character = database::get_character(id).unwrap();
+        assert_eq!(character["name_richtext_gacha"].as_str(), Some("<size=80>Test</size>"));
+        assert_eq!(character["detail_text"].as_str(), Some("line one<br>line two"));
+    }
+
     // Voicelines: transcode to ogg, wire shape + captions, renumbering,
     // caption-only edits, replacement GC, deletion, the caps, and the
     // content-addressed voice route index
@@ -1938,6 +2008,16 @@ pub mod tests {
         assert!(run(&mutated("skill_name", "")).unwrap_err().contains("Skill name is required"));
         assert!(run(&mutated("skill_detail_text_en", "")).unwrap_err().contains("Skill English description is required"));
         assert!(run(&mutated("skill_target_group_id", "123")).unwrap_err().contains("skill_target_group_id"));
+
+        // Rich-text tags: every one of these strings is drawn by TMP with rich text ON and no
+        // escaping, so markup in a name or a caption mangles the screens it lands on
+        for key in ["name", "name_en", "skill_name", "skill_name_en"] {
+            let error = run(&mutated(key, "<size=400%>x")).unwrap_err();
+            assert!(error.contains("<size>"), "{} -> {}", key, error);
+        }
+        assert!(run(&mutated("skill_detail_text", "<sprite=1>")).unwrap_err().contains("<sprite>"));
+        // A description may wrap and "<3" is not a tag, so neither is rejected (proved without
+        // creating cards in rich_text's own unit tests - this test only exercises rejections)
 
         // Enum ranges - each one is a client crash, not a cosmetic error -
         // and every message states the actual allowed range

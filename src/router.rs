@@ -22,6 +22,7 @@ pub mod card;
 pub mod shop;
 pub mod custom_song;
 pub mod custom_card;
+pub mod rich_text;
 pub mod webui;
 pub mod clear_rate;
 pub mod exchange;

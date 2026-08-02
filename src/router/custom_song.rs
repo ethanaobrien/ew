@@ -16,7 +16,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::sync::Mutex;
 
-use crate::router::{global, userdata, webui, Login, Api};
+use crate::router::{global, rich_text, userdata, webui, Login, Api};
 use crate::database::custom_song as database;
 use crate::runtime::get_data_path;
 use crate::lock_onto_mutex;
@@ -102,9 +102,21 @@ async fn list(Login(key): Login) -> impl Responder {
         return Api(None);
     }
     let uid = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
+    let mut songs = database::get_songs_for_user(uid);
+    for song in songs.members_mut() {
+        // Additive field: the client turns it into the song's detail-info credit line (the
+        // staff-credits text the live loading screen and the music library show). Old clients
+        // that don't know the field simply ignore it. The name is an ACCOUNT name, which the
+        // profile route stores verbatim, so it is stripped of rich-text tags before it lands in
+        // a TMP rich-text field (rich_text.rs)
+        let Some(music_id) = song["music_id"].as_i64() else { continue; };
+        let owner = database::get_song_owner(music_id).unwrap_or(0);
+        let name = userdata::get_name_and_rank(owner)["user_name"].as_str().unwrap_or("").to_string();
+        song["uploader"] = rich_text::strip_tags(&name).into();
+    }
     Api(Some(object!{
         "revision": database::get_revision(),
-        "songs": database::get_songs_for_user(uid)
+        "songs": songs
     }))
 }
 
@@ -349,6 +361,25 @@ fn default_scores() -> (JsonValue, JsonValue) {
     })
 }
 
+// Every free-text column the client shows for a song. It renders them through TMP with rich
+// text on and no escaping (rich_text.rs), and the official music table carries no markup in ANY
+// of these columns - <br> only ever appears in detailInfo - so no tag is allowed in any of them.
+fn validate_song_text(
+    name: &str, name_en: &str, short_name: &str, kana: &str, artist: &str, artist_en: &str
+) -> Result<(), String> {
+    for (label, text) in [
+        ("Song name", name),
+        ("Song English name", name_en),
+        ("Short name", short_name),
+        ("Name reading", kana),
+        ("Artist", artist),
+        ("English artist", artist_en)
+    ] {
+        rich_text::reject_tags(label, text, &[])?;
+    }
+    Ok(())
+}
+
 // Combo-mission targets. Official live_mission_combo rows are round(hardest difficulty's
 // full combo * 0.2/0.4/0.6/0.8) - verified against 626 of the 637 shipped rows (the 11
 // outliers are songs that gained a harder difficulty after the mission row was authored).
@@ -418,6 +449,15 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
     if !BAND_CATEGORIES.contains(&band_category.as_str()) {
         return Err(format!("Unknown band category '{}'", band_category));
     }
+
+    validate_song_text(
+        &name,
+        &field_str(fields, "name_en"),
+        &field_str(fields, "short_name"),
+        &field_str(fields, "kana"),
+        &artist,
+        &field_str(fields, "artist_en")
+    )?;
 
     let mut visibility = field_str(fields, "visibility");
     if visibility.is_empty() {
@@ -620,6 +660,11 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
     if !BAND_CATEGORIES.contains(&band_category.as_str()) {
         return Err(format!("Unknown band category '{}'", band_category));
     }
+
+    // The RESULTING text, so an edit that leaves a field alone is checked against what stays
+    validate_song_text(
+        &name, &text("name_en"), &text("short_name"), &text("kana"), &artist, &text("artist_en")
+    )?;
 
     // (level, replacement chart json + original SIF1 bytes, full_combo, level_number)
     let mut charts: Vec<(i64, Option<(JsonValue, Vec<u8>)>, i64, i64)> = Vec::new();
@@ -1258,6 +1303,82 @@ mod tests {
         // Idempotent
         migrate::run();
         assert_eq!(database::get_revision(), revision + 1);
+    }
+
+    // Song text is rendered by TMP with rich text on and no escaping, so a tag in a name or an
+    // artist is rejected at upload and at edit. A '<' that TMP wouldn't read as a tag survives.
+    #[test]
+    fn song_text_may_not_carry_rich_text_tags() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let base = || {
+            let mut fields = HashMap::new();
+            field(&mut fields, "name", "Tag Check");
+            field(&mut fields, "artist", "Tag Artist");
+            field(&mut fields, "attribute", "1");
+            field(&mut fields, "level_number_1", "5");
+            fields.insert(String::from("jacket"), test_png());
+            fields.insert(String::from("audio"), test_ogg_tone(1210.0));
+            fields.insert(String::from("chart_1"), test_chart());
+            fields
+        };
+
+        for (key, label) in [
+            ("name", "Song name"),
+            ("name_en", "Song English name"),
+            ("short_name", "Short name"),
+            ("kana", "Name reading"),
+            ("artist", "Artist"),
+            ("artist_en", "English artist")
+        ] {
+            let mut fields = base();
+            field(&mut fields, key, "<size=400%>boom");
+            let error = create_song(8888, &fields).unwrap_err();
+            assert!(error.contains(label), "{} -> {}", key, error);
+            assert!(error.contains("<size>"), "{} -> {}", key, error);
+            assert!(database::get_song(8888).is_none());
+        }
+
+        // "<3" is not a tag, so it uploads
+        let mut fields = base();
+        field(&mut fields, "name", "I <3 LIVE");
+        let music_id = create_song(8888, &fields).unwrap();
+        assert_eq!(database::get_song(music_id).unwrap()["name"], "I <3 LIVE");
+
+        // Edits are held to the same rule, and the stored song survives the rejection
+        let before = database::get_song(music_id).unwrap();
+        let mut fields = HashMap::new();
+        field(&mut fields, "artist", "<sprite=1>");
+        assert!(update_song(music_id, &fields).unwrap_err().contains("Artist"));
+        assert_eq!(jzon::stringify(database::get_song(music_id).unwrap()), jzon::stringify(before));
+    }
+
+    // The catalog the GAME reads carries the uploader's account name, which the client turns
+    // into the song's detail-info credit line. Account names are stored verbatim by the profile
+    // route, so the catalog strips rich-text tags out of them
+    #[test]
+    fn the_game_catalog_carries_a_tag_free_uploader_name() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let uid = 1;
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Credited");
+        field(&mut fields, "artist", "Credit Artist");
+        field(&mut fields, "attribute", "2");
+        field(&mut fields, "level_number_1", "5");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg_tone(1320.0));
+        fields.insert(String::from("chart_1"), test_chart());
+        let music_id = create_song(uid, &fields).unwrap();
+
+        let songs = database::get_songs_for_user(uid);
+        let song = songs.members().find(|s| s["music_id"] == music_id).unwrap();
+        // The router adds the field; the stored blob never holds it
+        assert!(song["uploader"].is_null());
+
+        // The tag stripper is what the router applies to the account name
+        assert_eq!(rich_text::strip_tags("<size=400%>Nozomi"), "Nozomi");
+        assert_eq!(rich_text::strip_tags("Honoka"), "Honoka");
     }
 
     // A chart that outlives its audio is rejected on upload AND on edit (from either side -
