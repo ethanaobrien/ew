@@ -11,3 +11,4 @@ docker/data/
 ndk/
 .DS_Store
 custom_songs/
+custom_cards/
