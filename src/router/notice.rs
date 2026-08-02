@@ -1,4 +1,4 @@
-use jzon::{object, array};
+use jzon::object;
 use actix_web::{web, Responder};
 
 use crate::router::Api;
@@ -15,5 +15,8 @@ async fn reward() -> impl Responder {
 }
 
 async fn reward_post() -> impl Responder {
-    Api(Some(array![]))
+    Api(Some(object!{
+        "gift_list": [],
+        "reward_list": []
+    }))
 }
