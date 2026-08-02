@@ -31,10 +31,13 @@ static ASSET_VERSIONS: &[AssetVersion] = &[
     // Re-written client versions 2.0.0 - 2.1.2 (windows only)
     AssetVersion { region: "JP", platform: "Windows", version: "4c921d2443335e574a82e04ec9ea243c", hash: "4ed1d077df2d1b29e17d25d64fb37242", latest: false },
 
-    // Re-written client versions 2.2.0 -
+    // Re-written client versions 2.2.0 - 2.2.2
     AssetVersion { region: "JP", platform: "Windows", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "ec508163f04e0f9e0435b4302011d123", latest: true },
     AssetVersion { region: "JP", platform: "Android", version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "27eabc1af04fa6e4a727516d2bbdadff", latest: false },
-    AssetVersion { region: "JP", platform: "iOS",     version: "ced44f266b4e4c8eb05fe417fd5f3d1b", hash: "43e2337da344296964aec6c474fb0add", latest: false },
+
+    // Re-written client versions 2.3.0 -
+    AssetVersion { region: "JP", platform: "Windows", version: "1b2fe99a639b4ca491afe1a841f19d56", hash: "ddf3bd430b5b3dba7cf7412a65b8a135", latest: true },
+    AssetVersion { region: "JP", platform: "Android", version: "1b2fe99a639b4ca491afe1a841f19d56", hash: "889c565c295dfc2304736fa31cf4d4f9", latest: false },
 
     //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df", latest: true },
 ];
