@@ -307,15 +307,20 @@ fn process_jacket(bytes: &[u8]) -> Result<(Vec<u8>, Vec<u8>), String> {
     Ok((jacket_png, blur_png))
 }
 
-fn cue_json(cue: &audio::Cue, cue_name: String) -> JsonValue {
+// is_loop follows the official cue convention, and it is load-bearing: the client's CriWare
+// layer reports a LOOP cue as forever-playing, so Playback.IsPlayEnd() never turns true for it.
+// The live's end trigger (LiveTimeController.UpdateFree: isMusicEnded -> InLiveDelay -> EndWait)
+// hangs off exactly that signal, so a looping PLAY cue means the live never ends. Only the
+// music-select PREVIEW cue loops, like the official select bgm.
+fn cue_json(cue: &audio::Cue, cue_name: String, is_loop: bool) -> JsonValue {
     object!{
         "cue_name": cue_name,
         "md5": cue.md5.clone(),
         "size": cue.bytes.len(),
         "duration_sec": cue.duration_sec as f32,
-        "is_loop": true,
+        "is_loop": is_loop,
         "loop_start_sec": 0.0,
-        "loop_end_sec": cue.duration_sec as f32
+        "loop_end_sec": if is_loop { cue.duration_sec as f32 } else { 0.0 }
     }
 }
 
@@ -326,18 +331,72 @@ fn asset_meta(bytes: &[u8]) -> (String, usize) {
     (format!("{:x}", md5::compute(bytes)), bytes.len())
 }
 
-// Score thresholds when the uploader doesn't provide any: take the highest
-// difficulty's full_combo and stars, budget base = full_combo * 200 * (1 + stars / 10)
-// (~200 points per note, scaled up for harder charts), then C/B/A/S at
-// 50%/75%/100%/130% of base. Multi live thresholds are 1.2x the solo ones.
-fn default_scores(full_combo: i64, level_number: i64) -> (JsonValue, JsonValue) {
-    let base = full_combo as f64 * 200.0 * (1.0 + level_number as f64 / 10.0);
-    let score = |mult: f64| (base * mult) as u32;
+// Score rank thresholds. These are NOT per-song in SIF2: all 637 rows of the official live
+// masterdata carry the exact same C/B/A/S tuple, solo and multi alike (live.csv columns
+// _scoreC.._multiScoreS), because the score depends on deck strength rather than chart size.
+// Deriving them from the chart's note count instead made rank S trivial on a short custom
+// chart and unreachable on a long one, and skewed everything else that reads them - the live
+// score gauge and the deck-confirm score estimation both scale off _scoreS/_multiScoreS
+// (LiveData.MaxScore = _scoreS * 5 / 4).
+const OFFICIAL_SCORE: [i64; 4] = [20000, 100000, 250000, 350000];
+const OFFICIAL_MULTI_SCORE: [i64; 4] = [70000, 350000, 875000, 1225000];
+
+fn default_scores() -> (JsonValue, JsonValue) {
     (object!{
-        "c": score(0.5), "b": score(0.75), "a": score(1.0), "s": score(1.3)
+        "c": OFFICIAL_SCORE[0], "b": OFFICIAL_SCORE[1], "a": OFFICIAL_SCORE[2], "s": OFFICIAL_SCORE[3]
     }, object!{
-        "c": score(0.5 * 1.2), "b": score(0.75 * 1.2), "a": score(1.0 * 1.2), "s": score(1.3 * 1.2)
+        "c": OFFICIAL_MULTI_SCORE[0], "b": OFFICIAL_MULTI_SCORE[1], "a": OFFICIAL_MULTI_SCORE[2], "s": OFFICIAL_MULTI_SCORE[3]
     })
+}
+
+// Combo-mission targets. Official live_mission_combo rows are round(hardest difficulty's
+// full combo * 0.2/0.4/0.6/0.8) - verified against 626 of the 637 shipped rows (the 11
+// outliers are songs that gained a harder difficulty after the mission row was authored).
+// The previous 25/50/75/100% spread made the fourth mission demand a literal FULL COMBO of
+// the hardest chart, a target no official song ever sets.
+fn mission_combo(hardest_combo: i64) -> JsonValue {
+    let target = |fraction: f64| (hardest_combo as f64 * fraction + 0.5) as i64;
+    jzon::array![target(0.2), target(0.4), target(0.6), target(0.8)]
+}
+
+// The live's count-in, and the longest a marker can be in flight before its note. The count-in
+// is LiveMst._startWait, 2.0 in every official live row and in ours. The flight time is
+// LiveUtils.GetMarkerMoveTime(speed) = 1.725 - 0.125 * speed, clamped at 0.1, where speed is the
+// player's per-difficulty rhythm-icon setting; its slowest end (and even a hypothetical 0) stays
+// under the count-in, so a note at t >= 0 always has room to travel. Kept explicit so the check
+// below stays honest if either constant ever moves.
+const START_WAIT_SEC: f64 = 2.0;
+const MAX_MARKER_MOVE_SEC: f64 = 1.725;
+
+// A chart has to fit INSIDE its audio, at both ends.
+//
+// Tail: the live ends the moment the audio does - LiveTimeController's m_MusicDuration is
+// LiveMst._endWait + the music length and _endWait is 0 - so a note whose MISS window closes
+// after that is never judged. The player cannot full-combo the chart (the combo missions and
+// the FULL COMBO banner both compare against full_combo, which counts every note), and the
+// trailing markers are still on screen when the result screen takes over.
+//
+// Head: a marker spawns at time - GetMarkerMoveTime and the chart clock starts at -_startWait,
+// so a note earlier than the flight time minus the count-in would pop in already halfway down
+// the lane.
+fn validate_chart_fits_audio(level: i64, chart: &JsonValue, duration_sec: f64) -> Result<(), String> {
+    let end = chart::end_time(chart);
+    if end > duration_sec {
+        return Err(format!(
+            "Difficulty {}: the chart needs {:.2}s but the audio is only {:.2}s long - the last note is never judged, because the live ends when the music does",
+            level, end, duration_sec
+        ));
+    }
+    if let Some(first) = chart::first_note_time(chart) {
+        let earliest = MAX_MARKER_MOVE_SEC - START_WAIT_SEC;
+        if first < earliest {
+            return Err(format!(
+                "Difficulty {}: the first note is at {:.2}s, before the {:.2}s the live needs to bring a marker down the lane",
+                level, first, earliest
+            ));
+        }
+    }
+    Ok(())
 }
 
 fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, String> {
@@ -398,6 +457,10 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         .ok_or(String::from("An audio track is required"))?;
     let (play, select) = audio::process(audio_bytes, field_f64(fields, "preview_start_sec"), field_f64(fields, "preview_length_sec"))?;
 
+    for (level, chart, _, _, _) in charts.iter() {
+        validate_chart_fits_audio(*level, chart, play.duration_sec)?;
+    }
+
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     let music_id = database::next_music_id();
 
@@ -421,8 +484,8 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
     let (jacket_md5, jacket_size) = asset_meta(&jacket);
     let (jacket_blur_md5, jacket_blur_size) = asset_meta(&jacket_blur);
 
-    let (_, _, hardest_combo, hardest_stars, _) = charts.last().unwrap();
-    let (score, multi_score) = default_scores(*hardest_combo, *hardest_stars);
+    let (_, _, hardest_combo, _, _) = charts.last().unwrap();
+    let (score, multi_score) = default_scores();
 
     // The upload metadata in the multipart-field schema, kept alongside the
     // original artifacts so the song can be exported and re-uploaded elsewhere
@@ -465,8 +528,8 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         "end_wait": 0.0,
         "score": score,
         "multi_score": multi_score,
-        // Combo missions at 25/50/75/100% of the hardest difficulty's full combo
-        "mission_combo": [hardest_combo / 4, hardest_combo / 2, hardest_combo * 3 / 4, *hardest_combo],
+        // Combo missions at the official 20/40/60/80% of the hardest difficulty's full combo
+        "mission_combo": mission_combo(*hardest_combo),
         "jacket": format!("/custom_song/assets/{}/jacket.png", music_id),
         "jacket_md5": jacket_md5,
         "jacket_size": jacket_size,
@@ -476,8 +539,8 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         "levels": levels,
         "sound": {
             "cue_sheet": format!("song_{}_{}", music_id, suffix),
-            "play": cue_json(&play, format!("play_{}_{}", music_id, suffix)),
-            "select": cue_json(&select, format!("select_{}_{}", music_id, suffix))
+            "play": cue_json(&play, format!("play_{}_{}", music_id, suffix), false),
+            "select": cue_json(&select, format!("select_{}_{}", music_id, suffix), true)
         }
     };
 
@@ -619,6 +682,29 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
         (None, None)
     };
 
+    // Every chart in the RESULTING song has to fit the RESULTING audio, so replacing either
+    // side re-checks the other: new audio is validated against the charts that stay, and a new
+    // chart against the audio that stays (read back from the catalog's own cue metadata).
+    let play_duration = match &play {
+        Some(play) => Some(play.duration_sec),
+        None => old_song["sound"]["play"]["duration_sec"].as_f64()
+    };
+    if let Some(duration) = play_duration {
+        for (level, chart, _, _) in charts.iter() {
+            match chart {
+                Some((chart, _)) => validate_chart_fits_audio(*level, chart, duration)?,
+                None => {
+                    let path = song_path(music_id, &format!("chart_{}.json", level));
+                    if let Ok(bytes) = fs::read(&path) {
+                        if let Ok(stored) = jzon::parse(&String::from_utf8_lossy(&bytes)) {
+                            validate_chart_fits_audio(*level, &stored, duration)?;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     let suffix = format!("Custom{}", music_id);
     let mut levels = array![];
     for (level, chart, full_combo, level_number) in charts.iter() {
@@ -656,8 +742,8 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
 
     // Scores and combo missions always derive from the resulting state, with
     // the same formulas as upload
-    let (_, _, hardest_combo, hardest_stars) = charts.last().unwrap();
-    let (score, multi_score) = default_scores(*hardest_combo, *hardest_stars);
+    let (_, _, hardest_combo, _) = charts.last().unwrap();
+    let (score, multi_score) = default_scores();
 
     let mut manifest_levels = array![];
     for (level, _, _, level_number) in charts.iter() {
@@ -685,10 +771,10 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
     // Same id everywhere, so the cue sheet/cue names never change
     let mut sound = old_song["sound"].clone();
     if let Some(play) = &play {
-        sound["play"] = cue_json(play, format!("play_{}_{}", music_id, suffix));
+        sound["play"] = cue_json(play, format!("play_{}_{}", music_id, suffix), false);
     }
     if let Some(select) = &select {
-        sound["select"] = cue_json(select, format!("select_{}_{}", music_id, suffix));
+        sound["select"] = cue_json(select, format!("select_{}_{}", music_id, suffix), true);
     }
 
     let song = object!{
@@ -707,8 +793,8 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
         "end_wait": 0.0,
         "score": score,
         "multi_score": multi_score,
-        // Combo missions at 25/50/75/100% of the hardest difficulty's full combo
-        "mission_combo": [hardest_combo / 4, hardest_combo / 2, hardest_combo * 3 / 4, *hardest_combo],
+        // Combo missions at the official 20/40/60/80% of the hardest difficulty's full combo
+        "mission_combo": mission_combo(*hardest_combo),
         "jacket": format!("/custom_song/assets/{}/jacket.png", music_id),
         "jacket_md5": jacket_md5,
         "jacket_size": jacket_size,
@@ -1029,17 +1115,19 @@ mod tests {
 
     // A SIF1 chart whose transcode contains 3+ simultaneous notes: 4 parallel holds into a
     // full 9-lane wall (the shape of the field-reported chart that exposed the old encoding)
+    // 4 parallel holds then a 9-wide wall. Timed to fit inside the 2s test track: uploads are
+    // rejected when a chart outlives its audio (validate_chart_fits_audio)
     fn wall_chart() -> Vec<u8> {
         let mut beatmap = jzon::array![];
         for position in [2, 4, 6, 8] {
             beatmap.push(jzon::object!{
-                "timing_sec": 1.0, "notes_attribute": 1, "notes_level": 1,
-                "effect": 3, "effect_value": 1.0, "position": position
+                "timing_sec": 0.5, "notes_attribute": 1, "notes_level": 1,
+                "effect": 3, "effect_value": 0.5, "position": position
             }).unwrap();
         }
         for position in 1..=9 {
             beatmap.push(jzon::object!{
-                "timing_sec": 2.75, "notes_attribute": 1, "notes_level": 1,
+                "timing_sec": 1.5, "notes_attribute": 1, "notes_level": 1,
                 "effect": 1, "effect_value": 0.0, "position": position
             }).unwrap();
         }
@@ -1120,6 +1208,170 @@ mod tests {
         // Idempotent: a second boot changes nothing and bumps nothing
         migrate::run();
         assert_eq!(fs::read(&path).unwrap(), fixed_bytes);
+        assert_eq!(database::get_revision(), revision + 1);
+    }
+
+    // The live PLAY cue must never be a loop cue: the client reports a looping playback as
+    // forever-playing, and the live's end trigger waits on playback-end, so a looping play cue
+    // means the live never ends. New uploads emit is_loop:false, the preview cue keeps looping,
+    // and the startup migration un-loops catalogs written before the distinction existed.
+    #[test]
+    fn play_cue_never_loops() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Loop Check");
+        field(&mut fields, "artist", "Loop Artist");
+        field(&mut fields, "attribute", "1");
+        field(&mut fields, "level_number_1", "5");
+        fields.insert(String::from("jacket"), test_png());
+        // A tone no other test uses: the audio store is content-addressed and shared across
+        // tests, so a duplicate cue would keep another test's cue alive past its own GC
+        fields.insert(String::from("audio"), test_ogg_tone(880.0));
+        fields.insert(String::from("chart_1"), test_chart());
+        let music_id = create_song(5555, &fields).unwrap();
+
+        let song = database::get_song(music_id).unwrap();
+        assert_eq!(song["sound"]["play"]["is_loop"], false);
+        assert_eq!(song["sound"]["play"]["loop_end_sec"], 0.0);
+        assert_eq!(song["sound"]["select"]["is_loop"], true);
+        assert!(song["sound"]["select"]["loop_end_sec"].as_f64().unwrap() > 0.0);
+
+        // Doctor the catalog back to the pre-fix shape an old server would have written,
+        // then boot: the migration un-loops the play cue and bumps the revision once
+        let mut old = song.clone();
+        old["sound"]["play"]["is_loop"] = true.into();
+        old["sound"]["play"]["loop_end_sec"] = old["sound"]["play"]["duration_sec"].clone();
+        database::update_song(music_id, &old);
+        let revision = database::get_revision();
+
+        migrate::run();
+
+        let song = database::get_song(music_id).unwrap();
+        assert_eq!(song["sound"]["play"]["is_loop"], false);
+        assert_eq!(song["sound"]["play"]["loop_end_sec"], 0.0);
+        assert_eq!(song["sound"]["select"]["is_loop"], true);
+        // The ogg bytes never moved, so the audio md5 must not change (no re-download)
+        assert_eq!(song["sound"]["play"]["md5"], old["sound"]["play"]["md5"]);
+        assert_eq!(database::get_revision(), revision + 1);
+
+        // Idempotent
+        migrate::run();
+        assert_eq!(database::get_revision(), revision + 1);
+    }
+
+    // A chart that outlives its audio is rejected on upload AND on edit (from either side -
+    // swapping in a longer chart, or shorter audio under charts that stay). The live ends when
+    // the music does, so those notes would never be judged. A note at t=0 is fine: the 2.0s
+    // count-in always covers the marker's flight time.
+    #[test]
+    fn chart_must_fit_its_audio() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        // Taps at the given times, one per lane sweep
+        let chart_at = |times: &[f64]| {
+            let mut beatmap = jzon::array![];
+            for (i, time) in times.iter().enumerate() {
+                beatmap.push(jzon::object!{
+                    "timing_sec": *time, "notes_attribute": 1, "notes_level": 1,
+                    "effect": 1, "effect_value": 0.0, "position": (i % 9) + 1
+                }).unwrap();
+            }
+            jzon::stringify(beatmap).into_bytes()
+        };
+        let base = |chart: Vec<u8>| {
+            let mut fields = HashMap::new();
+            field(&mut fields, "name", "Fit Check");
+            field(&mut fields, "artist", "Fit Artist");
+            field(&mut fields, "attribute", "1");
+            field(&mut fields, "level_number_1", "5");
+            fields.insert(String::from("jacket"), test_png());
+            // 2 seconds of audio
+            fields.insert(String::from("audio"), test_ogg_tone(990.0));
+            fields.insert(String::from("chart_1"), chart);
+            fields
+        };
+
+        // 2.5s note in a 2.0s track: the last note's MISS window closes long after the live ends
+        let error = create_song(6666, &base(chart_at(&[0.5, 2.5]))).unwrap_err();
+        assert!(error.contains("Difficulty 1"), "{}", error);
+        assert!(error.contains("the audio is only"), "{}", error);
+        // Nothing was stored
+        assert!(database::get_song(6666).is_none());
+
+        // Right at the edge: 1.8 + the 0.15 tap MISS window is 1.95, inside 2.0. A note at t=0
+        // is accepted too - the count-in covers the marker flight
+        let music_id = create_song(6666, &base(chart_at(&[0.0, 1.8]))).unwrap();
+        let before = database::get_song(music_id).unwrap();
+
+        // Editing in a chart that doesn't fit the stored audio is rejected, and the stored
+        // song is untouched
+        let mut fields = HashMap::new();
+        fields.insert(String::from("chart_1"), chart_at(&[0.5, 3.0]));
+        let error = update_song(music_id, &fields).unwrap_err();
+        assert!(error.contains("the audio is only"), "{}", error);
+        assert_eq!(jzon::stringify(database::get_song(music_id).unwrap()), jzon::stringify(before.clone()));
+
+        // Adding a difficulty whose chart doesn't fit is rejected the same way
+        let mut fields = HashMap::new();
+        fields.insert(String::from("chart_4"), chart_at(&[0.5, 5.0]));
+        field(&mut fields, "level_number_4", "12");
+        assert!(update_song(music_id, &fields).is_err());
+        assert_eq!(jzon::stringify(database::get_song(music_id).unwrap()), jzon::stringify(before));
+
+        // A chart that DOES fit still edits in
+        let mut fields = HashMap::new();
+        fields.insert(String::from("chart_1"), chart_at(&[0.25, 1.5]));
+        update_song(music_id, &fields).unwrap();
+    }
+
+    // The startup migration also corrects the two fabricated masterdata values in stored
+    // catalogs: score-rank thresholds (official constants, not per-song) and combo missions
+    // (20/40/60/80% of the hardest full combo, not 25/50/75/100%)
+    #[test]
+    fn startup_migration_fixes_fabricated_scores_and_missions() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Old Values");
+        field(&mut fields, "artist", "Old Artist");
+        field(&mut fields, "attribute", "3");
+        field(&mut fields, "level_number_1", "5");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg_tone(1100.0));
+        fields.insert(String::from("chart_1"), wall_chart());
+        let music_id = create_song(7777, &fields).unwrap();
+
+        let mut song = database::get_song(music_id).unwrap();
+        let hardest = song["levels"].members().last().unwrap()["full_combo"].as_i64().unwrap();
+        // Doctor the catalog back to the pre-fix formulas
+        let base = hardest as f64 * 200.0 * (1.0 + 5.0 / 10.0);
+        song["score"] = object!{
+            "c": (base * 0.5) as u32, "b": (base * 0.75) as u32, "a": base as u32, "s": (base * 1.3) as u32
+        };
+        song["multi_score"] = object!{
+            "c": (base * 0.6) as u32, "b": (base * 0.9) as u32, "a": (base * 1.2) as u32, "s": (base * 1.56) as u32
+        };
+        song["mission_combo"] = jzon::array![hardest / 4, hardest / 2, hardest * 3 / 4, hardest];
+        database::update_song(music_id, &song);
+        let revision = database::get_revision();
+
+        migrate::run();
+
+        let song = database::get_song(music_id).unwrap();
+        let (score, multi_score) = default_scores();
+        assert_eq!(song["score"], score);
+        assert_eq!(song["multi_score"], multi_score);
+        assert_eq!(song["score"]["s"], 350000);
+        assert_eq!(song["multi_score"]["s"], 1225000);
+        // 20/40/60/80%, and never the full combo itself
+        assert_eq!(song["mission_combo"], mission_combo(hardest));
+        assert_eq!(song["mission_combo"][3].as_i64().unwrap(), (hardest as f64 * 0.8 + 0.5) as i64);
+        assert!(song["mission_combo"][3].as_i64().unwrap() < hardest);
+        assert_eq!(database::get_revision(), revision + 1);
+
+        // Idempotent
+        migrate::run();
         assert_eq!(database::get_revision(), revision + 1);
     }
 
@@ -1219,16 +1471,19 @@ mod tests {
         assert_eq!(song["sound"]["select"]["md5"], before["sound"]["select"]["md5"]);
         assert_eq!(database::get_revision(), revision + 1);
 
-        // Adding a difficulty re-derives scores from the new hardest chart,
-        // and the manifest follows so exports reflect the edited state
+        // Adding a difficulty re-derives the combo missions from the new hardest chart, the
+        // score thresholds stay on the official constants, and the manifest follows so
+        // exports reflect the edited state
         let mut fields = HashMap::new();
         fields.insert(String::from("chart_4"), test_chart());
         field(&mut fields, "level_number_4", "12");
         update_song(music_id, &fields).unwrap();
         let song = database::get_song(music_id).unwrap();
         assert_eq!(song["levels"].len(), 2);
-        let (score, _) = default_scores(3, 12);
+        let (score, _) = default_scores();
         assert_eq!(song["score"]["s"], score["s"]);
+        let hardest = song["levels"].members().last().unwrap()["full_combo"].as_i64().unwrap();
+        assert_eq!(song["mission_combo"], mission_combo(hardest));
         assert!(fs::read(song_path(music_id, "chart_4.json")).is_ok());
         assert!(fs::read(song_path(music_id, "original/chart_4.json")).is_ok());
         let manifest = jzon::parse(&String::from_utf8_lossy(&fs::read(song_path(music_id, "original/manifest.json")).unwrap())).unwrap();

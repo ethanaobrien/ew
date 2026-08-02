@@ -64,6 +64,71 @@ use jzon::{object, JsonValue};
 // - max_combo_count = all real notes EXCEPT hold heads whose tail is on the same
 //   line (the game counts a same-lane hold as one combo for the chain)
 
+// Two notes are SIMULTANEOUS (one spawn cluster) when their times agree to within this.
+// Uploaded timings are decimal literals, so notes an author meant to be simultaneous parse to
+// bit-identical f64 - but a hold's SYNTHESIZED tail is computed (timing + effect_value), and
+// e.g. 1.4 + 0.7 is 2.0999999999999996, which exact equality splits from a note literally at
+// 2.1. That cost the two the shared spawn num, and with it the client's sync connector line
+// (LiveTimeController.CreateMarkerTimeData pairs GroupSyncMarkerData by GroupId). The client
+// itself never compares two note times - simultaneity is entirely decided here by `num`, and
+// it stores time as f32 anyway - so this tolerance only has to sit above f64 accumulation
+// noise (~1e-15) and below any real spacing: the tightest a chart ever uses is a 1/64 note at
+// 250 BPM, ~15 ms, four orders of magnitude above this.
+pub const SIMULTANEOUS_EPSILON_SEC: f64 = 1e-6;
+
+fn simultaneous(a: f64, b: f64) -> bool {
+    (a - b).abs() <= SIMULTANEOUS_EPSILON_SEC
+}
+
+// MISS window, from the live_input_result masterdata BAD row (_offsetTimeSec 0.15,
+// _offsetTimeSecSlider 0.34). LiveTimeController.UpdateMarkerTime destroys and force-MISSes a
+// marker once the chart clock passes time + this (LiveUtils.GetMissOffsetTime), so a note is
+// only judgeable while the live is still running that far past it.
+const MISS_OFFSET_SEC: f64 = 0.15;
+const MISS_OFFSET_SLIDER_SEC: f64 = 0.34;
+
+// MarkerData.IsSliderMarker: a chained note with a cross-lane parent or child.
+fn is_slider(data: &JsonValue, line_of: &dyn Fn(i64) -> Option<i64>) -> bool {
+    let parent_id = data["parent_id"].as_i64().unwrap_or(0);
+    let child_id = data["child_id"].as_i64().unwrap_or(0);
+    if parent_id == 0 && child_id == 0 {
+        return false;
+    }
+    let line = data["line"].as_i64().unwrap_or(0);
+    if child_id != 0 && data["child_line"].as_i64().unwrap_or(0) != line {
+        return true;
+    }
+    parent_id != 0 && line_of(parent_id) != Some(line)
+}
+
+// The chart clock time at which the LAST note stops being judgeable - i.e. the moment the live
+// must still be running to. The live ends when the audio does (LiveTimeController's
+// m_MusicDuration is LiveMst._endWait + the music length, and _endWait is 0 in every one of the
+// 637 official live rows and in ours), so this is what has to fit inside the audio.
+pub fn end_time(chart: &JsonValue) -> f64 {
+    let lines: Vec<(i64, i64)> = chart["notes"].members().skip(1)
+        .map(|n| (n["id"].as_i64().unwrap_or(0), n["line"].as_i64().unwrap_or(0)))
+        .collect();
+    let line_of = |id: i64| lines.iter().find(|(i, _)| *i == id).map(|(_, line)| *line);
+
+    let mut end: f64 = 0.0;
+    for data in chart["notes"].members().skip(1) {
+        let offset = if is_slider(data, &line_of) { MISS_OFFSET_SLIDER_SEC } else { MISS_OFFSET_SEC };
+        end = end.max(data["time"].as_f64().unwrap_or(0.0) + offset);
+    }
+    end
+}
+
+// The earliest note in the chart, or None for an empty chart
+pub fn first_note_time(chart: &JsonValue) -> Option<f64> {
+    chart["notes"].members().skip(1)
+        .filter_map(|n| n["time"].as_f64())
+        .fold(None, |first: Option<f64>, time| Some(match first {
+            Some(first) => first.min(time),
+            None => time
+        }))
+}
+
 struct WorkNote {
     time: f64,
     line: i64,
@@ -207,7 +272,7 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
     let mut start = 0;
     while start < order.len() {
         let mut end = start + 1;
-        while end < order.len() && work[order[end]].time == work[order[start]].time {
+        while end < order.len() && simultaneous(work[order[end]].time, work[order[start]].time) {
             end += 1;
         }
         let mut cluster: Vec<usize> = order[start..end].to_vec();
@@ -307,7 +372,7 @@ pub fn regroup(chart: &mut JsonValue) -> bool {
     let mut start = 0;
     while start < order.len() {
         let mut end = start + 1;
-        while end < order.len() && notes[order[end]].1 == notes[order[start]].1 {
+        while end < order.len() && simultaneous(notes[order[end]].1, notes[order[start]].1) {
             end += 1;
         }
         let mut cluster: Vec<usize> = order[start..end].to_vec();
@@ -458,6 +523,57 @@ mod tests {
         assert_eq!(tail["child_id"], 0);
         assert_eq!(tail["line"], 2);
         assert_eq!(tail["time"].as_f64().unwrap(), 3.5);
+    }
+
+    // A hold tail's time is COMPUTED (timing + effect_value), so it can land a few f64 ulps off
+    // a note written at the same beat - 1.4 + 0.7 is 2.0999999999999996, not 2.1. Exact equality
+    // split those two into separate spawn groups and the client lost the sync connector line
+    // between them; the epsilon keeps them together. The tail must still be emitted at its own
+    // computed time (the client stores time as f32, which lands both on 2.1 anyway)
+    #[test]
+    fn a_computed_hold_tail_shares_the_beats_spawn_group() {
+        assert_ne!(1.4f64 + 0.7f64, 2.1f64);
+        let beatmap = jzon::array![
+            sif_note(1.4, 3, 3, 0.7),   // hold, tail computed at 2.0999999999999996
+            sif_note(2.1, 7, 1, 0.0)    // tap written at 2.1
+        ];
+        let (chart, _) = transcode(&beatmap).unwrap();
+
+        let tail = chart["notes"].members().find(|n| n["parent_id"] != 0).unwrap();
+        let tap = chart["notes"].members().find(|n| n["line"] == 6).unwrap();
+        assert_eq!(tail["num"], tap["num"].clone());
+        assert!((tail["time"].as_f64().unwrap() - 2.1).abs() < 1e-9);
+        assert_spawn_groups_hold_at_most_two(&chart);
+
+        // Genuinely distinct beats stay distinct: the epsilon is orders of magnitude below the
+        // tightest spacing a chart ever uses (a 1/64 note at 250 BPM is ~15 ms)
+        let beatmap = jzon::array![
+            sif_note(2.1, 3, 1, 0.0),
+            sif_note(2.115, 7, 1, 0.0)
+        ];
+        let (chart, _) = transcode(&beatmap).unwrap();
+        assert_ne!(chart["notes"][1]["num"], chart["notes"][2]["num"].clone());
+    }
+
+    // end_time is what validate_chart_fits_audio compares against the track length: the last
+    // moment a note is still judgeable, using the BAD-row MISS window (0.15 tap / 0.34 slider)
+    #[test]
+    fn end_time_uses_the_miss_window_of_the_last_note() {
+        let (chart, _) = transcode(&jzon::array![sif_note(10.0, 3, 1, 0.0)]).unwrap();
+        assert!((end_time(&chart) - 10.15).abs() < 1e-9);
+        assert_eq!(first_note_time(&chart), Some(10.0));
+
+        // A hold: the synthesized tail is the last note, and it is same-lane so not a slider
+        let (chart, _) = transcode(&jzon::array![sif_note(10.0, 3, 3, 2.0)]).unwrap();
+        assert!((end_time(&chart) - 12.15).abs() < 1e-9);
+        assert_eq!(first_note_time(&chart), Some(10.0));
+
+        // A cross-lane slide run: every segment is a slider, so the wider window applies
+        let (chart, _) = transcode(&jzon::array![
+            sif_slide(10.0, 9, 11, 0.0, 5),
+            sif_slide(10.5, 8, 11, 0.0, 5)
+        ]).unwrap();
+        assert!((end_time(&chart) - 10.84).abs() < 1e-9);
     }
 
     // The client spawns markers one num-group at a time and CreateMarkerUI refuses lists of

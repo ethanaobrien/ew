@@ -11,6 +11,10 @@ use crate::runtime::get_data_path;
 // the regroup needs (time + line per note), so they are rewritten in place — no original
 // upload required, which also covers songs from before export support.
 //
+// The same pass also corrects the stored catalog values that were fabricated rather than
+// derived from official masterdata (see below): the looping PLAY cue, the per-song score-rank
+// thresholds and the combo-mission targets.
+//
 // For each song directory with a catalog row, every chart with an over-shared num is
 // regrouped (chart::regroup), rewritten to disk, and its level's md5/size in the catalog
 // blob updated — the changed md5 re-keys the client's content-addressed cache, so clients
@@ -38,6 +42,43 @@ pub fn run() {
         let Some(mut song) = database::get_song(music_id) else { continue; };
 
         let mut changed = false;
+
+        // Catalogs written before cue_json took an is_loop argument marked BOTH cues as loop
+        // cues. A looping PLAY cue never reports playback-end to the client, and the live's end
+        // trigger (LiveTimeController: isMusicEnded -> InLiveDelay -> EndWait) hangs off exactly
+        // that, so those lives never finish. Only the metadata changes - the ogg bytes and their
+        // md5 are untouched, so no re-download is needed, just a catalog resync.
+        if song["sound"]["play"]["is_loop"] == true {
+            song["sound"]["play"]["is_loop"] = false.into();
+            song["sound"]["play"]["loop_end_sec"] = 0.0.into();
+            changed = true;
+            println!("Custom song {}: play cue un-looped (pre-fix catalog)", music_id);
+        }
+
+        // Score-rank thresholds and combo-mission targets used to be invented per song. Both are
+        // objective masterdata: the official live rows all carry ONE score tuple, and every
+        // live_mission_combo row is round(hardest full combo * 0.2/0.4/0.6/0.8) (see
+        // default_scores / mission_combo). Recompute them the way an edit would, so songs
+        // uploaded before the fix stop handing out rank S for free and stop asking for a literal
+        // full combo on the fourth combo mission.
+        let (score, multi_score) = super::default_scores();
+        if song["score"] != score || song["multi_score"] != multi_score {
+            song["score"] = score;
+            song["multi_score"] = multi_score;
+            changed = true;
+            println!("Custom song {}: score rank thresholds reset to the official values", music_id);
+        }
+        // Same "hardest difficulty" rule as upload/edit: the last level entry, which both write
+        // in ascending level order
+        if let Some(hardest) = song["levels"].members().last().and_then(|l| l["full_combo"].as_i64()) {
+            let missions = super::mission_combo(hardest);
+            if song["mission_combo"] != missions {
+                song["mission_combo"] = missions;
+                changed = true;
+                println!("Custom song {}: combo missions rescaled to the official 20/40/60/80%", music_id);
+            }
+        }
+
         for level in 1..=LEVEL_COUNT {
             let path = song_path(music_id, &format!("chart_{}.json", level));
             let Ok(bytes) = fs::read(&path) else { continue; };
