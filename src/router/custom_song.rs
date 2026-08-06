@@ -160,6 +160,68 @@ fn audio_file_path(md5: &str) -> String {
     get_data_path(&format!("custom_songs/audio/{}.ogg", md5))
 }
 
+// Startup GC for the content-addressed audio store. Every ogg in there belongs
+// to some song's play or select cue; the only things that write the directory
+// are upload and update, so an unreferenced file is a leftover from an
+// interrupted one. Deleting it loses nothing - the same audio uploaded again
+// re-encodes to the same bytes at the same path (audio.rs).
+//
+// Deliberately conservative, because the failure mode is deleting audio a live
+// song serves: anything that makes the reference set doubtful - an unreadable
+// catalog, a blob that won't parse, a song with no cue md5 - aborts the whole
+// sweep instead of treating that song as referencing nothing. Only exactly
+// {32 hex}.ogg names are ever considered. Takes UPLOAD_LOCK for the same
+// reason delete does: an upload that has written its oggs but not yet inserted
+// its row must not look like an orphan.
+pub fn sweep_audio() {
+    if disabled() {
+        return;
+    }
+    let lock = lock_onto_mutex!(UPLOAD_LOCK);
+    let Some(blobs) = database::all_song_blobs() else {
+        println!("Custom song audio sweep: catalog unreadable, skipped");
+        return;
+    };
+    let mut referenced: Vec<String> = Vec::new();
+    for blob in blobs.members() {
+        let Ok(song) = jzon::parse(&blob.to_string()) else {
+            println!("Custom song audio sweep: unparseable catalog row, skipped");
+            return;
+        };
+        for key in ["play", "select"] {
+            let md5 = song["sound"][key]["md5"].as_str().unwrap_or("");
+            if md5.is_empty() {
+                println!("Custom song audio sweep: song {} has no {} cue, skipped", song["music_id"], key);
+                return;
+            }
+            referenced.push(String::from(md5));
+        }
+    }
+
+    // No directory means nothing was ever uploaded
+    let Ok(entries) = fs::read_dir(get_data_path("custom_songs/audio")) else {
+        return;
+    };
+    let mut removed = 0;
+    for entry in entries.flatten() {
+        let name = entry.file_name().to_string_lossy().to_string();
+        let Some(md5) = name.strip_suffix(".ogg") else { continue; };
+        if md5.len() != 32 || !md5.chars().all(|c| c.is_ascii_hexdigit()) {
+            continue;
+        }
+        if referenced.iter().any(|other| other == md5) {
+            continue;
+        }
+        if fs::remove_file(entry.path()).is_ok() {
+            removed += 1;
+        }
+    }
+    if removed > 0 {
+        println!("Custom song audio sweep: removed {} orphaned ogg(s)", removed);
+    }
+    drop(lock);
+}
+
 async fn assets(req: HttpRequest) -> HttpResponse {
     if disabled() {
         return HttpResponse::NotFound().finish();
@@ -1063,6 +1125,11 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
     }
     let song = database::get_song(music_id).unwrap_or(object!{});
 
+    // Same lock upload and update take, for the audio GC below: an upload
+    // writes its oggs before it inserts its row, so a delete that reads the
+    // catalog in that window sees no reference to a shared md5 and would
+    // unlink the file the new song is about to serve
+    let lock = lock_onto_mutex!(UPLOAD_LOCK);
     database::delete_song(music_id);
     database::bump_revision();
     // Global clear-rate stats for the dead live id (per-user score records are
@@ -1077,6 +1144,7 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
             let _ = fs::remove_file(audio_file_path(&md5));
         }
     }
+    drop(lock);
 
     send_json(object!{
         result: "OK"
@@ -1641,6 +1709,60 @@ mod tests {
         assert!((song["sound"]["select"]["duration_sec"].as_f64().unwrap() - 1.0).abs() < 0.05);
         assert!(fs::read(audio_file_path(&song["sound"]["select"]["md5"].to_string())).is_ok());
         assert!(fs::read(audio_file_path(&before["sound"]["select"]["md5"].to_string())).is_err());
+    }
+
+    // The startup sweep drops oggs nothing references any more (an upload that
+    // died between writing the file and storing its row), keeps every cue that
+    // is referenced - including one shared by two songs - and leaves anything
+    // that isn't a content-addressed ogg alone
+    #[test]
+    fn audio_sweep_removes_only_orphans() {
+        let _lock = crate::runtime::lock_test_data_path();
+
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Sweep Song");
+        field(&mut fields, "artist", "Sweep Artist");
+        field(&mut fields, "attribute", "1");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg_tone(311.0));
+        fields.insert(String::from("chart_1"), test_chart());
+        let music_id = create_song(4242, &fields).unwrap();
+        // A second song on the SAME audio: identical bytes hash to one shared file
+        let shared_id = create_song(4243, &fields).unwrap();
+        let song = database::get_song(music_id).unwrap();
+        let play = song["sound"]["play"]["md5"].to_string();
+        let select = song["sound"]["select"]["md5"].to_string();
+        assert_eq!(database::get_song(shared_id).unwrap()["sound"]["play"]["md5"], play);
+
+        let orphan = audio_file_path(&"a1".repeat(16));
+        let not_an_ogg = get_data_path("custom_songs/audio/notes.txt");
+        let bad_name = get_data_path("custom_songs/audio/orphan.ogg");
+        for path in [&orphan, &not_an_ogg, &bad_name] {
+            fs::write(path, b"junk").unwrap();
+        }
+
+        sweep_audio();
+
+        assert!(fs::read(&orphan).is_err());
+        assert!(fs::read(audio_file_path(&play)).is_ok());
+        assert!(fs::read(audio_file_path(&select)).is_ok());
+        // Only {32 hex}.ogg is ever a sweep candidate
+        assert!(fs::read(&not_an_ogg).is_ok());
+        assert!(fs::read(&bad_name).is_ok());
+
+        // A song whose cues can't be read makes the whole sweep bail rather
+        // than treat that song as referencing nothing
+        fs::write(&orphan, b"junk").unwrap();
+        let shared_song = database::get_song(shared_id).unwrap();
+        database::update_song(shared_id, &object!{"music_id": shared_id});
+        sweep_audio();
+        assert!(fs::read(&orphan).is_ok());
+        assert!(fs::read(audio_file_path(&play)).is_ok());
+
+        database::update_song(shared_id, &shared_song);
+        let _ = fs::remove_file(&orphan);
+        let _ = fs::remove_file(&not_an_ogg);
+        let _ = fs::remove_file(&bad_name);
     }
 
     // mp3/wav uploads still work: symphonia decodes them and the play cue is

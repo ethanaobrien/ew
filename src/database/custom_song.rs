@@ -303,6 +303,14 @@ pub fn dead_music_ids(candidates: &JsonValue) -> JsonValue {
     rv
 }
 
+// Every stored catalog blob, unparsed and unfiltered by visibility. Only the
+// startup audio sweep needs the whole table, and it needs to tell "no songs"
+// apart from "could not read the songs" - a read failure must never look like
+// an empty catalog, so this returns None rather than an empty array on error
+pub fn all_song_blobs() -> Option<JsonValue> {
+    DATABASE.lock_and_select_all("SELECT song FROM songs ORDER BY music_id", params!()).ok()
+}
+
 // Audio files are content-addressed and may be shared between songs
 pub fn audio_in_use(md5: &str, ignored_music_id: i64) -> bool {
     DATABASE.lock_and_select("SELECT music_id FROM songs WHERE music_id!=?1 AND song LIKE ?2", params!(ignored_music_id, format!("%{}%", md5))).is_ok()
