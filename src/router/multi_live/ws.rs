@@ -216,7 +216,15 @@ async fn authenticate(
     };
 
     let Some(uid) = resolve_user(&user_id, &token) else {
-        println!("multi_live/ws: rejecting uid {}: bad session", user_id);
+        // Never print the token itself (it is the login credential); empty-vs-unknown is
+        // the diagnostic that matters: empty means the client sent no credential at all
+        // (the pre-fix Android builds sent UserSaveData.m_uuid, which device builds never
+        // populate), unknown means a credential the tokens table has no row for.
+        println!(
+            "multi_live/ws: rejecting uid {}: bad session ({})",
+            user_id,
+            if token.is_empty() { "empty token" } else { "unknown token" }
+        );
         close(tx, CLOSE_UNAUTHENTICATED);
         return None;
     };
