@@ -12,3 +12,8 @@ ndk/
 .DS_Store
 custom_songs/
 custom_cards/
+
+# local-only trees — never commit (35GB between them)
+/android/
+/assets.bak/
+/assets.old/

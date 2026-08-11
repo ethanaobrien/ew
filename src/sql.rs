@@ -59,4 +59,28 @@ impl SQLite {
         }
         Ok(rv)
     }
+
+    // Runs a read-modify-write as one unit. Additive on purpose — the other helpers open
+    // a fresh connection per statement, so a caller that SELECTs then INSERTs races any
+    // concurrent caller doing the same and the loser hits a constraint violation (which
+    // lock_and_exec would unwrap into a worker panic).
+    //
+    // BEGIN IMMEDIATE takes the write lock up front rather than at first write, so two
+    // callers serialise instead of both reading the pre-state; busy_timeout makes the
+    // loser wait for the winner rather than fail instantly (SQLite::new sets that on its
+    // own short-lived setup connection, not on the per-call ones).
+    //
+    // Errors are returned, never unwrapped: statistics writes must not take down a
+    // request.
+    pub fn lock_and_transact<T>(
+        &self,
+        f: impl FnOnce(&Connection) -> Result<T, rusqlite::Error>
+    ) -> Result<T, rusqlite::Error> {
+        let mut conn = Connection::open(&self.path)?;
+        conn.busy_timeout(std::time::Duration::from_secs(10))?;
+        let tx = conn.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let rv = f(&tx)?;
+        tx.commit()?;
+        Ok(rv)
+    }
 }

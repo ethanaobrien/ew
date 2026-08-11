@@ -246,6 +246,13 @@ fn get_uid(token: &str) -> i64 {
     data.parse::<i64>().unwrap_or(0)
 }
 
+// The account a login token belongs to, 0 when the token is unknown. The HTTP layer
+// never needs this (it keys everything off the token itself), but the multi-live relay
+// authenticates a {userId, token} pair and has to check the two agree.
+pub fn uid_from_login_token(token: &str) -> i64 {
+    get_uid(token)
+}
+
 // Needed by gree
 pub fn get_login_token(uid: i64) -> String {
     let data = DATABASE.lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid));
@@ -474,6 +481,47 @@ pub fn save_acc_eventlogin(auth_key: &str, data: JsonValue) {
 }
 pub fn save_server_data(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "server_data", data);
+}
+
+// Read-modify-write of one account's server_data as ONE atomic step.
+//
+// get_server_data + save_server_data open a connection each, so two requests for the same
+// account both read the pre-state and the later write wins - which for a record that is
+// meant to be spent exactly once (the started-live record /multi_live/end awards off) means
+// both ends see it and both award. Everything here happens inside a single BEGIN IMMEDIATE
+// transaction instead, so concurrent callers serialise and the second one observes what the
+// first one wrote.
+//
+// `f` sees the parsed server_data and returns whatever the caller needs out of it; the
+// (possibly mutated) value is written back before the transaction commits. get_key runs
+// BEFORE the transaction because it can create the account, which writes on its own
+// connection and would otherwise deadlock against our write lock.
+//
+// A database error yields T::default() rather than a panic: the callers all have a
+// "nothing to spend" branch, which is the right answer when the record could not be read.
+pub fn modify_server_data<T: Default>(auth_key: &str, f: impl FnOnce(&mut JsonValue) -> T) -> T {
+    let key = get_key(auth_key);
+    let rv = DATABASE.lock_and_transact(|conn| {
+        let raw: String = conn.query_row(
+            "SELECT server_data FROM server_data WHERE user_id=?1",
+            params!(key),
+            |row| row.get(0)
+        )?;
+        let mut data = jzon::parse(&raw).unwrap_or(JsonValue::Null);
+        let rv = f(&mut data);
+        conn.execute(
+            "UPDATE server_data SET server_data=?1 WHERE user_id=?2",
+            params!(jzon::stringify(data), key)
+        )?;
+        Ok(rv)
+    });
+    match rv {
+        Ok(rv) => rv,
+        Err(err) => {
+            println!("modify_server_data: {} for user {}", err, key);
+            T::default()
+        }
+    }
 }
 pub fn save_acc_chats(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "chats", data);

@@ -289,6 +289,48 @@ pub fn format_datetime(time: u64) -> String {
     format!("{:04}-{:02}-{:02} {:02}:{:02}:{:02}", y, m, d, secs / 3600, (secs % 3600) / 60, secs % 60)
 }
 
+// Inverse of civil_from_days (Howard Hinnant's days_from_civil).
+fn days_from_civil(y: i64, m: i64, d: i64) -> i64 {
+    let y = if m <= 2 { y - 1 } else { y };
+    let era = if y >= 0 { y } else { y - 399 } / 400;
+    let yoe = y - era * 400;
+    let mp = if m > 2 { m - 3 } else { m + 9 };
+    let doy = (153 * mp + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    era * 146097 + doe - 719468
+}
+
+// Parses the datetime shape masterdata uses ("2023/06/19 5:00:00", also tolerating
+// '-' separators and a missing time part) into the same naive seconds-since-epoch
+// scale format_datetime prints. Naive on purpose: every consumer compares a
+// masterdata timestamp against a server timestamp, so both sides share the offset.
+pub fn parse_datetime(text: &str) -> Option<u64> {
+    let text = text.trim();
+    if text.is_empty() {
+        return None;
+    }
+    let (date, time) = match text.split_once(' ') {
+        Some((date, time)) => (date, time),
+        None => (text, "0:0:0")
+    };
+
+    let mut date_parts = date.split(['/', '-']);
+    let y = date_parts.next()?.trim().parse::<i64>().ok()?;
+    let m = date_parts.next()?.trim().parse::<i64>().ok()?;
+    let d = date_parts.next()?.trim().parse::<i64>().ok()?;
+    if !(1..=12).contains(&m) || !(1..=31).contains(&d) {
+        return None;
+    }
+
+    let mut time_parts = time.split(':');
+    let hh = time_parts.next().unwrap_or("0").trim().parse::<i64>().ok()?;
+    let mm = time_parts.next().unwrap_or("0").trim().parse::<i64>().ok()?;
+    let ss = time_parts.next().unwrap_or("0").trim().parse::<i64>().ok()?;
+
+    let secs = days_from_civil(y, m, d) * 86400 + hh * 3600 + mm * 60 + ss;
+    if secs < 0 { None } else { Some(secs as u64) }
+}
+
 fn init_time(current_time: u64, server_data: &mut JsonValue, token: &str, max_time: u64, max: bool) {
     let mut edited = false;
     let default_time = 1709272800;

@@ -27,7 +27,9 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 async fn retire(Session { key, body }: Session) -> impl Responder {
     live_retire(&key, &body);
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
-        live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), true, 0, 0);
+        // Body-derived, so defaulted rather than unwrapped: a retire is not worth a
+        // panicked worker either (live_completed ignores an unknown id/level).
+        live_completed(body["master_live_id"].as_i64().unwrap_or(0), body["level"].as_i32().unwrap_or(0), true, 0, 0);
     }
     Api(Some(object!{
         "stamina": {},
@@ -222,12 +224,15 @@ fn check_for_stale_data(server_data: &mut JsonValue, live_id: i64) {
     let mut expired = array![];
     let curr_time = global::timestamp();
     for (i, live) in server_data["last_live_started"].members().enumerate() {
-        if live["expire_date_time"].as_u64().unwrap() < curr_time || live["master_live_id"] == live_id {
+        // A record with no readable expiry is treated as expired rather than panicking:
+        // start_live always writes one, so this is a corrupt/hand-edited row.
+        let stale = live["expire_date_time"].as_u64().unwrap_or(0) < curr_time;
+        if stale || live["master_live_id"] == live_id {
             expired.push(i).unwrap();
         }
-        if live["expire_date_time"].as_u64().unwrap() < curr_time {
+        if stale {
             // User closed game after losing. Count this as a fail.
-            live_completed(live["master_live_id"].as_i64().unwrap(), live["level"].as_i32().unwrap(), true, 0, 0);
+            live_completed(live["master_live_id"].as_i64().unwrap_or(0), live["level"].as_i32().unwrap_or(0), true, 0, 0);
         }
     }
     for i in expired.members() {
@@ -243,34 +248,94 @@ fn get_end_live_deck_id(login_token: &str, body: &JsonValue) -> Option<i32> {
     let index = server_data["last_live_started"].members().position(|r| r["master_live_id"] == body["master_live_id"])?;
     let rv = server_data["last_live_started"][index]["deck_slot"].as_i32()?;
 
-    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
+    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap_or(0));
     userdata::save_server_data(login_token, server_data);
     Some(rv)
 }
 
-pub fn get_end_live_event_id(login_token: &str, body: &JsonValue) -> Option<u32> {
+// The whole payload the client POSTed to */start for this live, as recorded by
+// start_live. /multi_live/end needs the boost and deck slot out of it, and its
+// own request body carries neither.
+pub fn get_started_live(login_token: &str, body: &JsonValue) -> Option<JsonValue> {
     let server_data = userdata::get_server_data(login_token);
     if server_data["last_live_started"].is_null() {
         return None;
     }
     let index = server_data["last_live_started"].members().position(|r| r["master_live_id"] == body["master_live_id"])?;
-    let rv = server_data["last_live_started"][index]["master_event_id"].as_u32()?;
-
-    Some(rv)
+    Some(server_data["last_live_started"][index].clone())
 }
 
-fn live_retire(login_token: &str, body: &JsonValue) {
+// Claims the record start_live left behind: it is returned AND removed in one atomic
+// step, so of N ends arriving together for one live exactly one gets Some and every other
+// gets None. /multi_live/end awards off that Some and answers a None from current state,
+// which is what makes its duplicate protection deliberate rather than a side effect of
+// get_end_live_deck_id's shape (that one only consumed when the record carried a numeric
+// deck_slot, and only long after the awarding decision had been taken).
+//
+// The stale sweep check_for_stale_data does is folded in unchanged: records past their
+// hour count as a fail and go, so live_end_ex's own later sweep finds nothing left to
+// count twice. live_completed is called after the transaction commits - it writes to a
+// different database and has no business running inside this one's write lock.
+//
+// Solo /live/end is deliberately NOT routed through here: it still consumes its record
+// inside live_end_ex exactly as it always did.
+pub fn take_started_live(login_token: &str, body: &JsonValue) -> Option<JsonValue> {
+    let live_id = body["master_live_id"].clone();
+    let curr_time = global::timestamp();
+    let mut failed: Vec<(i64, i32)> = Vec::new();
+
+    let taken = userdata::modify_server_data(login_token, |server_data| {
+        if server_data["last_live_started"].is_null() {
+            server_data["last_live_started"] = array![];
+        }
+        let mut taken: Option<JsonValue> = None;
+        let mut kept = array![];
+        for live in server_data["last_live_started"].members() {
+            let stale = live["expire_date_time"].as_u64().unwrap_or(0) < curr_time;
+            let mine = live["master_live_id"] == live_id;
+            if stale {
+                // User closed game after losing. Count this as a fail.
+                failed.push((
+                    live["master_live_id"].as_i64().unwrap_or(0),
+                    live["level"].as_i32().unwrap_or(0)
+                ));
+            }
+            if mine && taken.is_none() {
+                taken = Some(live.clone());
+            } else if !stale && !mine {
+                kept.push(live.clone()).unwrap();
+            }
+        }
+        server_data["last_live_started"] = kept;
+        taken
+    });
+
+    for (id, level) in failed {
+        live_completed(id, level, true, 0, 0);
+    }
+    taken
+}
+
+pub fn get_end_live_event_id(login_token: &str, body: &JsonValue) -> Option<u32> {
+    get_started_live(login_token, body)?["master_event_id"].as_u32()
+}
+
+pub fn live_retire(login_token: &str, body: &JsonValue) {
     let mut server_data = userdata::get_server_data(login_token);
-    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
+    // A body with no master_live_id matches nothing (0 is not a live id); the stale sweep
+    // still runs, which is all a retire with a malformed body can honestly do.
+    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap_or(0));
     userdata::save_server_data(login_token, server_data);
 }
 
-fn start_live(login_token: &str, body: &JsonValue) {
+pub fn start_live(login_token: &str, body: &JsonValue) {
     let mut server_data = userdata::get_server_data(login_token);
     if server_data["last_live_started"].is_null() {
         server_data["last_live_started"] = array![];
     }
-    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap());
+    // Body-derived: /multi_live/start forwards a body this server never validated, and a
+    // start with no live id must record a useless record rather than panic a worker.
+    check_for_stale_data(&mut server_data, body["master_live_id"].as_i64().unwrap_or(0));
     let mut to_save = body.clone();
     // The user has 1 hour to complete a live
     to_save["expire_date_time"] = (global::timestamp() + (1 * 60 * 60)).into();
@@ -311,24 +376,32 @@ fn get_clear_count(id: i64, user: &JsonValue) -> i64 {
     rv
 }
 
-pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> JsonValue {
+// `record_high_score=false` plays this live for the clear count and the max combo but
+// leaves the stored high score alone: it enters the keep-best comparison below as 0, so
+// the existing record always wins and is what gets reported back. That is the official
+// treatment of a public multi live ("本イベントでは HIGH SCOREは更新されません"), which
+// /multi_live/end asks for — see the score-board note in live_end_ex.
+pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool, record_high_score: bool) -> JsonValue {
     if user["tutorial_step"].as_i32().unwrap() < 130 {
         return JsonValue::Null;
     }
-    
+
+    // Every field here comes off the request body, so a malformed end must not panic a
+    // worker: a missing id/level/score reads as 0, which is what an empty live record
+    // would have held anyway.
     let mut rv = object!{
-        "master_live_id": data["master_live_id"].as_i64().unwrap(),
-        "level": data["level"].as_i64().unwrap(),
+        "master_live_id": data["master_live_id"].as_i64().unwrap_or(0),
+        "level": data["level"].as_i64().unwrap_or(0),
         "clear_count": 1,
-        "high_score": data["live_score"]["score"].as_i64().unwrap(),
-        "max_combo": data["live_score"]["max_combo"].as_i64().unwrap(),
+        "high_score": if record_high_score { data["live_score"]["score"].as_i64().unwrap_or(0) } else { 0 },
+        "max_combo": data["live_score"]["max_combo"].as_i64().unwrap_or(0),
         "auto_enable": 1, //whats this?
         "updated_time": global::timestamp()
     };
     
     let mut has = false;
     for current in user["live_list"].members_mut() {
-        if current["master_live_id"] == rv["master_live_id"] && (current["level"] == rv["level"] || data["level"].as_i32().unwrap() == 0) {
+        if current["master_live_id"] == rv["master_live_id"] && (current["level"] == rv["level"] || data["level"].as_i32().unwrap_or(0) == 0) {
             has = true;
             if add {
                 rv["clear_count"] = (current["clear_count"].as_i64().unwrap() + 1).into();
@@ -348,7 +421,7 @@ pub fn update_live_data(user: &mut JsonValue, data: &JsonValue, add: bool) -> Js
             }
             current["updated_time"] = rv["updated_time"].clone();
             rv["level"] = current["level"].clone();
-            if data["level"].as_i32().unwrap() != 0 {
+            if data["level"].as_i32().unwrap_or(0) != 0 {
                 break;
             }
         }
@@ -586,22 +659,46 @@ fn get_live_character_list(lp_used: i32, deck_id: i32, user: &mut JsonValue, mis
 }
 
 pub fn live_end(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -> JsonValue {
+    live_end_ex(req, key, body, skipped, true, true)
+}
+
+// consume_lp=false is for lives whose stamina was already taken up front
+// (/multi_live/start does that, because its response reports consumed_stamina).
+// Everything else still scales off lp_used, so the caller injects use_lp.
+//
+// update_score_board=false plays the live without recording a score anywhere: neither the
+// account's own high score for the song nor the per-song board /live/ranking serves. Only
+// /multi_live/end passes false, and only for a PUBLIC (random matchmaking) room — see the
+// privacy note there. Everything else about the live is untouched: the clear count, the
+// max combo, the clear-rate counters, missions and every reward are computed off this
+// play's own score exactly as they always were.
+pub fn live_end_ex(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool, consume_lp: bool, update_score_board: bool) -> JsonValue {
     let mut user2 = userdata::get_acc_home(&key);
     let mut user = userdata::get_acc(&key);
     let mut user_missions = userdata::get_acc_missions(&key);
     let mut chats = userdata::get_acc_chats(&key);
 
+    // Read once, off the request, with a default each: a client (or a replayed/forged
+    // POST) that omits a field must get a wrong-but-harmless result, not a panicked
+    // worker. /multi_live/end is the reachable path — it forwards a body this handler
+    // never validated — but the solo path gets the same treatment, and for a well-formed
+    // body every one of these is exactly what the old unwrap produced.
+    let live_id = body["master_live_id"].as_i64().unwrap_or(0);
+    let level = body["level"].as_i64().unwrap_or(0);
+    let score = body["live_score"]["score"].as_i64().unwrap_or(0);
+    let max_combo = body["live_score"]["max_combo"].as_i64().unwrap_or(0);
+
     let jp = items::get_region(req.headers());
     let first_clear = !skipped
         && user["tutorial_step"].as_i32().unwrap() >= 130
-        && get_clear_count(body["master_live_id"].as_i64().unwrap(), &user) == 0;
+        && get_clear_count(live_id, &user) == 0;
 
     let live = if skipped {
         items::use_item(&object!{
             value: 21000001,
             amount: 1,
             consumeType: 4
-        }, body["live_boost"].as_i64().unwrap(), &mut user);
+        }, body["live_boost"].as_i64().unwrap_or(0), &mut user);
         update_live_data(&mut user, &object!{
             master_live_id: body["master_live_id"].clone(),
             level: 0,
@@ -609,9 +706,9 @@ pub fn live_end(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -
                 score: 1,
                 max_combo: 1
             }
-        }, false)
+        }, false, update_score_board)
     } else {
-        update_live_data(&mut user, &body, true)
+        update_live_data(&mut user, &body, true, update_score_board)
     };
     
     //1273009, 1273010, 1273011, 1273012
@@ -626,21 +723,27 @@ pub fn live_end(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -
         }
     }
     
+    // The account the per-song board is keyed by, or 0 to leave the board alone —
+    // clear_rate::update_live_score's own "no user, no board entry" guard, which is how
+    // /live/retire already counts a play it must not rank. The clear-rate counters still
+    // get the play either way: a public multi live really was played.
+    let board_uid = if update_score_board { user["user"]["id"].as_i64().unwrap() } else { 0 };
+
     let missions;
     if skipped {
-        live_completed(body["master_live_id"].as_i64().unwrap(), live["level"].as_i32().unwrap(), false, live["high_score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
-        let clear_count = get_clear_count(body["master_live_id"].as_i64().unwrap(), &user);
+        live_completed(live_id, live["level"].as_i32().unwrap_or(0), false, live["high_score"].as_i64().unwrap_or(0), board_uid);
+        let clear_count = get_clear_count(live_id, &user);
 
-        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), live["high_score"].as_i64().unwrap(), live["max_combo"].as_i64().unwrap(), clear_count, live["level"].as_i64().unwrap(), false, false).unwrap_or(array![]);
+        missions = get_live_mission_completed_ids(&user, live_id, live["high_score"].as_i64().unwrap_or(0), live["max_combo"].as_i64().unwrap_or(0), clear_count, live["level"].as_i64().unwrap_or(0), false, false).unwrap_or(array![]);
     } else {
-        live_completed(body["master_live_id"].as_i64().unwrap(), body["level"].as_i32().unwrap(), false, body["live_score"]["score"].as_i64().unwrap(), user["user"]["id"].as_i64().unwrap());
-        let clear_count = get_clear_count(body["master_live_id"].as_i64().unwrap(), &user);
+        live_completed(live_id, level as i32, false, score, board_uid);
+        let clear_count = get_clear_count(live_id, &user);
 
         let is_full_combo = (body["live_score"]["good"].as_i32().unwrap_or(1) + body["live_score"]["bad"].as_i32().unwrap_or(1) + body["live_score"]["miss"].as_i32().unwrap_or(1)) == 0;
 
         let is_perfect = is_full_combo && body["live_score"]["great"].as_i32().unwrap_or(1) == 0;
 
-        missions = get_live_mission_completed_ids(&user, body["master_live_id"].as_i64().unwrap(), body["live_score"]["score"].as_i64().unwrap(), body["live_score"]["max_combo"].as_i64().unwrap(), clear_count, body["level"].as_i64().unwrap(), is_full_combo, is_perfect).unwrap_or(array![]);
+        missions = get_live_mission_completed_ids(&user, live_id, score, max_combo, clear_count, level, is_full_combo, is_perfect).unwrap_or(array![]);
     
         if is_full_combo {
             if items::advance_mission(1176001, 1, 1, &mut user_missions).is_some() {
@@ -665,13 +768,13 @@ pub fn live_end(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -
         if is_perfect && items::advance_mission(1177001, 1, 1, &mut user_missions).is_some() {
             cleared_missions.push(1177001).unwrap();
         }
-        if is_perfect && body["level"].as_i32().unwrap() == 4 && items::advance_mission(1177002, 1, 1, &mut user_missions).is_some() {
+        if is_perfect && level == 4 && items::advance_mission(1177002, 1, 1, &mut user_missions).is_some() {
             cleared_missions.push(1177002).unwrap();
         }
     }
     
     update_live_mission_data(&mut user, &object!{
-        master_live_id: body["master_live_id"].as_i64().unwrap(),
+        master_live_id: live_id,
         clear_master_live_mission_ids: missions.clone()
     });
     
@@ -679,7 +782,9 @@ pub fn live_end(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool) -
 
     let mut reward_list = give_mission_rewards(&mut user, &mut user2, &missions, &mut user_missions, &mut cleared_missions, &mut chats, (lp_used / 10) as i64, jp);
 
-    items::lp_modification(&mut user, lp_used as u64, true);
+    if consume_lp {
+        items::lp_modification(&mut user, lp_used as u64, true);
+    }
 
     items::give_exp(lp_used, &mut user, &mut user_missions, &mut cleared_missions);
 
@@ -761,12 +866,124 @@ mod tests {
             master_live_id: live_id,
             level: level,
             live_score: { score: score, max_combo: combo }
-        }, true);
+        }, true, true);
         userdata::save_acc(token, user);
     }
 
     fn pulled_clear_count(token: &str, live_id: i64) -> i64 {
         get_clear_count(live_id, &userdata::get_acc(token))
+    }
+
+    // The same clear with the score board switched off, which is what live_end_ex does for
+    // a multi live played in a PUBLIC room. Returns the `live` record the client is
+    // answered with.
+    fn record_unscored_clear(token: &str, live_id: i64, level: i64, score: i64, combo: i64) -> JsonValue {
+        let mut user = userdata::get_acc(token);
+        let live = update_live_data(&mut user, &object!{
+            master_live_id: live_id,
+            level: level,
+            live_score: { score: score, max_combo: combo }
+        }, true, false);
+        userdata::save_acc(token, user);
+        live
+    }
+
+    fn stored_live(token: &str, live_id: i64) -> JsonValue {
+        userdata::get_acc(token)["live_list"]
+            .members()
+            .find(|l| l["master_live_id"] == live_id)
+            .cloned()
+            .unwrap_or(JsonValue::Null)
+    }
+
+    // /multi_live/end's score-board branch, at the write it actually gates. live_end_ex
+    // itself cannot be driven from a test (items::get_region reaches the clap parser, which
+    // rejects the harness's own arguments), so the two halves of the gate are pinned where
+    // they live: the account's own high score here, and the per-song board next door in
+    // clear_rate.
+    //
+    // A PRIVATE room is the unchanged path: it records exactly like a solo live, keep-best.
+    #[test]
+    fn a_private_multi_live_records_its_score_keep_best() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let token = "sb_private_room";
+        register_account(token);
+
+        record_clear(token, STOCK_LIVE_ID, 4, 500000, 320);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 500000);
+
+        // A better score wins...
+        record_clear(token, STOCK_LIVE_ID, 4, 600000, 340);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 600000);
+
+        // ...and a worse one never overwrites it.
+        record_clear(token, STOCK_LIVE_ID, 4, 100000, 20);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 600000);
+        assert_eq!(pulled_clear_count(token, STOCK_LIVE_ID), 3);
+    }
+
+    // A PUBLIC room is the official behaviour: the play counts, the score does not.
+    #[test]
+    fn a_public_multi_live_leaves_the_high_score_alone() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let token = "sb_public_room";
+        register_account(token);
+
+        record_clear(token, STOCK_LIVE_ID, 4, 500000, 320);
+
+        // A score that would beat the stored one is not recorded, and the answer the client
+        // gets back reports the record that still stands rather than this play's score.
+        let live = record_unscored_clear(token, STOCK_LIVE_ID, 4, 900000, 400);
+        assert_eq!(live["high_score"], 500000);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 500000);
+
+        // Everything else about the live still lands: the clear counts and the combo is a
+        // real one (the client only ever said HIGH SCORE was not updated).
+        assert_eq!(pulled_clear_count(token, STOCK_LIVE_ID), 2);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["max_combo"], 400);
+    }
+
+    // The solo path is untouched by the multi branch: live_end — the only entry /live/end
+    // and /live/skip have — calls live_end_ex with update_score_board hardcoded true, so a
+    // solo live writes exactly what it always did.
+    #[test]
+    fn the_solo_live_path_still_records_its_score() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let token = "sb_solo_path";
+        register_account(token);
+
+        record_clear(token, STOCK_LIVE_ID, 4, 450000, 300);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 450000);
+
+        // /live/skip's shape: level 0 matches whatever level is stored, its stand-in score
+        // of 1 can never beat the record, and the record is what it answers with.
+        let mut user = userdata::get_acc(token);
+        let live = update_live_data(&mut user, &object!{
+            master_live_id: STOCK_LIVE_ID,
+            level: 0,
+            live_score: { score: 1, max_combo: 1 }
+        }, false, true);
+        userdata::save_acc(token, user);
+        assert_eq!(live["high_score"], 450000);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 450000);
+    }
+
+    #[test]
+    fn a_public_multi_live_on_a_new_song_records_no_score_at_all() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let token = "sb_public_first_play";
+        register_account(token);
+
+        // The first ever play of the song is a public multi: the song gets a live record
+        // so the clear counts, but there is no high score to show for it.
+        let live = record_unscored_clear(token, STOCK_LIVE_ID, 4, 900000, 400);
+        assert_eq!(live["high_score"], 0);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 0);
+        assert_eq!(pulled_clear_count(token, STOCK_LIVE_ID), 1);
+
+        // A later solo play sets it for real.
+        record_clear(token, STOCK_LIVE_ID, 4, 300000, 100);
+        assert_eq!(stored_live(token, STOCK_LIVE_ID)["high_score"], 300000);
     }
 
     #[test]

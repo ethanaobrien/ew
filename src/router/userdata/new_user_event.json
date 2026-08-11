@@ -1,13 +1,29 @@
 {
     "point_ranking": {
+        "rank": 0,
         "point": 0
     },
-    "score_ranking": [],
-    "member_ranking": [],
-    "lottery_box": [],
+    "score_ranking": {
+        "all_rank": 0,
+        "group_rank": 0,
+        "score": 0
+    },
+    "member_ranking": {
+        "master_character_id": 0,
+        "rank": 0,
+        "point": 0
+    },
+    "lottery_box": {
+        "master_lottery_id": 0,
+        "reset_count": 0,
+        "draw_count_list": []
+    },
     "mission_list": [],
     "policy_agreement": 0,
     "incentive_lottery": 0,
+    "is_disconnected": 0,
+    "help_count": 0,
+    "penalty_remaining_time": 0,
     "star_event": {
         "star_level": 0,
         "last_event_star_level": 0,

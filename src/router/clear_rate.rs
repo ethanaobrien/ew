@@ -68,14 +68,14 @@ fn setup_tables(conn: &rusqlite::Connection) {
     );").unwrap();
 }
 
-fn update_live_score(id: i64, uid: i64, score: i64) {
-    if uid == 0 || score == 0 {
-        return;
-    }
-    
-    let info = DATABASE.lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(id)).unwrap_or(String::from("[]"));
-    let scores = jzon::parse(&info).unwrap();
-    
+// Merges this play into the song's top-10 board. Pure so the whole read-modify-write can
+// sit inside one transaction, and so the keep-best rule is testable on its own.
+//
+// The board is per-song, not per-account: `scores` is keyed by live_id alone and the user
+// lives inside the JSON blob. A user already on the board keeps whichever of their two
+// scores is higher — a replay that does not beat the stored one is dropped (`None`), which
+// is what makes a repeated or duplicated end idempotent rather than additive.
+fn merge_live_score(scores: &JsonValue, uid: i64, score: i64) -> Option<JsonValue> {
     let mut result = array![];
     let mut current = 0;
     let mut added = false;
@@ -99,7 +99,8 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
             }
         }
         if scores[i]["user"].as_i64().unwrap() == uid && !added {
-            return;
+            // Already on the board with a better score — keep it, drop this play.
+            return None;
         }
         if scores[i]["user"].as_i64().unwrap() == uid {
             continue;
@@ -107,13 +108,41 @@ fn update_live_score(id: i64, uid: i64, score: i64) {
         result.push(scores[i].clone()).unwrap();
         current += 1;
     }
-    
-    if added {
-        if DATABASE.lock_and_select("SELECT live_id FROM scores WHERE live_id=?1", params!(id)).is_ok() {
-            DATABASE.lock_and_exec("UPDATE scores SET score_data=?1 WHERE live_id=?2", params!(jzon::stringify(result), id));
-        } else {
-            DATABASE.lock_and_exec("INSERT INTO scores (score_data, live_id) VALUES (?1, ?2)", params!(jzon::stringify(result), id));
-        }
+
+    if added { Some(result) } else { None }
+}
+
+fn update_live_score(id: i64, uid: i64, score: i64) {
+    if uid == 0 || score == 0 {
+        return;
+    }
+
+    // One transaction for read + merge + write. Previously this SELECTed to choose between
+    // UPDATE and INSERT on separate connections, so two ends landing together for a song
+    // with no row yet both took the INSERT branch and the loser panicked the worker on
+    // `UNIQUE constraint failed: scores.live_id`. Two clients finishing the same multi
+    // live make that the normal case, not a rare race.
+    let write = DATABASE.lock_and_transact(|conn| {
+        let stored: String = conn
+            .query_row("SELECT score_data FROM scores WHERE live_id=?1", params!(id), |row| row.get(0))
+            .unwrap_or_else(|_| String::from("[]"));
+        let scores = jzon::parse(&stored).unwrap_or_else(|_| array![]);
+
+        let Some(result) = merge_live_score(&scores, uid, score) else {
+            return Ok(());
+        };
+
+        // Atomic upsert: no branch left for a concurrent writer to slip between.
+        conn.execute(
+            "INSERT INTO scores (live_id, score_data) VALUES (?1, ?2)
+             ON CONFLICT(live_id) DO UPDATE SET score_data=excluded.score_data",
+            params!(id, jzon::stringify(result))
+        )?;
+        Ok(())
+    });
+
+    if let Err(e) = write {
+        println!("Failed to record score for live {id}: {e}");
     }
 }
 
@@ -129,27 +158,44 @@ pub fn invalidate_cache() {
     crate::lock_onto_mutex!(CACHED_HTML_DATA).take();
 }
 
+// The clear-rate counter column this play lands in, or None for a level outside 1-4.
+// Names come from this closed set, never from request data, so it is safe to interpolate.
+fn clear_rate_column(level: i32, failed: bool) -> Option<&'static str> {
+    let tier = match level {
+        1 => "normal",
+        2 => "hard",
+        3 => "expert",
+        4 => "master",
+        _ => return None
+    };
+    Some(match (tier, failed) {
+        ("normal", true) => "normal_failed",   ("normal", false) => "normal_pass",
+        ("hard", true) => "hard_failed",       ("hard", false) => "hard_pass",
+        ("expert", true) => "expert_failed",   ("expert", false) => "expert_pass",
+        (_, true) => "master_failed",          (_, false) => "master_pass"
+    })
+}
+
 pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
     update_live_score(id, uid, score);
-    match DATABASE.get_live_data(id) {
-        Ok(info) => {
-            let value = format!("{}_{}", 
-                if 1 == level { "normal" } else if 2 == level { "hard" } else if 3 == level { "expert" } else { "master" },
-                if failed { "failed" } else { "pass" }
-            );
-            let new_info = if 1 == level && failed { info.normal_failed }
-                           else if 1 == level && !failed { info.normal_pass }
-                           else if 2 == level && failed { info.hard_failed }
-                           else if 2 == level && !failed { info.hard_pass }
-                           else if 3 == level && failed { info.expert_failed }
-                           else if 3 == level && !failed { info.expert_pass }
-                           else if 4 == level && failed { info.master_failed }
-                           else if 4 == level && !failed { info.master_pass } else { return; };
-            
-            DATABASE.lock_and_exec(&format!("UPDATE lives SET {}=?1 WHERE live_id=?2", value), params!(new_info + 1, info.live_id));
-        },
-        Err(_) => {
-            DATABASE.lock_and_exec("INSERT INTO lives (live_id, normal_failed, normal_pass, hard_failed, hard_pass, expert_failed, expert_pass, master_failed, master_pass) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)", params!(
+
+    let Some(column) = clear_rate_column(level, failed) else {
+        return;
+    };
+
+    // `lives` is keyed by live_id alone and had the same select-then-INSERT-or-UPDATE
+    // split as `scores`, so it could panic the same way on a first-ever concurrent play
+    // (and lost counts whenever two plays overlapped). One upsert does both branches
+    // atomically and increments in SQL rather than read-modify-write in Rust.
+    let write = DATABASE.lock_and_transact(|conn| {
+        conn.execute(
+            &format!(
+                "INSERT INTO lives (live_id, normal_failed, normal_pass, hard_failed, hard_pass,
+                                    expert_failed, expert_pass, master_failed, master_pass)
+                 VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)
+                 ON CONFLICT(live_id) DO UPDATE SET {column} = {column} + 1"
+            ),
+            params!(
                 id,
                 if 1 == level && failed { 1 } else { 0 },
                 if 1 == level && !failed { 1 } else { 0 },
@@ -159,9 +205,14 @@ pub fn live_completed(id: i64, level: i32, failed: bool, score: i64, uid: i64) {
                 if 3 == level && !failed { 1 } else { 0 },
                 if 4 == level && failed { 1 } else { 0 },
                 if 4 == level && !failed { 1 } else { 0 }
-            ));
-        },
-    };
+            )
+        )?;
+        Ok(())
+    });
+
+    if let Err(e) = write {
+        println!("Failed to record clear rate for live {id}: {e}");
+    }
 }
 
 fn get_song_title(live_id: i32, english: bool) -> String {
@@ -406,4 +457,108 @@ pub async fn clearrate_html(_req: HttpRequest) -> HttpResponse {
     HttpResponse::Ok()
         .content_type(ContentType::html())
         .body(html)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn board(live_id: i64) -> JsonValue {
+        let stored = DATABASE
+            .lock_and_select("SELECT score_data FROM scores WHERE live_id=?1", params!(live_id))
+            .unwrap_or_else(|_| String::from("[]"));
+        jzon::parse(&stored).unwrap()
+    }
+
+    fn passes(live_id: i64) -> i64 {
+        DATABASE.get_live_data(live_id).map(|l| l.master_pass).unwrap_or(0)
+    }
+
+    #[test]
+    fn merge_keeps_the_users_best_score() {
+        let existing = array![object!{user: 7, score: 900}];
+
+        // A better score replaces the stored one rather than adding a second entry.
+        let better = merge_live_score(&existing, 7, 1000).expect("a better score is recorded");
+        assert_eq!(better.len(), 1);
+        assert_eq!(better[0]["score"].as_i64(), Some(1000));
+
+        // A worse or equal replay is dropped entirely — this is what makes a repeated
+        // end idempotent instead of appending the same user twice.
+        assert!(merge_live_score(&existing, 7, 800).is_none());
+        assert!(merge_live_score(&existing, 7, 900).is_none());
+
+        // A different user is ranked against the board, best first.
+        let other = merge_live_score(&existing, 8, 950).expect("a new user is recorded");
+        assert_eq!(other.len(), 2);
+        assert_eq!(other[0]["user"].as_i64(), Some(8));
+        assert_eq!(other[1]["user"].as_i64(), Some(7));
+    }
+
+    #[test]
+    fn a_duplicate_end_does_not_double_the_board_entry() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let live_id = 990001;
+
+        live_completed(live_id, 4, false, 500000, 4242);
+        assert_eq!(board(live_id).len(), 1);
+        assert_eq!(passes(live_id), 1);
+
+        // The second end for the same session: same user, same score. The board must not
+        // grow, and this must not raise UNIQUE constraint failed: scores.live_id.
+        live_completed(live_id, 4, false, 500000, 4242);
+        assert_eq!(board(live_id).len(), 1, "the same user must not appear twice");
+        assert_eq!(board(live_id)[0]["score"].as_i64(), Some(500000));
+    }
+
+    // The actual regression: two ends for a song with no row yet, landing together. Both
+    // used to take the INSERT branch and the loser unwrapped a ConstraintViolation into a
+    // worker panic. Two clients finishing one multi live makes this the normal case.
+    #[test]
+    fn concurrent_first_plays_of_one_song_do_not_collide() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let live_id = 990002;
+
+        std::thread::scope(|s| {
+            for uid in [101i64, 102, 103, 104, 105, 106, 107, 108] {
+                s.spawn(move || live_completed(live_id, 4, false, 400000 + uid, uid));
+            }
+        });
+
+        // Every writer landed: no row lost to a race, none lost to a swallowed error.
+        assert_eq!(board(live_id).len(), 8);
+        assert_eq!(passes(live_id), 8, "clear-rate counts must not be lost either");
+    }
+
+    // The other half of /multi_live/end's score-board branch (the account's own high score
+    // is pinned in live.rs): a public multi live reaches live_completed with uid 0, so the
+    // play is counted and the board is left alone. /live/retire has always used the same
+    // signal for a failed live.
+    #[test]
+    fn a_play_with_no_user_counts_the_clear_but_not_the_board() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let live_id = 990003;
+
+        live_completed(live_id, 4, false, 500000, 0);
+        assert_eq!(board(live_id).len(), 0, "an unranked play must not reach the board");
+        assert_eq!(passes(live_id), 1, "but it is still a play of the song");
+
+        // The same score from a real account does land, which is the private-room path.
+        live_completed(live_id, 4, false, 500000, 4243);
+        assert_eq!(board(live_id).len(), 1);
+        assert_eq!(passes(live_id), 2);
+    }
+
+    #[test]
+    fn clear_rate_columns_cover_every_level() {
+        assert_eq!(clear_rate_column(1, false), Some("normal_pass"));
+        assert_eq!(clear_rate_column(1, true), Some("normal_failed"));
+        assert_eq!(clear_rate_column(2, false), Some("hard_pass"));
+        assert_eq!(clear_rate_column(3, true), Some("expert_failed"));
+        assert_eq!(clear_rate_column(4, false), Some("master_pass"));
+        assert_eq!(clear_rate_column(4, true), Some("master_failed"));
+        // Level 0 (a skip ticket's "any level") writes no counter, as before.
+        assert_eq!(clear_rate_column(0, false), None);
+        assert_eq!(clear_rate_column(5, false), None);
+    }
 }

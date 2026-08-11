@@ -10,6 +10,7 @@ pub mod home;
 pub mod lottery;
 pub mod friend;
 pub mod live;
+pub mod multi_live;
 pub mod event;
 pub mod chat;
 pub mod story;
@@ -274,6 +275,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
                     .configure(login::routes)
                     .configure(lottery::routes)
                     .configure(mission::routes)
+                    .configure(multi_live::routes)
                     .configure(notice::routes)
                     .configure(purchase::routes)
                     .configure(serial_code::routes)

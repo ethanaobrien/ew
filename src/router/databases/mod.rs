@@ -302,6 +302,57 @@ lazy_static! {
         info
     };
 
+    // const.csv keyed by _id. Values are strings in masterdata, exactly as the
+    // client reads them (ConstMst._value + StringExtensions.ToIntOrDefault).
+    pub static ref CONST: JsonValue = index_by(&t("const"), "id");
+
+    pub static ref LIVE_BOOST: JsonValue = index_by(&t("live_boost"), "value");
+
+    // The stamps every account starts with (chat_stamp._initialStamp), in masterdata
+    // order. Officially this is the whole of a fresh account's master_chat_stamp_ids —
+    // captured /api/chat/home responses open with exactly this list before an account's
+    // earned stamps are appended (see chat::tests::the_initial_stamp_set_matches_official).
+    pub static ref INITIAL_CHAT_STAMPS: JsonValue = {
+        let mut ids = array![];
+        for data in t("chat_stamp").members() {
+            if data["initialStamp"].as_i64().unwrap_or(0) == 1 {
+                ids.push(data["id"].clone()).unwrap();
+            }
+        }
+        ids
+    };
+
+    pub static ref EVENTS: JsonValue = index_by(&t("event"), "id");
+
+    // release_label.csv keyed by _id — the open/close window masterdata rows are gated
+    // on. _openedAt / _closedAt are blank for the evergreen label (id 1).
+    pub static ref RELEASE_LABEL: JsonValue = index_by(&t("release_label"), "id");
+
+    // event_score.csv keyed by _masterEventId (Shock.EventScoreMst) — the per-event
+    // event-point yield of one live. Ratios are 1/10000, like every other ratio the
+    // client divides by COMMON_CONST.RATIO_DIVISOR.
+    pub static ref EVENT_SCORE: JsonValue = index_by(&t("event_score"), "masterEventId");
+
+    // music_level rows keyed "{masterMusicId}_{level}" — _fullCombo is the note
+    // count the multi-live miss/great-perfect ratios are measured against.
+    pub static ref MUSIC_LEVEL: JsonValue = {
+        let mut info = object! {};
+        for data in t("music_level").members() {
+            info[format!("{}_{}", data["masterMusicId"], data["level"])] = data.clone();
+        }
+        info
+    };
+
+    // multievent_rankbonus keyed "{playerCount}_{liveRank}" — _eventPtBonus is a
+    // ratio in 1/10000 (the client renders these as `sum / 100` percent).
+    pub static ref MULTIEVENT_RANK_BONUS: JsonValue = {
+        let mut info = object! {};
+        for data in t("multievent_rankbonus").members() {
+            info[format!("{}_{}", data["playerCount"], data["liveRank"])] = data.clone();
+        }
+        info
+    };
+
     pub static ref RANKS: JsonValue = t("user_rank");
 
     pub static ref USER_RANK_REWARD: JsonValue = {
