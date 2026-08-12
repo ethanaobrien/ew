@@ -289,10 +289,8 @@ async fn start(req: HttpRequest, Session { key, mut body }: Session) -> impl Res
         return Api(None);
     }
     // `token` is the room-party correlation key ("{userId}.{guid}") that all up to four
-    // party members post. Nothing about STARTING a live depends on which room it came
-    // from — the one thing read out of it is the room's privacy, and that is read here
-    // rather than at /multi_live/end because here the room is certainly still alive (see
-    // record_room_privacy). Reconciling the party itself — checking the four results
+    // party members post. It is recorded verbatim on the start record and nothing reads
+    // anything else out of it. Reconciling the party itself — checking the four results
     // against each other — is still deferred.
     // master_event_id is recorded verbatim and never validated here: multi is a permanent
     // feature entered against a closed event (see scoring_event), so a closed — or absent
@@ -329,57 +327,11 @@ async fn start(req: HttpRequest, Session { key, mut body }: Session) -> impl Res
     userdata::save_acc(&key, user);
 
     body["use_lp"] = consumed.into();
-    record_room_privacy(&mut body);
     live::start_live(&key, &body);
 
     Api(Some(object!{
         "consumed_stamina": consumed
     }))
-}
-
-// Whether this live was played in a private (join-by-code) party, which is the one thing
-// /multi_live/end reads the room `token` for.
-//
-// Officially a multi live never updated the score board at all — the client says so on the
-// result screen. That stays true for PUBLIC matchmaking; a private party of friends is a
-// deliberate divergence and keeps its scores. The room is looked up in the relay's live
-// registry, which sits in this same process, so nothing new travels on the wire.
-//
-// Note the privacy answer is the room's CREATION-time one. The current visible/open flags
-// cannot be used: the game hides a public room too, as soon as its members are decided
-// (MultiMatchingView.SetRoomOpenVisible(false)), so every room in a live looks unlisted.
-fn is_private_party(body: &JsonValue) -> bool {
-    rooms::token_is_private_room(body["token"].as_str().unwrap_or_default())
-}
-
-// The key the answer above is stashed under on the start record.
-const RECORDED_PRIVATE: &str = "room_private";
-
-// Asked once, at /multi_live/start, and written onto the payload start_live records.
-//
-// Asking at /multi_live/end instead made the answer depend on WHEN each of the up to four
-// party members got its POST in: the room dies with its last clean leave, so an ender that
-// posted after the party broke up saw no room and fell back to "public" while the others
-// had already been told "private" — the same live scored differently per player, and a
-// private party silently lost its score board. At start time the room is by definition
-// alive (its master minted the token moments earlier and every member is still seated), so
-// every member records the same flag off the same room.
-//
-// A registry miss records nothing at all rather than `false`: the end-side lookup is kept
-// as the fallback for records written before this existed, and "absent" is what selects it.
-fn record_room_privacy(body: &mut JsonValue) {
-    if let Some(private) = rooms::token_room_privacy(body["token"].as_str().unwrap_or_default()) {
-        body[RECORDED_PRIVATE] = private.into();
-    }
-}
-
-// What /multi_live/end obeys: the flag recorded at start when there is one, and the live
-// registry lookup only for a record that predates it.
-fn recorded_privacy(started: Option<&JsonValue>, body: &JsonValue) -> bool {
-    match started.and_then(|s| s[RECORDED_PRIVATE].as_bool()) {
-        Some(private) => private,
-        None => is_private_party(body)
-    }
 }
 
 async fn end(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
@@ -458,21 +410,12 @@ async fn end(req: HttpRequest, Session { key, body }: Session) -> impl Responder
         }
     }
 
-    // A public room scores like the official server did: no high score, no score board.
-    // Read off the start record, so every member of one party gets the same answer no
-    // matter how late its POST lands. Only a record from before that was recorded falls
-    // back to a live lookup, where a room the registry no longer knows about (torn down,
-    // or a restart since the live started) is treated as public — the behaviour to be
-    // wrong on.
-    let private = recorded_privacy(started, &body);
-    println!(
-        "multi_live/end: uid {} room is {} — score board {}",
-        uid,
-        if private { "PRIVATE" } else { "PUBLIC/unknown" },
-        if private { "updated" } else { "skipped (official)" }
-    );
-
-    let mut rv = live::live_end_ex(&req, &key, &end_body, false, false, private);
+    // A multi live scores like the official server did: no high score, no score board —
+    // the client's own result screen says so. Private (join-by-code) parties are no
+    // exception (Ethan 2026-08-12; an earlier build recorded private-party scores, and
+    // the room-privacy plumbing that told the two apart left with that behaviour). The
+    // clear count and max combo still record either way — the live really was played.
+    let mut rv = live::live_end_ex(&req, &key, &end_body, false, false, false);
 
     rv["is_penalty_miss_ratio"] = status.into();
     // Fields RecvMultiLiveEndRData declares that live_end does not emit.
@@ -835,166 +778,6 @@ mod tests {
         let mut unknown = score(0, 0, 0, 0, 0);
         unknown["master_live_id"] = 999999999i64.into();
         assert_eq!(multi_live_end_status(&unknown), STATUS_NONE);
-    }
-
-    // --- private vs public rooms (the score-board branch) --------------------------
-    //
-    // The relay runs in this process, so the end handler can ask the room registry what
-    // kind of room a finishing live belongs to. These drive the REAL (global) registry
-    // through the same entry points ws.rs uses, then ask is_private_party exactly what the
-    // handler asks it. Room names and tokens are unique per test, so they do not collide
-    // with each other in the shared registry.
-
-    fn open_room(name: &str, visible: bool, token: &str) -> rooms::ConnId {
-        // The receiver is dropped immediately: nothing here reads the relay's outbound
-        // frames, and a send to a gone writer is already a no-op (Registry::send).
-        let (tx, _rx) = tokio::sync::mpsc::unbounded_channel();
-        let mut reg = rooms::registry();
-        let id = reg.connect(1, tx, Instant::now());
-        reg.handle(id, ClientMsg::CreateRoom {
-            name: name.to_string(),
-            max_players: 4,
-            visible,
-            open: true,
-            props: Map::new(),
-            lobby_prop_keys: vec![],
-            player_props: Map::new(),
-        }, Instant::now());
-        // MultiEventMatchingScene mints the token and pushes the room bag just before the
-        // live starts; it is the same string the client then POSTs to /multi_live/end.
-        reg.handle(id, ClientMsg::SetRoomProps {
-            props: Map::from_pairs(vec![("C", Value::Str(token.to_string()))]),
-        }, Instant::now());
-        id
-    }
-
-    fn set_room_props(id: rooms::ConnId, props: Vec<(&str, Value)>) {
-        rooms::registry().handle(id, ClientMsg::SetRoomProps { props: Map::from_pairs(props) }, Instant::now());
-    }
-
-    // A clean leave by the last active player destroys the room, exactly as a party
-    // breaking up after the results does.
-    fn close_room(id: rooms::ConnId) {
-        rooms::registry().handle(id, ClientMsg::LeaveRoom, Instant::now());
-    }
-
-    #[test]
-    fn a_private_party_is_recognised_by_its_room_token() {
-        let room = open_room("042719", false, "1.private-party");
-        assert!(is_private_party(&object!{ token: "1.private-party" }));
-        close_room(room);
-    }
-
-    #[test]
-    fn a_public_room_stays_public_once_the_game_hides_it() {
-        // The whole reason privacy is latched at creation: MultiMatchingView closes and
-        // hides a PUBLIC room the moment its members are decided, so mid-live its flags are
-        // indistinguishable from a private room's.
-        let room = open_room("1234567", true, "2.public-room");
-        assert!(!is_private_party(&object!{ token: "2.public-room" }));
-
-        set_room_props(room, vec![("#253", Value::Bool(false)), ("#254", Value::Bool(false))]);
-        assert!(
-            !is_private_party(&object!{ token: "2.public-room" }),
-            "a hidden public room must not start updating score boards"
-        );
-        close_room(room);
-    }
-
-    #[test]
-    fn a_token_no_room_claims_falls_back_to_public() {
-        // Torn down before the end arrived, or a restart since the live started.
-        let room = open_room("3336667", true, "3.gone-by-then");
-        close_room(room);
-        assert!(!is_private_party(&object!{ token: "3.gone-by-then" }));
-
-        // Never existed, and an end with no token at all.
-        assert!(!is_private_party(&object!{ token: "4.never-existed" }));
-        assert!(!is_private_party(&object!{}));
-    }
-
-    // --- privacy is decided ONCE, at start ------------------------------------------
-
-    #[test]
-    fn the_privacy_answer_is_recorded_at_start_and_outlives_the_room() {
-        let room = open_room("551234", false, "5.recorded-private");
-        let mut start_body = object!{ token: "5.recorded-private", master_live_id: STOCK_LIVE_ID };
-        record_room_privacy(&mut start_body);
-        assert_eq!(start_body["room_private"].as_bool(), Some(true));
-
-        // The party breaks up: the room is gone by the time the ends land.
-        close_room(room);
-        assert!(!is_private_party(&start_body), "the live lookup can no longer answer");
-
-        // The recorded answer still does, so the score board is still updated.
-        assert!(recorded_privacy(Some(&start_body), &start_body));
-    }
-
-    #[test]
-    fn every_ender_of_one_party_reads_the_same_answer() {
-        // Four members, one room, four /multi_live/start posts — and then the ends arrive
-        // spread out, the last one after the room has been torn down. Asking the registry
-        // at END time made the last poster's live PUBLIC while the first three's were
-        // PRIVATE: one live, scored two different ways.
-        let room = open_room("552345", false, "6.four-enders");
-        let mut records: Vec<JsonValue> = (0..4)
-            .map(|_| object!{ token: "6.four-enders", master_live_id: STOCK_LIVE_ID })
-            .collect();
-        for record in records.iter_mut() {
-            record_room_privacy(record);
-        }
-
-        // Three end while the room is alive, the fourth after it is gone.
-        let end_body = object!{ token: "6.four-enders" };
-        let mut answers: Vec<bool> = records[..3]
-            .iter()
-            .map(|r| recorded_privacy(Some(r), &end_body))
-            .collect();
-        close_room(room);
-        answers.push(recorded_privacy(Some(&records[3]), &end_body));
-
-        assert_eq!(answers, vec![true; 4], "one live must score one way for everybody");
-    }
-
-    #[test]
-    fn a_registry_miss_at_end_no_longer_flips_a_private_live_to_public() {
-        let room = open_room("553456", false, "7.miss-at-end");
-        let mut start_body = object!{ token: "7.miss-at-end" };
-        record_room_privacy(&mut start_body);
-        close_room(room);
-
-        // The end-time lookup misses and resolves to public...
-        assert!(!is_private_party(&start_body));
-        // ...but it is not what is asked any more.
-        assert!(recorded_privacy(Some(&start_body), &start_body));
-    }
-
-    #[test]
-    fn a_public_room_records_public_and_stays_public() {
-        let room = open_room("554567", true, "8.recorded-public");
-        let mut start_body = object!{ token: "8.recorded-public" };
-        record_room_privacy(&mut start_body);
-        assert_eq!(start_body["room_private"].as_bool(), Some(false));
-        assert!(!recorded_privacy(Some(&start_body), &start_body));
-        close_room(room);
-        assert!(!recorded_privacy(Some(&start_body), &start_body));
-    }
-
-    #[test]
-    fn a_record_with_no_recorded_answer_falls_back_to_the_live_lookup() {
-        // Started before this was recorded, or started against a token the registry did
-        // not know (a start POST that arrived after its own room died). Nothing is written
-        // in that case, deliberately, so the fallback is what selects it.
-        let room = open_room("555678", false, "9.no-record");
-        let mut missed = object!{ token: "9.never-a-room" };
-        record_room_privacy(&mut missed);
-        assert!(missed["room_private"].is_null(), "a miss must record nothing");
-
-        let legacy = object!{ live_boost: 1 };
-        let end_body = object!{ token: "9.no-record" };
-        assert!(recorded_privacy(Some(&legacy), &end_body), "falls back to the live room");
-        close_room(room);
-        assert!(!recorded_privacy(Some(&legacy), &end_body), "and to public once it is gone");
     }
 
     #[test]

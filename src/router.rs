@@ -226,7 +226,6 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
         }
     } else {
         match req.path() {
-            "/web/announcement" => web::announcement(req),
             "/api/webui/userInfo" => webui::user(req),
             "/live_clear_rate.html" => clear_rate::clearrate_html(req).await,
             "/webui/logout" => webui::logout(req),
@@ -292,4 +291,5 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
     );
     cfg.configure(custom_song::web_routes);
     cfg.configure(custom_card::web_routes);
+    cfg.configure(web::routes);
 }

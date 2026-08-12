@@ -58,13 +58,6 @@ pub const LIVENESS_TIMEOUT: Duration = Duration::from_secs(90);
 const PROP_ROOM_LEVEL: &str = "C0";
 const PROP_ROOM_POWER: &str = "C1";
 
-// MultiPlayProtocol.RoomConst.Token — "{userId}.{guid}", minted by the master client in
-// MultiEventMatchingScene right before the live starts (CommitCurrentRoomToken +
-// PushCurrentRoomData) and mirrored to the whole party. Every member posts it as the
-// `token` field of /multi_live/start|end, so it is the only handle the HTTP side has on
-// which room a finishing live belongs to. The relay never writes it, only reads it back.
-const PROP_ROOM_TOKEN: &str = "C";
-
 // Photon's well-known room properties are BYTE keys living in the same bag as the
 // game's string keys; the client transport encodes a byte key as "#" + decimal.
 // GamePropertyKey.IsOpen is 253 and IsVisible is 254, and the surviving Photon.Realtime
@@ -133,18 +126,6 @@ struct Room {
     max_players: u8,
     visible: bool,
     open: bool,
-    // Whether this room was created as a PRIVATE (join-by-code) party, latched once at
-    // creation and never touched again. /multi_live/end branches the score-board write on
-    // it, so it must NOT be re-derived from `visible` later: the game hides a room the
-    // moment its members are decided (MultiMatchingView.SetRoomOpenVisible(false)), which
-    // makes a public room mid-live indistinguishable from a private one by the live flags.
-    //
-    // The signal is the creation-time visibility, because that is exactly what separates
-    // the client's two create paths: MultiPlayManager.CreatePublicRoom issues
-    // CreateRoom("", 4, visible: true, open: true) and lets the server name the room, while
-    // CreatePrivateRoom issues CreateRoom(code, 4, visible: false, open: true) — a private
-    // party is by definition the one that is never listed for random matching.
-    private: bool,
     props: Map,
     // Kept only so a future lobby-listing op can honour what the creator asked to
     // publish; the matcher reads C0/C1 straight off the room bag like Photon's SQL did.
@@ -431,15 +412,12 @@ impl Registry {
         // disagree the bag wins, because the bag is what every client polls.
         let (mut visible, mut open) = (visible, open);
         apply_flag_props(&props, &mut visible, &mut open);
-        // Latched here, from the settled creation-time visibility, and never updated.
-        let private = !visible;
         // The creator is master and takes actor 1.
         let room = Room {
             lobby,
             max_players,
             visible,
             open,
-            private,
             props,
             lobby_prop_keys,
             // The creator has nobody to notify, but its bag is seeded from the op-4
@@ -916,26 +894,6 @@ impl Registry {
 
     // --- introspection (tests, and a future webui panel) ----------------------
 
-    // Whether the room carrying this live token is a private (join-by-code) party, or None
-    // when no live room claims the token.
-    //
-    // The token is matched against the ROOM bag rather than against the poster's account:
-    // all up to four party members post the same token, and only the master ever wrote it,
-    // so the bag is the one place the HTTP and relay halves meet. Room names are globally
-    // unique but a token is not addressable by name, so this is a scan — the registry holds
-    // at most a handful of live rooms and this runs once per /multi_live/end.
-    pub fn token_room_is_private(&self, token: &str) -> Option<bool> {
-        if token.is_empty() {
-            // An unset room prop reads back as "" on the client, which would otherwise
-            // match every room that never had a token pushed.
-            return None;
-        }
-        self.rooms
-            .values()
-            .find(|room| room.props.get_str(PROP_ROOM_TOKEN) == Some(token))
-            .map(|room| room.private)
-    }
-
     #[allow(dead_code)]
     pub fn room_count(&self) -> usize {
         self.rooms.len()
@@ -947,24 +905,8 @@ impl Registry {
     }
 }
 
-// What /multi_live/start asks, while the room is certainly still alive: is this a private
-// party, or does no live room claim the token at all? The distinction matters to the
-// caller — an answer is recorded on the start record, a miss is not (see
-// multi_live::record_room_privacy).
-pub fn token_room_privacy(token: &str) -> Option<bool> {
-    registry().token_room_is_private(token)
-}
 
-// The same question with the miss folded away, for a start record from before the answer
-// was recorded at start time.
-//
-// A token no live room claims answers `false`. The room is torn down as soon as its last
-// active player leaves cleanly, and an end can arrive after that (a client that quit the
-// room before its POST landed, or a server restart), so "unknown" has to resolve to
-// something — and public is the official behaviour, which is the safe side to be wrong on.
-pub fn token_is_private_room(token: &str) -> bool {
-    token_room_privacy(token).unwrap_or(false)
-}
+// This file is like 1.5k lines of tests :skull:
 
 #[cfg(test)]
 mod tests {
@@ -2298,88 +2240,6 @@ mod tests {
             [ServerMsg::Pong { server_time_ms }] => assert!(*server_time_ms > 0.0),
             other => panic!("expected Pong, got {:?}", other),
         }
-    }
-
-    // --- live-token lookup (the /multi_live/end score-board branch) -----------------
-    //
-    // The end handler has nothing but the room token to go on, and has to tell a private
-    // party from public matchmaking with it. The trap is that the live flags cannot answer
-    // the question: the game hides a PUBLIC room as well, the moment its members are
-    // decided, so privacy is latched at creation instead.
-
-    // MultiPlayManager.CreatePrivateRoom: the 6-digit code is the room name, and the room
-    // is created hidden so random matching can never land in it.
-    fn create_private(h: &mut Harness, id: ConnId, code: &str) {
-        h.send(id, ClientMsg::CreateRoom {
-            name: code.to_string(),
-            max_players: 4,
-            visible: false,
-            open: true,
-            props: Map::new(),
-            lobby_prop_keys: vec![],
-            player_props: Map::new(),
-        });
-    }
-
-    // MultiEventMatchingScene: CommitCurrentRoomToken then PushCurrentRoomData, once, just
-    // before the live starts.
-    fn push_token(h: &mut Harness, id: ConnId, token: &str) {
-        h.send(id, ClientMsg::SetRoomProps {
-            props: Map::from_pairs(vec![(PROP_ROOM_TOKEN, Value::Str(token.to_string()))]),
-        });
-    }
-
-    #[test]
-    fn a_private_room_is_found_by_the_live_token_it_carries() {
-        let mut h = Harness::new();
-        let a = h.connect(1);
-        let b = h.connect(2);
-        create_private(&mut h, a, "042719");
-        h.send(b, ClientMsg::JoinRoom { name: "042719".into(), player_props: Map::new() });
-        push_token(&mut h, a, "1.abcd");
-
-        // Every party member posts this same token, so both ends resolve to the one room.
-        assert_eq!(h.reg.token_room_is_private("1.abcd"), Some(true));
-    }
-
-    #[test]
-    fn a_public_room_stays_public_after_the_game_hides_it() {
-        // The regression this whole field exists for: MultiMatchingView.SetRoomOpenVisible
-        // (false) closes and hides a public room once its members are decided, so by the
-        // time the live ends the current flags look exactly like a private room's.
-        let mut h = Harness::new();
-        let a = h.connect(1);
-        h.create(a, "1234567", vec![]);
-        push_token(&mut h, a, "1.efgh");
-        assert_eq!(h.reg.token_room_is_private("1.efgh"), Some(false));
-
-        set_flags(&mut h, a, vec![
-            (PROP_ROOM_IS_OPEN, Value::Bool(false)),
-            (PROP_ROOM_IS_VISIBLE, Value::Bool(false)),
-        ]);
-        assert_eq!(
-            h.reg.token_room_is_private("1.efgh"),
-            Some(false),
-            "a hidden public room must not be mistaken for a private party"
-        );
-    }
-
-    #[test]
-    fn an_unknown_or_empty_token_matches_no_room() {
-        let mut h = Harness::new();
-        let a = h.connect(1);
-        create_private(&mut h, a, "042719");
-        push_token(&mut h, a, "1.abcd");
-
-        assert_eq!(h.reg.token_room_is_private("2.nope"), None);
-        // A room whose master never pushed a token reads back "" on the client; that must
-        // not match the first room in the registry.
-        assert_eq!(h.reg.token_room_is_private(""), None);
-
-        // And once the last active player leaves, the room — and the answer — is gone.
-        h.send(a, ClientMsg::LeaveRoom);
-        assert_eq!(h.reg.room_count(), 0);
-        assert_eq!(h.reg.token_room_is_private("1.abcd"), None);
     }
 
     #[test]

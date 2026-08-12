@@ -124,6 +124,10 @@ async fn home(Login(key): Login) -> impl Responder {
     }
     user["home"]["unread_chat_count"] = chat_count.into();
 
+    let seen_at = user["home"]["announcement_seen_at"].as_i64().unwrap_or(0);
+    let new_announcement = crate::database::announcements::latest_published_at() > seen_at;
+    user["home"]["new_announcement_flag"] = (new_announcement as i32).into();
+
     //todo
     user["home"]["beginner_mission_complete"] = 1.into();
 

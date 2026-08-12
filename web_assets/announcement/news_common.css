@@ -1,0 +1,465 @@
+﻿
+/*+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+
+背景設定
++-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+*/
+
+html {
+    box-sizing: border-box; /* 1 */
+    cursor: default; /* 2 */
+    line-height: 1.5; /* 3 */
+    -ms-text-size-adjust: 100%; /* 4 */
+    -webkit-text-size-adjust: 100%; /* 5 */
+}
+*,
+::before,
+::after {
+    /* 表示無い個所の処理 */
+    background-repeat: no-repeat; /* 1 */
+    box-sizing: inherit; /* 2 */
+}
+body {
+    font-family: 'YuGothic','Yu Gothic','Hiragino Kaku Gothic ProN','ヒラギノ角ゴ ProN W3',sans-serif;
+    font-size: 2.0vw;
+    font-weight: normal;
+    color: #494949;
+    background-color: #f5ffff;
+    background-size: cover;
+    background-attachment: fixed;
+    -webkit-touch-callout: none; /* リンク長押しのポップアップを無効化*/
+    -webkit-user-select: none; /* テキスト長押しの選択ボックスを無効化*/
+    -webkit-tap-highlight-color:rgba(0,0,0,0);/*リンクの領域表示を無効化*/
+}
+
+/* ダークモード */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #f5ffff;
+        color: #494949;
+    }
+    #header {
+        background-color: #f5ffff;
+    }
+    #tab div.on {
+        color: #f5ffff;
+    }
+    .detail_text {
+        color: #494949;
+    }
+    #tab div a, #tab div a:visited {
+        color: #494949;
+    }
+    #news_list .news .info_date {
+        color: #828282;
+    }
+}
+/*+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+
+文字大きさ、ポジション 幅1580px基準のvw
++-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+*/
+/* 詳細本文 */
+/* 40文字×無制限 */
+.detail_text {
+    font-size: 2.0vw;
+    color: #494949;
+    font-weight: normal;
+}
+
+/* 装飾用 */
+/* <div class="title"> */
+#detail .title {
+    font-weight: bold;
+}
+
+/* <span class="bold"> */
+#detail .bold {
+    font-weight: bold;
+}
+
+/* <div class="date"> */
+#detail .date {
+    color: #f93981;
+}
+
+/* <span class="pink"> */
+#detail .pink {
+    color: #f93981;
+}
+
+/* 見出し用 *
+/* 更新日 24px */
+.date_text {
+    font-size: 1.6vw;
+    font-weight: normal;
+}
+
+/* タイトル 32px */
+.title_text {
+    font-size: 2.0vw;
+    font-weight: normal;
+}
+
+.update_text {
+    font-size: 1.3vw;
+    font-weight: normal;
+}
+
+#tab {
+    font-size: 2.0vw;
+    font-weight: normal;
+}
+
+/*+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+
+メニュータブ
++-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+*/
+#header {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 7.2vw;
+    background-color: #F2FFFF;
+    z-index: 1;
+}
+#tab {
+    position: relative;
+    top: 0;
+    margin: 1.6vw 1.3vw;
+    width: 97.4vw;
+    height: 4.0vw;
+    z-index: 1;
+}
+
+#tab>div {
+    float: left;
+    width: 18.9vw;
+    height: 4.0vw;
+    color: #494949;
+    text-align: center;
+    line-height: 4.0vw;
+    position: relative;
+}
+
+#tab div:nth-child(1), #tab div:nth-child(2) {
+    border-right: #CDD0D0 1px solid;
+}
+
+#tab div a, #tab div a:visited {
+    color: #494949;
+}
+
+#tab div.on {
+    color: #f5ffff;
+    background-image: url("../0_common_images/news_img_tab.png");
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+
+#tab a {
+    display: block;
+    height: 100%;
+    background-position: center;
+    background-size: 15.5vw;
+    text-decoration: none;
+}
+
+#tab .tab_text {
+    text-align: center;
+    line-height: 100%;
+}
+
+#tab .new img.bg_badge {
+    position: absolute;
+    z-index: 2;
+    top: -0.5vw;
+    right: 1.1vw;
+    width: 2.4vw;
+    height: auto;
+}
+
+#tab .new img.bg_badge_eff {
+    position: absolute;
+    z-index: 1;
+    top: -1.3vw;
+    right: 0.3vw;
+    width: 4.0vw;
+    height: auto;
+}
+
+#tab>div.read_btn, #tab>div.more_btn {
+    float: right;
+    width: 15.6vw;
+    height: 4.0vw;
+    margin: 0vw -0.4vw 0vw 0.4vw;
+}
+
+#tab .read_btn img, #tab .more_btn img {
+    width: 15.6vw;
+    height: auto;
+}
+
+#tab img.off {
+    opacity: 0.5;
+}
+
+#tab_bottom {
+    margin-top: 7.2vw;
+}
+
+/*+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+
+共通項目
++-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+*/
+/*種類アイコン画像*/
+.info_type_image img.tag {
+    width : 13.7vw; /* 画像を枠の100%の横幅にする */
+    height: auto; /* 画像の縦幅を自動調整 */
+}
+
+.info_type_image img.present {
+    width : 1.5vw;
+    height: auto;
+    margin-left: 0.5vw;
+}
+
+.information_area {
+    width: 100%;
+    overflow: hidden;
+}
+
+.information {
+    position: relative;
+    float: left;
+    overflow: hidden;
+}
+
+.information img.new {
+    width : 8.3vw;
+    height: auto;
+}
+
+img.arrow {
+    width : 1.8vw;
+    height: auto;
+    margin-top: 2.4vw;
+    margin-left: 1.0vw;
+    margin-right: 0.4vw;
+}
+
+img.arrow_back {
+    width : 1.8vw;
+    height: auto;
+    margin-top: 2.4vw;
+    margin-right: 1.4vw;
+    transform: scale(-1, 1);
+}
+
+.info_title {
+    margin-top: 0vw;
+    word-break: break-all;
+}
+
+.anchor {
+    position: absolute;
+    margin-top: -7.2vw;
+}
+
+.clear {
+    clear: both;
+}
+
+#outer {
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+#outer #center {
+    height:100%;
+    width:100%;
+    display:table;
+}
+
+#outer #center p {
+    display: table-cell;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/*+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+お知らせリスト設定
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+*/
+#news_list .main_image img {
+    width : 20.86vw;
+    height: 8.34vw;
+    float: left;
+}
+
+#news_list .news {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: #494949;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);/*リンクの領域表示を無効化*/
+    overflow: hidden;
+}
+
+#news_list .news .info_date {
+    color: #828282;
+}
+
+#news_list ul {
+    margin: 1.3vw 1.3vw 0;
+    padding: 0;
+    width: 97.4vw;
+}
+
+#news_list li {
+    list-style: none;
+}
+
+#news_list hr, #detail hr {
+    background-image: url("../0_common_images/news_img_line.png");
+    background-repeat: repeat-x;
+    background-size: contain;
+    height: 0.26vw;
+    border: 0;
+    margin-top: 0.8vw;
+    margin-bottom: 0.8vw;
+}
+
+#news_list hr.hr_detail {
+    margin-top: 1.1vw;
+    margin-bottom: 1.1vw;
+
+}
+
+#news_list .list_area {
+    overflow: hidden;
+}
+
+#news_list .information {
+    float: left;
+    margin-left: 2.0vw;
+    width: 70.5vw;
+}
+
+#news_list .info_type_image {
+    float: left;
+    margin-top: 0.8vw;
+    width: 13.7vw;
+}
+
+#news_list .info_date {
+    float: left;
+    margin-top: 1.0vw;
+    margin-left: 2.0vw;
+}
+
+#news_list .info_new_image {
+    float: right;
+    margin-top: 0.7vw;
+    width: 8.3vw;
+}
+
+#news_list .arrow_image {
+    float: left;
+    width: 3.2vw;
+    height: 8.3vw;
+}
+
+#page_area {
+    margin-top: 3%;
+    padding: 0 2.0vw 4.0vw 2.0vw;
+    width: 100%;
+    overflow: auto;
+    font-size: 1.2vw;
+
+    display: none;
+}
+
+#paging {
+    text-align: center;
+}
+
+#page_area .page {
+    font-size: 1.8vw;
+    font-weight: bold;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    color: #191919;
+    text-decoration: none;
+}
+
+#page_area .page.new {
+    color: #c12424;
+}
+
+#page_area .page.off {
+    color: #aaaaaa;
+}
+
+/*+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+詳細ページ設定
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+*/
+#detail {
+    width: 100%;
+    height: 100%;
+}
+
+#detail .detail_text {
+    width : 97.4vw;
+    height : auto;
+    vertical-align:middle;
+    padding: 0;
+    margin: 0vw 1.3vw 1.3vw;
+}
+
+#detail .detail_image {
+    width: 100%;
+    padding: 1.0vw;
+    text-align: center;
+
+    display: none;
+}
+
+#detail .detail_image img {
+    width: 45.0vw;
+    height: auto;
+}
+
+.detail_text img {
+    max-width: 100%;
+}
+
+/*+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+外部コンテンツページ設定
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+*/
+#contents {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#contents #banner_list {
+    position: relative;
+    left: 3vw;
+}
+
+#contents .banner {
+    float: left;
+    padding: 0.6vw;
+}
+
+#contents .banner:nth-child(3n+4) {
+    clear: both;
+}
+
+#contents .clear {
+    clear: both;
+}
+
+#contents img {
+    width: 30.0vw;
+    height: auto;
+}

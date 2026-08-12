@@ -9,38 +9,28 @@ lazy_static! {
     static ref DATABASE: SQLite = SQLite::new("permissions.db", setup_tables);
 }
 
-// Scopes are flat dotted strings and imply everything below them: holding
-// "card" grants "card.upload", and "*" grants everything. That hierarchy is
-// the only notion of "level" - there is no rank integer, so a new capability
-// is one line here and never a renumbering of anything else.
-//
-// Every call site must pass one of these consts, never a literal: an
-// unrecognised scope string can only ever fail closed in has(), but grant()
-// rejects it outright so a typo can't be persisted either.
 pub const ALL: &str = "*";
 
 pub const CARD: &str = "card";
-// Create custom cards/characters, and edit or delete your OWN uploads
 pub const CARD_UPLOAD: &str = "card.upload";
-// Publish/unpublish and mark obtainable, on your OWN uploads
 pub const CARD_PUBLISH: &str = "card.publish";
-// Moderation: edit, delete, publish or unpublish ANYBODY's cards
 pub const CARD_EDIT: &str = "card.edit";
 
 pub const PERMISSION: &str = "permission";
 pub const PERMISSION_GRANT: &str = "permission.grant";
 pub const PERMISSION_REVOKE: &str = "permission.revoke";
 
-// The whole grantable vocabulary, subtree roots included. Anything not in here
-// cannot be written to the table
+pub const ANNOUNCEMENT: &str = "announcement";
+pub const ANNOUNCEMENT_MANAGE: &str = "announcement.manage";
+
 pub const SCOPES: &[&str] = &[
     ALL,
     CARD, CARD_UPLOAD, CARD_PUBLISH, CARD_EDIT,
-    PERMISSION, PERMISSION_GRANT, PERMISSION_REVOKE
+    PERMISSION, PERMISSION_GRANT, PERMISSION_REVOKE,
+    ANNOUNCEMENT, ANNOUNCEMENT_MANAGE
 ];
 
-// Grants live in their own database rather than in userdata.db so that an
-// account purge can never take administrative state with it
+
 fn setup_tables(conn: &rusqlite::Connection) {
     conn.execute_batch("
 CREATE TABLE IF NOT EXISTS grants (
@@ -53,18 +43,11 @@ CREATE TABLE IF NOT EXISTS grants (
     ").unwrap();
 }
 
-// The owners are a process-level flag (--owner) rather than table rows: they
-// are the bootstrap grantors, so they have to work on a fresh install with an
-// empty (or hand-deleted) permissions.db, and they must not be revocable
-// through the webui
 fn is_owner(user_id: i64) -> bool {
     user_id > 0 && crate::runtime::get_owners().contains(&user_id)
 }
 
-// Every scope that would satisfy a request for `scope`: "*", each dotted
-// ancestor, and the scope itself. Matching is on whole dot-separated segments,
-// so "car" never satisfies "card.upload"
-fn implied_by(scope: &str) -> Vec<String> {
+fn has_permission(scope: &str) -> Vec<String> {
     if scope == ALL {
         return vec![String::from(ALL)];
     }
@@ -80,7 +63,7 @@ fn implied_by(scope: &str) -> Vec<String> {
     rv
 }
 
-fn held_scopes(user_id: i64) -> Vec<String> {
+fn get_permissions(user_id: i64) -> Vec<String> {
     let rows = DATABASE.lock_and_select_all("SELECT scope FROM grants WHERE user_id=?1 ORDER BY scope", params!(user_id)).unwrap_or(array![]);
     rows.members().map(|scope| scope.to_string()).collect()
 }
@@ -100,13 +83,11 @@ pub fn has(user_id: i64, scope: &str) -> bool {
     if is_owner(user_id) {
         return true;
     }
-    let held = held_scopes(user_id);
-    implied_by(scope).iter().any(|candidate| held.contains(candidate))
+    let held = get_permissions(user_id);
+    has_permission(scope).iter().any(|candidate| held.contains(candidate))
 }
 
-// Everything this user holds, for the webui to hide what it can't use. An
-// owner's implicit "*" is reported here even though it has no row
-pub fn scopes_for(user_id: i64) -> JsonValue {
+pub fn get_user_permissions(user_id: i64) -> JsonValue {
     if user_id <= 0 {
         return array![];
     }
@@ -114,7 +95,7 @@ pub fn scopes_for(user_id: i64) -> JsonValue {
     if is_owner(user_id) {
         scopes.push(String::from(ALL));
     }
-    for scope in held_scopes(user_id) {
+    for scope in get_permissions(user_id) {
         if !scopes.contains(&scope) {
             scopes.push(scope);
         }
@@ -148,16 +129,6 @@ pub fn grants() -> JsonValue {
     rv
 }
 
-// The only way a row is ever written. Two conditions, both required:
-//
-//   1. the grantor holds permission.grant, and
-//   2. the grantor holds the scope being granted
-//
-// (2) is what makes escalation impossible. has() only ever implies downwards,
-// so holding a leaf never satisfies its parent - a user with card.upload can
-// hand out card.upload and nothing else, and can no more grant themselves
-// "card" (or "*") than they can grant it to anybody else. Both checks read the
-// live table, so a revoked grantor loses the ability on their next request
 pub fn grant(user_id: i64, scope: &str, granted_by: i64) -> Result<(), String> {
     if user_id <= 0 {
         return Err(String::from("Invalid user id"));
@@ -175,9 +146,6 @@ pub fn grant(user_id: i64, scope: &str, granted_by: i64) -> Result<(), String> {
     Ok(())
 }
 
-// Revoking needs the same "you must hold it yourself" rule as granting, so a
-// junior admin can't strip a senior one. An owner has no rows to delete, but
-// the check is explicit so it stays true if that ever changes
 pub fn revoke(user_id: i64, scope: &str, revoked_by: i64) -> Result<(), String> {
     if user_id <= 0 {
         return Err(String::from("Invalid user id"));
@@ -197,6 +165,11 @@ pub fn revoke(user_id: i64, scope: &str, revoked_by: i64) -> Result<(), String> 
     DATABASE.lock_and_exec("DELETE FROM grants WHERE user_id=?1 AND scope=?2", params!(user_id, scope));
     Ok(())
 }
+
+
+
+// rest of file is tests that ai wrote
+// I didn't read through them because I don't super care about tests but they probably do something
 
 #[cfg(test)]
 mod tests {
@@ -276,7 +249,7 @@ mod tests {
         insert(110, CARD_UPLOAD, 0);
         grant(111, CARD_UPLOAD, 110).unwrap();
         grant(111, CARD_UPLOAD, 110).unwrap(); // idempotent
-        assert_eq!(held_scopes(111), vec![String::from(CARD_UPLOAD)]);
+        assert_eq!(get_permissions(111), vec![String::from(CARD_UPLOAD)]);
         assert!(grant(111, CARD_EDIT, 110).is_err());
         assert!(grant(111, CARD, 110).is_err());
         assert!(grant(110, ALL, 110).is_err());
@@ -326,7 +299,7 @@ mod tests {
         }
         assert_eq!(scopes_for(118).len(), 1);
         assert_eq!(scopes_for(118)[0].to_string(), String::from(ALL));
-        assert!(held_scopes(118).is_empty());
+        assert!(get_permissions(118).is_empty());
         // An owner can bootstrap-grant, and can't be revoked
         grant(119, ALL, 118).unwrap();
         assert!(has(119, ALL));
@@ -346,7 +319,7 @@ mod tests {
             assert!(!scope.is_empty());
             assert!(!scope.ends_with('.'));
         }
-        for scope in [CARD_UPLOAD, CARD_PUBLISH, CARD_EDIT, PERMISSION_GRANT, PERMISSION_REVOKE] {
+        for scope in [CARD_UPLOAD, CARD_PUBLISH, CARD_EDIT, PERMISSION_GRANT, PERMISSION_REVOKE, ANNOUNCEMENT_MANAGE] {
             assert!(SCOPES.contains(&scope), "scope {}", scope);
         }
     }

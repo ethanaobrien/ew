@@ -38,6 +38,12 @@ pub fn get_acc_transfer(token: &str, password: &str) -> JsonValue {
     object!{success: false}
 }
 
+// Used by gree
+pub fn transfer_code_exists(token: &str) -> bool {
+    let database = userdata::get_userdata_database();
+    database.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token)).is_ok()
+}
+
 pub fn save_acc_transfer(uid: i64, password: &str) -> String {
     let database = userdata::get_userdata_database();
     let token = if let Ok(value) = database.lock_and_select("SELECT token FROM migration WHERE user_id=?1", params!(uid)) {

@@ -67,8 +67,7 @@ async fn user(req: HttpRequest, Login(key): Login) -> impl Responder {
         }
     }
 
-    // Runtime custom cards are unresolvable below protocol 3. start.rs blocks
-    // flagged accounts on old clients, so this is belt-and-braces
+    // Don't allow account downgrade (will crash client)
     if !crate::router::custom_card::client_supports(&req) {
         crate::router::custom_card::strip_unsupported(&mut user);
     }
@@ -182,9 +181,10 @@ async fn user_post(Session { key, body }: Session) -> impl Responder {
 pub async fn announcement(Login(key): Login) -> impl Responder {
     
     let mut user = userdata::get_acc_home(&key);
-    
+
     user["home"]["new_announcement_flag"] = (0).into();
-    
+    user["home"]["announcement_seen_at"] = (global::timestamp() as i64).into();
+
     userdata::save_acc_home(&key, user);
     
     Api(Some(object!{

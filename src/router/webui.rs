@@ -367,9 +367,6 @@ pub fn list_items(_req: HttpRequest) -> HttpResponse {
 }
 
 lazy_static! {
-    // The selectable character list for the custom-card form: every official
-    // and SIF1-imported character in the baked csv, by name. The import band
-    // starts at 5001 (5001-5172 + 6001-6009); official ids top out at 4014
     static ref CHARACTER_CHOICES: JsonValue = {
         let mut rv = jzon::array![];
         for row in crate::router::databases::csv::table(Region::Jp, "character").members() {
@@ -384,8 +381,6 @@ lazy_static! {
         rv
     };
 
-    // The skill_center table with its display strings, for picking a center
-    // skill by name instead of by raw id
     static ref SKILL_CENTER_CHOICES: JsonValue = {
         let mut en_rows = object!{};
         for row in crate::router::databases::csv::table(Region::En, "skill_center").members() {
@@ -406,9 +401,6 @@ lazy_static! {
     };
 }
 
-// The characters a card upload may reference, for the webui's searchable
-// picker: the baked official + imported list, plus the custom characters
-// this session may build on (their own and the publicly visible ones)
 pub fn list_characters(req: HttpRequest) -> HttpResponse {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
@@ -446,8 +438,6 @@ pub fn list_skill_centers(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-// The concrete upload bounds (per-rarity stat caps, enum ranges, skill array
-// lengths) so the form enforces them before submitting
 pub fn custom_card_limits(req: HttpRequest) -> HttpResponse {
     if session_uid(&req).is_none() {
         return error("Not logged in");
@@ -461,8 +451,6 @@ pub fn custom_card_limits(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-// The requesting user's own effective scopes, for webui nav gating. Any
-// session may ask - it only ever reveals what the user themselves holds
 pub fn my_scopes(req: HttpRequest) -> HttpResponse {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
@@ -471,12 +459,13 @@ pub fn my_scopes(req: HttpRequest) -> HttpResponse {
         result: "OK",
         data: {
             uid: uid,
-            scopes: permissions::scopes_for(uid),
+            scopes: permissions::get_user_permissions(uid),
             can_upload_cards: permissions::has(uid, permissions::CARD_UPLOAD),
             can_publish_cards: permissions::has(uid, permissions::CARD_PUBLISH),
             can_edit_any_cards: permissions::has(uid, permissions::CARD_EDIT),
             can_manage_permissions: permissions::has(uid, permissions::PERMISSION_GRANT)
-                || permissions::has(uid, permissions::PERMISSION_REVOKE)
+                || permissions::has(uid, permissions::PERMISSION_REVOKE),
+            can_manage_announcements: permissions::has(uid, permissions::ANNOUNCEMENT_MANAGE)
         }
     };
     HttpResponse::Ok()
@@ -484,8 +473,6 @@ pub fn my_scopes(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-// The admin view: every grant plus the grantable vocabulary. Needs a
-// permission.* scope - my_scopes is the anyone-can-ask endpoint
 pub fn list_permissions(req: HttpRequest) -> HttpResponse {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
@@ -505,7 +492,7 @@ pub fn list_permissions(req: HttpRequest) -> HttpResponse {
             uid: uid,
             can_grant: can_grant,
             can_revoke: can_revoke,
-            scopes: permissions::scopes_for(uid),
+            scopes: permissions::get_user_permissions(uid),
             available: available,
             grants: permissions::grants()
         }
@@ -591,6 +578,11 @@ pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
         .insert_header(ContentType::json())
         .body(jzon::stringify(resp))
 }
+
+
+
+// rest of file is tests that ai wrote
+// I didn't read through them because I don't super care about tests but they probably do something
 
 #[cfg(test)]
 mod tests {

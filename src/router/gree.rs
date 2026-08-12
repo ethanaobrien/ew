@@ -194,14 +194,34 @@ async fn payment_ticket(req: HttpRequest) -> impl Responder {
 
 async fn migration_verify(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
+    let migration_code = body["migration_code"].to_string();
     let password = decrypt_transfer_password(&body["migration_password"].to_string());
 
-    let user = userdata::user::migration::get_acc_transfer(&body["migration_code"].to_string(), &password);
+    let user = userdata::user::migration::get_acc_transfer(&migration_code, &password);
 
     let resp = if !user["success"].as_bool().unwrap() || user["user_id"] == 0 {
+        // The gree error envelope REQUIRES `code` and `message` on a failure. The old
+        // {result:"ERR", messsage:"User Not Found"} shape had neither (and misspelt the key),
+        // which breaks both native gamelibs:
+        //   * iOS: +[GGLError errorWithJson:] builds
+        //     @{NSLocalizedDescriptionKey: message} with message == nil ->
+        //     NSInvalidArgumentException "attempt to insert nil object from objects[0]" -> the app
+        //     hard-crashes the moment a wrong password / unknown code is entered on the new device.
+        //     (It also reads `code` as [nil integerValue] == 0 == SUCCESS, so a non-crashing build
+        //     would have run the success path on an empty payload.)
+        //   * managed: Shock.GGL.Payment.GGLVerifyMigrationCode.CanRetry(code) tests
+        //     code == 7004 (kGGLPErrorVerifyMigrationIncorrectPassword) to show the
+        //     "re-enter your password" dialog instead of the fatal error dialog.
+        // 7002 = kGGLPErrorVerifyMigrationCodeNotExist, 7004 = incorrect password.
+        let (code, message) = if userdata::user::migration::transfer_code_exists(&migration_code) {
+            (7004, "Migration password is incorrect")
+        } else {
+            (7002, "Migration code does not exist")
+        };
         object!{
-            result: "ERR",
-            messsage: "User Not Found"
+            result: "NG",
+            code: code,
+            message: message
         }
     } else {
         let data_user = userdata::get_acc(&user["login_token"].to_string());
