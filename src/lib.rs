@@ -37,6 +37,7 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
 
     router::custom_song::migrate::run();
     router::custom_song::sweep_audio();
+    router::custom_3dmv::sweep_blobs();
     // The multi-live relay's expiry timers, on the system arbiter rather than on whichever
     // HTTP worker happened to serve the first WebSocket upgrade — a worker panic must not
     // be able to strand every room's seats for the life of the process.

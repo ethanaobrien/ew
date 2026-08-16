@@ -12,6 +12,7 @@ ndk/
 .DS_Store
 custom_songs/
 custom_cards/
+/custom_3dmv/
 
 # local-only trees — never commit (35GB between them)
 /android/

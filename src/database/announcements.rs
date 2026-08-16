@@ -183,8 +183,8 @@ mod tests {
         // has_banner reflects the blob without carrying it
         assert_eq!(cat1[0]["has_banner"].as_bool(), Some(true));
         assert_eq!(cat1[1]["has_banner"].as_bool(), Some(false));
-        assert_eq!(banner(b), Some(vec![1, 2, 3]));
-        assert_eq!(banner(a), None);
+        assert_eq!(get_banner(b), Some(vec![1, 2, 3]));
+        assert_eq!(get_banner(a), None);
 
         // The other tab is untouched, the admin view sees the draft too
         assert_eq!(list_category(2).len(), 1);
@@ -216,12 +216,12 @@ mod tests {
         assert_eq!(row["updated"].as_bool(), Some(true));
         assert_eq!(row["published_at"].as_i64(), Some(5000));
         // Keep left the blob in place
-        assert_eq!(banner(id), Some(vec![9]));
+        assert_eq!(get_banner(id), Some(vec![9]));
 
         update(id, 3, "maintenance", "New title", "new body", Banner::Set(vec![4, 5]), true, true, 5000);
-        assert_eq!(banner(id), Some(vec![4, 5]));
+        assert_eq!(get_banner(id), Some(vec![4, 5]));
         update(id, 3, "maintenance", "New title", "new body", Banner::Clear, true, false, 5000);
-        assert_eq!(banner(id), None);
+        assert_eq!(get_banner(id), None);
         assert_eq!(get(id).unwrap()["visible"].as_bool(), Some(false));
 
         delete(id);
@@ -239,15 +239,15 @@ mod tests {
         let published = create(1, "news", "Live", "body", Some(vec![1, 2]), false, true, 1000, 42);
         let draft = create(1, "news", "Unannounced", "body", Some(vec![7, 7]), false, false, 2000, 42);
 
-        assert_eq!(banner(draft), Some(vec![7, 7]));
-        assert_eq!(visible_banner(draft), None);
-        assert_eq!(visible_banner(published), Some(vec![1, 2]));
+        assert_eq!(get_banner(draft), Some(vec![7, 7]));
+        assert_eq!(get_public_banner(draft), None);
+        assert_eq!(get_public_banner(published), Some(vec![1, 2]));
 
         // Publishing it makes the banner reachable, hiding it again takes it back
         update(draft, 1, "news", "Unannounced", "body", Banner::Keep, false, true, 2000);
-        assert_eq!(visible_banner(draft), Some(vec![7, 7]));
+        assert_eq!(get_public_banner(draft), Some(vec![7, 7]));
         update(draft, 1, "news", "Unannounced", "body", Banner::Keep, false, false, 2000);
-        assert_eq!(visible_banner(draft), None);
+        assert_eq!(get_public_banner(draft), None);
 
         wipe();
     }

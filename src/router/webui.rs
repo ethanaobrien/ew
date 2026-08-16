@@ -229,6 +229,7 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
             account_import: get_config()["import"].as_bool().unwrap(),
             custom_songs: !crate::router::custom_song::disabled(),
             custom_cards: !crate::router::custom_card::disabled(),
+            custom_3dmv: !crate::router::custom_3dmv::disabled(),
             links: {
                 global: args.global_android,
                 japan: args.japan_android,
@@ -451,6 +452,22 @@ pub fn custom_card_limits(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
+pub fn custom_3dmv_limits(req: HttpRequest) -> HttpResponse {
+    if crate::router::custom_3dmv::disabled() {
+        return HttpResponse::NotFound().finish();
+    }
+    if session_uid(&req).is_none() {
+        return error("Not logged in");
+    }
+    let resp = object!{
+        result: "OK",
+        data: crate::router::custom_3dmv::upload_limits()
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
 pub fn my_scopes(req: HttpRequest) -> HttpResponse {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
@@ -463,6 +480,7 @@ pub fn my_scopes(req: HttpRequest) -> HttpResponse {
             can_upload_cards: permissions::has(uid, permissions::CARD_UPLOAD),
             can_publish_cards: permissions::has(uid, permissions::CARD_PUBLISH),
             can_edit_any_cards: permissions::has(uid, permissions::CARD_EDIT),
+            can_edit_any_3dmv: permissions::has(uid, permissions::MV_EDIT),
             can_manage_permissions: permissions::has(uid, permissions::PERMISSION_GRANT)
                 || permissions::has(uid, permissions::PERMISSION_REVOKE),
             can_manage_announcements: permissions::has(uid, permissions::ANNOUNCEMENT_MANAGE)

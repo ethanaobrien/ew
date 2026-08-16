@@ -15,6 +15,7 @@ args=(
 [ "${DISABLE_EXPORTS:-}" = "true" ] && args+=(--disable-exports)
 [ "${ENABLE_CUSTOM_SONGS:-}" = "true" ] && args+=(--enable-custom-songs)
 [ "${ENABLE_CUSTOM_CARDS:-}" = "true" ] && args+=(--enable-custom-cards)
+[ "${ENABLE_CUSTOM_3DMV:-}" = "true" ] && args+=(--enable-custom-3dmv)
 
 add_opt() {
   local value="$1" flag="$2"

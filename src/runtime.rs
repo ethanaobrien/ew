@@ -25,6 +25,7 @@ pub struct HostConfig {
     pub en_android_asset_hash: String,
     pub enable_custom_songs: bool,
     pub enable_custom_cards: bool,
+    pub enable_custom_3dmv: bool,
 }
 
 // Lets an embedding app (or the tests) enable the opt-in custom songs feature
@@ -35,6 +36,10 @@ pub fn set_enable_custom_songs(enabled: bool) {
 
 pub fn set_enable_custom_cards(enabled: bool) {
     HOST_CONFIG.write().unwrap().enable_custom_cards = enabled;
+}
+
+pub fn set_enable_custom_3dmv(enabled: bool) {
+    HOST_CONFIG.write().unwrap().enable_custom_3dmv = enabled;
 }
 
 // The --owner uids: the permission system's bootstrap grantors. Process-level
@@ -162,13 +167,16 @@ pub fn overlay_args(args: &mut crate::options::Args) {
     }
     overlay_str!(jp_android_asset_hash);
     overlay_str!(en_android_asset_hash);
-    // Overlay only ever enables the features; a command-line --enable-custom-songs
-    // / --enable-custom-cards is never overridden back to off
+    // Overlay only ever enables the features; a command-line --enable-custom-*
+    // flag is never overridden back to off
     if cfg.enable_custom_songs {
         args.enable_custom_songs = true;
     }
     if cfg.enable_custom_cards {
         args.enable_custom_cards = true;
+    }
+    if cfg.enable_custom_3dmv {
+        args.enable_custom_3dmv = true;
     }
 }
 
@@ -192,5 +200,6 @@ pub fn lock_test_data_path() -> std::sync::MutexGuard<'static, ()> {
     // while holding the lock
     set_enable_custom_songs(true);
     set_enable_custom_cards(true);
+    set_enable_custom_3dmv(true);
     guard
 }

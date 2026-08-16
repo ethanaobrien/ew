@@ -257,6 +257,14 @@ pub fn public_song_title(music_id: i64, english: bool) -> Option<String> {
     Some(if english && !name_en.is_empty() { name_en } else { name })
 }
 
+// Whether the song exists and is publicly visible - what lets another
+// uploader attach cross-feature content (a custom 3D MV) to it. The
+// existence check comes first: get_visibility defaults to "public" for an
+// absent row
+pub fn song_publicly_visible(music_id: i64) -> bool {
+    get_song_owner(music_id).is_some() && get_visibility(music_id) == "public"
+}
+
 pub fn get_music_ids_for_user(user_id: i64) -> JsonValue {
     DATABASE.lock_and_select_all("
     SELECT music_id FROM songs

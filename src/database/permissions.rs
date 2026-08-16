@@ -23,11 +23,17 @@ pub const PERMISSION_REVOKE: &str = "permission.revoke";
 pub const ANNOUNCEMENT: &str = "announcement";
 pub const ANNOUNCEMENT_MANAGE: &str = "announcement.manage";
 
+// Uploading/publishing your own MVs needs no scope (like custom songs);
+// 3dmv.edit is moderation over anybody's
+pub const MV: &str = "3dmv";
+pub const MV_EDIT: &str = "3dmv.edit";
+
 pub const SCOPES: &[&str] = &[
     ALL,
     CARD, CARD_UPLOAD, CARD_PUBLISH, CARD_EDIT,
     PERMISSION, PERMISSION_GRANT, PERMISSION_REVOKE,
-    ANNOUNCEMENT, ANNOUNCEMENT_MANAGE
+    ANNOUNCEMENT, ANNOUNCEMENT_MANAGE,
+    MV, MV_EDIT
 ];
 
 
@@ -231,7 +237,7 @@ mod tests {
         for scope in SCOPES {
             assert!(!has(105, scope), "scope {}", scope);
         }
-        assert!(scopes_for(105).is_empty());
+        assert!(get_user_permissions(105).is_empty());
         assert!(!has(0, ALL));
         assert!(!has(-1, ALL));
         wipe(105);
@@ -297,8 +303,8 @@ mod tests {
             assert!(has(118, scope), "scope {}", scope);
             assert!(has(120, scope), "scope {}", scope);
         }
-        assert_eq!(scopes_for(118).len(), 1);
-        assert_eq!(scopes_for(118)[0].to_string(), String::from(ALL));
+        assert_eq!(get_user_permissions(118).len(), 1);
+        assert_eq!(get_user_permissions(118)[0].to_string(), String::from(ALL));
         assert!(get_permissions(118).is_empty());
         // An owner can bootstrap-grant, and can't be revoked
         grant(119, ALL, 118).unwrap();
@@ -319,7 +325,7 @@ mod tests {
             assert!(!scope.is_empty());
             assert!(!scope.ends_with('.'));
         }
-        for scope in [CARD_UPLOAD, CARD_PUBLISH, CARD_EDIT, PERMISSION_GRANT, PERMISSION_REVOKE, ANNOUNCEMENT_MANAGE] {
+        for scope in [CARD_UPLOAD, CARD_PUBLISH, CARD_EDIT, PERMISSION_GRANT, PERMISSION_REVOKE, ANNOUNCEMENT_MANAGE, MV_EDIT] {
             assert!(SCOPES.contains(&scope), "scope {}", scope);
         }
     }

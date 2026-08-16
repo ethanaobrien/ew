@@ -23,6 +23,7 @@ pub mod card;
 pub mod shop;
 pub mod custom_song;
 pub mod custom_card;
+pub mod custom_3dmv;
 pub mod rich_text;
 pub mod webui;
 pub mod clear_rate;
@@ -239,6 +240,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/listCharacters" => webui::list_characters(req),
             "/api/webui/listSkillCenters" => webui::list_skill_centers(req),
             "/api/webui/customCardLimits" => webui::custom_card_limits(req),
+            "/api/webui/custom3dmvLimits" => webui::custom_3dmv_limits(req),
             "/api/webui/myScopes" => webui::my_scopes(req),
             _ => api_req(req, body).await
         }
@@ -263,6 +265,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
                     .configure(chat::routes)
                     .configure(custom_song::routes)
                     .configure(custom_card::routes)
+                    .configure(custom_3dmv::routes)
                     .configure(debug::routes)
                     .configure(event::routes)
                     .configure(exchange::routes)
@@ -291,5 +294,6 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
     );
     cfg.configure(custom_song::web_routes);
     cfg.configure(custom_card::web_routes);
+    cfg.configure(custom_3dmv::web_routes);
     cfg.configure(web::routes);
 }

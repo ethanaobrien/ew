@@ -152,6 +152,18 @@ pub fn hidden_live_ids_for_user(uid: i64) -> JsonValue {
     database::non_public_music_ids_for(uid)
 }
 
+// Whether `uid` may attach cross-feature content (a custom 3D MV) to this
+// song: it must exist, and be theirs or publicly visible. Mirrors
+// custom_card::validate_character_ref
+pub fn can_reference_song(uid: i64, music_id: i64) -> Result<(), String> {
+    if !disabled()
+        && database::get_song_owner(music_id).is_some()
+        && (database::get_song_owner(music_id) == Some(uid) || database::song_publicly_visible(music_id)) {
+        return Ok(());
+    }
+    Err(format!("Unknown music_id '{}'", music_id))
+}
+
 fn song_path(music_id: i64, file: &str) -> String {
     get_data_path(&format!("custom_songs/{}/{}", music_id, file))
 }
@@ -1135,6 +1147,8 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
     // Global clear-rate stats for the dead live id (per-user score records are
     // wiped lazily on each user's next userdata pull)
     crate::router::clear_rate::purge_live(music_id);
+    // A custom 3D MV can't outlive the song it plays over
+    crate::router::custom_3dmv::purge_song(music_id);
 
     let _ = fs::remove_dir_all(get_data_path(&format!("custom_songs/{}", music_id)));
     // Audio is content-addressed and may be shared with another upload

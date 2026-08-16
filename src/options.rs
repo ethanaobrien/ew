@@ -44,6 +44,9 @@ pub struct Args {
     #[arg(long, default_value_t = false, help = "Enable the custom cards feature (upload/manage runtime cards and characters). Disabled by default; every custom-cards endpoint and webui element is hidden unless this is set")]
     pub enable_custom_cards: bool,
 
+    #[arg(long, default_value_t = false, help = "Enable the custom 3D MV feature (upload/manage MMD model+motion MVs for custom songs). Disabled by default; every custom-3dmv endpoint and webui element is hidden unless this is set")]
+    pub enable_custom_3dmv: bool,
+
     #[arg(long, value_delimiter = ',', help = "User id(s) of the server owner(s), repeatable or comma separated. Owner accounts implicitly hold every permission scope and are the only ones able to grant scopes on a fresh install")]
     pub owner: Vec<i64>,
 
