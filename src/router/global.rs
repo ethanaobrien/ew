@@ -46,7 +46,7 @@ static ASSET_VERSIONS: &[AssetVersion] = &[
     AssetVersion { region: "JP", platform: "iOS",     version: "7d9c2e5efa794a048c11bcaf781ace79", hash: "65bb39a0030620d9720edb5e65d31ac3", latest: false },
 
     // Re-written client versions 2.5.0 -
-    AssetVersion { region: "JP", platform: "Windows", version: "01a71b00f63e4dba92117ac7e60070a6", hash: "b8d0e7edcb63f5bdd28817a597772ca6  ", latest: true },
+    AssetVersion { region: "JP", platform: "Windows", version: "01a71b00f63e4dba92117ac7e60070a6", hash: "b8d0e7edcb63f5bdd28817a597772ca6", latest: true },
     AssetVersion { region: "JP", platform: "Android", version: "01a71b00f63e4dba92117ac7e60070a6", hash: "d12cecc5695da7f81f8873a3ff93752e", latest: true },
     AssetVersion { region: "JP", platform: "iOS",     version: "01a71b00f63e4dba92117ac7e60070a6", hash: "7c1f61ee68ac84c82dd397a162629142", latest: true },
 
