@@ -40,10 +40,15 @@ static ASSET_VERSIONS: &[AssetVersion] = &[
     AssetVersion { region: "JP", platform: "Android", version: "1b2fe99a639b4ca491afe1a841f19d56", hash: "ed8f4b8df9d3935d689e1236a6816b2b", latest: false },
     AssetVersion { region: "JP", platform: "iOS",     version: "1b2fe99a639b4ca491afe1a841f19d56", hash: "407a8fd81cc5f525ad12c957dbefccb2", latest: false },
 
-    // Re-written client versions 2.4.0 -
-    AssetVersion { region: "JP", platform: "Windows", version: "7d9c2e5efa794a048c11bcaf781ace79", hash: "d1b4db937c1af8364d38f08296cbcfae", latest: true },
-    AssetVersion { region: "JP", platform: "Android", version: "7d9c2e5efa794a048c11bcaf781ace79", hash: "8fcb61a08e69d854438c4f318d38cabd", latest: true },
-    AssetVersion { region: "JP", platform: "iOS",     version: "7d9c2e5efa794a048c11bcaf781ace79", hash: "65bb39a0030620d9720edb5e65d31ac3", latest: true },
+    // Re-written client versions 2.4.0 - 2.4.2
+    AssetVersion { region: "JP", platform: "Windows", version: "7d9c2e5efa794a048c11bcaf781ace79", hash: "d1b4db937c1af8364d38f08296cbcfae", latest: false },
+    AssetVersion { region: "JP", platform: "Android", version: "7d9c2e5efa794a048c11bcaf781ace79", hash: "8fcb61a08e69d854438c4f318d38cabd", latest: false },
+    AssetVersion { region: "JP", platform: "iOS",     version: "7d9c2e5efa794a048c11bcaf781ace79", hash: "65bb39a0030620d9720edb5e65d31ac3", latest: false },
+
+    // Re-written client versions 2.5.0 -
+    AssetVersion { region: "JP", platform: "Windows", version: "01a71b00f63e4dba92117ac7e60070a6", hash: "b8d0e7edcb63f5bdd28817a597772ca6  ", latest: true },
+    AssetVersion { region: "JP", platform: "Android", version: "01a71b00f63e4dba92117ac7e60070a6", hash: "d12cecc5695da7f81f8873a3ff93752e", latest: true },
+    AssetVersion { region: "JP", platform: "iOS",     version: "01a71b00f63e4dba92117ac7e60070a6", hash: "7c1f61ee68ac84c82dd397a162629142", latest: true },
 
     //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df", latest: true },
 ];
