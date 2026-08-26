@@ -1,4 +1,5 @@
 pub mod user;
+pub mod starter;
 
 use rusqlite::params;
 use lazy_static::lazy_static;
@@ -787,6 +788,37 @@ pub fn export_user(token: &str) -> Option<JsonValue> {
     })
 }
 
+// Every row an account owns, gone. Factored out of purge_accounts so the arcade
+// sweeper (a machine that aged out takes its two accounts with it) and the
+// card-rebind orphan cleanup delete exactly the same set of rows - an account
+// half-deleted here is one the login path would resurrect empty.
+//
+// This list is also what the arcade guest reset mirrors: starter::write_starter_rows
+// rewrites the eleven data rows, re-draws the token and deletes the rest, so a
+// row added here has to be accounted for there too or a guest starts carrying
+// the previous player's state across a credit.
+pub const ACCOUNT_TABLES: &[&str] = &[
+    "userdata", "userhome", "missions", "loginbonus", "sifcards", "friends",
+    "chats", "exchange", "event", "eventloginbonus", "server_data", "webui",
+    "tokens", "migration"
+];
+
+pub fn delete_account(user_id: i64) {
+    crate::database::gree::delete_uuid(user_id);
+    for table in ACCOUNT_TABLES {
+        DATABASE.lock_and_exec(&format!("DELETE FROM {} WHERE user_id=?1", table), params!(user_id));
+    }
+}
+
+// True when the account has ever registered a data-transfer password, which is
+// the only way an account can be taken over from another device. The arcade uses
+// it to tell a throwaway account it made itself from a real player's account.
+pub fn has_transfer_password(user_id: i64) -> bool {
+    !DATABASE.lock_and_select("SELECT password FROM migration WHERE user_id=?1", params!(user_id))
+        .unwrap_or_default()
+        .is_empty()
+}
+
 pub fn purge_accounts() -> usize {
     // If the user has no cards, its safe to assume its a dead account (imo). In the (rare) event this function is ran after a user started and before the account has characters, the server should create them a new account, and let them start the tutorial over.
     let dead_uids = DATABASE.lock_and_select_all("
@@ -802,21 +834,7 @@ pub fn purge_accounts() -> usize {
     for uid in dead_uids.members() {
         let user_id = uid.as_i64().unwrap();
         println!("Removing dead UID: {}", user_id);
-        crate::database::gree::delete_uuid(user_id);
-        DATABASE.lock_and_exec("DELETE FROM userdata WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM userhome WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM missions WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM loginbonus WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM sifcards WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM friends WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM chats WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM exchange WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM event WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM eventloginbonus WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM server_data WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM tokens WHERE user_id=?1", params!(user_id));
-        DATABASE.lock_and_exec("DELETE FROM migration WHERE user_id=?1", params!(user_id));
+        delete_account(user_id);
     }
     DATABASE.lock_and_exec("VACUUM", params!());
     crate::database::gree::setup();

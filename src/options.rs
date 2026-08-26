@@ -47,6 +47,15 @@ pub struct Args {
     #[arg(long, default_value_t = false, help = "Enable the custom 3D MV feature (upload/manage MMD model+motion MVs for custom songs). Disabled by default; every custom-3dmv endpoint and webui element is hidden unless this is set")]
     pub enable_custom_3dmv: bool,
 
+    #[arg(long, default_value_t = false, help = "Enable arcade mode (cabinet registration, per-machine guest accounts, LP-free arcade lives). Disabled by default; every /api/arcade endpoint and webui element is hidden unless this is set")]
+    pub enable_arcade: bool,
+
+    #[arg(long, default_value_t = 90, help = "Days an arcade machine may go unseen before --purge deletes it together with its machine and guest accounts")]
+    pub arcade_machine_ttl: u64,
+
+    #[arg(long, default_value_t = 30, help = "Minutes a card-bound account may play LP-free after the cabinet ran /api/arcade/session for its card. Each arcade live restarts the window, up to four windows from the session itself; outside it the account is an ordinary phone account and pays LP")]
+    pub arcade_session_ttl: u64,
+
     #[arg(long, value_delimiter = ',', help = "User id(s) of the server owner(s), repeatable or comma separated. Owner accounts implicitly hold every permission scope and are the only ones able to grant scopes on a fresh install")]
     pub owner: Vec<i64>,
 

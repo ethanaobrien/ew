@@ -62,7 +62,7 @@ fn const_value(id: &str, default: i64) -> i64 {
         .unwrap_or(default)
 }
 
-fn boost_lp(live_boost: i64) -> i64 {
+pub fn boost_lp(live_boost: i64) -> i64 {
     databases::LIVE_BOOST[live_boost.to_string()]["lp"]
         .as_i64()
         .unwrap_or(10 * live_boost)

@@ -3,7 +3,7 @@ use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 use lazy_static::lazy_static;
 
-use crate::router::{databases, global, items, userdata, Login, Session, Api};
+use crate::router::{arcade, databases, global, items, userdata, Login, Session, Api};
 use crate::router::clear_rate::live_completed;
 use crate::router::tools::guest;
 
@@ -25,7 +25,17 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 
 
 async fn retire(Session { key, body }: Session) -> impl Responder {
+    // An arcade song whose life gauge emptied is played out and reported here,
+    // not at /live/end: there is no cleared flag on the end wire and live_end_ex
+    // records a clear unconditionally. So this is the only place the cabinet's
+    // ledger can learn about a failed song, and it has to look before live_retire
+    // sweeps the start record that proves the song was a cabinet's. Nothing about
+    // an ordinary retire changes: an unflagged start answers None here.
+    let arcade_user = arcade::arcade_retire_user(&key, &body);
     live_retire(&key, &body);
+    if let Some(user_id) = arcade_user {
+        arcade::record_play(user_id, &body, false);
+    }
     if body["live_score"]["play_time"].as_i64().unwrap_or(0) > 5 {
         // Body-derived, so defaulted rather than unwrapped: a retire is not worth a
         // panicked worker either (live_completed ignores an unknown id/level).
@@ -345,6 +355,10 @@ pub fn start_live(login_token: &str, body: &JsonValue) {
 }
 
 async fn start(Session { key, body }: Session) -> impl Responder {
+    // A live starting on an arcade cabinet is a sighting for that cabinet: its
+    // last_seen is what the TTL sweeper measures, and a machine in daily use
+    // must never age out from under its own players.
+    arcade::live_started(&key, &body);
     start_live(&key, &body);
     Api(Some(array![]))
 }
@@ -840,6 +854,18 @@ pub fn live_end_ex(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool
 }
 
 async fn end(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
+    // "arcade": true - a credit in the cabinet already paid for this play, so LP
+    // is neither read nor decremented. The seam is the one /multi_live/end uses
+    // (live_end_ex's consume_lp), with use_lp injected as one normal 1x play, so
+    // every reward, the EXP, the bonds, the high score and the clear all record
+    // exactly as they do for a phone player. The flag is only honoured for an
+    // account that really belongs to a cabinet - see arcade::arcade_play_user.
+    if let Some(user_id) = arcade::arcade_play_user(&key, &body) {
+        let body = arcade::live_end_body(&body);
+        let rv = live_end_ex(&req, &key, &body, false, false, true);
+        arcade::record_play(user_id, &body, true);
+        return Api(Some(rv));
+    }
     Api(Some(live_end(&req, &key, &body, false)))
 }
 

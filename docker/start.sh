@@ -16,6 +16,7 @@ args=(
 [ "${ENABLE_CUSTOM_SONGS:-}" = "true" ] && args+=(--enable-custom-songs)
 [ "${ENABLE_CUSTOM_CARDS:-}" = "true" ] && args+=(--enable-custom-cards)
 [ "${ENABLE_CUSTOM_3DMV:-}" = "true" ] && args+=(--enable-custom-3dmv)
+[ "${ENABLE_ARCADE:-}" = "true" ]    && args+=(--enable-arcade)
 
 add_opt() {
   local value="$1" flag="$2"
@@ -34,6 +35,12 @@ add_opt "${WINDOWS_ASSET_HASH:-}"    --windows-asset-hash
 
 # Server owner uid(s) for the permission system (comma-separated)
 add_opt "${OWNER:-}" --owner
+
+# Days an unseen arcade machine survives --purge
+add_opt "${ARCADE_MACHINE_TTL:-}" --arcade-machine-ttl
+
+# Minutes a card's credit buys LP-free play for after /api/arcade/session
+add_opt "${ARCADE_SESSION_TTL:-}" --arcade-session-ttl
 
 # Asset / image paths.
 add_opt "${IMAGE_ASSET_PATH:-}" --image-asset-path

@@ -1,4 +1,5 @@
 pub mod start;
+pub mod arcade;
 pub mod global;
 pub mod login;
 pub mod userdata;
@@ -223,6 +224,8 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/cheat" => webui::cheat(req, body),
             "/api/webui/grantPermission" => webui::grant_permission(req, body),
             "/api/webui/revokePermission" => webui::revoke_permission(req, body),
+            "/api/webui/removeArcadeMachine" => webui::remove_arcade_machine(req, body),
+            "/api/webui/bindArcadeCard" => webui::bind_arcade_card(req, body),
             _ => api_req(req, body).await
         }
     } else {
@@ -242,6 +245,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/customCardLimits" => webui::custom_card_limits(req),
             "/api/webui/custom3dmvLimits" => webui::custom_3dmv_limits(req),
             "/api/webui/myScopes" => webui::my_scopes(req),
+            "/api/webui/listArcadeMachines" => webui::list_arcade_machines(req),
             _ => api_req(req, body).await
         }
     }
@@ -261,6 +265,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
                             .route(actix_web::web::get().to(home::gift_get))
                             .route(actix_web::web::post().to(user::gift))
                     )
+                    .configure(arcade::routes)
                     .configure(card::routes)
                     .configure(chat::routes)
                     .configure(custom_song::routes)

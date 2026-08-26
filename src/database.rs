@@ -4,3 +4,4 @@ pub mod custom_card;
 pub mod custom_3dmv;
 pub mod permissions;
 pub mod announcements;
+pub mod arcade;

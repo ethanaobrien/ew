@@ -230,6 +230,7 @@ pub fn server_info(_req: HttpRequest) -> HttpResponse {
             custom_songs: !crate::router::custom_song::disabled(),
             custom_cards: !crate::router::custom_card::disabled(),
             custom_3dmv: !crate::router::custom_3dmv::disabled(),
+            arcade: !crate::router::arcade::disabled(),
             links: {
                 global: args.global_android,
                 japan: args.japan_android,
@@ -483,7 +484,11 @@ pub fn my_scopes(req: HttpRequest) -> HttpResponse {
             can_edit_any_3dmv: permissions::has(uid, permissions::MV_EDIT),
             can_manage_permissions: permissions::has(uid, permissions::PERMISSION_GRANT)
                 || permissions::has(uid, permissions::PERMISSION_REVOKE),
-            can_manage_announcements: permissions::has(uid, permissions::ANNOUNCEMENT_MANAGE)
+            can_manage_announcements: permissions::has(uid, permissions::ANNOUNCEMENT_MANAGE),
+            // Cabinets are server hardware, not user content: there is no
+            // finer-grained arcade scope, so managing them takes the top-level
+            // one that every --owner uid holds implicitly
+            can_manage_arcade: !crate::router::arcade::disabled() && permissions::has(uid, permissions::ALL)
         }
     };
     HttpResponse::Ok()
@@ -555,6 +560,84 @@ pub fn revoke_permission(req: HttpRequest, body: String) -> HttpResponse {
     HttpResponse::Ok()
         .insert_header(ContentType::json())
         .body(jzon::stringify(resp))
+}
+
+// The operator's cabinet list. Owner scope only: a machine row names the two
+// accounts a cabinet owns, and removing one deletes them.
+pub fn list_arcade_machines(req: HttpRequest) -> HttpResponse {
+    if crate::router::arcade::disabled() {
+        return HttpResponse::NotFound().finish();
+    }
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    if !permissions::has(uid, permissions::ALL) {
+        return error("You do not have permission to manage arcade machines");
+    }
+    let resp = object!{
+        result: "OK",
+        data: {
+            machines: crate::router::arcade::webui_machines()
+        }
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+pub fn remove_arcade_machine(req: HttpRequest, body: String) -> HttpResponse {
+    if crate::router::arcade::disabled() {
+        return HttpResponse::NotFound().finish();
+    }
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    if !permissions::has(uid, permissions::ALL) {
+        return error("You do not have permission to manage arcade machines");
+    }
+    let body = jzon::parse(&body).unwrap_or(object!{});
+    if let Err(e) = crate::router::arcade::webui_remove_machine(body["machine_id"].as_str().unwrap_or("")) {
+        return error(&e);
+    }
+    let resp = object!{
+        result: "OK"
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+// The account page's "bind arcade card" form. The cabinet's own endpoint speaks
+// the encrypted game protocol behind the asset gate, which a browser cannot, so
+// this is the browser's door onto the same rule - arcade::bind_card, not a copy
+// of it. A webui session is required on top of the transfer code and password:
+// the page is behind login anyway, and the extra proof costs nothing.
+pub fn bind_arcade_card(req: HttpRequest, body: String) -> HttpResponse {
+    if crate::router::arcade::disabled() {
+        return HttpResponse::NotFound().finish();
+    }
+    if session_uid(&req).is_none() {
+        return error("Not logged in");
+    }
+    let body = jzon::parse(&body).unwrap_or(object!{});
+    match crate::router::arcade::bind_card(
+        body["card_id"].as_str().unwrap_or(""),
+        body["migrationCode"].as_str().unwrap_or(""),
+        body["pass"].as_str().unwrap_or("")
+    ) {
+        Ok(user_id) => {
+            let resp = object!{
+                result: "OK",
+                data: {
+                    user_id: user_id
+                }
+            };
+            HttpResponse::Ok()
+                .insert_header(ContentType::json())
+                .body(jzon::stringify(resp))
+        },
+        Err(reason) => error(&reason)
+    }
 }
 
 pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {

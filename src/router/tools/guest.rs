@@ -119,6 +119,37 @@ fn proxy_card_id(id: i64) -> i64 {
     *rv
 }
 
+// A card row for a slot the account can't actually supply: level 1, unevolved.
+// Only ever handed to viewers, never written back to the account
+fn stand_in_card(master_card_id: i64) -> JsonValue {
+    object!{
+        id: master_card_id,
+        master_card_id: master_card_id,
+        exp: 0,
+        skill_exp: 0,
+        evolve: []
+    }
+}
+
+// The card object for one of the four favourite/guest slots. global::get_card
+// hands back an empty object when the slot is 0 (never set) or names a card the
+// account no longer holds, and an empty object reaches the client as
+// master_card_id 0: Shock.CardData's constructor looks that up in masterdata and
+// dereferences the row, so it throws before the guest cell is ever drawn. Same
+// repair userdata::remove_deleted_custom_cards makes for a dead slot - the
+// account's first card, then the default for an account holding none
+fn slot_card(id: i64, user: &JsonValue) -> JsonValue {
+    let card = global::get_card(id, user);
+    if !card.is_empty() {
+        return card;
+    }
+    let first = &user["card_list"][0];
+    if !first.is_empty() {
+        return first.clone();
+    }
+    stand_in_card(DEFAULT_CARD)
+}
+
 pub fn proxy_user_cards(user: &mut JsonValue, protocol: u32) {
     for key in ["favorite_master_card_id", "guest_smile_master_card_id", "guest_cool_master_card_id", "guest_pure_master_card_id"] {
         let id = user["user"][key].as_i64().unwrap_or(0);
@@ -176,11 +207,25 @@ pub fn get_user(id: i64, friends: &JsonValue, view: UserView, protocol: u32) -> 
 
     let mut rv = object!{
         user: user["user"].clone(),
-        favorite_card: global::get_card(user["user"]["favorite_master_card_id"].as_i64().unwrap_or(0), &user),
-        guest_smile_card: global::get_card(user["user"]["guest_smile_master_card_id"].as_i64().unwrap_or(0), &user),
-        guest_cool_card: global::get_card(user["user"]["guest_cool_master_card_id"].as_i64().unwrap_or(0), &user),
-        guest_pure_card: global::get_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user)
+        favorite_card: slot_card(user["user"]["favorite_master_card_id"].as_i64().unwrap_or(0), &user),
+        guest_smile_card: slot_card(user["user"]["guest_smile_master_card_id"].as_i64().unwrap_or(0), &user),
+        guest_cool_card: slot_card(user["user"]["guest_cool_master_card_id"].as_i64().unwrap_or(0), &user),
+        guest_pure_card: slot_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user)
     };
+
+    // The id fields have to name the same card as the objects: surfaces that
+    // resolve the id instead of the object (profile, friend detail) would
+    // otherwise look up the slot this just stood in for. A no-op for an account
+    // whose slots are all set
+    for (key, card) in [
+        ("favorite_master_card_id", "favorite_card"),
+        ("guest_smile_master_card_id", "guest_smile_card"),
+        ("guest_cool_master_card_id", "guest_cool_card"),
+        ("guest_pure_master_card_id", "guest_pure_card")
+    ] {
+        let id = rv[card]["master_card_id"].clone();
+        rv["user"][key] = id;
+    }
 
     if let UserView::Detail | UserView::Ranking = view {
         rv["main_deck_detail"] = object!{
@@ -235,6 +280,33 @@ mod tests {
         for character in db::get_characters_by_owner(owner).members() {
             db::delete_character(character["master_character_id"].as_i64().unwrap());
         }
+    }
+
+    // A slot the account can't supply still hands the viewer a resolvable card:
+    // an empty card object reaches the client as master_card_id 0, and
+    // Shock.CardData throws on an id that isn't in masterdata
+    #[test]
+    fn empty_slots_stand_in_for_a_real_card() {
+        let user = jzon::object!{
+            "user": { "favorite_master_card_id": 0 },
+            "card_list": [
+                { "id": 40030007, "master_card_id": 40030007, "exp": 0, "skill_exp": 0, "evolve": [] },
+                { "id": 10010001, "master_card_id": 10010001, "exp": 0, "skill_exp": 0, "evolve": [] }
+            ]
+        };
+        assert_eq!(slot_card(40030007, &user)["master_card_id"].as_i64(), Some(40030007));
+        // Never set, and a card the account no longer holds, both fall back to
+        // its first card
+        assert_eq!(slot_card(0, &user)["master_card_id"].as_i64(), Some(40030007));
+        assert_eq!(slot_card(20010001, &user)["master_card_id"].as_i64(), Some(40030007));
+
+        // A tutorial-stage account holds nothing at all
+        let empty = jzon::object!{ "user": {}, "card_list": [] };
+        let card = slot_card(0, &empty);
+        assert_eq!(card["master_card_id"].as_i64(), Some(DEFAULT_CARD));
+        assert_eq!(card["id"].as_i64(), Some(DEFAULT_CARD));
+        assert!(card["evolve"].is_array());
+        assert!(!databases::CARD_LIST[DEFAULT_CARD.to_string()].is_empty());
     }
 
     // The imported band proxies to its own character's base card, not to a
