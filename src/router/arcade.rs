@@ -302,34 +302,27 @@ async fn session(Body(body): Body) -> impl Responder {
     }))
 }
 
-// Point a card at an existing (phone) account. The proof is the data-transfer
-// code and its password - the same check /api/user/gglverifymigrationcode makes
-// (user.rs:214-220), through the one function that owns that comparison.
-//
-// Shared by the cabinet's own /api/arcade/bind and the webui account page's
-// form: the browser cannot speak the game protocol (encrypted bodies behind the
-// asset gate), so it gets its own entrance, not its own copy of the rule.
-pub fn bind_card(card: &str, migration_code: &str, pass: &str) -> Result<i64, String> {
+// Point a card at a player account the caller has already identified. This is
+// the rule every entrance shares - the card id is validated, a cabinet's own
+// identities are refused, the mapping is replaced and the throwaway account
+// the card was carrying is cleaned up - and the proof of *whose* account it is
+// belongs to the caller: the cabinet's /api/arcade/bind takes the game's
+// data-transfer code and password (bind_card), the webui account page takes
+// the signed-in session itself, which already proves the account.
+pub fn bind_card_to(card: &str, user_id: i64) -> Result<i64, String> {
     if disabled() {
         return Err(String::from("Arcade mode is disabled on this server"));
     }
     let Some(card) = card_id(&object!{ "card_id": card }) else {
         return Err(String::from("That is not a usable card id"));
     };
-
-    let account = userdata::user::migration::get_acc_transfer(migration_code, pass);
-    if !account["success"].as_bool().unwrap_or(false) || account["user_id"] == 0 {
-        return Err(String::from("Transfer code and password don't match"));
-    }
-    let Some(user_id) = account["user_id"].as_i64() else {
-        return Err(String::from("Transfer code and password don't match"));
-    };
     // A cabinet's own two identities are not player accounts and may never be
     // behind a card. The guest in particular is rewritten for a stranger every
     // credit: a card pointing at it would outlive that reset, and /session hands
-    // out the account's current login token to whoever presents the card. The
-    // proof this bind takes - a transfer code and password - is exactly what a
-    // hostile client can register on a guest during its own credit.
+    // out the account's current login token to whoever presents the card. Every
+    // proof a bind can take - a transfer code and password, a webui login - is
+    // exactly what a hostile client can register on a guest during its own
+    // credit, so the refusal lives here, below all of them.
     if database::machine_of_account(user_id).is_some() {
         return Err(String::from("That account belongs to an arcade cabinet"));
     }
@@ -349,6 +342,27 @@ pub fn bind_card(card: &str, migration_code: &str, pass: &str) -> Result<i64, St
 
     println!("arcade: card {} now plays as account {}", card, user_id);
     Ok(user_id)
+}
+
+// The cabinet's bind: the proof that a phone account is the player's is the
+// game's own data-transfer code and password. On a phone the transfer runs
+// through GREE's native code, and ew's /api/user/gglverifymigrationcode is only
+// the desktop route with GGL off; what both share is the `migration` table -
+// the code and the hashed password - which get_acc_transfer is the one owner
+// of. A cabinet is a Windows build with GGL off, so that pair is its legitimate
+// path, typed in from the game's Data Transfer screen.
+pub fn bind_card(card: &str, migration_code: &str, pass: &str) -> Result<i64, String> {
+    if disabled() {
+        return Err(String::from("Arcade mode is disabled on this server"));
+    }
+    let account = userdata::user::migration::get_acc_transfer(migration_code, pass);
+    if !account["success"].as_bool().unwrap_or(false) || account["user_id"] == 0 {
+        return Err(String::from("Transfer code and password don't match"));
+    }
+    let Some(user_id) = account["user_id"].as_i64() else {
+        return Err(String::from("Transfer code and password don't match"));
+    };
+    bind_card_to(card, user_id)
 }
 
 async fn bind(Body(body): Body) -> impl Responder {
@@ -715,6 +729,51 @@ mod tests {
         assert!(!orphan_of_a_rebound_card(orphan));
 
         crate::database::arcade::delete_machine(&machine_id);
+    }
+
+    // bind_card_to is the rule under both entrances - the cabinet's transfer
+    // proof and the webui's session - so whatever named the account, a cabinet's
+    // own identities are refused, and a provable throwaway goes with its card
+    #[test]
+    fn bind_card_to_refuses_cabinet_identities_and_takes_the_throwaway_with_the_card() {
+        let _lock = crate::runtime::lock_test_data_path();
+        use crate::database::arcade as db;
+
+        let (machine_account, _) = userdata::starter::create("Cabinet Bind").unwrap();
+        let (guest_account, _) = userdata::starter::create(GUEST_NAME).unwrap();
+        let machine_id = db::generate_machine_id();
+        db::insert_machine(&machine_id, "Cabinet Bind", machine_account, guest_account);
+        let (player, _) = userdata::starter::create("Player").unwrap();
+
+        // The id is validated, not repaired
+        assert!(bind_card_to("0123-4567", player).is_err());
+        assert!(db::card_user("0123-4567").is_none());
+
+        // Neither cabinet identity may sit behind a card
+        let card = "4242424242424242";
+        assert!(bind_card_to(card, machine_account).is_err());
+        assert!(bind_card_to(card, guest_account).is_err());
+        assert!(db::card_user(card).is_none());
+
+        // A throwaway the card was carrying leaves with it...
+        let (orphan, _) = userdata::starter::create("2424").unwrap();
+        db::set_card(card, orphan);
+        assert_eq!(bind_card_to(card, player), Ok(player));
+        assert_eq!(db::card_user(card), Some(player));
+        assert!(userdata::get_acc_from_uid(orphan)["error"].as_bool().unwrap_or(false), "the throwaway survived");
+
+        // ...but an account somebody played on stays
+        let (played, played_token) = userdata::starter::create("2425").unwrap();
+        let mut user = userdata::get_acc_from_uid(played);
+        user["live_list"].push(object!{ master_live_id: 1100101, level: 4, clear_count: 1, high_score: 1, max_combo: 1 }).unwrap();
+        userdata::save_acc(&played_token, user);
+        let other = "2525252525252525";
+        db::set_card(other, played);
+        assert_eq!(bind_card_to(other, player), Ok(player));
+        assert_eq!(db::card_user(other), Some(player));
+        assert!(!userdata::get_acc_from_uid(played)["error"].as_bool().unwrap_or(false), "a played-on account followed its card");
+
+        db::delete_machine(&machine_id);
     }
 
     // A cabinet's song that ended with an empty life gauge is reported at

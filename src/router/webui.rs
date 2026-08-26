@@ -607,24 +607,22 @@ pub fn remove_arcade_machine(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-// The account page's "bind arcade card" form. The cabinet's own endpoint speaks
-// the encrypted game protocol behind the asset gate, which a browser cannot, so
-// this is the browser's door onto the same rule - arcade::bind_card, not a copy
-// of it. A webui session is required on top of the transfer code and password:
-// the page is behind login anyway, and the extra proof costs nothing.
+// The account page's "bind arcade card" form: the card id, and nothing else.
+// The webui session already proves whose account this is, so the card is bound
+// to the signed-in account through arcade::bind_card_to - the same rule the
+// cabinet's /api/arcade/bind applies once its own proof, the transfer code and
+// password, has named the account. The cabinet endpoint speaks the encrypted
+// game protocol behind the asset gate, which a browser cannot, so this is the
+// browser's door onto that rule rather than a copy of it.
 pub fn bind_arcade_card(req: HttpRequest, body: String) -> HttpResponse {
     if crate::router::arcade::disabled() {
         return HttpResponse::NotFound().finish();
     }
-    if session_uid(&req).is_none() {
+    let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
-    }
+    };
     let body = jzon::parse(&body).unwrap_or(object!{});
-    match crate::router::arcade::bind_card(
-        body["card_id"].as_str().unwrap_or(""),
-        body["migrationCode"].as_str().unwrap_or(""),
-        body["pass"].as_str().unwrap_or("")
-    ) {
+    match crate::router::arcade::bind_card_to(body["card_id"].as_str().unwrap_or(""), uid) {
         Ok(user_id) => {
             let resp = object!{
                 result: "OK",

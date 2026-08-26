@@ -26,6 +26,7 @@ pub struct HostConfig {
     pub enable_custom_songs: bool,
     pub enable_custom_cards: bool,
     pub enable_custom_3dmv: bool,
+    pub enable_arcade: bool,
 }
 
 // Lets an embedding app (or the tests) enable the opt-in custom songs feature
@@ -40,6 +41,10 @@ pub fn set_enable_custom_cards(enabled: bool) {
 
 pub fn set_enable_custom_3dmv(enabled: bool) {
     HOST_CONFIG.write().unwrap().enable_custom_3dmv = enabled;
+}
+
+pub fn set_enable_arcade(enabled: bool) {
+    HOST_CONFIG.write().unwrap().enable_arcade = enabled;
 }
 
 // The --owner uids: the permission system's bootstrap grantors. Process-level
@@ -178,6 +183,9 @@ pub fn overlay_args(args: &mut crate::options::Args) {
     if cfg.enable_custom_3dmv {
         args.enable_custom_3dmv = true;
     }
+    if cfg.enable_arcade {
+        args.enable_arcade = true;
+    }
 }
 
 // idk why an ai put tests here but they are here now. Yay tests????
@@ -201,5 +209,6 @@ pub fn lock_test_data_path() -> std::sync::MutexGuard<'static, ()> {
     set_enable_custom_songs(true);
     set_enable_custom_cards(true);
     set_enable_custom_3dmv(true);
+    set_enable_arcade(true);
     guard
 }
