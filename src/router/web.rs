@@ -57,13 +57,21 @@ fn query_i64(req: &HttpRequest, key: &str, def: i64) -> i64 {
 
 fn player_key(req: &HttpRequest) -> Option<String> {
     let key = global::get_login(req.headers(), "");
+    if !key.is_empty() {
+        return Some(key);
+    }
+    let uid = global::get_uid(req.headers());
+    if uid == 0 {
+        return None;
+    }
+    let key = userdata::get_login_token(uid);
     if key.is_empty() { None } else { Some(key) }
 }
 
 fn read_set(req: &HttpRequest) -> HashSet<i64> {
     match player_key(req) {
-    Some(key) => { println!("Player has key"); userdata::get_acc_home(&key)["home"]["read_announcement_ids"].members().filter_map(|v| v.as_i64()).collect()},
-        None => { println!("No player key"); HashSet::new() }
+        Some(key) => userdata::get_acc_home(&key)["home"]["read_announcement_ids"].members().filter_map(|v| v.as_i64()).collect(),
+        None => HashSet::new()
     }
 }
 
