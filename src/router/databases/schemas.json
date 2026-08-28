@@ -5676,8 +5676,16 @@
           "type": "uint"
         },
         {
-          "name": "_prefabName",
+          "name": "_imageName",
           "type": "string"
+        },
+        {
+          "name": "_logoX",
+          "type": "float"
+        },
+        {
+          "name": "_logoY",
+          "type": "float"
         },
         {
           "name": "_masterBgmId",
