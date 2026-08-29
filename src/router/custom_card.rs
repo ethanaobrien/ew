@@ -1545,6 +1545,9 @@ pub fn delete_character(uid: i64, master_character_id: i64) -> Result<(), String
 // serving a dangling master_character_id, which the client throws on. Those stay,
 // ownerless, which is the same trade delete_character already makes
 pub fn purge_owner(uid: i64) {
+    if uid <= 0 {
+        return;
+    }
     if disabled() {
         return;
     }

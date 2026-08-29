@@ -243,6 +243,12 @@ pub fn sweep_audio() {
         }
     }
 
+    // Nothing referenced means the catalog is empty (or gone): a sweep would then delete
+    // every ogg on disk, so it is skipped until the catalog has rows again
+    if referenced.is_empty() {
+        println!("Custom song audio sweep: catalog empty, skipped");
+        return;
+    }
     // No directory means nothing was ever uploaded
     let Ok(entries) = fs::read_dir(get_data_path("custom_songs/audio")) else {
         return;
@@ -1334,6 +1340,9 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
 // the owner's own delete does, including the cross-feature MV cascade and the
 // content-addressed audio GC
 pub fn purge_owner(uid: i64) {
+    if uid <= 0 {
+        return;
+    }
     if disabled() {
         return;
     }
@@ -2722,6 +2731,123 @@ mod tests {
         assert!(crate::database::custom_3dmv::get_mv(mv_id).is_none(), "the MV survived the purge");
         assert!(crate::database::custom_card::get_card(card_id).is_none(), "the card survived the purge");
         assert!(crate::database::custom_card::get_character(character_id).is_none(), "the character survived the purge");
+    }
+
+    // A purge is scoped to ONE owner: nothing another account uploaded, nor an
+    // ogg two accounts share, may go with it - and a degenerate uid, a broken
+    // catalog or a disabled feature is a no-op, never a wildcard
+    #[test]
+    fn purging_one_account_leaves_other_accounts_uploads_alone() {
+        let _lock = crate::runtime::lock_test_data_path();
+        use crate::database::custom_card as card_db;
+        use crate::database::custom_3dmv as mv_db;
+
+        let victim = userdata::get_acc("custom-content-purge-victim")["user"]["id"].as_i64().unwrap();
+        let bystander = userdata::get_acc("custom-content-purge-bystander")["user"]["id"].as_i64().unwrap();
+        assert_ne!(victim, bystander);
+        for uid in [victim, bystander] {
+            purge_owner(uid);
+            crate::router::custom_card::purge_owner(uid);
+            crate::router::custom_3dmv::purge_owner(uid);
+        }
+
+        // One song each, plus one song each with byte-identical audio so the two
+        // owners share a single content-addressed ogg
+        let v_song = create_song(victim, &song_fields("Purge Victim", 401.0)).unwrap();
+        let b_song = create_song(bystander, &song_fields("Purge Bystander", 409.0)).unwrap();
+        let v_shared = create_song(victim, &song_fields("Purge Victim Shared", 419.0)).unwrap();
+        let b_shared = create_song(bystander, &song_fields("Purge Bystander Shared", 419.0)).unwrap();
+        let b_play = database::get_song(b_song).unwrap()["sound"]["play"]["md5"].to_string();
+        let shared_play = database::get_song(b_shared).unwrap()["sound"]["play"]["md5"].to_string();
+        assert_eq!(database::get_song(v_shared).unwrap()["sound"]["play"]["md5"].to_string(), shared_play);
+
+        // Cards and characters criss-crossed between the two owners
+        let b_char = card_db::next_character_id();
+        card_db::insert_character(b_char, bystander, &object!{ "master_character_id": b_char, "name": "B" }).unwrap();
+        let b_card = card_db::next_card_id();
+        card_db::insert_card(b_card, b_char, bystander, &object!{ "master_card_id": b_card, "rarity": 1 }, true, true).unwrap();
+        let v_card_on_b_char = card_db::next_card_id();
+        card_db::insert_card(v_card_on_b_char, b_char, victim, &object!{ "master_card_id": v_card_on_b_char, "rarity": 1 }, true, true).unwrap();
+        let v_char = card_db::next_character_id();
+        card_db::insert_character(v_char, victim, &object!{ "master_character_id": v_char, "name": "V" }).unwrap();
+        let b_card_on_v_char = card_db::next_card_id();
+        card_db::insert_card(b_card_on_v_char, v_char, bystander, &object!{ "master_card_id": b_card_on_v_char, "rarity": 1 }, true, true).unwrap();
+        let b_mv = mv_db::next_mv_id();
+        mv_db::insert_mv(b_mv, b_song, bystander, &object!{ "mv_id": b_mv, "music_id": b_song, "files": [] }, true).unwrap();
+
+        userdata::delete_account(victim);
+
+        assert!(database::get_song(v_song).is_none(), "the victim's song survived");
+        assert!(database::get_song(v_shared).is_none(), "the victim's shared-audio song survived");
+        assert!(card_db::get_card(v_card_on_b_char).is_none(), "the victim's card survived");
+
+        assert!(database::get_song(b_song).is_some(), "the bystander's song was deleted");
+        assert!(database::get_song(b_shared).is_some(), "the bystander's shared-audio song was deleted");
+        assert!(fs::metadata(get_data_path(&format!("custom_songs/{}", b_song))).is_ok(), "the bystander's song directory was deleted");
+        assert!(fs::read(audio_file_path(&b_play)).is_ok(), "the bystander's ogg was unlinked");
+        assert!(fs::read(audio_file_path(&shared_play)).is_ok(), "the cross-owner shared ogg was unlinked");
+        assert!(card_db::get_card(b_card).is_some(), "the bystander's card was deleted");
+        assert!(card_db::get_character(b_char).is_some(), "the bystander's character was deleted");
+        assert!(card_db::get_card(b_card_on_v_char).is_some(), "the bystander's card on the victim's character was deleted");
+        assert!(card_db::get_character(v_char).is_some(), "a character another account's card still uses was deleted");
+        assert!(mv_db::get_mv(b_mv).is_some(), "the bystander's MV was deleted");
+
+        purge_owner(0);
+        crate::router::custom_card::purge_owner(0);
+        crate::router::custom_3dmv::purge_owner(0);
+        purge_owner(-1);
+        userdata::delete_account(0);
+        with_songs_table_broken(|| purge_owner(bystander));
+        crate::runtime::set_enable_custom_songs(false);
+        crate::runtime::set_enable_custom_cards(false);
+        crate::runtime::set_enable_custom_3dmv(false);
+        purge_owner(bystander);
+        crate::router::custom_card::purge_owner(bystander);
+        crate::router::custom_3dmv::purge_owner(bystander);
+        crate::runtime::set_enable_custom_songs(true);
+        crate::runtime::set_enable_custom_cards(true);
+        crate::runtime::set_enable_custom_3dmv(true);
+        assert!(database::get_song(b_song).is_some(), "a degenerate, broken-catalog or feature-off purge deleted a song");
+        assert!(fs::read(audio_file_path(&b_play)).is_ok(), "a degenerate, broken-catalog or feature-off purge unlinked a live ogg");
+        assert!(card_db::get_card(b_card).is_some(), "a degenerate or feature-off purge deleted a card");
+        assert!(card_db::get_character(b_char).is_some(), "a degenerate or feature-off purge deleted a character");
+        assert!(mv_db::get_mv(b_mv).is_some(), "a degenerate or feature-off purge deleted an MV");
+
+        // Leave nothing behind: other tests assume an empty obtainable-card pool
+        purge_owner(bystander);
+        crate::router::custom_card::purge_owner(bystander);
+        crate::router::custom_3dmv::purge_owner(bystander);
+    }
+
+    // The pruning get_acc runs on every login must read an unreadable or blank
+    // catalog as "unknown", never as "every custom song is dead", and the startup
+    // sweep must never unlink files when the catalog references nothing
+    #[test]
+    fn an_unreadable_or_blank_catalog_never_prunes_or_sweeps() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let uid = userdata::get_acc("custom-content-blank-catalog")["user"]["id"].as_i64().unwrap();
+        purge_owner(uid);
+        let music_id = create_song(uid, &song_fields("Blank Catalog", 383.0)).unwrap();
+        let play = database::get_song(music_id).unwrap()["sound"]["play"]["md5"].to_string();
+        let live_ogg = audio_file_path(&play);
+
+        let unreadable = with_songs_table_broken(|| database::dead_music_ids(&array![music_id]));
+        assert!(unreadable.is_none(), "an unreadable catalog reported dead songs");
+        with_songs_table_broken(|| sweep_audio());
+        assert!(fs::read(&live_ogg).is_ok(), "a sweep over an unreadable catalog unlinked a live ogg");
+
+        let conn = rusqlite::Connection::open(database::test_db_path()).unwrap();
+        conn.execute("ALTER TABLE songs RENAME TO songs_parked", ()).unwrap();
+        conn.execute("CREATE TABLE songs (music_id BIGINT NOT NULL PRIMARY KEY, owner_id BIGINT NOT NULL, song TEXT NOT NULL, visibility TEXT NOT NULL DEFAULT 'public', downloads_disabled INT NOT NULL DEFAULT 0)", ()).unwrap();
+        let blank = database::dead_music_ids(&array![music_id]);
+        sweep_audio();
+        let survived = fs::read(&live_ogg).is_ok();
+        conn.execute("DROP TABLE songs", ()).unwrap();
+        conn.execute("ALTER TABLE songs_parked RENAME TO songs", ()).unwrap();
+        assert!(blank.is_none(), "a blank catalog reported every song dead");
+        assert!(survived, "a sweep over a blank catalog unlinked a live ogg");
+        assert_eq!(database::dead_music_ids(&array![music_id]).unwrap().len(), 0);
+        purge_owner(uid);
     }
 
 

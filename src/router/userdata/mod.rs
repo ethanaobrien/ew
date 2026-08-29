@@ -268,7 +268,9 @@ fn remove_deleted_custom_songs(user: &mut JsonValue) -> bool {
     if candidates.is_empty() {
         return false;
     }
-    let dead = custom_song::dead_music_ids(&candidates);
+    let Some(dead) = custom_song::dead_music_ids(&candidates) else {
+        return false;
+    };
     if dead.is_empty() {
         return false;
     }
@@ -301,7 +303,9 @@ fn remove_deleted_custom_cards(user: &mut JsonValue) -> bool {
     if candidates.is_empty() {
         return false;
     }
-    let dead = custom_card::dead_card_ids(&candidates);
+    let Some(dead) = custom_card::dead_card_ids(&candidates) else {
+        return false;
+    };
     if dead.is_empty() {
         return false;
     }

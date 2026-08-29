@@ -86,6 +86,12 @@ pub struct Args {
     #[arg(long, default_value = "", help = "Asset hash for windows client.")]
     pub windows_asset_hash: String,
 
+    #[arg(long, default_value = "", help = "Asset hash for linux client.")]
+    pub linux_asset_hash: String,
+
+    #[arg(long, default_value = "", help = "Asset hash for macOS client.")]
+    pub mac_asset_hash: String,
+
     #[arg(long, default_value = "", help = "Path to image assets.")]
     pub image_asset_path: String,
 

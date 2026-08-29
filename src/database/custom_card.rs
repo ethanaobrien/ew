@@ -350,7 +350,10 @@ pub fn get_browse_cards() -> JsonValue {
 // considered, and ids are never reused, so official (or imported) cards can't
 // come back from this and a wipe is final. A card that's merely unpublished
 // still has its row - only genuinely deleted ids are returned
-pub fn dead_card_ids(candidates: &JsonValue) -> JsonValue {
+// None = the catalog could not be read (or is entirely empty while players still hold
+// custom ids): the caller must prune NOTHING then. An unreadable catalog looks exactly
+// like one where every id is dead, and get_acc saves the pruned userdata.
+pub fn dead_card_ids(candidates: &JsonValue) -> Option<JsonValue> {
     let mut ids: Vec<i64> = Vec::new();
     for id in candidates.members() {
         let Some(id) = id.as_i64() else { continue; };
@@ -359,17 +362,23 @@ pub fn dead_card_ids(candidates: &JsonValue) -> JsonValue {
         }
     }
     if ids.is_empty() {
-        return array![];
+        return Some(array![]);
     }
     let list = ids.iter().map(|id| id.to_string()).collect::<Vec<_>>().join(",");
-    let alive = DATABASE.lock_and_select_all(&format!("SELECT master_card_id FROM cards WHERE master_card_id IN ({})", list), params!()).unwrap_or(array![]);
+    let alive = DATABASE.lock_and_select_all(&format!("SELECT master_card_id FROM cards WHERE master_card_id IN ({})", list), params!()).ok()?;
+    if alive.is_empty() {
+        let total: i64 = DATABASE.lock_and_select_type("SELECT COUNT(*) FROM cards", params!()).ok()?;
+        if total == 0 {
+            return None;
+        }
+    }
     let mut rv = array![];
     for id in ids {
         if !alive.contains(id) {
             rv.push(id).unwrap();
         }
     }
-    rv
+    Some(rv)
 }
 
 // The published + obtainable pool the custom gacha banner draws from, per
@@ -596,10 +605,33 @@ mod tests {
         insert_card(dead, 1001, 3008, &card_blob(dead, 1), true, false).unwrap();
         delete_card(dead);
 
-        let dead_ids = dead_card_ids(&array![alive, dead, 10010001, 100010001, dead]);
+        let dead_ids = dead_card_ids(&array![alive, dead, 10010001, 100010001, dead]).unwrap();
         assert_eq!(dead_ids.len(), 1);
         assert_eq!(dead_ids[0].as_i64(), Some(dead));
 
         wipe(3008);
+    }
+
+    // An unreadable or blank catalog must never read as "every custom card is
+    // dead": get_acc prunes on that answer and saves the pruned userdata
+    #[test]
+    fn dead_ids_are_unknown_when_the_catalog_cannot_be_read() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(3009);
+        let alive = next_card_id();
+        insert_card(alive, 1001, 3009, &card_blob(alive, 1), false, false).unwrap();
+
+        let conn = rusqlite::Connection::open(DATABASE.get_path()).unwrap();
+        conn.execute("ALTER TABLE cards RENAME TO cards_hidden", ()).unwrap();
+        let unreadable = dead_card_ids(&array![alive]);
+        conn.execute("CREATE TABLE cards (master_card_id BIGINT NOT NULL PRIMARY KEY, master_character_id BIGINT NOT NULL, owner_id BIGINT NOT NULL, card TEXT NOT NULL, rarity INT NOT NULL DEFAULT 1, published INT NOT NULL DEFAULT 0, obtainable INT NOT NULL DEFAULT 0)", ()).unwrap();
+        let blank = dead_card_ids(&array![alive]);
+        conn.execute("DROP TABLE cards", ()).unwrap();
+        conn.execute("ALTER TABLE cards_hidden RENAME TO cards", ()).unwrap();
+
+        assert!(unreadable.is_none(), "an unreadable catalog reported dead cards");
+        assert!(blank.is_none(), "a blank catalog reported every card dead");
+        assert_eq!(dead_card_ids(&array![alive]).unwrap().len(), 0);
+        wipe(3009);
     }
 }

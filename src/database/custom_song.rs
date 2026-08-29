@@ -365,7 +365,10 @@ pub fn non_public_music_ids_for(user_id: i64) -> JsonValue {
 // range is ever considered, so official songs can't come back from this. A song
 // that's merely private/shared still has its row - only genuinely deleted ids
 // (which are never reused) are returned
-pub fn dead_music_ids(candidates: &JsonValue) -> JsonValue {
+// None = the catalog could not be read (or is entirely empty while players still hold
+// custom ids): the caller must prune NOTHING then. An unreadable catalog looks exactly
+// like one where every id is dead, and get_acc saves the pruned userdata.
+pub fn dead_music_ids(candidates: &JsonValue) -> Option<JsonValue> {
     let mut ids: Vec<i64> = Vec::new();
     for id in candidates.members() {
         let Some(id) = id.as_i64() else { continue; };
@@ -374,17 +377,23 @@ pub fn dead_music_ids(candidates: &JsonValue) -> JsonValue {
         }
     }
     if ids.is_empty() {
-        return array![];
+        return Some(array![]);
     }
     let list = ids.iter().map(|id| id.to_string()).collect::<Vec<_>>().join(",");
-    let alive = DATABASE.lock_and_select_all(&format!("SELECT music_id FROM songs WHERE music_id IN ({})", list), params!()).unwrap_or(array![]);
+    let alive = DATABASE.lock_and_select_all(&format!("SELECT music_id FROM songs WHERE music_id IN ({})", list), params!()).ok()?;
+    if alive.is_empty() {
+        let total: i64 = DATABASE.lock_and_select_type("SELECT COUNT(*) FROM songs", params!()).ok()?;
+        if total == 0 {
+            return None;
+        }
+    }
     let mut rv = array![];
     for id in ids {
         if !alive.contains(id) {
             rv.push(id).unwrap();
         }
     }
-    rv
+    Some(rv)
 }
 
 // Every stored catalog blob, unparsed and unfiltered by visibility. Only the

@@ -660,6 +660,9 @@ pub fn purge_song(music_id: i64) {
 // exists (browse renders an uploader name for every row). Same steps as the
 // owner's own delete, blob GC included
 pub fn purge_owner(uid: i64) {
+    if uid <= 0 {
+        return;
+    }
     if disabled() {
         return;
     }
@@ -715,6 +718,12 @@ pub fn sweep_blobs() {
         }
     }
 
+    // Nothing referenced means the catalog is empty (or gone): a sweep would then delete
+    // every blob on disk, so it is skipped until the catalog has rows again
+    if referenced.is_empty() {
+        println!("Custom 3DMV blob sweep: catalog empty, skipped");
+        return;
+    }
     // No directory means nothing was ever uploaded
     let Ok(entries) = fs::read_dir(get_data_path("custom_3dmv/blobs")) else {
         return;
