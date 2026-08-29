@@ -71,8 +71,6 @@ pub enum UserView {
 const DEFAULT_CARD: i64 = 10010001;
 
 lazy_static! {
-    // Each character's lowest official card id: the stand-in shown to viewers
-    // who can't resolve a custom card of that character
     static ref OFFICIAL_CARD_BY_CHARACTER: HashMap<i64, i64> = {
         let mut rv: HashMap<i64, i64> = HashMap::new();
         for entry in databases::CARD_LIST.entries() {
@@ -90,8 +88,6 @@ lazy_static! {
     };
 }
 
-// The character behind any card id: baked masterdata first, then the runtime
-// custom-card db, then the imported band's id arithmetic (prefix - 9000)
 fn card_character(id: i64) -> Option<i64> {
     let card = &databases::CARD_LIST[id.to_string()];
     if !card.is_empty() {
@@ -103,9 +99,6 @@ fn card_character(id: i64) -> Option<i64> {
     Some(id / 10000 - 9000)
 }
 
-// A custom card the viewer can't resolve shows as its character's base
-// official card - the right face, never a crash. Characters with no official
-// card (custom ones included) fall back to the default
 fn proxy_card_id(id: i64) -> i64 {
     if !card::is_custom(id) {
         return id;
@@ -119,8 +112,6 @@ fn proxy_card_id(id: i64) -> i64 {
     *rv
 }
 
-// A card row for a slot the account can't actually supply: level 1, unevolved.
-// Only ever handed to viewers, never written back to the account
 fn stand_in_card(master_card_id: i64) -> JsonValue {
     object!{
         id: master_card_id,
@@ -131,13 +122,6 @@ fn stand_in_card(master_card_id: i64) -> JsonValue {
     }
 }
 
-// The card object for one of the four favourite/guest slots. global::get_card
-// hands back an empty object when the slot is 0 (never set) or names a card the
-// account no longer holds, and an empty object reaches the client as
-// master_card_id 0: Shock.CardData's constructor looks that up in masterdata and
-// dereferences the row, so it throws before the guest cell is ever drawn. Same
-// repair userdata::remove_deleted_custom_cards makes for a dead slot - the
-// account's first card, then the default for an account holding none
 fn slot_card(id: i64, user: &JsonValue) -> JsonValue {
     let card = global::get_card(id, user);
     if !card.is_empty() {
@@ -213,10 +197,6 @@ pub fn get_user(id: i64, friends: &JsonValue, view: UserView, protocol: u32) -> 
         guest_pure_card: slot_card(user["user"]["guest_pure_master_card_id"].as_i64().unwrap_or(0), &user)
     };
 
-    // The id fields have to name the same card as the objects: surfaces that
-    // resolve the id instead of the object (profile, friend detail) would
-    // otherwise look up the slot this just stood in for. A no-op for an account
-    // whose slots are all set
     for (key, card) in [
         ("favorite_master_card_id", "favorite_card"),
         ("guest_smile_master_card_id", "guest_smile_card"),
@@ -267,6 +247,9 @@ pub fn get_user(id: i64, friends: &JsonValue, view: UserView, protocol: u32) -> 
 
     rv
 }
+
+
+// here are some tests that ai wrote...
 
 #[cfg(test)]
 mod tests {
@@ -326,11 +309,11 @@ mod tests {
 
         // A runtime card on an official character proxies to that character
         let id = db::next_card_id();
-        db::insert_card(id, 2003, 5101, &jzon::object!{ "master_card_id": id, "rarity": 1 }, true, false);
+        db::insert_card(id, 2003, 5101, &jzon::object!{ "master_card_id": id, "rarity": 1 }, true, false).unwrap();
         assert_eq!(proxy_card_id(id), 20030001);
         // On a custom character (no official card) it falls to the default
         let orphan = db::next_card_id();
-        db::insert_card(orphan, db::FIRST_CHARACTER_ID, 5101, &jzon::object!{ "master_card_id": orphan, "rarity": 1 }, true, false);
+        db::insert_card(orphan, db::FIRST_CHARACTER_ID, 5101, &jzon::object!{ "master_card_id": orphan, "rarity": 1 }, true, false).unwrap();
         assert_eq!(proxy_card_id(orphan), DEFAULT_CARD);
         // A deleted/unknown runtime id can't resolve a character either
         let unknown = db::next_card_id() + 5000;
@@ -353,9 +336,9 @@ mod tests {
         wipe(5102);
 
         let published = db::next_card_id();
-        db::insert_card(published, 2003, 5102, &jzon::object!{ "master_card_id": published, "rarity": 1 }, true, false);
+        db::insert_card(published, 2003, 5102, &jzon::object!{ "master_card_id": published, "rarity": 1 }, true, false).unwrap();
         let draft = db::next_card_id();
-        db::insert_card(draft, 2003, 5102, &jzon::object!{ "master_card_id": draft, "rarity": 1 }, false, false);
+        db::insert_card(draft, 2003, 5102, &jzon::object!{ "master_card_id": draft, "rarity": 1 }, false, false).unwrap();
 
         assert!(custom_card::viewer_can_resolve(published, custom_card::PROTOCOL_VERSION));
         assert!(!custom_card::viewer_can_resolve(draft, custom_card::PROTOCOL_VERSION));

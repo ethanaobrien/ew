@@ -42,11 +42,40 @@ pub fn build(mv_id: i64) -> Result<Vec<u8>, String> {
     Ok(zip.finish().map_err(|e| e.to_string())?.into_inner())
 }
 
-fn read_entry<R: Read + Seek>(archive: &mut zip::ZipArchive<R>, name: &str) -> Option<Vec<u8>> {
-    let mut file = archive.by_name(name).ok()?;
+// Reads one entry, capped. Deflate's ceiling is about 1032:1, so an uncapped
+// read_to_end here is a zip bomb: a one-megabyte entry inflates to a gigabyte and
+// grows the Vec until the allocator or the OOM killer stops it, and a package has
+// 39 addressable entries. Every entry is bounded by the upload form's own
+// per-file cap, and by what is left of the per-request budget across all entries.
+//
+// The central directory's declared size rejects the obvious case without
+// inflating anything; take(cap + 1) makes that declaration untrusted - a lying
+// header runs out of budget one byte past the cap and stops there.
+//
+// Ok(None) is "the package does not carry this entry", a normal outcome for every
+// optional role
+fn read_entry<R: Read + Seek>(archive: &mut zip::ZipArchive<R>, name: &str, remaining: &mut usize) -> Result<Option<Vec<u8>>, String> {
+    let Ok(mut file) = archive.by_name(name) else {
+        return Ok(None);
+    };
+    let cap = std::cmp::min(super::MAX_FILE_BYTES, *remaining);
+    // Which limit the entry actually ran into, so the message names the right one
+    let too_big = if cap >= super::MAX_FILE_BYTES {
+        super::over_file_limit(name)
+    } else {
+        super::over_request_limit()
+    };
+    if file.size() > cap as u64 {
+        return Err(too_big);
+    }
     let mut bytes = Vec::new();
-    file.read_to_end(&mut bytes).ok()?;
-    Some(bytes)
+    file.by_ref().take(cap as u64 + 1).read_to_end(&mut bytes)
+        .map_err(|_| format!("Package entry '{}' could not be read", name))?;
+    if bytes.len() > cap {
+        return Err(too_big);
+    }
+    *remaining -= bytes.len();
+    Ok(Some(bytes))
 }
 
 // Expands a package into the same field map the upload form produces. The
@@ -55,8 +84,10 @@ fn read_entry<R: Read + Seek>(archive: &mut zip::ZipArchive<R>, name: &str) -> O
 // in when the form left it blank (same-server re-upload)
 pub fn expand(package: &[u8], fields: &mut HashMap<String, Vec<u8>>) -> Result<(), String> {
     let mut archive = zip::ZipArchive::new(Cursor::new(package)).map_err(|_| String::from("Package is not a valid zip file"))?;
+    // The decompressed budget for the whole package, shared by every entry
+    let mut remaining = super::MAX_REQUEST_BYTES;
 
-    let manifest = read_entry(&mut archive, "manifest.json").ok_or(String::from("Package has no manifest.json"))?;
+    let manifest = read_entry(&mut archive, "manifest.json", &mut remaining)?.ok_or(String::from("Package has no manifest.json"))?;
     let manifest = jzon::parse(&String::from_utf8_lossy(&manifest)).map_err(|_| String::from("Package manifest is not valid JSON"))?;
     if manifest["format"].as_i64() != Some(1) {
         return Err(String::from("Unsupported package format"));
@@ -74,13 +105,13 @@ pub fn expand(package: &[u8], fields: &mut HashMap<String, Vec<u8>>) -> Result<(
     let member_count = manifest["member_count"].as_i64().unwrap_or(0);
     for slot in 1..=member_count.clamp(0, super::MAX_MEMBER_COUNT) {
         for role in ["model", "motion", "facial"] {
-            if let Some(bytes) = read_entry(&mut archive, &format!("{}_{}", role, slot)) {
+            if let Some(bytes) = read_entry(&mut archive, &format!("{}_{}", role, slot), &mut remaining)? {
                 fields.insert(format!("{}_{}", role, slot), bytes);
             }
         }
     }
     for name in ["camera", "config", "stage"] {
-        if let Some(bytes) = read_entry(&mut archive, name) {
+        if let Some(bytes) = read_entry(&mut archive, name, &mut remaining)? {
             fields.insert(String::from(name), bytes);
         }
     }

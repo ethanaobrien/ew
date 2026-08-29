@@ -47,6 +47,39 @@ const DEFAULT_BPM: f64 = 120.0;
 const DEFAULT_PREVIEW_LENGTH_SEC: f64 = 30.0;
 const PREVIEW_FADE_SEC: f64 = 0.5;
 
+// Upload limits, enforced while the multipart field is still streaming (the 25MB
+// PayloadConfig in lib.rs binds the String/Bytes extractors, not Multipart), and
+// again over a package's expanded contents. The binding item is the audio track:
+// 64MB holds a five-minute 44.1kHz stereo WAV or any realistic ogg/mp3, and the
+// same figure is custom_3dmv's per-file cap. The per-request cap is twice that,
+// which covers audio + jacket + four charts, or an export package plus the field
+// map it expands into (the package field itself is removed before expansion)
+pub const MAX_FILE_BYTES: usize = 64 * 1024 * 1024;
+pub const MAX_REQUEST_BYTES: usize = 128 * 1024 * 1024;
+
+// The longest track that may be decoded. Enforced inside the decoder's packet
+// loop, not after it: the decode accumulates planar f32 PCM, so an hour-long
+// input is ~1.4GB of Vec before anything downstream gets to reject it. Official
+// lives run 2-3 minutes; ten is already far past any real chart
+pub const MAX_AUDIO_SECONDS: f64 = 600.0;
+
+// The largest jacket the image decoder is allowed to allocate for. Checked as a
+// dimension/allocation limit BEFORE decode (image 0.25's own default is a 512MB
+// allocation ceiling and no dimension bound at all), so a 40000x40000 png that
+// compresses to a few KB is refused instead of decoded
+const MAX_JACKET_DIM: u32 = 8192;
+// The dimension cap is the binding one (8192^2 RGBA is 256MiB); this is the
+// backstop for a decoder that wants scratch beyond the final buffer, and it sits
+// below the crate's own 512MB default
+const MAX_JACKET_ALLOC_BYTES: u64 = 384 * 1024 * 1024;
+
+// Per-account storage quota, counted over the sizes the catalog quotes to the
+// client (both jackets, every chart, both audio cues). The original upload
+// artifacts kept under original/ roughly double the on-disk figure, so 2GiB of
+// catalog bytes is ~4GiB of disk - about two hundred songs, an order of magnitude
+// past any real uploader, while keeping one account from filling the volume
+pub const MAX_BYTES_PER_USER: i64 = 2 * 1024 * 1024 * 1024;
+
 lazy_static! {
     // music_id assignment and the insert must not race between two uploads
     static ref UPLOAD_LOCK: Mutex<()> = Mutex::new(());
@@ -234,6 +267,15 @@ pub fn sweep_audio() {
     drop(lock);
 }
 
+// The per-id asset files, for the webui's song pages (the game client fetches
+// jackets and charts through /data/{md5} instead - the URLs this route serves are
+// only ever followed by a browser that carries the webui session cookie).
+//
+// Unlike /data and /audio this route is addressed by a SEQUENTIAL id, not by an
+// unguessable content hash, so the "the hash is the capability" argument that
+// makes those two sessionless does not apply: without a visibility check the
+// whole private and shared catalog's jackets and full chart JSON could be walked
+// by anyone from music_id 10000 up. It gets the catalog's own rule
 async fn assets(req: HttpRequest) -> HttpResponse {
     if disabled() {
         return HttpResponse::NotFound().finish();
@@ -243,6 +285,10 @@ async fn assets(req: HttpRequest) -> HttpResponse {
     let valid = file == "jacket.png" || file == "jacket_blur.png"
         || (1..=LEVEL_COUNT).any(|level| file == format!("chart_{}.json", level));
     if music_id < database::FIRST_MUSIC_ID || !valid {
+        return HttpResponse::NotFound().finish();
+    }
+    // A song the viewer may not see 404s rather than admitting it exists
+    if !database::asset_visible(music_id, get_session_uid(&req)) {
         return HttpResponse::NotFound().finish();
     }
     match fs::read(song_path(music_id, &file)) {
@@ -297,6 +343,17 @@ async fn data(req: HttpRequest) -> HttpResponse {
         return HttpResponse::NotFound().finish();
     };
     match fs::read(song_path(music_id, &filename)) {
+        // Jackets and charts live at FIXED per-song filenames that an in-place edit
+        // overwrites, so between the file write and the catalog update the index
+        // still points an old md5 at bytes that are no longer its own. The client
+        // caches whatever it downloads under the md5 it asked for and never
+        // re-checks, so serving those bytes would poison its cache permanently.
+        // The index is a hint; these bytes are the answer only if they hash to the
+        // request. A mismatch is the same 404 a stale md5 already gets, and the
+        // client re-downloads under the md5 the catalog now carries
+        Ok(body) if !hash.eq_ignore_ascii_case(&format!("{:x}", md5::compute(&body))) => {
+            HttpResponse::NotFound().finish()
+        },
         Ok(body) => {
             let mime = mime_guess::from_path(&filename).first_or_octet_stream();
             HttpResponse::Ok()
@@ -320,17 +377,54 @@ fn send_json(resp: JsonValue) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
+// The per-file cap is enforced while the field is still streaming, BEFORE any byte
+// reaches the audio decoder, the png decoder or the chart parser. The per-request
+// cap is checked over the running total
 async fn read_multipart(mut payload: Multipart) -> Result<HashMap<String, Vec<u8>>, String> {
     let mut fields = HashMap::new();
+    let mut total = 0usize;
     while let Some(mut field) = payload.try_next().await.map_err(|e| e.to_string())? {
         let name = field.name().unwrap_or("").to_string();
         let mut data = Vec::new();
         while let Some(chunk) = field.try_next().await.map_err(|e| e.to_string())? {
+            total += chunk.len();
+            if total > MAX_REQUEST_BYTES {
+                return Err(over_request_limit());
+            }
             data.extend_from_slice(&chunk);
+            if data.len() > MAX_FILE_BYTES {
+                return Err(over_file_limit(&name));
+            }
         }
         fields.insert(name, data);
     }
     Ok(fields)
+}
+
+pub fn over_file_limit(name: &str) -> String {
+    format!("'{}' exceeds the {} MB per-file limit", name, MAX_FILE_BYTES / (1024 * 1024))
+}
+
+pub fn over_request_limit() -> String {
+    format!("Upload exceeds the {} MB per-request limit", MAX_REQUEST_BYTES / (1024 * 1024))
+}
+
+// The same accounting read_multipart applies, re-run over a field map that came
+// out of an export package. package::expand caps every entry as it inflates, but
+// the caps have to hold over the RESULT too: a package is one multipart field and
+// its expansion replaces the whole form
+fn check_field_caps(fields: &HashMap<String, Vec<u8>>) -> Result<(), String> {
+    let mut total = 0usize;
+    for (name, data) in fields.iter() {
+        if data.len() > MAX_FILE_BYTES {
+            return Err(over_file_limit(name));
+        }
+        total += data.len();
+        if total > MAX_REQUEST_BYTES {
+            return Err(over_request_limit());
+        }
+    }
+    Ok(())
 }
 
 fn field_str(fields: &HashMap<String, Vec<u8>>, key: &str) -> String {
@@ -378,7 +472,21 @@ fn validate_shared_users(shared_with: &JsonValue) -> Result<(), String> {
 
 // Pad/crop the upload to a square, then resize to 512x512
 fn process_jacket(bytes: &[u8]) -> Result<(Vec<u8>, Vec<u8>), String> {
-    let img = image::load_from_memory(bytes).map_err(|_| String::from("Jacket is not a valid png/jpg image"))?;
+    // Dimension and allocation limits BEFORE the decode: the header is read, the
+    // pixels are not, so a highly compressed enormous image is refused instead of
+    // being expanded into memory
+    let mut limits = image::Limits::default();
+    limits.max_image_width = Some(MAX_JACKET_DIM);
+    limits.max_image_height = Some(MAX_JACKET_DIM);
+    limits.max_alloc = Some(MAX_JACKET_ALLOC_BYTES);
+    let mut reader = image::ImageReader::new(std::io::Cursor::new(bytes))
+        .with_guessed_format()
+        .map_err(|_| String::from("Jacket is not a valid png/jpg image"))?;
+    reader.limits(limits);
+    let img = reader.decode().map_err(|e| match e {
+        image::ImageError::Limits(_) => format!("Jacket is larger than the {}x{} limit", MAX_JACKET_DIM, MAX_JACKET_DIM),
+        _ => String::from("Jacket is not a valid png/jpg image")
+    })?;
     let size = std::cmp::min(img.width(), img.height());
     let jacket = img
         .crop_imm((img.width() - size) / 2, (img.height() - size) / 2, size, size)
@@ -408,6 +516,18 @@ fn cue_json(cue: &audio::Cue, cue_name: String, is_loop: bool) -> JsonValue {
         "loop_start_sec": 0.0,
         "loop_end_sec": if is_loop { cue.duration_sec as f32 } else { 0.0 }
     }
+}
+
+// A cue's stored md5, or None when the blob has no usable one. JsonValue::to_string
+// renders Null as the literal "null", so a missing md5 used to arrive at the GC as
+// a five-character string that passed an is_empty() guard; only exactly 32 hex
+// characters is a hash (the same test the startup sweep and custom_3dmv's GC use)
+fn cue_md5(cue: &JsonValue) -> Option<String> {
+    let md5 = cue["md5"].as_str()?;
+    if md5.len() != 32 || !md5.chars().all(|c| c.is_ascii_hexdigit()) {
+        return None;
+    }
+    Some(md5.to_string())
 }
 
 // (md5-hex, byte-length) of a downloadable asset's served bytes. The client
@@ -658,6 +778,8 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         }
     };
 
+    check_quota(uid, database::song_bytes(&song), 0)?;
+
     fs::create_dir_all(get_data_path(&format!("custom_songs/{}", music_id))).map_err(|e| e.to_string())?;
     fs::create_dir_all(get_data_path("custom_songs/audio")).map_err(|e| e.to_string())?;
     fs::write(song_path(music_id, "jacket.png"), jacket).map_err(|e| e.to_string())?;
@@ -679,11 +801,25 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         fs::write(song_path(music_id, &format!("original/chart_{}.json", level)), raw).map_err(|e| e.to_string())?;
     }
 
-    database::insert_song(music_id, uid, &song, &visibility, &shared_with, downloads_disabled);
+    database::insert_song(music_id, uid, &song, &visibility, &shared_with, downloads_disabled)
+        .map_err(|e| format!("Could not store the song: {}", e))?;
     database::bump_revision();
     drop(lock);
 
     Ok(music_id)
+}
+
+// Per-account storage quota. `excluded` is the song being replaced by an in-place
+// edit - its stored size drops out and `adding` (the resulting size) replaces it
+fn check_quota(uid: i64, adding: i64, excluded_music_id: i64) -> Result<(), String> {
+    let used = database::owner_bytes(uid, excluded_music_id);
+    if used + adding > MAX_BYTES_PER_USER {
+        return Err(format!(
+            "This upload would put your songs at {} MB, over the {} MB per-account limit - delete a song first",
+            (used + adding) / (1024 * 1024), MAX_BYTES_PER_USER / (1024 * 1024)
+        ));
+    }
+    Ok(())
 }
 
 // Edit an existing song in place. The music_id - and everything derived from
@@ -924,6 +1060,11 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
         "sound": sound
     };
 
+    // The resulting song has to fit the uploader's quota, with the stored copy of
+    // this same song excluded (it is being replaced, not added to)
+    let owner = database::get_song_owner(music_id).ok_or(String::from("Song not found"))?;
+    check_quota(owner, database::song_bytes(&song), music_id)?;
+
     // Same serialization as upload around the writes and the revision bump
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     if let (Some((jacket, jacket_blur)), Some(bytes)) = (&jacket, jacket_bytes) {
@@ -954,17 +1095,21 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
 
     database::update_song(music_id, &song);
     database::bump_revision();
-    drop(lock);
 
     // Replaced cues: the old oggs are content-addressed and may be shared with
-    // another song (or unchanged by this edit) - GC them the same way delete does
-    let kept = [song["sound"]["play"]["md5"].to_string(), song["sound"]["select"]["md5"].to_string()];
+    // another song (or unchanged by this edit) - GC them the same way delete does.
+    // INSIDE the lock, for the reason delete states: an upload writes its oggs
+    // before it inserts its row, so a GC that reads the catalog in that window
+    // sees no reference to a shared md5 and unlinks the file the new song is
+    // about to serve. A read error means "assume referenced" - never unlink
+    let kept: Vec<String> = ["play", "select"].iter().filter_map(|key| cue_md5(&song["sound"][*key])).collect();
     for key in ["play", "select"] {
-        let md5 = old_song["sound"][key]["md5"].to_string();
-        if !md5.is_empty() && !kept.contains(&md5) && !database::audio_in_use(&md5, music_id) {
+        let Some(md5) = cue_md5(&old_song["sound"][key]) else { continue; };
+        if !kept.contains(&md5) && !database::audio_in_use(&md5, music_id).unwrap_or(true) {
             let _ = fs::remove_file(audio_file_path(&md5));
         }
     }
+    drop(lock);
 
     Ok(())
 }
@@ -980,21 +1125,29 @@ async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
         Ok(fields) => fields,
         Err(e) => return webui::error(&e)
     };
-    // An export package from another server: its contents map 1:1 onto the
-    // normal upload fields, so importing is just an upload
-    if let Some(bytes) = fields.remove("package") {
-        if !bytes.is_empty() {
-            if let Err(e) = package::expand(&bytes, &mut fields) {
-                return webui::error(&e);
+    // Everything from here on is seconds of CPU - zip inflation, a png decode and
+    // resize, a whole-track vorbis encode - so it runs on the blocking pool
+    // instead of the actix worker that has to keep serving the game API
+    let result = web::block(move || {
+        // An export package from another server: its contents map 1:1 onto the
+        // normal upload fields, so importing is just an upload
+        if let Some(bytes) = fields.remove("package") {
+            if !bytes.is_empty() {
+                package::expand(&bytes, &mut fields)?;
+                // The expansion replaced the form: it has to satisfy the same
+                // per-file/per-request caps the multipart reader enforces
+                check_field_caps(&fields)?;
             }
         }
-    }
-    match create_song(uid, &fields) {
-        Ok(music_id) => send_json(object!{
+        create_song(uid, &fields)
+    }).await;
+    match result {
+        Ok(Ok(music_id)) => send_json(object!{
             result: "OK",
             music_id: music_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The upload could not be processed")
     }
 }
 
@@ -1018,12 +1171,15 @@ async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
     if owner != uid {
         return webui::error("You can only manage your own songs");
     }
-    match update_song(music_id, &fields) {
-        Ok(()) => send_json(object!{
+    // Same blocking-pool treatment as upload: an edit can re-encode the audio and
+    // re-derive the jackets
+    match web::block(move || update_song(music_id, &fields)).await {
+        Ok(Ok(())) => send_json(object!{
             result: "OK",
             music_id: music_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The edit could not be processed")
     }
 }
 
@@ -1107,7 +1263,9 @@ async fn visibility(req: HttpRequest, body: String) -> HttpResponse {
         return webui::error(&e);
     }
 
-    database::set_visibility(music_id, &visibility, &shared_with);
+    if let Err(e) = database::set_visibility(music_id, &visibility, &shared_with) {
+        return webui::error(&format!("Could not change the visibility: {}", e));
+    }
     // The download toggle only affects the webui browser, not the game catalog
     if !body["downloads_disabled"].is_null() {
         database::set_downloads_disabled(music_id, body["downloads_disabled"].as_bool().unwrap_or(false));
@@ -1142,7 +1300,9 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
     // catalog in that window sees no reference to a shared md5 and would
     // unlink the file the new song is about to serve
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
-    database::delete_song(music_id);
+    if let Err(e) = database::delete_song(music_id) {
+        return webui::error(&format!("Could not delete the song: {}", e));
+    }
     database::bump_revision();
     // Global clear-rate stats for the dead live id (per-user score records are
     // wiped lazily on each user's next userdata pull)
@@ -1151,10 +1311,11 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
     crate::router::custom_3dmv::purge_song(music_id);
 
     let _ = fs::remove_dir_all(get_data_path(&format!("custom_songs/{}", music_id)));
-    // Audio is content-addressed and may be shared with another upload
+    // Audio is content-addressed and may be shared with another upload. A read
+    // error means "assume referenced" - never unlink on a doubtful reference set
     for key in ["play", "select"] {
-        let md5 = song["sound"][key]["md5"].to_string();
-        if !md5.is_empty() && !database::audio_in_use(&md5, music_id) {
+        let Some(md5) = cue_md5(&song["sound"][key]) else { continue; };
+        if !database::audio_in_use(&md5, music_id).unwrap_or(true) {
             let _ = fs::remove_file(audio_file_path(&md5));
         }
     }
@@ -1166,6 +1327,36 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
 }
 
 
+
+// Every song this account uploaded, gone - called from userdata::delete_account,
+// so a purged uploader leaves no catalog row pointing at a user id that no longer
+// resolves (browse renders an uploader name for every row). Runs the same steps
+// the owner's own delete does, including the cross-feature MV cascade and the
+// content-addressed audio GC
+pub fn purge_owner(uid: i64) {
+    if disabled() {
+        return;
+    }
+    for music_id in database::music_ids_by_owner(uid) {
+        let song = database::get_song(music_id).unwrap_or(object!{});
+        let lock = lock_onto_mutex!(UPLOAD_LOCK);
+        if database::delete_song(music_id).is_err() {
+            drop(lock);
+            continue;
+        }
+        database::bump_revision();
+        crate::router::clear_rate::purge_live(music_id);
+        crate::router::custom_3dmv::purge_song(music_id);
+        let _ = fs::remove_dir_all(get_data_path(&format!("custom_songs/{}", music_id)));
+        for key in ["play", "select"] {
+            let Some(md5) = cue_md5(&song["sound"][key]) else { continue; };
+            if !database::audio_in_use(&md5, music_id).unwrap_or(true) {
+                let _ = fs::remove_file(audio_file_path(&md5));
+            }
+        }
+        drop(lock);
+    }
+}
 
 
 /// WHY DID THE AI WRITE 400 LINES OF TESTS
@@ -1844,11 +2035,11 @@ mod tests {
         let stranger = 5555;
 
         let public_id = database::next_music_id();
-        database::insert_song(public_id, owner, &object!{music_id: public_id}, "public", &array![], false);
+        database::insert_song(public_id, owner, &object!{music_id: public_id}, "public", &array![], false).unwrap();
         let private_id = database::next_music_id();
-        database::insert_song(private_id, owner, &object!{music_id: private_id}, "private", &array![], false);
+        database::insert_song(private_id, owner, &object!{music_id: private_id}, "private", &array![], false).unwrap();
         let shared_id = database::next_music_id();
-        database::insert_song(shared_id, owner, &object!{music_id: shared_id}, "shared", &array![friend], false);
+        database::insert_song(shared_id, owner, &object!{music_id: shared_id}, "shared", &array![friend], false).unwrap();
 
         let has = |songs: &JsonValue, id: i64| songs.members().any(|data| data["music_id"] == id);
 
@@ -1870,11 +2061,11 @@ mod tests {
         let stranger = 7777;
 
         let locked_id = database::next_music_id();
-        database::insert_song(locked_id, owner, &object!{music_id: locked_id}, "public", &array![], true);
+        database::insert_song(locked_id, owner, &object!{music_id: locked_id}, "public", &array![], true).unwrap();
         let open_id = database::next_music_id();
-        database::insert_song(open_id, owner, &object!{music_id: open_id}, "public", &array![], false);
+        database::insert_song(open_id, owner, &object!{music_id: open_id}, "public", &array![], false).unwrap();
         let private_id = database::next_music_id();
-        database::insert_song(private_id, owner, &object!{music_id: private_id}, "private", &array![], false);
+        database::insert_song(private_id, owner, &object!{music_id: private_id}, "private", &array![], false).unwrap();
 
         // Downloads disabled: everyone but the owner is denied
         assert!(database::export_allowed(locked_id, Some(owner)).is_ok());
@@ -1976,7 +2167,7 @@ mod tests {
 
         let owner = 4242;
         let music_id = database::next_music_id();
-        database::insert_song(music_id, owner, &object!{music_id: music_id}, "public", &array![], false);
+        database::insert_song(music_id, owner, &object!{music_id: music_id}, "public", &array![], false).unwrap();
         // Sanity: the feature is on, so the id is visible to get_music_ids
         assert!(get_music_ids(owner).contains(music_id));
 
@@ -2114,12 +2305,12 @@ mod tests {
             music_id: public_id,
             name: "Public <Song> & \"Co\"",
             name_en: "Public Song EN"
-        }, "public", &array![], false);
+        }, "public", &array![], false).unwrap();
         let private_id = database::next_music_id();
         database::insert_song(private_id, 6100, &object!{
             music_id: private_id,
             name: "Top Secret Anthem"
-        }, "private", &array![], false);
+        }, "private", &array![], false).unwrap();
         for id in [public_id, private_id] {
             clear_rate::live_completed(id, 1, false, 100, 6100);
         }
@@ -2162,11 +2353,11 @@ mod tests {
         let outsider = 5003;
 
         let public_id = database::next_music_id();
-        database::insert_song(public_id, owner, &object!{music_id: public_id}, "public", &array![], false);
+        database::insert_song(public_id, owner, &object!{music_id: public_id}, "public", &array![], false).unwrap();
         let private_id = database::next_music_id();
-        database::insert_song(private_id, owner, &object!{music_id: private_id}, "private", &array![], false);
+        database::insert_song(private_id, owner, &object!{music_id: private_id}, "private", &array![], false).unwrap();
         let shared_id = database::next_music_id();
-        database::insert_song(shared_id, owner, &object!{music_id: shared_id}, "shared", &array![shared_user], false);
+        database::insert_song(shared_id, owner, &object!{music_id: shared_id}, "shared", &array![shared_user], false).unwrap();
         // A stock live id, outside the custom range - never filtered
         let stock_id: i64 = 1_500_123;
 
@@ -2201,4 +2392,433 @@ mod tests {
             assert!(!sees(uid, private_id) && !sees(uid, shared_id));
         }
     }
+
+    // ---- defect-fix coverage -------------------------------------------------
+
+    use actix_web::test::TestRequest;
+    use std::io::Write;
+
+    // A real multipart body, so the streaming caps in read_multipart are exercised
+    // by the reader itself rather than by a hand-built field map
+    async fn multipart_of(parts: Vec<(&str, Vec<u8>)>) -> Multipart {
+        let boundary = "ewtestboundary";
+        let mut body: Vec<u8> = Vec::new();
+        for (name, data) in parts {
+            body.extend(format!(
+                "--{}\r\nContent-Disposition: form-data; name=\"{}\"; filename=\"{}\"\r\nContent-Type: application/octet-stream\r\n\r\n",
+                boundary, name, name
+            ).into_bytes());
+            body.extend(data);
+            body.extend(b"\r\n");
+        }
+        body.extend(format!("--{}--\r\n", boundary).into_bytes());
+        let (req, mut payload) = TestRequest::default()
+            .insert_header(("content-type", format!("multipart/form-data; boundary={}", boundary)))
+            .set_payload(actix_web::web::Bytes::from(body))
+            .to_http_parts();
+        <Multipart as actix_web::FromRequest>::from_request(&req, &mut payload).await.unwrap()
+    }
+
+    // A real webui session for `uid`, the way the browser gets one
+    fn webui_session(auth_token: &str) -> (i64, String) {
+        let uid = userdata::get_acc(auth_token)["user"]["id"].as_i64().unwrap();
+        userdata::user::migration::save_acc_transfer(uid, "hunter2");
+        (uid, userdata::webui_login(uid, "hunter2").unwrap())
+    }
+
+    // A jacket whose processed bytes are unique to this seed. The md5 index is
+    // content-addressed ACROSS songs, so a shared test_png() would let one test's
+    // jacket md5 resolve to another test's file
+    fn seeded_png(seed: u8) -> Vec<u8> {
+        let mut rv = Vec::new();
+        image::DynamicImage::ImageRgba8(image::RgbaImage::from_fn(64, 32, |x, y| {
+            image::Rgba([(x * 4) as u8, (y * 8) as u8, seed, 255])
+        })).write_to(&mut std::io::Cursor::new(&mut rv), image::ImageFormat::Png).unwrap();
+        rv
+    }
+
+    fn song_fields(name: &str, tone: f32) -> HashMap<String, Vec<u8>> {
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", name);
+        field(&mut fields, "artist", "A");
+        field(&mut fields, "attribute", "1");
+        fields.insert(String::from("jacket"), seeded_png(tone as u8));
+        fields.insert(String::from("audio"), test_ogg_tone(tone));
+        fields.insert(String::from("chart_1"), test_chart());
+        fields
+    }
+
+    // Renaming the table away is the cheapest way to make every query against it
+    // fail the way a busy/corrupt database does, without losing the rows
+    fn with_songs_table_broken<T>(body: impl FnOnce() -> T) -> T {
+        let conn = rusqlite::Connection::open(database::test_db_path()).unwrap();
+        conn.execute("ALTER TABLE songs RENAME TO songs_hidden", ()).unwrap();
+        let rv = body();
+        conn.execute("ALTER TABLE songs_hidden RENAME TO songs", ()).unwrap();
+        rv
+    }
+
+    // D6: the multipart reader caps a field WHILE it streams, before any byte
+    // reaches the audio/png/chart parsers. Every other test builds the field map
+    // directly, so this is the only one that goes through the reader itself
+    #[test]
+    fn the_multipart_reader_caps_an_oversize_field() {
+        let _lock = crate::runtime::lock_test_data_path();
+        actix_web::rt::System::new().block_on(async {
+            let oversize = vec![b'a'; MAX_FILE_BYTES + 1];
+            let err = read_multipart(multipart_of(vec![("audio", oversize)]).await).await.unwrap_err();
+            assert!(err.contains("'audio'") && err.contains("per-file limit"), "{}", err);
+
+            // A body inside the caps still arrives intact
+            let fields = read_multipart(multipart_of(vec![
+                ("name", b"Capped".to_vec()),
+                ("jacket", test_png())
+            ]).await).await.unwrap();
+            assert_eq!(field_str(&fields, "name"), "Capped");
+            assert_eq!(fields.get("jacket"), Some(&test_png()));
+        });
+    }
+
+    // D1/D6: the per-request total is accounted over the whole form, which is also
+    // what a package's expanded contents are re-checked against
+    #[test]
+    fn the_request_total_is_capped() {
+        let mut fields: HashMap<String, Vec<u8>> = HashMap::new();
+        fields.insert(String::from("a"), vec![0; MAX_FILE_BYTES]);
+        fields.insert(String::from("b"), vec![0; MAX_FILE_BYTES]);
+        assert!(check_field_caps(&fields).is_ok());
+        fields.insert(String::from("c"), vec![0; 1]);
+        let err = check_field_caps(&fields).unwrap_err();
+        assert!(err.contains("per-request limit"), "{}", err);
+
+        let mut one = HashMap::new();
+        one.insert(String::from("audio"), vec![0; MAX_FILE_BYTES + 1]);
+        assert!(check_field_caps(&one).unwrap_err().contains("per-file limit"));
+    }
+
+    // D1: a package entry is capped as it inflates. Deflate's ~1032:1 ceiling
+    // means an uncapped read_to_end here turns a tiny zip into gigabytes
+    #[test]
+    fn package_import_is_capped() {
+        let mut zip = zip::ZipWriter::new(std::io::Cursor::new(Vec::new()));
+        let options = zip::write::SimpleFileOptions::default();
+        zip.start_file("manifest.json", options).unwrap();
+        zip.write_all(jzon::stringify(object!{
+            "format": 1, "name": "Bomb", "artist": "A", "attribute": 1,
+            "levels": [{ "level": 1, "level_number": 3 }]
+        }).as_bytes()).unwrap();
+        zip.start_file("jacket", options).unwrap();
+        zip.write_all(&test_png()).unwrap();
+        zip.start_file("chart_1.json", options).unwrap();
+        zip.write_all(&test_chart()).unwrap();
+        // Compresses to a few KB, inflates to just over the per-file cap
+        zip.start_file("audio", options).unwrap();
+        zip.write_all(&vec![0u8; MAX_FILE_BYTES + 1]).unwrap();
+        let package = zip.finish().unwrap().into_inner();
+        assert!(package.len() < 1024 * 1024, "the bomb should be small: {} bytes", package.len());
+
+        let mut fields = HashMap::new();
+        let err = package::expand(&package, &mut fields).unwrap_err();
+        assert!(err.contains("per-file limit"), "{}", err);
+        // Nothing oversized was buffered into the field map
+        assert!(fields.get("audio").is_none());
+    }
+
+    // D3: /custom_song/assets/{music_id}/{file} is addressed by a SEQUENTIAL id,
+    // not by a content hash, so it gets the catalog's visibility rule: the whole
+    // private/shared catalog used to be walkable from music_id 10000 up
+    #[test]
+    fn the_asset_route_is_visibility_gated() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let (owner, owner_cookie) = webui_session("custom-song-assets-owner");
+        let (_, stranger_cookie) = webui_session("custom-song-assets-stranger");
+
+        let public_id = create_song(owner, &song_fields("Assets Public", 331.0)).unwrap();
+        let private_id = create_song(owner, &song_fields("Assets Private", 337.0)).unwrap();
+        database::set_visibility(private_id, "private", &array![]).unwrap();
+
+        let call = |music_id: i64, cookie: Option<&str>| -> HttpResponse {
+            let mut req = TestRequest::default()
+                .param("music_id", music_id.to_string())
+                .param("file", String::from("jacket.png"));
+            if let Some(cookie) = cookie {
+                req = req.insert_header(("Cookie", format!("ew_token={}", cookie)));
+            }
+            let req = req.to_http_request();
+            actix_web::rt::System::new().block_on(async { assets(req).await })
+        };
+        let ok = actix_web::http::StatusCode::OK;
+        let missing = actix_web::http::StatusCode::NOT_FOUND;
+
+        // Public: everyone, session or not
+        assert_eq!(call(public_id, None).status(), ok);
+        assert_eq!(call(public_id, Some(&stranger_cookie)).status(), ok);
+        // Private: the owner only
+        assert_eq!(call(private_id, Some(&owner_cookie)).status(), ok);
+        assert_eq!(call(private_id, None).status(), missing);
+        assert_eq!(call(private_id, Some(&stranger_cookie)).status(), missing);
+
+        // Shared: the owner plus the shared list
+        let stranger = userdata::get_acc(&userdata::webui_login_token(&stranger_cookie).unwrap())["user"]["id"].as_i64().unwrap();
+        database::set_visibility(private_id, "shared", &array![stranger]).unwrap();
+        assert_eq!(call(private_id, Some(&stranger_cookie)).status(), ok);
+        assert_eq!(call(private_id, None).status(), missing);
+
+        purge_owner(owner);
+    }
+
+    // D14: jackets and charts live at fixed per-song filenames that an in-place
+    // edit overwrites, so the md5 index can briefly point at bytes that are no
+    // longer its own. The client caches by md5 and never re-checks, so the route
+    // verifies before it serves
+    #[test]
+    fn the_data_route_refuses_bytes_that_do_not_match_the_md5() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let music_id = create_song(7710, &song_fields("Mismatch", 349.0)).unwrap();
+        let jacket_md5 = database::get_song(music_id).unwrap()["jacket_md5"].to_string();
+
+        let call = || -> HttpResponse {
+            let req = TestRequest::default()
+                .param("hash", jacket_md5.clone())
+                .param("file", format!("{}.png", jacket_md5))
+                .to_http_request();
+            actix_web::rt::System::new().block_on(async { data(req).await })
+        };
+        assert_eq!(call().status(), actix_web::http::StatusCode::OK);
+
+        // The index still resolves, but the file no longer holds those bytes
+        let real = fs::read(song_path(music_id, "jacket.png")).unwrap();
+        let mut different = real.clone();
+        different.extend(b"not the bytes that hash to that md5");
+        fs::write(song_path(music_id, "jacket.png"), &different).unwrap();
+        assert_eq!(call().status(), actix_web::http::StatusCode::NOT_FOUND);
+
+        fs::write(song_path(music_id, "jacket.png"), &real).unwrap();
+        assert_eq!(call().status(), actix_web::http::StatusCode::OK);
+        purge_owner(7710);
+    }
+
+    // D5: the chart transcoder is linear per note and its input is only bounded in
+    // bytes, so the note count has its own ceiling - and the duplicate check that
+    // used to rescan every preceding note still rejects what it always did
+    #[test]
+    fn chart_size_is_bounded_and_duplicates_still_rejected() {
+        let mut too_many = jzon::array![];
+        for i in 0..(chart::MAX_NOTES + 1) {
+            too_many.push(object!{
+                "timing_sec": 1.0 + i as f64 * 0.001, "notes_attribute": 1, "notes_level": 1,
+                "effect": 1, "effect_value": 0.0, "position": 5
+            }).unwrap();
+        }
+        let err = chart::transcode(&too_many).unwrap_err();
+        assert!(err.contains("the maximum is"), "{}", err);
+
+        // A large but legal chart still transcodes (and does so in linear time)
+        let mut big = jzon::array![];
+        for i in 0..5000 {
+            big.push(object!{
+                "timing_sec": 1.0 + i as f64 * 0.01, "notes_attribute": 1, "notes_level": 1,
+                "effect": 1, "effect_value": 0.0, "position": (i % 9) + 1
+            }).unwrap();
+        }
+        let (_, combo) = chart::transcode(&big).unwrap();
+        assert_eq!(combo, 5000);
+
+        // Same timing + position with a different effect is still a rejection
+        let clash = jzon::array![
+            {"timing_sec": 1.0, "notes_attribute": 1, "notes_level": 1, "effect": 1, "effect_value": 0.0, "position": 4},
+            {"timing_sec": 1.0, "notes_attribute": 1, "notes_level": 1, "effect": 3, "effect_value": 0.5, "position": 4}
+        ];
+        assert!(chart::transcode(&clash).unwrap_err().contains("duplicate timing"));
+
+        // ...and a non-finite timing is refused instead of panicking the
+        // time-order sort's partial_cmp().unwrap()
+        let nan = jzon::array![
+            {"timing_sec": f64::INFINITY, "notes_attribute": 1, "notes_level": 1, "effect": 1, "effect_value": 0.0, "position": 4}
+        ];
+        assert!(chart::transcode(&nan).unwrap_err().contains("finite"));
+    }
+
+    // D2/D8: a read error must never read as "no rows". The GC unlinks on
+    // "not referenced", so a failed lookup has to mean "assume referenced" - and a
+    // failed write has to reach the uploader as an error, not as a worker panic
+    #[test]
+    fn a_database_error_never_deletes_audio_or_panics() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let music_id = create_song(7711, &song_fields("Fail Closed", 353.0)).unwrap();
+        let play = database::get_song(music_id).unwrap()["sound"]["play"]["md5"].to_string();
+        assert_eq!(database::audio_in_use(&play, 0), Ok(true));
+        assert_eq!(database::audio_in_use(&"c3".repeat(16), 0), Ok(false));
+
+        with_songs_table_broken(|| {
+            // Fail-closed: an error, not a "false" that would unlink a live file
+            assert!(database::audio_in_use(&play, 0).is_err());
+            assert!(database::audio_in_use(&play, 0).unwrap_or(true));
+
+            // And an insert that cannot land is an error response, not a panic
+            let err = create_song(7711, &song_fields("Never Stored", 359.0)).unwrap_err();
+            assert!(err.contains("Could not store the song"), "{}", err);
+        });
+
+        assert!(fs::read(audio_file_path(&play)).is_ok(), "the live ogg was unlinked");
+        purge_owner(7711);
+    }
+
+    // D15: the quota counts the bytes the catalog quotes to the client, per owner
+    #[test]
+    fn uploads_are_bounded_by_a_per_account_byte_quota() {
+        let _lock = crate::runtime::lock_test_data_path();
+        purge_owner(7712);
+        assert_eq!(database::owner_bytes(7712, 0), 0);
+
+        let music_id = create_song(7712, &song_fields("Quota", 367.0)).unwrap();
+        let song = database::get_song(music_id).unwrap();
+        let stored = database::song_bytes(&song);
+        assert!(stored > 0);
+        assert_eq!(database::owner_bytes(7712, 0), stored);
+        // An in-place edit replaces its own bytes rather than adding to them
+        assert_eq!(database::owner_bytes(7712, music_id), 0);
+
+        assert!(check_quota(7712, 1, 0).is_ok());
+        let err = check_quota(7712, MAX_BYTES_PER_USER, 0).unwrap_err();
+        assert!(err.contains("per-account limit"), "{}", err);
+        // Another account's uploads are not on this one's bill
+        assert_eq!(database::owner_bytes(7713, 0), 0);
+
+        purge_owner(7712);
+    }
+
+    // D10: purging an account takes its uploads in all three features with it -
+    // otherwise every catalog keeps rows whose owner_id no longer resolves, and
+    // browse renders an uploader name for each of them
+    #[test]
+    fn deleting_an_account_purges_its_uploads() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let auth = "custom-content-purge-token";
+        let uid = userdata::get_acc(auth)["user"]["id"].as_i64().unwrap();
+
+        let music_id = create_song(uid, &song_fields("Purged", 373.0)).unwrap();
+        let dir = get_data_path(&format!("custom_songs/{}", music_id));
+        let play = database::get_song(music_id).unwrap()["sound"]["play"]["md5"].to_string();
+
+        let mv_id = crate::database::custom_3dmv::next_mv_id();
+        crate::database::custom_3dmv::insert_mv(mv_id, music_id, uid, &object!{
+            "mv_id": mv_id, "music_id": music_id, "name": "Purged MV", "member_count": 1, "files": []
+        }, true).unwrap();
+        let card_id = crate::database::custom_card::next_card_id();
+        crate::database::custom_card::insert_card(card_id, 1001, uid, &object!{
+            "master_card_id": card_id, "rarity": 1
+        }, true, true).unwrap();
+        let character_id = crate::database::custom_card::next_character_id();
+        crate::database::custom_card::insert_character(character_id, uid, &object!{
+            "master_character_id": character_id, "name": "Purged"
+        }).unwrap();
+
+        userdata::delete_account(uid);
+
+        assert!(database::get_song(music_id).is_none(), "the song survived the purge");
+        assert!(fs::metadata(&dir).is_err(), "the song's files survived the purge");
+        assert!(fs::read(audio_file_path(&play)).is_err(), "the song's audio survived the purge");
+        assert!(crate::database::custom_3dmv::get_mv(mv_id).is_none(), "the MV survived the purge");
+        assert!(crate::database::custom_card::get_card(card_id).is_none(), "the card survived the purge");
+        assert!(crate::database::custom_card::get_character(character_id).is_none(), "the character survived the purge");
+    }
+
+
+    // D1/D6/D7: the whole upload route, end to end - a real multipart body, a real
+    // session, the expansion of a real package, and the create running on the
+    // blocking pool instead of on the actix worker
+    #[test]
+    fn the_upload_route_runs_end_to_end_under_its_caps() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let (uid, cookie) = webui_session("custom-song-upload-route");
+        purge_owner(uid);
+
+        let post = |parts: Vec<(&'static str, Vec<u8>)>| -> String {
+            let cookie = cookie.clone();
+            actix_web::rt::System::new().block_on(async move {
+                let payload = multipart_of(parts).await;
+                let req = TestRequest::default()
+                    .insert_header(("Cookie", format!("ew_token={}", cookie)))
+                    .to_http_request();
+                let resp = upload(req, payload).await;
+                let bytes = actix_web::body::to_bytes(resp.into_body()).await.unwrap();
+                String::from_utf8_lossy(&bytes).to_string()
+            })
+        };
+
+        // A normal upload lands
+        let body = post(vec![
+            ("name", b"Route Song".to_vec()),
+            ("artist", b"A".to_vec()),
+            ("attribute", b"1".to_vec()),
+            ("jacket", seeded_png(211)),
+            ("audio", test_ogg_tone(211.0)),
+            ("chart_1", test_chart())
+        ]);
+        let music_id = jzon::parse(&body).unwrap()["music_id"].as_i64().unwrap_or(0);
+        assert!(music_id >= database::FIRST_MUSIC_ID, "{}", body);
+
+        // Its own export package re-imports through the same route
+        let package = package::build(music_id).unwrap();
+        let body = post(vec![("package", package)]);
+        assert!(jzon::parse(&body).unwrap()["music_id"].as_i64().unwrap_or(0) > music_id, "{}", body);
+
+        // An oversized field never reaches the decoders
+        let body = post(vec![("audio", vec![b'a'; MAX_FILE_BYTES + 1])]);
+        assert!(body.contains("per-file limit"), "{}", body);
+
+        // ...and neither does one that only appears once the package is expanded
+        let mut zip = zip::ZipWriter::new(std::io::Cursor::new(Vec::new()));
+        let options = zip::write::SimpleFileOptions::default();
+        zip.start_file("manifest.json", options).unwrap();
+        zip.write_all(jzon::stringify(object!{
+            "format": 1, "name": "Bomb", "artist": "A", "attribute": 1,
+            "levels": [{ "level": 1, "level_number": 3 }]
+        }).as_bytes()).unwrap();
+        zip.start_file("jacket", options).unwrap();
+        zip.write_all(&seeded_png(212)).unwrap();
+        zip.start_file("audio", options).unwrap();
+        zip.write_all(&vec![0u8; MAX_FILE_BYTES + 1]).unwrap();
+        zip.start_file("chart_1.json", options).unwrap();
+        zip.write_all(&test_chart()).unwrap();
+        let body = post(vec![("package", zip.finish().unwrap().into_inner())]);
+        assert!(body.contains("per-file limit"), "{}", body);
+
+        purge_owner(uid);
+    }
+
+    // D4/D13: replacing a cue collects the ogg only that song referenced, and
+    // leaves one another song still names. The GC runs INSIDE the upload lock, so
+    // it cannot observe an upload that has written its oggs but not yet its row
+    #[test]
+    fn a_replaced_cue_is_collected_and_a_shared_one_is_kept() {
+        let _lock = crate::runtime::lock_test_data_path();
+        purge_owner(7714);
+        purge_owner(7715);
+
+        let shared = create_song(7714, &song_fields("Shared Audio A", 379.0)).unwrap();
+        let other = create_song(7715, &song_fields("Shared Audio B", 379.0)).unwrap();
+        let play = database::get_song(shared).unwrap()["sound"]["play"]["md5"].to_string();
+        assert_eq!(database::get_song(other).unwrap()["sound"]["play"]["md5"].to_string(), play);
+
+        // Replace the first song's audio: its old cue is still the second's
+        let mut edit = HashMap::new();
+        edit.insert(String::from("audio"), test_ogg_tone(383.0));
+        update_song(shared, &edit).unwrap();
+        let replaced = database::get_song(shared).unwrap()["sound"]["play"]["md5"].to_string();
+        assert_ne!(replaced, play);
+        assert!(fs::read(audio_file_path(&play)).is_ok(), "an ogg another song still serves was unlinked");
+        assert!(fs::read(audio_file_path(&replaced)).is_ok());
+
+        // Now nothing else references it: replacing it again collects it
+        let mut edit = HashMap::new();
+        edit.insert(String::from("audio"), test_ogg_tone(389.0));
+        update_song(shared, &edit).unwrap();
+        assert!(fs::read(audio_file_path(&replaced)).is_err(), "the orphaned ogg was kept");
+
+        purge_owner(7714);
+        purge_owner(7715);
+    }
+
 }

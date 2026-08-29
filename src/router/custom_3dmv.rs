@@ -48,6 +48,19 @@ pub const MAX_FILE_BYTES: usize = 64 * 1024 * 1024;
 pub const MAX_REQUEST_BYTES: usize = 256 * 1024 * 1024;
 pub const MAX_MVS_PER_USER: i64 = 200;
 
+// Per-account storage quota, counted over the stored file sizes the catalog
+// quotes. The MV count alone bounded one account at 200 x 256MB = ~51GB, which is
+// not a bound at all; 4GiB is roughly forty full MVs of realistic size (a model
+// zip plus 20-100MB of motion VMDs) and is the largest of the three features'
+// quotas because MVs are the heaviest thing a user can upload
+pub const MAX_BYTES_PER_USER: i64 = 4 * 1024 * 1024 * 1024;
+
+// The longest length-prefixed text field a PMX header may declare (model name and
+// comment, JP + EN). The prefix is an attacker-supplied i32 the stage walk used to
+// skip over by inflating up to 2GB into a sink, four times per entry - CPU with no
+// allocation to show for it. Real PMX name/comment fields are tens of bytes
+const MAX_PMX_TEXT_BYTES: i32 = 64 * 1024;
+
 // Slots are 1-based, matching the Live3dMemberMst position convention
 pub const MAX_MEMBER_COUNT: i64 = 12;
 
@@ -206,16 +219,42 @@ async fn read_multipart(mut payload: Multipart) -> Result<Fields, String> {
         while let Some(chunk) = field.try_next().await.map_err(|e| e.to_string())? {
             total += chunk.len();
             if total > MAX_REQUEST_BYTES {
-                return Err(format!("Upload exceeds the {} MB per-request limit", MAX_REQUEST_BYTES / (1024 * 1024)));
+                return Err(over_request_limit());
             }
             data.extend_from_slice(&chunk);
             if data.len() > MAX_FILE_BYTES {
-                return Err(format!("'{}' exceeds the {} MB per-file limit", name, MAX_FILE_BYTES / (1024 * 1024)));
+                return Err(over_file_limit(&name));
             }
         }
         fields.insert(name, data);
     }
     Ok(fields)
+}
+
+pub fn over_file_limit(name: &str) -> String {
+    format!("'{}' exceeds the {} MB per-file limit", name, MAX_FILE_BYTES / (1024 * 1024))
+}
+
+pub fn over_request_limit() -> String {
+    format!("Upload exceeds the {} MB per-request limit", MAX_REQUEST_BYTES / (1024 * 1024))
+}
+
+// The same accounting read_multipart applies, re-run over a field map that came
+// out of an export package. package::expand caps every entry as it inflates, but
+// the caps have to hold over the RESULT too: a package is one multipart field and
+// its expansion replaces the whole form
+fn check_field_caps(fields: &Fields) -> Result<(), String> {
+    let mut total = 0usize;
+    for (name, data) in fields.iter() {
+        if data.len() > MAX_FILE_BYTES {
+            return Err(over_file_limit(name));
+        }
+        total += data.len();
+        if total > MAX_REQUEST_BYTES {
+            return Err(over_request_limit());
+        }
+    }
+    Ok(())
 }
 
 fn field_str(fields: &Fields, key: &str) -> String {
@@ -263,7 +302,7 @@ fn read_pmx_vertex_count(file: &mut impl Read) -> Option<i32> {
         let mut len = [0u8; 4];
         file.read_exact(&mut len).ok()?;
         let len = i32::from_le_bytes(len);
-        if len < 0 {
+        if !(0..=MAX_PMX_TEXT_BYTES).contains(&len) {
             return None;
         }
         if std::io::copy(&mut file.by_ref().take(len as u64), &mut std::io::sink()).ok()? != len as u64 {
@@ -436,7 +475,9 @@ fn write_blobs(pending: &[PendingBlob]) -> Result<(), String> {
 fn gc_blobs(old_files: &JsonValue) {
     for file in old_files.members() {
         let md5 = file["md5"].to_string();
-        if md5.len() == 32 && !database::blob_in_use(&md5) {
+        // A read error means "assume referenced": unlinking on a doubtful
+        // reference set is exactly what the startup sweep refuses to do
+        if md5.len() == 32 && !database::blob_in_use(&md5).unwrap_or(true) {
             let _ = fs::remove_file(blob_path(&md5));
         }
     }
@@ -477,6 +518,7 @@ pub fn create_mv(uid: i64, fields: &Fields) -> Result<i64, String> {
     }
 
     let (files, pending) = collect_files(fields, member_count, &array![])?;
+    check_quota(uid, database::mv_bytes(&files), 0)?;
 
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     let mv_id = database::next_mv_id();
@@ -494,11 +536,25 @@ pub fn create_mv(uid: i64, fields: &Fields) -> Result<i64, String> {
     };
 
     write_blobs(&pending)?;
-    database::insert_mv(mv_id, music_id, uid, &mv, published);
+    database::insert_mv(mv_id, music_id, uid, &mv, published)
+        .map_err(|e| format!("Could not store the MV: {}", e))?;
     database::bump_revision();
     drop(lock);
 
     Ok(mv_id)
+}
+
+// Per-account storage quota. `excluded` is the MV being replaced by an in-place
+// edit - its stored size drops out and `adding` (the resulting size) replaces it
+fn check_quota(uid: i64, adding: i64, excluded_mv_id: i64) -> Result<(), String> {
+    let used = database::owner_bytes(uid, excluded_mv_id);
+    if used + adding > MAX_BYTES_PER_USER {
+        return Err(format!(
+            "This upload would put your MVs at {} MB, over the {} MB per-account limit - delete an MV first",
+            (used + adding) / (1024 * 1024), MAX_BYTES_PER_USER / (1024 * 1024)
+        ));
+    }
+    Ok(())
 }
 
 // Edit an MV in place. The mv_id and the music_id stay the same: repointing
@@ -523,6 +579,7 @@ pub fn update_mv(uid: i64, mv_id: i64, fields: &Fields) -> Result<(), String> {
     }
 
     let (files, pending) = collect_files(fields, member_count, &stored["files"])?;
+    check_quota(owner, database::mv_bytes(&files), mv_id)?;
 
     let mv = object!{
         "mv_id": mv_id,
@@ -585,6 +642,30 @@ pub fn purge_song(music_id: i64) {
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     let mut purged = false;
     for mv_id in database::mv_ids_for_music(music_id) {
+        let stored = database::get_mv(mv_id);
+        database::delete_mv(mv_id);
+        purged = true;
+        if let Some(stored) = stored {
+            gc_blobs(&stored["files"]);
+        }
+    }
+    if purged {
+        database::bump_revision();
+    }
+    drop(lock);
+}
+
+// Every MV this account uploaded, gone - called from userdata::delete_account, so
+// a purged uploader leaves no catalog row resolving an owner id that no longer
+// exists (browse renders an uploader name for every row). Same steps as the
+// owner's own delete, blob GC included
+pub fn purge_owner(uid: i64) {
+    if disabled() {
+        return;
+    }
+    let lock = lock_onto_mutex!(UPLOAD_LOCK);
+    let mut purged = false;
+    for mv_id in database::mv_ids_for_owner(uid) {
         let stored = database::get_mv(mv_id);
         database::delete_mv(mv_id);
         purged = true;
@@ -666,6 +747,7 @@ pub fn upload_limits() -> JsonValue {
         "max_file_bytes": MAX_FILE_BYTES,
         "max_request_bytes": MAX_REQUEST_BYTES,
         "max_mvs_per_user": MAX_MVS_PER_USER,
+        "max_bytes_per_user": MAX_BYTES_PER_USER,
         "stages": STAGES.to_vec(),
         "default_stage": STAGES[0],
         "roles": {
@@ -690,21 +772,29 @@ async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
         Ok(fields) => fields,
         Err(e) => return webui::error(&e)
     };
-    // An export package from another server: its contents map 1:1 onto the
-    // normal upload fields, so importing is just an upload
-    if let Some(bytes) = fields.remove("package") {
-        if !bytes.is_empty() {
-            if let Err(e) = package::expand(&bytes, &mut fields) {
-                return webui::error(&e);
+    // Zip inflation, the PMX/VMD structure walks, hashing and writing up to 256MB:
+    // all of it on the blocking pool rather than on the actix worker that also has
+    // to keep serving the game API
+    let result = web::block(move || {
+        // An export package from another server: its contents map 1:1 onto the
+        // normal upload fields, so importing is just an upload
+        if let Some(bytes) = fields.remove("package") {
+            if !bytes.is_empty() {
+                package::expand(&bytes, &mut fields)?;
+                // The expansion replaced the form: it has to satisfy the same
+                // per-file/per-request caps the multipart reader enforces
+                check_field_caps(&fields)?;
             }
         }
-    }
-    match create_mv(uid, &fields) {
-        Ok(mv_id) => send_json(object!{
+        create_mv(uid, &fields)
+    }).await;
+    match result {
+        Ok(Ok(mv_id)) => send_json(object!{
             result: "OK",
             mv_id: mv_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The upload could not be processed")
     }
 }
 
@@ -720,12 +810,13 @@ async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
         Err(e) => return webui::error(&e)
     };
     let mv_id = field_str(&fields, "mv_id").parse::<i64>().unwrap_or(0);
-    match update_mv(uid, mv_id, &fields) {
-        Ok(()) => send_json(object!{
+    match web::block(move || update_mv(uid, mv_id, &fields)).await {
+        Ok(Ok(())) => send_json(object!{
             result: "OK",
             mv_id: mv_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The edit could not be processed")
     }
 }
 
@@ -806,7 +897,15 @@ async fn download(req: HttpRequest) -> HttpResponse {
     let Some(owner) = database::get_mv_owner(mv_id) else {
         return webui::error("MV not found");
     };
-    if get_session_uid(&req) != Some(owner) && !database::is_published(mv_id) {
+    let viewer = get_session_uid(&req);
+    if viewer != Some(owner) && !database::is_published(mv_id) {
+        return webui::error("MV not found");
+    }
+    // Every catalog (list, browse, mine) additionally closes over the songs the
+    // viewer can see, so a published MV attached to someone else's PRIVATE song is
+    // invisible everywhere - it must not be downloadable by walking mv_ids either
+    let music_id = database::get_mv_music_id(mv_id).unwrap_or(0);
+    if viewer != Some(owner) && !allowed_music_ids(viewer.unwrap_or(0)).contains(&music_id) {
         return webui::error("MV not found");
     }
     match package::build(mv_id) {
@@ -940,7 +1039,7 @@ pub mod tests {
             "music_id": music_id,
             "name": format!("Seed Song {}", music_id),
             "sound": { "play": { "md5": "0".repeat(32) }, "select": { "md5": "0".repeat(32) } }
-        }, visibility, &array![], false);
+        }, visibility, &array![], false).unwrap();
     }
 
     // A complete, valid 2-slot upload: model+motion per slot, a facial on
@@ -1420,9 +1519,9 @@ pub mod tests {
         assert!(!stranger_catalog.members().any(|m| m["mv_id"] == private_song_mv));
 
         // Sharing the song brings its MV along
-        crate::database::custom_song::set_visibility(970012, "shared", &array![stranger]);
+        crate::database::custom_song::set_visibility(970012, "shared", &array![stranger]).unwrap();
         assert!(catalog_for_user(stranger).members().any(|m| m["mv_id"] == private_song_mv));
-        crate::database::custom_song::set_visibility(970012, "private", &array![]);
+        crate::database::custom_song::set_visibility(970012, "private", &array![]).unwrap();
 
         wipe(owner);
     }
@@ -1501,4 +1600,154 @@ pub mod tests {
         let _ = fs::remove_file(&junk);
         wipe(uid);
     }
+
+    // ---- defect-fix coverage -------------------------------------------------
+
+    // A stage PMX whose header declares a text field of `len` bytes, with the
+    // bytes actually present
+    fn stage_zip_with_text_len(len: i32, present: usize) -> Vec<u8> {
+        let mut pmx = Vec::new();
+        pmx.extend(b"PMX ");
+        pmx.extend(2.0f32.to_le_bytes());
+        pmx.push(8);
+        pmx.extend([0u8; 8]);
+        // The model name carries the declared length; the other three are empty
+        pmx.extend(len.to_le_bytes());
+        pmx.extend(vec![0u8; present]);
+        for _ in 0..3 {
+            pmx.extend(0u32.to_le_bytes());
+        }
+        pmx.extend(1i32.to_le_bytes());
+        zip_with("stage.pmx", &pmx)
+    }
+
+    // D11: the length prefix of a PMX text field is an attacker-supplied i32 the
+    // stage walk skips over. Uncapped it inflated up to 2GB into a sink, four
+    // times per entry - CPU with nothing to show for it
+    #[test]
+    fn pmx_text_fields_are_bounded() {
+        let big = MAX_PMX_TEXT_BYTES as usize;
+        // At the cap, with the bytes really there: a valid stage
+        assert!(validate_file("stage", "stage", &stage_zip_with_text_len(big as i32, big)).is_ok());
+        // One byte over, bytes present: refused rather than skipped over
+        let err = validate_file("stage", "stage", &stage_zip_with_text_len(big as i32 + 1, big + 1)).unwrap_err();
+        assert!(err.contains("malformed PMX header"), "{}", err);
+        // And the classic: a huge declaration with nothing behind it
+        let err = validate_file("stage", "stage", &stage_zip_with_text_len(i32::MAX, 0)).unwrap_err();
+        assert!(err.contains("malformed PMX header"), "{}", err);
+    }
+
+    // D1: a package entry is capped as it inflates. Deflate's ~1032:1 ceiling
+    // means an uncapped read_to_end turns a tiny zip into gigabytes, and a package
+    // carries 39 addressable entries
+    #[test]
+    fn package_import_is_capped() {
+        let mut zip = zip::ZipWriter::new(Cursor::new(Vec::new()));
+        let options = zip::write::SimpleFileOptions::default();
+        zip.start_file("manifest.json", options).unwrap();
+        zip.write_all(jzon::stringify(object!{
+            "format": 1, "name": "Bomb", "name_en": "Bomb", "music_id": 970050, "member_count": 1
+        }).as_bytes()).unwrap();
+        // Compresses to a few KB, inflates to just over the per-file cap
+        zip.start_file("model_1", options).unwrap();
+        zip.write_all(&vec![0u8; MAX_FILE_BYTES + 1]).unwrap();
+        let package = zip.finish().unwrap().into_inner();
+        assert!(package.len() < 1024 * 1024, "the bomb should be small: {} bytes", package.len());
+
+        let mut fields = Fields::new();
+        let err = package::expand(&package, &mut fields).unwrap_err();
+        assert!(err.contains("per-file limit"), "{}", err);
+        assert!(fields.get("model_1").is_none(), "the oversized entry was buffered anyway");
+    }
+
+    // D1/D6: the per-request total is accounted over the whole form, which is what
+    // a package's expanded contents are re-checked against
+    #[test]
+    fn the_request_total_is_capped() {
+        let mut fields = Fields::new();
+        fields.insert(String::from("a"), vec![0; MAX_FILE_BYTES]);
+        assert!(check_field_caps(&fields).is_ok());
+        let mut one = Fields::new();
+        one.insert(String::from("model_1"), vec![0; MAX_FILE_BYTES + 1]);
+        assert!(check_field_caps(&one).unwrap_err().contains("per-file limit"));
+    }
+
+    // D2: a read error must never read as "not referenced". The GC unlinks on
+    // false, so a failed lookup has to mean "assume in use" - the startup sweep
+    // has always been fail-closed and the online path now matches it
+    #[test]
+    fn a_database_error_never_deletes_a_blob() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(9_100_030);
+        seed_song(970201, 9_100_030, "public");
+        let id = create_mv(9_100_030, &base_fields(970201, 1, 120)).unwrap();
+        let stored = database::get_mv(id).unwrap();
+        let md5 = stored["files"][0]["md5"].to_string();
+        assert_eq!(md5.len(), 32);
+        assert_eq!(database::blob_in_use(&md5), Ok(true));
+        assert_eq!(database::blob_in_use(&"c7".repeat(16)), Ok(false));
+
+        let conn = rusqlite::Connection::open(database::test_db_path()).unwrap();
+        conn.execute("ALTER TABLE mvs RENAME TO mvs_hidden", ()).unwrap();
+        assert!(database::blob_in_use(&md5).is_err());
+        // The blob is still live; the GC must keep what it cannot prove is orphaned
+        gc_blobs(&stored["files"]);
+        conn.execute("ALTER TABLE mvs_hidden RENAME TO mvs", ()).unwrap();
+
+        assert!(fs::read(blob_path(&md5)).is_ok(), "a live blob was unlinked on a read error");
+        wipe(9_100_030);
+    }
+
+    // D9: every catalog closes over the songs the viewer can see, so a published
+    // MV attached to someone else's PRIVATE song is invisible everywhere - and it
+    // must not be downloadable by walking mv_ids either
+    #[test]
+    fn download_closes_over_song_visibility() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(9_100_031);
+        seed_song(970202, 9_100_031, "private");
+        seed_song(970203, 9_100_031, "public");
+        let hidden = create_mv(9_100_031, &base_fields(970202, 1, 130)).unwrap();
+        let open = create_mv(9_100_031, &base_fields(970203, 1, 140)).unwrap();
+        set_mv_flags(9_100_031, hidden, true).unwrap();
+        set_mv_flags(9_100_031, open, true).unwrap();
+
+        let call = |mv_id: i64| -> String {
+            let req = actix_web::test::TestRequest::default().param("mv_id", mv_id.to_string()).to_http_request();
+            actix_web::rt::System::new().block_on(async {
+                let resp = download(req).await;
+                let bytes = actix_web::body::to_bytes(resp.into_body()).await.unwrap();
+                String::from_utf8_lossy(&bytes).to_string()
+            })
+        };
+        // Published, on a song an anonymous viewer's catalog never delivers
+        assert!(call(hidden).contains("MV not found"), "a private song's MV was downloadable");
+        // Published, on a public song: still downloadable
+        assert!(!call(open).contains("MV not found"));
+
+        wipe(9_100_031);
+    }
+
+    // D15: the quota counts the stored file bytes the catalog quotes, per owner
+    #[test]
+    fn uploads_are_bounded_by_a_per_account_byte_quota() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(9_100_032);
+        assert_eq!(database::owner_bytes(9_100_032, 0), 0);
+        seed_song(970204, 9_100_032, "public");
+        let id = create_mv(9_100_032, &base_fields(970204, 1, 150)).unwrap();
+
+        let stored = database::mv_bytes(&database::get_mv(id).unwrap()["files"]);
+        assert!(stored > 0);
+        assert_eq!(database::owner_bytes(9_100_032, 0), stored);
+        // An in-place edit replaces its own bytes rather than adding to them
+        assert_eq!(database::owner_bytes(9_100_032, id), 0);
+
+        assert!(check_quota(9_100_032, 1, 0).is_ok());
+        assert!(check_quota(9_100_032, MAX_BYTES_PER_USER, 0).unwrap_err().contains("per-account limit"));
+        assert_eq!(database::owner_bytes(9_100_033, 0), 0);
+
+        wipe(9_100_032);
+    }
+
 }

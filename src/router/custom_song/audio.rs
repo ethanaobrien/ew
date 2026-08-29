@@ -7,7 +7,7 @@ use symphonia::core::formats::probe::Hint;
 use symphonia::core::io::MediaSourceStream;
 use vorbis_rs::{VorbisBitrateManagementStrategy, VorbisEncoderBuilder};
 
-use super::{DEFAULT_PREVIEW_LENGTH_SEC, PREVIEW_FADE_SEC};
+use super::{DEFAULT_PREVIEW_LENGTH_SEC, MAX_AUDIO_SECONDS, PREVIEW_FADE_SEC};
 
 // The whole audio pipeline runs in-process: symphonia (pure Rust) decodes and
 // validates uploads, vorbis_rs (libvorbis compiled into the binary - a library
@@ -53,7 +53,12 @@ fn is_ogg_vorbis(bytes: &[u8]) -> bool {
     bytes.starts_with(b"OggS") && bytes.len() > 64 && bytes[..64].windows(7).any(|w| w == b"\x01vorbis")
 }
 
-fn decode(bytes: &[u8]) -> Result<DecodedAudio, String> {
+// `max_duration_sec` is enforced INSIDE the packet loop, not after it: the decode
+// accumulates full planar f32 PCM, so checking the duration afterwards means the
+// allocation has already happened (an hour of 44.1kHz stereo is ~1.4GB of Vec).
+// Bailing at the first packet past the limit keeps the peak proportional to the
+// limit instead of to the upload
+fn decode(bytes: &[u8], max_duration_sec: f64) -> Result<DecodedAudio, String> {
     let stream = MediaSourceStream::new(Box::new(std::io::Cursor::new(bytes.to_vec())), Default::default());
     let mut format = symphonia::default::get_probe()
         .probe(&Hint::new(), stream, Default::default(), Default::default())
@@ -95,6 +100,9 @@ fn decode(bytes: &[u8]) -> Result<DecodedAudio, String> {
         decoded.copy_to_vec_interleaved(&mut interleaved);
         for (i, samples) in channels.iter_mut().enumerate() {
             samples.extend(interleaved.iter().skip(i).step_by(count));
+        }
+        if sample_rate > 0 && channels[0].len() as f64 / sample_rate as f64 > max_duration_sec {
+            return Err(format!("Audio is over the {:.0} second maximum", max_duration_sec));
         }
     }
 
@@ -141,13 +149,12 @@ fn cue(bytes: Vec<u8>, duration_sec: f64) -> Cue {
 // reads, keep it as-is when it's already ogg-vorbis, otherwise transcode. No
 // cuts, fades, loop points or preview split - mono or stereo as-sourced
 pub fn process_one_shot(bytes: &[u8], max_duration_sec: f64) -> Result<Cue, String> {
-    let audio = decode(bytes)?;
+    // The length limit belongs to the decoder, which stops at the first packet
+    // past it rather than accumulating the whole clip and rejecting it afterwards
+    let audio = decode(bytes, max_duration_sec)?;
     let duration = audio.duration();
     if duration < 0.2 {
         return Err(String::from("Audio clip is shorter than 0.2 seconds"));
-    }
-    if duration > max_duration_sec {
-        return Err(format!("Audio clip is {:.1} seconds long - the maximum is {:.0} seconds", duration, max_duration_sec));
     }
     if is_ogg_vorbis(bytes) {
         return Ok(cue(bytes.to_vec(), duration));
@@ -160,7 +167,7 @@ pub fn process_one_shot(bytes: &[u8], max_duration_sec: f64) -> Result<Cue, Stri
 // fades. Both are stored content-addressed by the md5 of the final ogg bytes -
 // the client validates md5(file) against the value served in the catalog
 pub fn process(bytes: &[u8], preview_start_sec: Option<f64>, preview_length_sec: Option<f64>) -> Result<(Cue, Cue), String> {
-    let audio = decode(bytes)?;
+    let audio = decode(bytes, MAX_AUDIO_SECONDS)?;
     let duration = audio.duration();
     if duration <= 1.0 {
         return Err(String::from("Audio track is too short"));
@@ -199,4 +206,55 @@ pub fn process(bytes: &[u8], preview_start_sec: Option<f64>, preview_length_sec:
     let select = cue(encode(&planar, audio.sample_rate)?, frames as f64 / audio.sample_rate as f64);
 
     Ok((play, select))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // 44.1kHz 16-bit mono, `seconds` long
+    fn wav(seconds: f64) -> Vec<u8> {
+        let sample_rate: u32 = 44100;
+        let frames = (seconds * sample_rate as f64) as u32;
+        let data_len = frames * 2;
+        let mut rv = Vec::new();
+        rv.extend(b"RIFF");
+        rv.extend((36 + data_len).to_le_bytes());
+        rv.extend(b"WAVEfmt ");
+        rv.extend(16u32.to_le_bytes());
+        rv.extend(1u16.to_le_bytes());
+        rv.extend(1u16.to_le_bytes());
+        rv.extend(sample_rate.to_le_bytes());
+        rv.extend((sample_rate * 2).to_le_bytes());
+        rv.extend(2u16.to_le_bytes());
+        rv.extend(16u16.to_le_bytes());
+        rv.extend(b"data");
+        rv.extend(data_len.to_le_bytes());
+        for i in 0..frames {
+            let sample = ((i as f64 * 440.0 * 2.0 * std::f64::consts::PI / sample_rate as f64).sin() * 8000.0) as i16;
+            rv.extend(sample.to_le_bytes());
+        }
+        rv
+    }
+
+    // The length limit is enforced from INSIDE the packet loop: the decode
+    // accumulates full planar f32 PCM, so a post-decode check means the
+    // allocation already happened (an hour of stereo is ~1.4GB of Vec)
+    #[test]
+    fn the_decoder_stops_at_the_duration_cap() {
+        let three_seconds = wav(3.0);
+        let audio = decode(&three_seconds, 5.0).unwrap();
+        assert!((audio.duration() - 3.0).abs() < 0.01);
+
+        let Err(err) = decode(&three_seconds, 1.0) else {
+            panic!("a three-second track decoded under a one-second cap");
+        };
+        assert!(err.contains("1 second maximum"), "{}", err);
+        // The same cap is what refuses an over-long voiceline
+        let Err(err) = process_one_shot(&three_seconds, 1.0) else {
+            panic!("an over-long one-shot was accepted");
+        };
+        assert!(err.contains("1 second maximum"), "{}", err);
+        assert!(process_one_shot(&three_seconds, 5.0).is_ok());
+    }
 }

@@ -97,54 +97,6 @@ INSERT OR IGNORE INTO exchange (user_id, exchange) SELECT user_id, '[]' FROM use
     }
 }
 
-// maybe we will use this later
-/*
-pub fn downgrade_account_cards(user: &JsonValue) -> JsonValue {
-    let mut rv = user.clone();
-
-    let mut cards = array![];
-    let mut ids = array![];
-    for data in user["card_list"].members() {
-        let id = data["master_card_id"].as_i64().unwrap_or(0);
-        let downgraded = guest::proxy_card_id(id);
-        // Whole characters share one downgrade, and the client can't hold the
-        // same card twice
-        if ids.contains(downgraded) {
-            continue;
-        }
-        ids.push(downgraded).unwrap();
-        let mut data = data.clone();
-        if downgraded != id {
-            data["id"] = downgraded.into();
-            data["master_card_id"] = downgraded.into();
-        }
-        cards.push(data).unwrap();
-    }
-    rv["card_list"] = cards;
-
-    for deck in rv["deck_list"].members_mut() {
-        let mut used = array![];
-        for slot in deck["main_card_ids"].members_mut() {
-            let id = guest::proxy_card_id(slot.as_i64().unwrap_or(0));
-            // Cards the downgrade merged away leave the slot empty
-            if id == 0 || used.contains(id) {
-                *slot = (0).into();
-                continue;
-            }
-            used.push(id).unwrap();
-            *slot = id.into();
-        }
-    }
-
-    for key in ["favorite_master_card_id", "guest_smile_master_card_id", "guest_cool_master_card_id", "guest_pure_master_card_id"] {
-        let id = rv["user"][key].as_i64().unwrap_or(0);
-        rv["user"][key] = guest::proxy_card_id(id).into();
-    }
-
-    rv
-}
-*/
-
 fn acc_exists(uid: i64) -> bool {
     DATABASE.lock_and_select("SELECT user_id FROM userdata WHERE user_id=?1", params!(uid)).is_ok()
 }
@@ -247,9 +199,6 @@ fn get_uid(token: &str) -> i64 {
     data.parse::<i64>().unwrap_or(0)
 }
 
-// The account a login token belongs to, 0 when the token is unknown. The HTTP layer
-// never needs this (it keys everything off the token itself), but the multi-live relay
-// authenticates a {userId, token} pair and has to check the two agree.
 pub fn uid_from_login_token(token: &str) -> i64 {
     get_uid(token)
 }
@@ -301,12 +250,7 @@ fn get_data(auth_key: &str, row: &str) -> JsonValue {
     jzon::parse(&result.unwrap()).unwrap()
 }
 
-// Deleted custom songs leave stale score/clear records behind. They're wiped
-// lazily when the userdata is pulled: collect the user's own music-id-keyed
-// rows in the custom range (official ids are never candidates) and drop the
-// ones whose id no longer exists in the catalog. Custom ids are never reused,
-// so the wipe is final. A song that still exists but isn't visible to this
-// user is NOT wiped - existence is what's checked, not visibility
+// Prune deleted custom songs
 fn remove_deleted_custom_songs(user: &mut JsonValue) -> bool {
     // Feature off: never touch custom_songs.db, leave userdata untouched
     if crate::router::custom_song::disabled() {
@@ -341,13 +285,7 @@ fn remove_deleted_custom_songs(user: &mut JsonValue) -> bool {
     true
 }
 
-// Deleted custom cards leave stale card_list rows behind - and a card_list id
-// the client can't resolve aborts its whole login. Wiped lazily when the
-// userdata is pulled, mirroring remove_deleted_custom_songs: only the runtime
-// band is a candidate (official/imported ids never are), ids are never
-// reused, so the wipe is final. A card that still exists but is unpublished
-// is NOT wiped - existence is what's checked, and the catalog keeps serving
-// owned ids (custom_card::owned_runtime_ids) so holders still resolve them
+// Prune deleted custom cards
 fn remove_deleted_custom_cards(user: &mut JsonValue) -> bool {
     // Feature off: never touch custom_cards.db, leave userdata untouched
     if crate::router::custom_card::disabled() {
@@ -382,9 +320,6 @@ fn remove_deleted_custom_cards(user: &mut JsonValue) -> bool {
             }
         }
     }
-    // A dead favorite/guest card repoints to the account's first remaining
-    // card (every account has its tutorial cards; the fallback can't trigger
-    // in practice)
     let fallback = user["card_list"][0]["master_card_id"].as_i64().unwrap_or(10010001);
     for key in ["favorite_master_card_id", "guest_smile_master_card_id", "guest_cool_master_card_id", "guest_pure_master_card_id"] {
         if dead.contains(user["user"][key].as_i64().unwrap_or(0)) {
@@ -484,22 +419,6 @@ pub fn save_server_data(auth_key: &str, data: JsonValue) {
     save_data(auth_key, "server_data", data);
 }
 
-// Read-modify-write of one account's server_data as ONE atomic step.
-//
-// get_server_data + save_server_data open a connection each, so two requests for the same
-// account both read the pre-state and the later write wins - which for a record that is
-// meant to be spent exactly once (the started-live record /multi_live/end awards off) means
-// both ends see it and both award. Everything here happens inside a single BEGIN IMMEDIATE
-// transaction instead, so concurrent callers serialise and the second one observes what the
-// first one wrote.
-//
-// `f` sees the parsed server_data and returns whatever the caller needs out of it; the
-// (possibly mutated) value is written back before the transaction commits. get_key runs
-// BEFORE the transaction because it can create the account, which writes on its own
-// connection and would otherwise deadlock against our write lock.
-//
-// A database error yields T::default() rather than a panic: the callers all have a
-// "nothing to spend" branch, which is the right answer when the record could not be read.
 pub fn modify_server_data<T: Default>(auth_key: &str, f: impl FnOnce(&mut JsonValue) -> T) -> T {
     let key = get_key(auth_key);
     let rv = DATABASE.lock_and_transact(|conn| {
@@ -788,15 +707,6 @@ pub fn export_user(token: &str) -> Option<JsonValue> {
     })
 }
 
-// Every row an account owns, gone. Factored out of purge_accounts so the arcade
-// sweeper (a machine that aged out takes its two accounts with it) and the
-// card-rebind orphan cleanup delete exactly the same set of rows - an account
-// half-deleted here is one the login path would resurrect empty.
-//
-// This list is also what the arcade guest reset mirrors: starter::write_starter_rows
-// rewrites the eleven data rows, re-draws the token and deletes the rest, so a
-// row added here has to be accounted for there too or a guest starts carrying
-// the previous player's state across a credit.
 pub const ACCOUNT_TABLES: &[&str] = &[
     "userdata", "userhome", "missions", "loginbonus", "sifcards", "friends",
     "chats", "exchange", "event", "eventloginbonus", "server_data", "webui",
@@ -808,11 +718,12 @@ pub fn delete_account(user_id: i64) {
     for table in ACCOUNT_TABLES {
         DATABASE.lock_and_exec(&format!("DELETE FROM {} WHERE user_id=?1", table), params!(user_id));
     }
+
+    crate::router::custom_song::purge_owner(user_id);
+    crate::router::custom_card::purge_owner(user_id);
+    crate::router::custom_3dmv::purge_owner(user_id);
 }
 
-// True when the account has ever registered a data-transfer password, which is
-// the only way an account can be taken over from another device. The arcade uses
-// it to tell a throwaway account it made itself from a real player's account.
 pub fn has_transfer_password(user_id: i64) -> bool {
     !DATABASE.lock_and_select("SELECT password FROM migration WHERE user_id=?1", params!(user_id))
         .unwrap_or_default()
@@ -841,6 +752,9 @@ pub fn purge_accounts() -> usize {
     dead_uids.len()
 }
 
+
+// more tests???
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -855,10 +769,10 @@ mod tests {
         let mut user = get_acc(token);
 
         let deleted_id = custom_song::next_music_id();
-        custom_song::insert_song(deleted_id, 1, &object!{music_id: deleted_id}, "public", &array![], false);
+        custom_song::insert_song(deleted_id, 1, &object!{music_id: deleted_id}, "public", &array![], false).unwrap();
         // Exists but isn't visible to this user - must survive the wipe
         let private_id = custom_song::next_music_id();
-        custom_song::insert_song(private_id, 1, &object!{music_id: private_id}, "private", &array![], false);
+        custom_song::insert_song(private_id, 1, &object!{music_id: private_id}, "private", &array![], false).unwrap();
 
         // 1100101 is a real stock live-id shape (7-digit, >= FIRST_MUSIC_ID): it
         // must survive the custom-song wipe, unlike an unrealistic sub-10000 id
@@ -883,7 +797,7 @@ mod tests {
         assert_eq!(user["live_list"].len(), 3);
         assert_eq!(user["live_mission_list"].len(), 3);
 
-        custom_song::delete_song(deleted_id);
+        custom_song::delete_song(deleted_id).unwrap();
 
         // The next pull drops the dead id's records and only those
         let user = get_acc(token);
@@ -912,10 +826,10 @@ mod tests {
         let mut user = get_acc(token);
 
         let deleted_id = custom_card::next_card_id();
-        custom_card::insert_card(deleted_id, 1001, 1, &jzon::object!{ "master_card_id": deleted_id, "rarity": 1 }, true, true);
+        custom_card::insert_card(deleted_id, 1001, 1, &jzon::object!{ "master_card_id": deleted_id, "rarity": 1 }, true, true).unwrap();
         // Exists but was unpublished - must survive the wipe
         let unpublished_id = custom_card::next_card_id();
-        custom_card::insert_card(unpublished_id, 1001, 1, &jzon::object!{ "master_card_id": unpublished_id, "rarity": 1 }, false, false);
+        custom_card::insert_card(unpublished_id, 1001, 1, &jzon::object!{ "master_card_id": unpublished_id, "rarity": 1 }, false, false).unwrap();
 
         for id in [deleted_id, unpublished_id] {
             user["card_list"].push(jzon::object!{

@@ -107,10 +107,16 @@ pub fn next_music_id() -> i64 {
     std::cmp::max(std::cmp::max(issued, max), FIRST_MUSIC_ID - 1) + 1
 }
 
-pub fn insert_song(music_id: i64, owner_id: i64, song: &JsonValue, visibility: &str, shared_with: &JsonValue, downloads_disabled: bool) {
-    DATABASE.lock_and_exec("INSERT INTO songs (music_id, owner_id, song, visibility, downloads_disabled) VALUES (?1, ?2, ?3, ?4, ?5)", params!(music_id, owner_id, jzon::stringify(song.clone()), visibility, downloads_disabled as i64));
-    DATABASE.lock_and_exec("INSERT INTO revision (id, revision, last_music_id) VALUES (1, 0, ?1) ON CONFLICT(id) DO UPDATE SET last_music_id=?1", params!(music_id));
-    set_shared_users(music_id, shared_with);
+// The row, the high-water mark and the shared-user list are one write: a failure
+// between them would leave a song whose id the next upload reissues, and the
+// failure itself must reach the uploader as an error rather than panic the worker
+// (lock_and_exec unwraps, lock_and_transact returns)
+pub fn insert_song(music_id: i64, owner_id: i64, song: &JsonValue, visibility: &str, shared_with: &JsonValue, downloads_disabled: bool) -> Result<(), rusqlite::Error> {
+    DATABASE.lock_and_transact(|conn| {
+        conn.execute("INSERT INTO songs (music_id, owner_id, song, visibility, downloads_disabled) VALUES (?1, ?2, ?3, ?4, ?5)", params!(music_id, owner_id, jzon::stringify(song.clone()), visibility, downloads_disabled as i64))?;
+        conn.execute("INSERT INTO revision (id, revision, last_music_id) VALUES (1, 0, ?1) ON CONFLICT(id) DO UPDATE SET last_music_id=?1", params!(music_id))?;
+        write_shared_users(conn, music_id, shared_with)
+    })
 }
 
 // Replace an existing song's catalog blob in place. The owner, visibility,
@@ -119,9 +125,12 @@ pub fn update_song(music_id: i64, song: &JsonValue) {
     DATABASE.lock_and_exec("UPDATE songs SET song=?1 WHERE music_id=?2", params!(jzon::stringify(song.clone()), music_id));
 }
 
-pub fn delete_song(music_id: i64) {
-    DATABASE.lock_and_exec("DELETE FROM songs WHERE music_id=?1", params!(music_id));
-    DATABASE.lock_and_exec("DELETE FROM shared_users WHERE music_id=?1", params!(music_id));
+pub fn delete_song(music_id: i64) -> Result<(), rusqlite::Error> {
+    DATABASE.lock_and_transact(|conn| {
+        conn.execute("DELETE FROM songs WHERE music_id=?1", params!(music_id))?;
+        conn.execute("DELETE FROM shared_users WHERE music_id=?1", params!(music_id))?;
+        Ok(())
+    })
 }
 
 pub fn get_song(music_id: i64) -> Option<JsonValue> {
@@ -133,9 +142,11 @@ pub fn get_song_owner(music_id: i64) -> Option<i64> {
     DATABASE.lock_and_select("SELECT owner_id FROM songs WHERE music_id=?1", params!(music_id)).ok()?.parse::<i64>().ok()
 }
 
-pub fn set_visibility(music_id: i64, visibility: &str, shared_with: &JsonValue) {
-    DATABASE.lock_and_exec("UPDATE songs SET visibility=?1 WHERE music_id=?2", params!(visibility, music_id));
-    set_shared_users(music_id, shared_with);
+pub fn set_visibility(music_id: i64, visibility: &str, shared_with: &JsonValue) -> Result<(), rusqlite::Error> {
+    DATABASE.lock_and_transact(|conn| {
+        conn.execute("UPDATE songs SET visibility=?1 WHERE music_id=?2", params!(visibility, music_id))?;
+        write_shared_users(conn, music_id, shared_with)
+    })
 }
 
 pub fn set_downloads_disabled(music_id: i64, downloads_disabled: bool) {
@@ -146,11 +157,15 @@ fn get_downloads_disabled(music_id: i64) -> bool {
     DATABASE.lock_and_select("SELECT downloads_disabled FROM songs WHERE music_id=?1", params!(music_id)).unwrap_or_default() == "1"
 }
 
-fn set_shared_users(music_id: i64, shared_with: &JsonValue) {
-    DATABASE.lock_and_exec("DELETE FROM shared_users WHERE music_id=?1", params!(music_id));
+// Replace-the-whole-list, inside the caller's transaction: a half-written list is a
+// song shared with the wrong people
+fn write_shared_users(conn: &rusqlite::Connection, music_id: i64, shared_with: &JsonValue) -> Result<(), rusqlite::Error> {
+    conn.execute("DELETE FROM shared_users WHERE music_id=?1", params!(music_id))?;
     for id in shared_with.members() {
-        DATABASE.lock_and_exec("INSERT OR IGNORE INTO shared_users (music_id, user_id) VALUES (?1, ?2)", params!(music_id, id.as_i64().unwrap()));
+        let Some(id) = id.as_i64() else { continue; };
+        conn.execute("INSERT OR IGNORE INTO shared_users (music_id, user_id) VALUES (?1, ?2)", params!(music_id, id))?;
     }
+    Ok(())
 }
 
 fn get_visibility(music_id: i64) -> String {
@@ -257,6 +272,67 @@ pub fn public_song_title(music_id: i64, english: bool) -> Option<String> {
     Some(if english && !name_en.is_empty() { name_en } else { name })
 }
 
+// Whether this viewer may fetch the song's per-id asset files (jacket, blur,
+// chart JSON). Exactly the catalog's visibility rule: public to everyone, private
+// to its owner, shared to its owner and the shared-user list. Anonymous viewers
+// (no webui session) are only ever shown public songs.
+//
+// The /data/{md5} route stays sessionless on purpose - a 128-bit content hash IS
+// the capability there - but /assets/{music_id}/{file} is addressed by a
+// sequential id, so it needs the real rule
+pub fn asset_visible(music_id: i64, viewer: Option<i64>) -> bool {
+    let Some(owner) = get_song_owner(music_id) else {
+        return false;
+    };
+    let viewer = viewer.unwrap_or(0);
+    if owner == viewer {
+        return true;
+    }
+    match get_visibility(music_id).as_str() {
+        "public" => true,
+        "shared" => get_shared_users(music_id).contains(viewer),
+        _ => false
+    }
+}
+
+// Every song this account uploaded, for the account-deletion purge
+pub fn music_ids_by_owner(owner_id: i64) -> Vec<i64> {
+    DATABASE.lock_and_select_all("SELECT music_id FROM songs WHERE owner_id=?1 ORDER BY music_id", params!(owner_id))
+        .unwrap_or(array![])
+        .members().filter_map(|id| id.as_i64()).collect()
+}
+
+// The served bytes one song accounts for: both jackets, every chart and both
+// audio cues, straight out of the catalog blob that quotes them to the client.
+// The original upload artifacts kept under original/ are NOT counted (the
+// catalog does not record their sizes); the per-account cap is set with that
+// roughly-2x on-disk factor in mind
+pub fn song_bytes(song: &JsonValue) -> i64 {
+    let mut total = song["jacket_size"].as_i64().unwrap_or(0) + song["jacket_blur_size"].as_i64().unwrap_or(0);
+    for level in song["levels"].members() {
+        total += level["size"].as_i64().unwrap_or(0);
+    }
+    for key in ["play", "select"] {
+        total += song["sound"][key]["size"].as_i64().unwrap_or(0);
+    }
+    total
+}
+
+// What this account's songs already occupy, optionally ignoring one song (the
+// one being replaced by an in-place edit, whose new size is counted instead)
+pub fn owner_bytes(owner_id: i64, excluding_music_id: i64) -> i64 {
+    let songs = DATABASE.lock_and_select_all("SELECT song FROM songs WHERE owner_id=?1", params!(owner_id)).unwrap_or(array![]);
+    let mut total = 0;
+    for blob in songs.members() {
+        let Ok(song) = jzon::parse(&blob.to_string()) else { continue; };
+        if song["music_id"].as_i64() == Some(excluding_music_id) {
+            continue;
+        }
+        total += song_bytes(&song);
+    }
+    total
+}
+
 // Whether the song exists and is publicly visible - what lets another
 // uploader attach cross-feature content (a custom 3D MV) to it. The
 // existence check comes first: get_visibility defaults to "public" for an
@@ -319,9 +395,32 @@ pub fn all_song_blobs() -> Option<JsonValue> {
     DATABASE.lock_and_select_all("SELECT song FROM songs ORDER BY music_id", params!()).ok()
 }
 
-// Audio files are content-addressed and may be shared between songs
-pub fn audio_in_use(md5: &str, ignored_music_id: i64) -> bool {
-    DATABASE.lock_and_select("SELECT music_id FROM songs WHERE music_id!=?1 AND song LIKE ?2", params!(ignored_music_id, format!("%{}%", md5))).is_ok()
+// Audio files are content-addressed and may be shared between songs, so an ogg is
+// only unlinkable once no other song's play/select cue names it. The LIKE scan finds
+// candidate rows cheaply and the parsed cues confirm the hit (a substring coincidence
+// elsewhere in the blob is not a reference), exactly like custom_3dmv::blob_in_use.
+//
+// Returns Result and NEVER folds an error into "false": the caller unlinks on false,
+// and a read that failed (SQLITE_BUSY under a concurrent write, a corrupt page) says
+// nothing about whether the file is referenced. The startup sweep is deliberately
+// fail-closed for the same reason; this is the online half of that rule
+pub fn audio_in_use(md5: &str, ignored_music_id: i64) -> Result<bool, rusqlite::Error> {
+    let rows = DATABASE.lock_and_select_all(
+        "SELECT song FROM songs WHERE music_id!=?1 AND song LIKE ?2",
+        params!(ignored_music_id, format!("%{}%", md5))
+    )?;
+    for blob in rows.members() {
+        let Ok(song) = jzon::parse(&blob.to_string()) else {
+            // An unparseable row could reference anything - assume it does
+            return Ok(true);
+        };
+        for key in ["play", "select"] {
+            if song["sound"][key]["md5"].as_str() == Some(md5) {
+                return Ok(true);
+            }
+        }
+    }
+    Ok(false)
 }
 
 // Resolve a content-addressed chart/jacket md5 to the per-song-id file that
@@ -347,4 +446,11 @@ pub fn find_asset_by_md5(md5: &str) -> Option<(i64, String)> {
         }
     }
     None
+}
+
+// The on-disk database file, so a test can force the read errors the fail-closed
+// GC paths are built for
+#[cfg(test)]
+pub fn test_db_path() -> String {
+    DATABASE.get_path().to_string()
 }

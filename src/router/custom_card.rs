@@ -52,6 +52,13 @@ pub const MAX_FILE_BYTES: usize = 8 * 1024 * 1024;
 pub const MAX_REQUEST_BYTES: usize = 64 * 1024 * 1024;
 pub const MAX_CARDS_PER_USER: i64 = 500;
 
+// Per-account storage quota over the stored art and voiceline bytes, shared by
+// cards and characters (they share one storage root). One card derives 14 PNGs up
+// to 2048x1260, so the 500-card count limit alone allowed several gigabytes per
+// account with no byte bound at all; 2GiB is around a hundred full cards, well
+// past any real uploader, and matches the custom-song quota
+pub const MAX_BYTES_PER_USER: i64 = 2 * 1024 * 1024 * 1024;
+
 // Columns the uploader never supplies. master_release_label_id must be 1: a
 // closed label filters the card out of the member-list filters and drops its
 // evolve conditions
@@ -127,6 +134,24 @@ const CHARACTER_ART: &[ArtKind] = &[
     ArtKind { kind: "character", width: 600, height: 920 }
 ];
 
+// One uploadable voiceline moment. `name` is the wire kind: it is the infix of
+// the multipart field names below, the "kind" of every stored/served line, and
+// what the client maps to a SYSTEM_VOICE_TYPE (and, for the day_* moments, to
+// the date_condition id the game's resolver compares). `category` only groups
+// the upload form.
+//
+// The home-screen moments (category "home") are exactly the SYSTEM_VOICE_TYPEs
+// HomeScene.CreateVoiceData asks the resolver for; everything else is a moment
+// that already shipped. Kind names are the snake_case of the game's own
+// SYSTEM_VOICE_TYPE members (day_* follow the game's own SYS_VOICE_DAY_MMDD cue
+// naming), so the mapping stays readable on both sides.
+pub struct VoiceKind {
+    pub name: &'static str,
+    pub label: &'static str,
+    pub label_en: &'static str,
+    pub category: &'static str,
+}
+
 // Optional voicelines per character. Multipart fields per line:
 //   voice_{kind}_{index}          audio file (any format symphonia reads;
 //                                 transcoded to ogg-vorbis, stored
@@ -137,9 +162,71 @@ const CHARACTER_ART: &[ArtKind] = &[
 // Absent slots keep their stored line, captions without a file update the
 // stored line's captions, and surviving lines are renumbered contiguously
 // per kind (1..n) after every edit
-const VOICE_KINDS: &[&str] = &[
-    "live_start", "live_success", "live_failed", "result_bond",
-    "skill_smile", "skill_pure", "skill_cool"
+pub const VOICE_KINDS: &[VoiceKind] = &[
+    // --- moments outside the home screen (unchanged wire names) ---
+    VoiceKind { name: "live_start",   label: "ライブ開始（リーダー）", label_en: "Live start (leader, before a live)", category: "live" },
+    VoiceKind { name: "live_success", label: "ライブクリア",           label_en: "Live cleared",                      category: "live" },
+    VoiceKind { name: "live_failed",  label: "ライブ失敗",             label_en: "Live failed",                       category: "live" },
+    VoiceKind { name: "result_bond",  label: "リザルト・絆獲得",       label_en: "Bond gained (live result)",         category: "result" },
+    VoiceKind { name: "skill_smile",  label: "スキル発動（スマイル）", label_en: "Skill activation - Smile cards",    category: "skill" },
+    VoiceKind { name: "skill_pure",   label: "スキル発動（ピュア）",   label_en: "Skill activation - Pure cards",     category: "skill" },
+    VoiceKind { name: "skill_cool",   label: "スキル発動（クール）",   label_en: "Skill activation - Cool cards",     category: "skill" },
+
+    // --- home screen: always in the pool ---
+    VoiceKind { name: "random",                   label: "ランダム",                     label_en: "Random line (always in the pool)",          category: "home" },
+    VoiceKind { name: "random_evolution",         label: "ランダム（覚醒後）",           label_en: "Random line, awakened card only",           category: "home" },
+    VoiceKind { name: "random_unevolution_smile", label: "ランダム（未覚醒・スマイル）", label_en: "Random line, un-awakened Smile card",       category: "home" },
+    VoiceKind { name: "random_unevolution_pure",  label: "ランダム（未覚醒・ピュア）",   label_en: "Random line, un-awakened Pure card",        category: "home" },
+    VoiceKind { name: "random_unevolution_cool",  label: "ランダム（未覚醒・クール）",   label_en: "Random line, un-awakened Cool card",        category: "home" },
+    VoiceKind { name: "random_evolution_smile",   label: "ランダム（覚醒後・スマイル）", label_en: "Random line, awakened Smile card",          category: "home" },
+    VoiceKind { name: "random_evolution_pure",    label: "ランダム（覚醒後・ピュア）",   label_en: "Random line, awakened Pure card",           category: "home" },
+    VoiceKind { name: "random_evolution_cool",    label: "ランダム（覚醒後・クール）",   label_en: "Random line, awakened Cool card",           category: "home" },
+    VoiceKind { name: "touch",                    label: "タップ",                       label_en: "Tapped (the touch-to-play-voice button)",   category: "home" },
+
+    // --- home screen: time of day (the game's own hour bands) ---
+    VoiceKind { name: "time",            label: "時間帯（共通）",            label_en: "Any time of day",           category: "home" },
+    VoiceKind { name: "time_firsthalf",  label: "時間帯（5時〜17時）",       label_en: "First half of the day (05-17)", category: "home" },
+    VoiceKind { name: "time_latterhalf", label: "時間帯（17時〜5時）",       label_en: "Latter half of the day (17-05)", category: "home" },
+    VoiceKind { name: "time_morning",    label: "時間帯（朝・5時〜11時）",   label_en: "Morning (05-11)",           category: "home" },
+    VoiceKind { name: "time_noon",       label: "時間帯（昼・11時〜17時）",  label_en: "Daytime (11-17)",           category: "home" },
+    VoiceKind { name: "time_evening",    label: "時間帯（夕方・17時〜23時）", label_en: "Evening (17-23)",          category: "home" },
+    VoiceKind { name: "time_night",      label: "時間帯（夜・23時〜5時）",   label_en: "Night (23-05)",             category: "home" },
+
+    // --- home screen: season (the game's own month bands) ---
+    VoiceKind { name: "season_spring", label: "季節（春・3〜5月）",   label_en: "Spring (March-May)",        category: "home" },
+    VoiceKind { name: "season_summer", label: "季節（夏・6〜8月）",   label_en: "Summer (June-August)",      category: "home" },
+    VoiceKind { name: "season_autumn", label: "季節（秋・9〜11月）",  label_en: "Autumn (September-November)", category: "home" },
+    VoiceKind { name: "season_winter", label: "季節（冬・12〜2月）",  label_en: "Winter (December-February)", category: "home" },
+
+    // --- home screen: calendar days. On a day that matches, the home screen
+    // asks for NOTHING ELSE (a matching day line pre-empts the whole pool
+    // unless the player taps), so these are the "special occasion" lines
+    VoiceKind { name: "day_0101", label: "記念日（1月1日・お正月）",       label_en: "January 1 (New Year's Day)",           category: "home" },
+    VoiceKind { name: "day_0203", label: "記念日（2月3日・節分）",         label_en: "February 3 (Setsubun)",                category: "home" },
+    VoiceKind { name: "day_0214", label: "記念日（2月14日・バレンタイン）", label_en: "February 14 (Valentine's Day)",       category: "home" },
+    VoiceKind { name: "day_0303", label: "記念日（3月3日・ひな祭り）",     label_en: "March 3 (Hinamatsuri)",                category: "home" },
+    VoiceKind { name: "day_0314", label: "記念日（3月14日・ホワイトデー）", label_en: "March 14 (White Day)",                category: "home" },
+    VoiceKind { name: "day_0505", label: "記念日（5月5日・こどもの日）",   label_en: "May 5 (Children's Day)",               category: "home" },
+    VoiceKind { name: "day_0707", label: "記念日（7月7日・七夕）",         label_en: "July 7 (Tanabata)",                    category: "home" },
+    VoiceKind { name: "day_0717", label: "記念日（7月第3月曜・海の日）",   label_en: "Marine Day (third Monday of July)",    category: "home" },
+    VoiceKind { name: "day_1015", label: "記念日（10月15日）",             label_en: "October 15",                           category: "home" },
+    VoiceKind { name: "day_1031", label: "記念日（10月31日・ハロウィン）", label_en: "October 31 (Halloween)",               category: "home" },
+    VoiceKind { name: "day_1225", label: "記念日（12月25日・クリスマス）", label_en: "December 25 (Christmas)",              category: "home" },
+    VoiceKind { name: "day_1231", label: "記念日（12月31日・大晦日）",     label_en: "December 31 (New Year's Eve)",         category: "home" },
+
+    // --- home screen: lines keyed to what the account has waiting ---
+    VoiceKind { name: "advice_story",      label: "未読ストーリーあり（おすすめ）", label_en: "Unread story waiting (advice line)",              category: "home" },
+    VoiceKind { name: "trigger_story",     label: "未読ストーリーあり（反応）",     label_en: "Unread story waiting (trigger line)",             category: "home" },
+    VoiceKind { name: "advice_mission",    label: "デイリーミッション報酬未受取",   label_en: "Unclaimed daily mission reward",                  category: "home" },
+    VoiceKind { name: "advice_live",       label: "LPが足りている（ライブ）",       label_en: "Enough LP to play a live",                        category: "home" },
+    VoiceKind { name: "advice_lp",         label: "LP半分以下（回復のすすめ）",     label_en: "LP below half, recovery affordable",              category: "home" },
+    VoiceKind { name: "trigger_shop",      label: "LP半分以下（ショップ）",         label_en: "LP below half, recovery affordable (shop line)",  category: "home" },
+    VoiceKind { name: "advice_lesson",     label: "レッスン（未カンスト）",         label_en: "A unit is not fully levelled",                    category: "home" },
+    VoiceKind { name: "advice_present",    label: "プレゼント未受取",               label_en: "Unclaimed present waiting",                       category: "home" },
+    VoiceKind { name: "advice_gacha",      label: "無料スカウト可能",               label_en: "The daily free scouting is available",            category: "home" },
+    VoiceKind { name: "advice_infomation", label: "新着お知らせあり",               label_en: "A new announcement is up",                        category: "home" },
+    VoiceKind { name: "advice_event",      label: "イベント開催中",                 label_en: "An event is running",                             category: "home" },
+    VoiceKind { name: "trigger_friend",    label: "イベント中・フレンド",           label_en: "An event is running and a friend is active",      category: "home" }
 ];
 const MAX_VOICE_VARIANTS: usize = 9;
 const MAX_VOICE_BYTES: usize = 4 * 1024 * 1024;
@@ -482,6 +569,17 @@ pub fn upload_limits() -> JsonValue {
         };
     }
     let ((prob_min, prob_max), (ms_min, ms_max)) = *SKILL_SCALAR_RANGES;
+    // The voiceline moments, so the form renders exactly the kinds this build
+    // accepts instead of carrying its own copy of the list
+    let mut voice_kinds = array![];
+    for kind in VOICE_KINDS {
+        voice_kinds.push(object!{
+            "name": kind.name,
+            "label": kind.label,
+            "label_en": kind.label_en,
+            "category": kind.category
+        }).unwrap();
+    }
     object!{
         "stat_caps": stat_caps,
         "skill_levels": skill_levels,
@@ -498,7 +596,15 @@ pub fn upload_limits() -> JsonValue {
             "probability": { "min": prob_min, "max": prob_max },
             "milli_secs": { "min": ms_min, "max": ms_max }
         },
-        "min_source_dim": art::MIN_SOURCE_DIM
+        "min_source_dim": art::MIN_SOURCE_DIM,
+        "max_file_bytes": MAX_FILE_BYTES,
+        "max_request_bytes": MAX_REQUEST_BYTES,
+        "max_cards_per_user": MAX_CARDS_PER_USER,
+        "max_bytes_per_user": MAX_BYTES_PER_USER,
+        "voice_kinds": voice_kinds,
+        "max_voice_variants": MAX_VOICE_VARIANTS,
+        "max_voice_bytes": MAX_VOICE_BYTES,
+        "max_voice_seconds": MAX_VOICE_SECONDS
     }
 }
 
@@ -559,6 +665,17 @@ async fn data(req: HttpRequest) -> HttpResponse {
         return HttpResponse::NotFound().finish();
     };
     match fs::read(asset_path(&relative)) {
+        // Art lives at FIXED per-card filenames ({kind}_{variant}.png) that an
+        // in-place edit overwrites, so between the file write and the catalog
+        // update the index still points an old md5 at bytes that are no longer its
+        // own. The client caches whatever it downloads under the md5 it asked for
+        // and never re-checks, so serving those bytes would poison its cache
+        // permanently. The index is a hint; these bytes are the answer only if
+        // they hash to the request. A mismatch is the same 404 a stale md5 already
+        // gets, and the client re-downloads under the md5 the catalog now carries
+        Ok(body) if !hash.eq_ignore_ascii_case(&format!("{:x}", md5::compute(&body))) => {
+            HttpResponse::NotFound().finish()
+        },
         Ok(body) => {
             HttpResponse::Ok()
                 .insert_header(ContentType::png())
@@ -840,11 +957,29 @@ fn write_art(dir: &str, pending: &[PendingArt]) -> Result<(), String> {
 fn collect_voice(fields: &Fields, stored_voice: &JsonValue) -> Result<(JsonValue, Vec<(String, Vec<u8>)>), String> {
     let mut rv = array![];
     let mut files: Vec<(String, Vec<u8>)> = Vec::new();
+    // An unknown moment is a typo, and silently ignoring it (what happens to
+    // every other unrecognised multipart field) would show the uploader a clip
+    // that uploaded fine and a line that never appeared. An out-of-range INDEX
+    // stays ignored - that is a full slot list, not a misspelling
+    for key in fields.keys() {
+        let Some(rest) = key.strip_prefix("voice_") else { continue; };
+        let rest = ["_text_en", "_text", "_delete"].iter()
+            .find_map(|suffix| rest.strip_suffix(suffix))
+            .unwrap_or(rest);
+        let named_moment = match rest.rsplit_once('_') {
+            Some((kind, index)) => index.parse::<usize>().is_ok() && VOICE_KINDS.iter().any(|k| k.name == kind),
+            None => false
+        };
+        if !named_moment {
+            return Err(format!("'{}' is not a voiceline field", key));
+        }
+    }
     for kind in VOICE_KINDS {
+        let kind = kind.name;
         let mut lines: Vec<JsonValue> = Vec::new();
         for index in 1..=MAX_VOICE_VARIANTS {
             let base = format!("voice_{}_{}", kind, index);
-            let stored_line = stored_voice.members().find(|line| line["kind"] == *kind && line["index"] == index);
+            let stored_line = stored_voice.members().find(|line| line["kind"] == kind && line["index"] == index);
             if field_flag(fields, &format!("{}_delete", base)) {
                 if file_of(fields, &base).is_some() {
                     return Err(format!("'{}': cannot both replace and delete the same line", base));
@@ -869,7 +1004,7 @@ fn collect_voice(fields: &Fields, stored_voice: &JsonValue) -> Result<(JsonValue
                 }
                 let clip = audio::process_one_shot(bytes, MAX_VOICE_SECONDS).map_err(|e| format!("'{}': {}", base, e))?;
                 lines.push(object!{
-                    "kind": *kind,
+                    "kind": kind,
                     "index": 0,
                     "md5": clip.md5.clone(),
                     "size": clip.bytes.len(),
@@ -879,7 +1014,7 @@ fn collect_voice(fields: &Fields, stored_voice: &JsonValue) -> Result<(JsonValue
                 files.push((clip.md5, clip.bytes));
             } else if let Some(stored_line) = stored_line {
                 lines.push(object!{
-                    "kind": *kind,
+                    "kind": kind,
                     "index": 0,
                     "md5": stored_line["md5"].clone(),
                     "size": stored_line["size"].clone(),
@@ -917,9 +1052,12 @@ fn write_voice(master_character_id: i64, files: &[(String, Vec<u8>)]) -> Result<
 // (their old catalog md5 404s, exactly like replaced art)
 fn gc_voice(master_character_id: i64, old_voice: &JsonValue, new_voice: &JsonValue) {
     for old in old_voice.members() {
-        let md5 = old["md5"].to_string();
-        if !md5.is_empty() && !new_voice.members().any(|line| line["md5"] == old["md5"]) {
-            let _ = fs::remove_file(voice_path(master_character_id, &md5));
+        // JsonValue::to_string renders Null as the literal "null", which an
+        // is_empty() guard happily passes; only exactly 32 hex characters is a
+        // hash (the same test custom_3dmv's blob GC uses)
+        let Some(md5) = old["md5"].as_str().filter(|md5| md5.len() == 32 && md5.chars().all(|c| c.is_ascii_hexdigit())) else { continue; };
+        if !new_voice.members().any(|line| line["md5"] == old["md5"]) {
+            let _ = fs::remove_file(voice_path(master_character_id, md5));
         }
     }
 }
@@ -1215,13 +1353,29 @@ pub fn create_card(uid: i64, fields: &Fields) -> Result<i64, String> {
 
     let mut card = build_card(master_card_id, master_character_id, fields, &object!{})?;
     card["art"] = merge_art(&array![], &card_art);
+    check_quota(uid, database::card_bytes(&card), 0, 0)?;
 
     write_art(&card_dir(master_card_id), &card_art)?;
-    database::insert_card(master_card_id, master_character_id, uid, &card, published, obtainable);
+    database::insert_card(master_card_id, master_character_id, uid, &card, published, obtainable)
+        .map_err(|e| format!("Could not store the card: {}", e))?;
     database::bump_revision();
     drop(lock);
 
     Ok(master_card_id)
+}
+
+// Per-account storage quota over this account's cards AND characters. The
+// excluded ids are the entity being replaced by an in-place edit - its stored
+// size drops out and `adding` (the resulting size) replaces it
+fn check_quota(uid: i64, adding: i64, excluded_card_id: i64, excluded_character_id: i64) -> Result<(), String> {
+    let used = database::owner_bytes(uid, excluded_card_id, excluded_character_id);
+    if used + adding > MAX_BYTES_PER_USER {
+        return Err(format!(
+            "This upload would put your uploads at {} MB, over the {} MB per-account limit - delete a card or character first",
+            (used + adding) / (1024 * 1024), MAX_BYTES_PER_USER / (1024 * 1024)
+        ));
+    }
+    Ok(())
 }
 
 // Edit a card in place. The master_card_id - and everything derived from it:
@@ -1242,6 +1396,7 @@ pub fn update_card(uid: i64, master_card_id: i64, fields: &Fields) -> Result<(),
     let mut card = build_card(master_card_id, master_character_id, fields, &stored)?;
     let card_art = collect_card_art(fields, false)?;
     card["art"] = merge_art(&stored["art"], &card_art);
+    check_quota(owner, database::card_bytes(&card), master_card_id, 0)?;
 
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     write_art(&card_dir(master_card_id), &card_art)?;
@@ -1313,10 +1468,12 @@ pub fn create_character(uid: i64, fields: &Fields) -> Result<i64, String> {
     if !voice.is_empty() {
         character["voice"] = voice;
     }
+    check_quota(uid, database::character_bytes(&character), 0, 0)?;
 
     write_art(&character_dir(master_character_id), &character_art)?;
     write_voice(master_character_id, &voice_files)?;
-    database::insert_character(master_character_id, uid, &character);
+    database::insert_character(master_character_id, uid, &character)
+        .map_err(|e| format!("Could not store the character: {}", e))?;
     database::bump_revision();
     drop(lock);
 
@@ -1340,6 +1497,7 @@ pub fn update_character(uid: i64, master_character_id: i64, fields: &Fields) -> 
     if !voice.is_empty() {
         character["voice"] = voice.clone();
     }
+    check_quota(owner, database::character_bytes(&character), 0, master_character_id)?;
 
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     write_art(&character_dir(master_character_id), &character_art)?;
@@ -1376,6 +1534,41 @@ pub fn delete_character(uid: i64, master_character_id: i64) -> Result<(), String
     Ok(())
 }
 
+// Every card this account uploaded, gone - called from userdata::delete_account,
+// so a purged uploader leaves no catalog row resolving an owner id that no longer
+// exists (browse renders an uploader name for every row). Player copies of the
+// dead cards are wiped lazily on each account's next userdata pull, exactly like
+// an owner-initiated delete.
+//
+// Characters go with them only when nothing else references them: a custom
+// character that still backs SOMEONE ELSE'S card cannot be deleted without
+// serving a dangling master_character_id, which the client throws on. Those stay,
+// ownerless, which is the same trade delete_character already makes
+pub fn purge_owner(uid: i64) {
+    if disabled() {
+        return;
+    }
+    let cards = database::card_ids_for_owner(uid);
+    let characters = database::character_ids_for_owner(uid);
+    if cards.is_empty() && characters.is_empty() {
+        return;
+    }
+    let lock = lock_onto_mutex!(UPLOAD_LOCK);
+    for master_card_id in cards {
+        database::delete_card(master_card_id);
+        let _ = fs::remove_dir_all(card_dir(master_card_id));
+    }
+    for master_character_id in characters {
+        if database::cards_using_character(master_character_id) > 0 {
+            continue;
+        }
+        database::delete_character(master_character_id);
+        let _ = fs::remove_dir_all(character_dir(master_character_id));
+    }
+    database::bump_revision();
+    drop(lock);
+}
+
 async fn create(req: HttpRequest, payload: Multipart) -> HttpResponse {
     if disabled() {
         return HttpResponse::NotFound().finish();
@@ -1387,12 +1580,16 @@ async fn create(req: HttpRequest, payload: Multipart) -> HttpResponse {
         Ok(fields) => fields,
         Err(e) => return webui::error(&e)
     };
-    match create_card(uid, &fields) {
-        Ok(master_card_id) => send_json(object!{
+    // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
+    // seconds of CPU: it belongs on the blocking pool, not on the actix worker
+    // that also has to keep serving the game API
+    match web::block(move || create_card(uid, &fields)).await {
+        Ok(Ok(master_card_id)) => send_json(object!{
             result: "OK",
             master_card_id: master_card_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The upload could not be processed")
     }
 }
 
@@ -1408,12 +1605,16 @@ async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
         Err(e) => return webui::error(&e)
     };
     let master_card_id = field_str(&fields, "master_card_id").parse::<i64>().unwrap_or(0);
-    match update_card(uid, master_card_id, &fields) {
-        Ok(()) => send_json(object!{
+    // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
+    // seconds of CPU: it belongs on the blocking pool, not on the actix worker
+    // that also has to keep serving the game API
+    match web::block(move || update_card(uid, master_card_id, &fields)).await {
+        Ok(Ok(())) => send_json(object!{
             result: "OK",
             master_card_id: master_card_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The edit could not be processed")
     }
 }
 
@@ -1461,12 +1662,16 @@ async fn character_create(req: HttpRequest, payload: Multipart) -> HttpResponse 
         Ok(fields) => fields,
         Err(e) => return webui::error(&e)
     };
-    match create_character(uid, &fields) {
-        Ok(master_character_id) => send_json(object!{
+    // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
+    // seconds of CPU: it belongs on the blocking pool, not on the actix worker
+    // that also has to keep serving the game API
+    match web::block(move || create_character(uid, &fields)).await {
+        Ok(Ok(master_character_id)) => send_json(object!{
             result: "OK",
             master_character_id: master_character_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The upload could not be processed")
     }
 }
 
@@ -1482,12 +1687,16 @@ async fn character_update(req: HttpRequest, payload: Multipart) -> HttpResponse 
         Err(e) => return webui::error(&e)
     };
     let master_character_id = field_str(&fields, "master_character_id").parse::<i64>().unwrap_or(0);
-    match update_character(uid, master_character_id, &fields) {
-        Ok(()) => send_json(object!{
+    // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
+    // seconds of CPU: it belongs on the blocking pool, not on the actix worker
+    // that also has to keep serving the game API
+    match web::block(move || update_character(uid, master_character_id, &fields)).await {
+        Ok(Ok(())) => send_json(object!{
             result: "OK",
             master_character_id: master_character_id
         }),
-        Err(e) => webui::error(&e)
+        Ok(Err(e)) => webui::error(&e),
+        Err(_) => webui::error("The edit could not be processed")
     }
 }
 
@@ -1813,7 +2022,7 @@ pub mod tests {
         let mut edit = Fields::new();
         edit.insert(String::from("voice_result_bond_1"), test_wav(31.0, 6));
         let err = with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit)).unwrap_err();
-        assert!(err.contains("voice_result_bond_1") && err.contains("maximum is 30"), "{}", err);
+        assert!(err.contains("voice_result_bond_1") && err.contains("30 second maximum"), "{}", err);
         let mut edit = Fields::new();
         edit.insert(String::from("voice_result_bond_1"), b"definitely not audio".to_vec());
         assert!(with_permissions(4010, &[permissions::CARD_UPLOAD], || update_character(4010, id, &edit))
@@ -1821,6 +2030,145 @@ pub mod tests {
 
         assert_eq!(database::find_voice_by_md5(&"0".repeat(32)), None);
         wipe(4010);
+    }
+
+    // The home-screen moments ride the exact same upload path as the live/skill
+    // ones: real create + edit, transcode, content addressing, renumbering.
+    // day_1225 is the interesting one - the client turns it into a row carrying
+    // a date_condition id rather than 0
+    #[test]
+    fn home_voicelines_upload_through_the_real_path() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(4011);
+
+        let mut fields = character_fields();
+        fields.insert(String::from("voice_random_1"), test_wav(1.0, 11));
+        field(&mut fields, "voice_random_1_text", "おはよう！");
+        field(&mut fields, "voice_random_1_text_en", "Morning!");
+        fields.insert(String::from("voice_random_3"), test_wav(1.0, 12));
+        fields.insert(String::from("voice_touch_1"), test_wav(0.5, 13));
+        fields.insert(String::from("voice_time_morning_1"), test_wav(0.5, 14));
+        fields.insert(String::from("voice_day_1225_1"), test_wav(0.5, 15));
+        fields.insert(String::from("voice_trigger_friend_1"), test_wav(0.5, 16));
+        // Still ignored: a real moment, an index past the variant cap
+        fields.insert(String::from("voice_random_10"), test_wav(1.0, 17));
+        let id = with_permissions(4011, &[permissions::CARD_UPLOAD], || create_character(4011, &fields).unwrap());
+
+        let character = database::get_character(id).unwrap();
+        let voice = &character["voice"];
+        assert_eq!(voice.len(), 6);
+        let kinds: Vec<String> = voice.members().map(|line| line["kind"].to_string()).collect();
+        for kind in ["random", "touch", "time_morning", "day_1225", "trigger_friend"] {
+            assert!(kinds.contains(&String::from(kind)), "{} missing from {:?}", kind, kinds);
+        }
+        // The sparse random indexes renumbered to 1 and 2, captions intact
+        let random: Vec<&JsonValue> = voice.members().filter(|line| line["kind"] == "random").collect();
+        assert_eq!(random.len(), 2);
+        assert_eq!(random[0]["index"].as_i64(), Some(1));
+        assert_eq!(random[1]["index"].as_i64(), Some(2));
+        assert_eq!(random[0]["text"].as_str(), Some("おはよう！"));
+        assert_eq!(random[0]["text_en"].as_str(), Some("Morning!"));
+        for line in voice.members() {
+            let md5 = line["md5"].to_string();
+            let bytes = fs::read(voice_path(id, &md5)).unwrap();
+            assert!(bytes.starts_with(b"OggS"), "transcoded to ogg");
+            assert_eq!(database::find_voice_by_md5(&md5), Some(format!("characters/{}/voice/{}.ogg", id, md5)));
+        }
+
+        // Editing one home moment leaves the others alone
+        let touch_md5 = voice.members().find(|line| line["kind"] == "touch").unwrap()["md5"].to_string();
+        let mut edit = Fields::new();
+        field(&mut edit, "voice_day_1225_1_text", "メリークリスマス！");
+        edit.insert(String::from("voice_touch_2"), test_wav(0.5, 18));
+        with_permissions(4011, &[permissions::CARD_UPLOAD], || update_character(4011, id, &edit).unwrap());
+        let after = database::get_character(id).unwrap();
+        assert_eq!(after["voice"].len(), 7);
+        assert_eq!(after["voice"].members().find(|line| line["kind"] == "day_1225").unwrap()["text"].as_str(),
+            Some("メリークリスマス！"));
+        assert_eq!(after["voice"].members()
+            .find(|line| line["kind"] == "touch" && line["index"] == 1).unwrap()["md5"].to_string(), touch_md5);
+
+        // The 30-second and rich-text rules apply to the new moments too
+        let mut edit = Fields::new();
+        edit.insert(String::from("voice_time_night_1"), test_wav(31.0, 19));
+        let err = with_permissions(4011, &[permissions::CARD_UPLOAD], || update_character(4011, id, &edit)).unwrap_err();
+        assert!(err.contains("voice_time_night_1") && err.contains("30 second maximum"), "{}", err);
+        let mut edit = Fields::new();
+        field(&mut edit, "voice_touch_1_text", "<color=red>x");
+        assert!(with_permissions(4011, &[permissions::CARD_UPLOAD], || update_character(4011, id, &edit))
+            .unwrap_err().contains("<color>"));
+
+        wipe(4011);
+    }
+
+    // A misspelled moment must not upload as silence-that-never-plays
+    #[test]
+    fn an_unknown_voice_kind_is_rejected() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(4012);
+
+        let reject = |key: &str| {
+            let mut fields = character_fields();
+            fields.insert(String::from(key), test_wav(0.5, 21));
+            let err = with_permissions(4012, &[permissions::CARD_UPLOAD], || create_character(4012, &fields)).unwrap_err();
+            assert!(err.contains(key) && err.contains("not a voiceline field"), "{}: {}", key, err);
+        };
+        reject("voice_time_mornng_1");
+        reject("voice_day_0102_1");
+        reject("voice_live_start");
+        reject("voice_random_x");
+
+        // Captions and delete flags go through the same check
+        let mut fields = character_fields();
+        field(&mut fields, "voice_seaon_spring_1_text", "x");
+        let err = with_permissions(4012, &[permissions::CARD_UPLOAD], || create_character(4012, &fields)).unwrap_err();
+        assert!(err.contains("voice_seaon_spring_1_text"), "{}", err);
+
+        // ...and a correctly named one still goes through
+        let mut fields = character_fields();
+        fields.insert(String::from("voice_season_spring_1"), test_wav(0.5, 22));
+        let id = with_permissions(4012, &[permissions::CARD_UPLOAD], || create_character(4012, &fields).unwrap());
+        assert_eq!(database::get_character(id).unwrap()["voice"][0]["kind"].as_str(), Some("season_spring"));
+
+        wipe(4012);
+    }
+
+    // The webui renders whatever this serves; a kind that only exists in one of
+    // the two lists is the bug this endpoint exists to prevent
+    #[test]
+    fn the_limits_endpoint_lists_the_voice_kinds() {
+        let limits = upload_limits();
+        assert_eq!(limits["max_voice_variants"].as_usize(), Some(MAX_VOICE_VARIANTS));
+        assert_eq!(limits["max_voice_bytes"].as_usize(), Some(MAX_VOICE_BYTES));
+        assert_eq!(limits["max_voice_seconds"].as_f64(), Some(MAX_VOICE_SECONDS));
+        let served = &limits["voice_kinds"];
+        assert_eq!(served.len(), VOICE_KINDS.len());
+        for (entry, kind) in served.members().zip(VOICE_KINDS) {
+            assert_eq!(entry["name"].as_str(), Some(kind.name));
+            assert_eq!(entry["label"].as_str(), Some(kind.label));
+            assert_eq!(entry["label_en"].as_str(), Some(kind.label_en));
+            assert_eq!(entry["category"].as_str(), Some(kind.category));
+            assert!(!kind.label.is_empty() && !kind.label_en.is_empty(), "{} needs both labels", kind.name);
+            assert!(["home", "live", "result", "skill"].contains(&kind.category), "{}: {}", kind.name, kind.category);
+        }
+        // Names are the multipart infix and the client's switch arm: unique,
+        // snake_case, and free of the separators the field parser splits on
+        let mut names: Vec<&str> = VOICE_KINDS.iter().map(|kind| kind.name).collect();
+        names.sort_unstable();
+        let count = names.len();
+        names.dedup();
+        assert_eq!(names.len(), count, "duplicate voice kind name");
+        for kind in VOICE_KINDS {
+            assert!(kind.name.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '_'), "{}", kind.name);
+            // The field parser strips these suffixes before splitting off the index
+            assert!(!kind.name.ends_with("_text") && !kind.name.ends_with("_text_en") && !kind.name.ends_with("_delete"), "{}", kind.name);
+            // ...and splits at the LAST underscore, so "{another kind}_{number}"
+            // would be two readings of the same field name
+            if let Some((head, tail)) = kind.name.rsplit_once('_') {
+                assert!(tail.parse::<usize>().is_err() || !VOICE_KINDS.iter().any(|other| other.name == head),
+                    "{} is ambiguous with {}", kind.name, head);
+            }
+        }
     }
 
     // Diagnostic + sanity guard for the derived skill magnitude envelopes
@@ -2274,4 +2622,106 @@ pub mod tests {
         assert!(!viewer_can_resolve(100_010_001, 1));
         assert!(viewer_can_resolve(100_010_001, 2));
     }
+
+    // ---- defect-fix coverage -------------------------------------------------
+
+    // D14: card art lives at fixed per-card filenames that an in-place edit
+    // overwrites, so the md5 index can briefly point at bytes that are no longer
+    // its own. The client caches by md5 and never re-checks, so the route verifies
+    // the bytes before it serves them
+    #[test]
+    fn the_data_route_refuses_bytes_that_do_not_match_the_md5() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(4090);
+
+        let png = seeded_png(120, 60, 91);
+        let md5 = format!("{:x}", md5::compute(&png));
+        let id = database::next_card_id();
+        database::insert_card(id, 1001, 4090, &object!{
+            "master_card_id": id,
+            "rarity": 1,
+            "art": [{ "kind": "c", "variant": "00", "md5": md5.clone(), "size": png.len() }]
+        }, true, true).unwrap();
+        fs::create_dir_all(card_dir(id)).unwrap();
+        let file = format!("{}/c_00.png", card_dir(id));
+        fs::write(&file, &png).unwrap();
+
+        let call = || -> actix_web::http::StatusCode {
+            let req = actix_web::test::TestRequest::default()
+                .param("hash", md5.clone())
+                .param("file", format!("{}.png", md5))
+                .to_http_request();
+            actix_web::rt::System::new().block_on(async { data(req).await }).status()
+        };
+        assert_eq!(call(), actix_web::http::StatusCode::OK);
+
+        // The index still resolves, but the file no longer holds those bytes
+        fs::write(&file, seeded_png(120, 60, 92)).unwrap();
+        assert_eq!(call(), actix_web::http::StatusCode::NOT_FOUND);
+        fs::write(&file, &png).unwrap();
+        assert_eq!(call(), actix_web::http::StatusCode::OK);
+
+        wipe(4090);
+    }
+
+    // D13: JsonValue::to_string renders Null as the literal "null", so a stored
+    // line with no md5 used to aim the unlink at a file called null.ogg
+    #[test]
+    fn the_voice_gc_ignores_a_missing_md5() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let character = 5_900_001;
+        let dir = format!("{}/voice", character_dir(character));
+        fs::create_dir_all(&dir).unwrap();
+        let decoy = format!("{}/null.ogg", dir);
+        fs::write(&decoy, b"not a voiceline").unwrap();
+        let real_md5 = "b1".repeat(16);
+        let real = voice_path(character, &real_md5);
+        fs::write(&real, b"a voiceline").unwrap();
+
+        let old = array![
+            { "kind": "live_start", "index": 1, "md5": JsonValue::Null },
+            { "kind": "live_start", "index": 2, "md5": real_md5.clone() }
+        ];
+        gc_voice(character, &old, &array![]);
+
+        assert!(fs::read(&decoy).is_ok(), "the GC unlinked a file named after JSON null");
+        assert!(fs::read(&real).is_err(), "the dropped line's ogg was kept");
+        let _ = fs::remove_dir_all(character_dir(character));
+    }
+
+    // D15: cards and characters share one storage root, so they share one
+    // per-account byte quota
+    #[test]
+    fn uploads_are_bounded_by_a_per_account_byte_quota() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(4091);
+        assert_eq!(database::owner_bytes(4091, 0, 0), 0);
+
+        let id = database::next_card_id();
+        database::insert_card(id, 1001, 4091, &object!{
+            "master_card_id": id,
+            "rarity": 1,
+            "art": [{ "kind": "c", "variant": "00", "md5": "a1".repeat(16), "size": 1000 }]
+        }, true, true).unwrap();
+        let character = database::next_character_id();
+        database::insert_character(character, 4091, &object!{
+            "master_character_id": character,
+            "name": "Quota",
+            "art": [{ "kind": "icon", "md5": "a2".repeat(16), "size": 500 }],
+            "voice": [{ "kind": "live_start", "index": 1, "md5": "a3".repeat(16), "size": 250 }]
+        }).unwrap();
+
+        assert_eq!(database::owner_bytes(4091, 0, 0), 1750);
+        // An in-place edit replaces its own bytes rather than adding to them
+        assert_eq!(database::owner_bytes(4091, id, 0), 750);
+        assert_eq!(database::owner_bytes(4091, 0, character), 1000);
+        // Another account's uploads are not on this one's bill
+        assert_eq!(database::owner_bytes(4092, 0, 0), 0);
+
+        assert!(check_quota(4091, 1, 0, 0).is_ok());
+        assert!(check_quota(4091, MAX_BYTES_PER_USER, 0, 0).unwrap_err().contains("per-account limit"));
+
+        wipe(4091);
+    }
+
 }

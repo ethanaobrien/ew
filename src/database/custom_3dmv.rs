@@ -53,12 +53,18 @@ pub fn next_mv_id() -> i64 {
     std::cmp::max(std::cmp::max(issued, max), FIRST_MV_ID - 1) + 1
 }
 
-pub fn insert_mv(mv_id: i64, music_id: i64, owner_id: i64, mv: &JsonValue, published: bool) {
-    DATABASE.lock_and_exec(
-        "INSERT INTO mvs (mv_id, music_id, owner_id, mv, published) VALUES (?1, ?2, ?3, ?4, ?5)",
-        params!(mv_id, music_id, owner_id, jzon::stringify(mv.clone()), published as i64)
-    );
-    DATABASE.lock_and_exec("INSERT INTO revision (id, revision, last_mv_id) VALUES (1, 0, ?1) ON CONFLICT(id) DO UPDATE SET last_mv_id=?1", params!(mv_id));
+// The row and the high-water mark are one write: a failure between them leaves an
+// MV whose id the next upload would reissue, and the failure has to reach the
+// uploader as an error rather than panic the worker (lock_and_exec unwraps)
+pub fn insert_mv(mv_id: i64, music_id: i64, owner_id: i64, mv: &JsonValue, published: bool) -> Result<(), rusqlite::Error> {
+    DATABASE.lock_and_transact(|conn| {
+        conn.execute(
+            "INSERT INTO mvs (mv_id, music_id, owner_id, mv, published) VALUES (?1, ?2, ?3, ?4, ?5)",
+            params!(mv_id, music_id, owner_id, jzon::stringify(mv.clone()), published as i64)
+        )?;
+        conn.execute("INSERT INTO revision (id, revision, last_mv_id) VALUES (1, 0, ?1) ON CONFLICT(id) DO UPDATE SET last_mv_id=?1", params!(mv_id))?;
+        Ok(())
+    })
 }
 
 // The catalog blob only. The owner and the published flag live in their own
@@ -195,17 +201,24 @@ pub fn all_mv_blobs() -> Option<JsonValue> {
 
 // Blobs are content-addressed and may be shared between MVs (or roles), so
 // every candidate row is checked - a single-row scan could land on a
-// coincidental substring match and miss the real reference
-pub fn blob_in_use(md5: &str) -> bool {
-    let rows = DATABASE.lock_and_select_all("SELECT mv FROM mvs WHERE mv LIKE ?1", params!(format!("%{}%", md5))).unwrap_or(array![]);
+// coincidental substring match and miss the real reference.
+//
+// Returns Result and never folds an error into "not referenced": the caller
+// unlinks on false, and a read that failed (SQLITE_BUSY under a concurrent
+// write, a corrupt page) says nothing about whether the blob is live. The
+// startup sweep is deliberately fail-closed; this is its online half
+pub fn blob_in_use(md5: &str) -> Result<bool, rusqlite::Error> {
+    let rows = DATABASE.lock_and_select_all("SELECT mv FROM mvs WHERE mv LIKE ?1", params!(format!("%{}%", md5)))?;
     for blob in rows.members() {
-        if let Ok(mv) = jzon::parse(&blob.to_string()) {
-            if mv["files"].members().any(|file| file["md5"].as_str() == Some(md5)) {
-                return true;
-            }
+        let Ok(mv) = jzon::parse(&blob.to_string()) else {
+            // An unparseable row could reference anything - assume it does
+            return Ok(true);
+        };
+        if mv["files"].members().any(|file| file["md5"].as_str() == Some(md5)) {
+            return Ok(true);
         }
     }
-    false
+    Ok(false)
 }
 
 // Two-step content-addressed lookup for the data route: the LIKE scan finds a
@@ -213,5 +226,38 @@ pub fn blob_in_use(md5: &str) -> bool {
 // stored file of a live MV (and not a substring coincidence elsewhere in the
 // blob). The blob path itself derives from the md5
 pub fn find_blob_by_md5(md5: &str) -> bool {
-    blob_in_use(md5)
+    // A read failure here means "cannot prove this blob is served", which the
+    // route turns into a 404 - the client re-requests. Unlike the GC, guessing
+    // wrong in this direction costs nothing permanent
+    blob_in_use(md5).unwrap_or(false)
+}
+
+// Every MV this account uploaded, for the account-deletion purge
+pub fn mv_ids_for_owner(owner_id: i64) -> Vec<i64> {
+    let rows = DATABASE.lock_and_select_all("SELECT mv_id FROM mvs WHERE owner_id=?1 ORDER BY mv_id", params!(owner_id)).unwrap_or(array![]);
+    rows.members().filter_map(|id| id.as_i64()).collect()
+}
+
+// The stored bytes an MV's files account for. Blobs are shared, so two MVs that
+// carry the same model both count it: the quota is "what this account asked the
+// server to store", not a dedup-aware disk figure
+pub fn mv_bytes(files: &JsonValue) -> i64 {
+    files.members().map(|file| file["size"].as_i64().unwrap_or(0)).sum()
+}
+
+// What this account's MVs already occupy, optionally ignoring one (the MV being
+// replaced by an in-place edit, whose new size is counted instead)
+pub fn owner_bytes(owner_id: i64, excluding_mv_id: i64) -> i64 {
+    let rows = parse_blobs(DATABASE.lock_and_select_all("SELECT mv FROM mvs WHERE owner_id=?1", params!(owner_id)).unwrap_or(array![]));
+    rows.members()
+        .filter(|mv| mv["mv_id"].as_i64() != Some(excluding_mv_id))
+        .map(|mv| mv_bytes(&mv["files"]))
+        .sum()
+}
+
+// The on-disk database file, so a test can force the read errors the fail-closed
+// GC paths are built for
+#[cfg(test)]
+pub fn test_db_path() -> String {
+    DATABASE.get_path().to_string()
 }

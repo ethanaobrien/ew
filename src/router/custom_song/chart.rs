@@ -1,4 +1,5 @@
 use jzon::{object, JsonValue};
+use std::collections::HashMap;
 
 // Transcodes a SIF1/NPPS4 beatmap (array of {timing_sec, effect, effect_value, position})
 // into the SIF2 chart JSON the client deserializes into NoteData.
@@ -87,6 +88,14 @@ fn simultaneous(a: f64, b: f64) -> bool {
 const MISS_OFFSET_SEC: f64 = 0.15;
 const MISS_OFFSET_SLIDER_SEC: f64 = 0.34;
 
+// The most notes one difficulty may carry. Every transcode step is linear in this
+// and the chart JSON is bounded only in bytes by the upload caps, so an explicit
+// ceiling is what keeps a 64MB chart from turning into tens of millions of
+// JsonValue allocations on a worker. The hardest shipped SIF2 chart is under 1500
+// notes and the whole 2146-chart official set peaks well below that, so this is
+// more than an order of magnitude of headroom
+pub const MAX_NOTES: usize = 20_000;
+
 // MarkerData.IsSliderMarker: a chained note with a cross-lane parent or child.
 fn is_slider(data: &JsonValue, line_of: &dyn Fn(i64) -> Option<i64>) -> bool {
     let parent_id = data["parent_id"].as_i64().unwrap_or(0);
@@ -106,10 +115,12 @@ fn is_slider(data: &JsonValue, line_of: &dyn Fn(i64) -> Option<i64>) -> bool {
 // m_MusicDuration is LiveMst._endWait + the music length, and _endWait is 0 in every one of the
 // 637 official live rows and in ours), so this is what has to fit inside the audio.
 pub fn end_time(chart: &JsonValue) -> f64 {
-    let lines: Vec<(i64, i64)> = chart["notes"].members().skip(1)
+    // Indexed, not scanned: this runs once per note over a chart whose note count
+    // is only bounded by MAX_NOTES, and the linear lookup made it quadratic
+    let lines: HashMap<i64, i64> = chart["notes"].members().skip(1)
         .map(|n| (n["id"].as_i64().unwrap_or(0), n["line"].as_i64().unwrap_or(0)))
         .collect();
-    let line_of = |id: i64| lines.iter().find(|(i, _)| *i == id).map(|(_, line)| *line);
+    let line_of = |id: i64| lines.get(&id).copied();
 
     let mut end: f64 = 0.0;
     for data in chart["notes"].members().skip(1) {
@@ -171,6 +182,12 @@ fn parse_sif_note(data: &JsonValue, index: usize) -> Result<(f64, i64, f64, i64,
     if !(1..=9).contains(&position) {
         return Err(format!("Note {}: position {} is outside 1-9", index, position));
     }
+    // NaN and the infinities pass every comparison below and then reach the
+    // time-order sort, whose partial_cmp().unwrap() panics on an incomparable
+    // pair - a worker panic authored by the uploaded file
+    if !timing.is_finite() || !effect_value.is_finite() {
+        return Err(format!("Note {}: timing_sec/effect_value must be finite numbers", index));
+    }
     if timing < 0.0 {
         return Err(format!("Note {}: negative timing_sec {}", index, timing));
     }
@@ -186,17 +203,28 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
     if !beatmap.is_array() || beatmap.is_empty() {
         return Err(String::from("Chart is not a JSON array of notes"));
     }
+    if beatmap.len() > MAX_NOTES {
+        return Err(format!("Chart has {} notes - the maximum is {}", beatmap.len(), MAX_NOTES));
+    }
 
     let mut work: Vec<WorkNote> = Vec::new();
     // Slide chain id -> the work indices in that chain, in input order
     let mut chains: Vec<(i64, Vec<usize>)> = Vec::new();
+    // (timing bits, position) -> effect, for the duplicate check below. Indexed
+    // rather than rescanned: the old scan-all-preceding-notes loop was quadratic
+    // over an input whose size the upload caps only bound in bytes. The key uses
+    // the raw f64 bits, which is exactly the equality the scan tested (both
+    // infinities and NaN are already rejected in parse_sif_note, so bit equality
+    // and value equality agree here)
+    let mut seen: HashMap<(u64, i64), i64> = HashMap::new();
     for (i, data) in beatmap.members().enumerate() {
         let (timing, effect, effect_value, position, group) = parse_sif_note(data, i)?;
 
-        for other in beatmap.members().take(i) {
-            if other["timing_sec"].as_f64() == Some(timing) && other["position"].as_i64() == Some(position) && other["effect"].as_i64() != Some(effect) {
+        match seen.insert((timing.to_bits(), position), effect) {
+            Some(other) if other != effect => {
                 return Err(format!("Note {}: duplicate timing {} on position {} with a different effect", i, timing, position));
-            }
+            },
+            _ => {}
         }
 
         let head = work.len();

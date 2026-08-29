@@ -87,20 +87,29 @@ pub fn next_character_id() -> i64 {
     std::cmp::max(std::cmp::max(issued, max), FIRST_CHARACTER_ID - 1) + 1
 }
 
-pub fn insert_card(master_card_id: i64, master_character_id: i64, owner_id: i64, card: &JsonValue, published: bool, obtainable: bool) {
-    DATABASE.lock_and_exec(
-        "INSERT INTO cards (master_card_id, master_character_id, owner_id, card, rarity, published, obtainable) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-        params!(master_card_id, master_character_id, owner_id, jzon::stringify(card.clone()), card["rarity"].as_i64().unwrap_or(1), published as i64, obtainable as i64)
-    );
-    DATABASE.lock_and_exec("INSERT INTO revision (id, revision, last_card_id, last_character_id) VALUES (1, 0, ?1, 0) ON CONFLICT(id) DO UPDATE SET last_card_id=?1", params!(master_card_id));
+// The row and the high-water mark are one write: a failure between them leaves a
+// card whose id the next upload would reissue, and the failure has to reach the
+// uploader as an error rather than panic the worker (lock_and_exec unwraps)
+pub fn insert_card(master_card_id: i64, master_character_id: i64, owner_id: i64, card: &JsonValue, published: bool, obtainable: bool) -> Result<(), rusqlite::Error> {
+    DATABASE.lock_and_transact(|conn| {
+        conn.execute(
+            "INSERT INTO cards (master_card_id, master_character_id, owner_id, card, rarity, published, obtainable) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
+            params!(master_card_id, master_character_id, owner_id, jzon::stringify(card.clone()), card["rarity"].as_i64().unwrap_or(1), published as i64, obtainable as i64)
+        )?;
+        conn.execute("INSERT INTO revision (id, revision, last_card_id, last_character_id) VALUES (1, 0, ?1, 0) ON CONFLICT(id) DO UPDATE SET last_card_id=?1", params!(master_card_id))?;
+        Ok(())
+    })
 }
 
-pub fn insert_character(master_character_id: i64, owner_id: i64, character: &JsonValue) {
-    DATABASE.lock_and_exec(
-        "INSERT INTO characters (master_character_id, owner_id, character) VALUES (?1, ?2, ?3)",
-        params!(master_character_id, owner_id, jzon::stringify(character.clone()))
-    );
-    DATABASE.lock_and_exec("INSERT INTO revision (id, revision, last_card_id, last_character_id) VALUES (1, 0, 0, ?1) ON CONFLICT(id) DO UPDATE SET last_character_id=?1", params!(master_character_id));
+pub fn insert_character(master_character_id: i64, owner_id: i64, character: &JsonValue) -> Result<(), rusqlite::Error> {
+    DATABASE.lock_and_transact(|conn| {
+        conn.execute(
+            "INSERT INTO characters (master_character_id, owner_id, character) VALUES (?1, ?2, ?3)",
+            params!(master_character_id, owner_id, jzon::stringify(character.clone()))
+        )?;
+        conn.execute("INSERT INTO revision (id, revision, last_card_id, last_character_id) VALUES (1, 0, 0, ?1) ON CONFLICT(id) DO UPDATE SET last_character_id=?1", params!(master_character_id))?;
+        Ok(())
+    })
 }
 
 // The catalog blob only. The owner and the published/obtainable flags live in
@@ -171,6 +180,47 @@ pub fn set_obtainable(master_card_id: i64, obtainable: bool) {
 
 pub fn has_character(master_character_id: i64) -> bool {
     DATABASE.lock_and_select("SELECT master_character_id FROM characters WHERE master_character_id=?1", params!(master_character_id)).is_ok()
+}
+
+// Every card / character this account uploaded, for the account-deletion purge
+pub fn card_ids_for_owner(owner_id: i64) -> Vec<i64> {
+    DATABASE.lock_and_select_all("SELECT master_card_id FROM cards WHERE owner_id=?1 ORDER BY master_card_id", params!(owner_id))
+        .unwrap_or(array![]).members().filter_map(|id| id.as_i64()).collect()
+}
+
+pub fn character_ids_for_owner(owner_id: i64) -> Vec<i64> {
+    DATABASE.lock_and_select_all("SELECT master_character_id FROM characters WHERE owner_id=?1 ORDER BY master_character_id", params!(owner_id))
+        .unwrap_or(array![]).members().filter_map(|id| id.as_i64()).collect()
+}
+
+// The stored bytes one card / character accounts for: every derived art png
+// plus, for a character, its voiceline oggs
+pub fn card_bytes(card: &JsonValue) -> i64 {
+    card["art"].members().map(|art| art["size"].as_i64().unwrap_or(0)).sum()
+}
+
+pub fn character_bytes(character: &JsonValue) -> i64 {
+    let art: i64 = character["art"].members().map(|art| art["size"].as_i64().unwrap_or(0)).sum();
+    let voice: i64 = character["voice"].members().map(|line| line["size"].as_i64().unwrap_or(0)).sum();
+    art + voice
+}
+
+// What this account's uploads already occupy. Cards and characters share one
+// quota (they share one storage root), each optionally ignoring the entity being
+// replaced by an in-place edit, whose new size is counted instead
+pub fn owner_bytes(owner_id: i64, excluding_card_id: i64, excluding_character_id: i64) -> i64 {
+    let mut total = 0;
+    for blob in parse_blobs(DATABASE.lock_and_select_all("SELECT card FROM cards WHERE owner_id=?1", params!(owner_id)).unwrap_or(array![])).members() {
+        if blob["master_card_id"].as_i64() != Some(excluding_card_id) {
+            total += card_bytes(blob);
+        }
+    }
+    for blob in parse_blobs(DATABASE.lock_and_select_all("SELECT character FROM characters WHERE owner_id=?1", params!(owner_id)).unwrap_or(array![])).members() {
+        if blob["master_character_id"].as_i64() != Some(excluding_character_id) {
+            total += character_bytes(blob);
+        }
+    }
+    total
 }
 
 pub fn card_count_for_owner(owner_id: i64) -> i64 {
@@ -410,10 +460,10 @@ mod tests {
         let first = next_card_id();
         assert!(first >= FIRST_CARD_ID);
         assert_ne!(first % 10000, 0);
-        insert_card(first, 1001, 3001, &card_blob(first, 1), false, false);
+        insert_card(first, 1001, 3001, &card_blob(first, 1), false, false).unwrap();
         let second = next_card_id();
         assert_eq!(second, first + 1);
-        insert_card(second, 1001, 3001, &card_blob(second, 1), false, false);
+        insert_card(second, 1001, 3001, &card_blob(second, 1), false, false).unwrap();
         delete_card(second);
         assert_eq!(get_card(second), None);
         // The high-water mark survives the delete, so the id is retired
@@ -421,7 +471,7 @@ mod tests {
 
         let character = next_character_id();
         assert!(character >= FIRST_CHARACTER_ID);
-        insert_character(character, 3001, &object!{ "master_character_id": character });
+        insert_character(character, 3001, &object!{ "master_character_id": character }).unwrap();
         assert_eq!(next_character_id(), character + 1);
         delete_character(character);
         assert_eq!(next_character_id(), character + 1);
@@ -440,13 +490,13 @@ mod tests {
         wipe(3004);
 
         let character = next_character_id();
-        insert_character(character, 3003, &object!{ "master_character_id": character });
+        insert_character(character, 3003, &object!{ "master_character_id": character }).unwrap();
         let published = next_card_id();
         let mut blob = card_blob(published, 3);
         blob["master_character_id"] = character.into();
-        insert_card(published, character, 3003, &blob, true, true);
+        insert_card(published, character, 3003, &blob, true, true).unwrap();
         let draft = next_card_id();
-        insert_card(draft, character, 3003, &card_blob(draft, 1), false, false);
+        insert_card(draft, character, 3003, &card_blob(draft, 1), false, false).unwrap();
 
         let owner_view = get_cards_for_user(3003, &[]);
         assert_eq!(owner_view.len(), 2);
@@ -493,13 +543,13 @@ mod tests {
         wipe(3005);
 
         let r1 = next_card_id();
-        insert_card(r1, 1001, 3005, &card_blob(r1, 1), true, true);
+        insert_card(r1, 1001, 3005, &card_blob(r1, 1), true, true).unwrap();
         let r3 = next_card_id();
-        insert_card(r3, 1001, 3005, &card_blob(r3, 3), true, true);
+        insert_card(r3, 1001, 3005, &card_blob(r3, 3), true, true).unwrap();
         let unpublished = next_card_id();
-        insert_card(unpublished, 1001, 3005, &card_blob(unpublished, 1), false, true);
+        insert_card(unpublished, 1001, 3005, &card_blob(unpublished, 1), false, true).unwrap();
         let unobtainable = next_card_id();
-        insert_card(unobtainable, 1001, 3005, &card_blob(unobtainable, 1), true, false);
+        insert_card(unobtainable, 1001, 3005, &card_blob(unobtainable, 1), true, false).unwrap();
 
         assert_eq!(obtainable_card_ids(1), vec![r1]);
         assert_eq!(obtainable_card_ids(3), vec![r3]);
@@ -516,7 +566,7 @@ mod tests {
         wipe(3007);
 
         let id = next_card_id();
-        insert_card(id, 1001, 3007, &card_blob(id, 1), true, false);
+        insert_card(id, 1001, 3007, &card_blob(id, 1), true, false).unwrap();
         assert_eq!(find_asset_by_md5(&format!("{:032x}", id)), Some(format!("{}/c_00.png", id)));
         assert_eq!(find_asset_by_md5("00000000000000000000000000000000"), None);
 
@@ -524,7 +574,7 @@ mod tests {
         insert_character(character, 3007, &object!{
             "master_character_id": character,
             "art": [{ "kind": "icon", "md5": "aabbccddeeff00112233445566778899", "size": 1 }]
-        });
+        }).unwrap();
         assert_eq!(
             find_asset_by_md5("aabbccddeeff00112233445566778899"),
             Some(format!("characters/{}/icon.png", character))
@@ -541,9 +591,9 @@ mod tests {
         wipe(3008);
 
         let alive = next_card_id();
-        insert_card(alive, 1001, 3008, &card_blob(alive, 1), false, false);
+        insert_card(alive, 1001, 3008, &card_blob(alive, 1), false, false).unwrap();
         let dead = next_card_id();
-        insert_card(dead, 1001, 3008, &card_blob(dead, 1), true, false);
+        insert_card(dead, 1001, 3008, &card_blob(dead, 1), true, false).unwrap();
         delete_card(dead);
 
         let dead_ids = dead_card_ids(&array![alive, dead, 10010001, 100010001, dead]);

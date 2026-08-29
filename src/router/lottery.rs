@@ -427,7 +427,7 @@ async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl 
 }
 
 
-
+// tests!!!
 
 #[cfg(test)]
 mod tests {
@@ -447,18 +447,18 @@ mod tests {
         let mut r1_ids = Vec::new();
         for seed in 0..3 {
             let id = custom_card_db::next_card_id();
-            custom_card_db::insert_card(id, 1001, 6001, &object!{ "master_card_id": id, "rarity": 1, "seed": seed }, true, true);
+            custom_card_db::insert_card(id, 1001, 6001, &object!{ "master_card_id": id, "rarity": 1, "seed": seed }, true, true).unwrap();
             r1_ids.push(id);
         }
         let r2 = custom_card_db::next_card_id();
-        custom_card_db::insert_card(r2, 1001, 6001, &object!{ "master_card_id": r2, "rarity": 2 }, true, true);
+        custom_card_db::insert_card(r2, 1001, 6001, &object!{ "master_card_id": r2, "rarity": 2 }, true, true).unwrap();
         let r3 = custom_card_db::next_card_id();
-        custom_card_db::insert_card(r3, 1001, 6001, &object!{ "master_card_id": r3, "rarity": 3 }, true, true);
+        custom_card_db::insert_card(r3, 1001, 6001, &object!{ "master_card_id": r3, "rarity": 3 }, true, true).unwrap();
         // Draft / unobtainable cards must never come out of the pool
         let draft = custom_card_db::next_card_id();
-        custom_card_db::insert_card(draft, 1001, 6001, &object!{ "master_card_id": draft, "rarity": 1 }, false, true);
+        custom_card_db::insert_card(draft, 1001, 6001, &object!{ "master_card_id": draft, "rarity": 1 }, false, true).unwrap();
         let unobtainable = custom_card_db::next_card_id();
-        custom_card_db::insert_card(unobtainable, 1001, 6001, &object!{ "master_card_id": unobtainable, "rarity": 1 }, true, false);
+        custom_card_db::insert_card(unobtainable, 1001, 6001, &object!{ "master_card_id": unobtainable, "rarity": 1 }, true, false).unwrap();
 
         let drawn = custom_banner_cards(11);
         assert_eq!(drawn.len(), 11);

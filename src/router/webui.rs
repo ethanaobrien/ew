@@ -25,10 +25,13 @@ fn get_config() -> JsonValue {
 pub fn get_login_token(req: &HttpRequest) -> Option<String> {
     let blank_header = HeaderValue::from_static("");
     let cookies = req.headers().get("Cookie").unwrap_or(&blank_header).to_str().unwrap_or("");
-    if cookies.is_empty() {
-        return None;
+    for pair in cookies.split(';') {
+        let Some((name, value)) = pair.split_once('=') else { continue; };
+        if name.trim() == "ew_token" {
+            return Some(value.trim().to_string());
+        }
     }
-    Some(cookies.split("ew_token=").last().unwrap_or("").split(';').collect::<Vec<_>>()[0].to_string())
+    None
 }
 
 fn session_uid(req: &HttpRequest) -> Option<i64> {
@@ -607,13 +610,6 @@ pub fn remove_arcade_machine(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-// The account page's "bind arcade card" form: the card id, and nothing else.
-// The webui session already proves whose account this is, so the card is bound
-// to the signed-in account through arcade::bind_card_to - the same rule the
-// cabinet's /api/arcade/bind applies once its own proof, the transfer code and
-// password, has named the account. The cabinet endpoint speaks the encrypted
-// game protocol behind the asset gate, which a browser cannot, so this is the
-// browser's door onto that rule rather than a copy of it.
 pub fn bind_arcade_card(req: HttpRequest, body: String) -> HttpResponse {
     if crate::router::arcade::disabled() {
         return HttpResponse::NotFound().finish();
@@ -686,6 +682,28 @@ pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    // get_login_token is the ONLY authentication on every mutating custom-content
+    // route, so it has to read the cookie header as cookies, not as a substring:
+    // a name that merely ends in ew_token, or a second ew_token= appended later,
+    // must not win over the real session cookie
+    #[test]
+    fn the_session_cookie_is_matched_by_name() {
+        let token_for = |header: &str| get_login_token(
+            &actix_web::test::TestRequest::default().insert_header(("Cookie", header)).to_http_request()
+        );
+
+        assert_eq!(token_for("ew_token=real").as_deref(), Some("real"));
+        assert_eq!(token_for("theme=dark; ew_token=real; lang=en").as_deref(), Some("real"));
+        // A cookie whose NAME ends in ew_token is a different cookie
+        assert_eq!(token_for("not_ew_token=attacker").as_deref(), None);
+        assert_eq!(token_for("ew_token=real; xew_token=attacker").as_deref(), Some("real"));
+        // A duplicate set later in the header does not override the first
+        assert_eq!(token_for("ew_token=real; ew_token=attacker").as_deref(), Some("real"));
+        // No cookie at all is no session, not the whole header
+        assert_eq!(token_for("theme=dark").as_deref(), None);
+        assert_eq!(get_login_token(&actix_web::test::TestRequest::default().to_http_request()), None);
+    }
 
     // The picker lists the card form searches by name: every baked character
     // (official + SIF1 import, badged apart) and every skill_center row with
