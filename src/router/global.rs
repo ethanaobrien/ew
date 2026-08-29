@@ -49,10 +49,10 @@ static ASSET_VERSIONS: &[AssetVersion] = &[
     AssetVersion { region: "JP", platform: "Windows", version: "01a71b00f63e4dba92117ac7e60070a6", hash: "b8d0e7edcb63f5bdd28817a597772ca6", latest: true },
     AssetVersion { region: "JP", platform: "Android", version: "01a71b00f63e4dba92117ac7e60070a6", hash: "d12cecc5695da7f81f8873a3ff93752e", latest: true },
     AssetVersion { region: "JP", platform: "iOS",     version: "01a71b00f63e4dba92117ac7e60070a6", hash: "7c1f61ee68ac84c82dd397a162629142", latest: true },
-    // Linux / macOS players (StandaloneLinux64 / StandaloneOSX lanes): no baked hash, the
-    // running build's hash is supplied with --linux-asset-hash / --mac-asset-hash
+
+
     AssetVersion { region: "JP", platform: "Linux",   version: "01a71b00f63e4dba92117ac7e60070a6", hash: "", latest: true },
-    AssetVersion { region: "JP", platform: "Mac",     version: "01a71b00f63e4dba92117ac7e60070a6", hash: "", latest: true },
+    AssetVersion { region: "JP", platform: "macOS",   version: "01a71b00f63e4dba92117ac7e60070a6", hash: "", latest: true },
 
     //AssetVersion { region: "JP", platform: "WebGL",   version: "4c921d2443335e574a82e04ec9ea243c", hash: "e1ff7c74b20c8d216507972b6f24b9df", latest: true },
 ];
@@ -73,7 +73,7 @@ impl AssetVersion {
         let oh = match (self.region, self.platform) {
             ("JP", "Windows") => args.windows_asset_hash.as_str(),
             ("JP", "Linux")   => args.linux_asset_hash.as_str(),
-            ("JP", "Mac")     => args.mac_asset_hash.as_str(),
+            ("JP", "macOS")     => args.macos_asset_hash.as_str(),
             ("JP", "Android") => args.jp_android_asset_hash.as_str(),
             ("JP", "iOS")     => args.jp_ios_asset_hash.as_str(),
             ("GL", "Android") => args.en_android_asset_hash.as_str(),
@@ -176,7 +176,7 @@ pub fn parse_platform(header: &str) -> &str {
         "windows" => "Windows",
         "windowsplayer" => "Windows",
         "linuxplayer" => "Linux",
-        "osxplayer" => "Mac",
+        "osxplayer" => "macOS",
         "webglplayer" => "WebGL",
         "editor" => "Editor",
         "windowseditor" => "Editor",
@@ -488,7 +488,7 @@ mod platform_tests {
     fn standalone_player_platforms_are_known() {
         assert_eq!(parse_platform("WindowsPlayer"), "Windows");
         assert_eq!(parse_platform("LinuxPlayer"), "Linux");
-        assert_eq!(parse_platform("OSXPlayer"), "Mac");
+        assert_eq!(parse_platform("OSXPlayer"), "macOS");
         assert_eq!(parse_platform("OSXEditor"), "Editor");
     }
 
@@ -497,9 +497,9 @@ mod platform_tests {
     #[test]
     fn unhashed_platforms_answer_nothing_without_an_override() {
         let latest = ASSET_VERSIONS.iter().find(|e| e.latest && e.platform == "Windows").unwrap().version;
-        assert_eq!(preferred_hash(latest, "Mac"), None);
+        assert_eq!(preferred_hash(latest, "macOS"), None);
         assert_eq!(preferred_hash(latest, "Linux"), None);
-        assert!(valid_hashes(latest, "Mac").is_empty());
+        assert!(valid_hashes(latest, "macOS").is_empty());
         assert!(preferred_hash(latest, "Windows").is_some());
     }
 }
