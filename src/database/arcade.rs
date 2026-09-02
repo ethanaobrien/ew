@@ -237,6 +237,35 @@ pub fn set_card(card_id: &str, user_id: i64) {
 // The cabinet this card is playing at right now and how long the credit it just
 // paid buys LP-free lives for. Written by /api/arcade/session, and only there:
 // the session is the one moment the server knows a credit was taken
+// Every card that names this account, oldest first. The account page and the
+// game's own link dialog list them; a player usually has one.
+pub fn cards_of_account(user_id: i64) -> Vec<String> {
+    let Ok(conn) = rusqlite::Connection::open(DATABASE.get_path()) else { return Vec::new(); };
+    let Ok(mut stmt) = conn.prepare("SELECT card_id FROM cards WHERE user_id=?1 ORDER BY created ASC") else { return Vec::new(); };
+    let Ok(rows) = stmt.query_map(params!(user_id), |row| row.get::<usize, String>(0)) else { return Vec::new(); };
+    rows.flatten().collect()
+}
+
+// Unlink a card from the account that owns it. False when the card is not this
+// account's - a player can only ever unlink their own, and the answer says so
+// rather than silently succeeding on somebody else's row.
+pub fn remove_card_of(card_id: &str, user_id: i64) -> bool {
+    match card_user(card_id) {
+        Some(owner) if owner == user_id => {
+            remove_card(card_id);
+            true
+        }
+        _ => false
+    }
+}
+
+// Forget a card: the mapping row goes, the account it named is not touched.
+// Used when the account behind a card no longer exists (router/arcade.rs
+// resolve_card) and when a player unlinks a card of their own.
+pub fn remove_card(card_id: &str) {
+    DATABASE.lock_and_exec("DELETE FROM cards WHERE card_id=?1", params!(card_id));
+}
+
 pub fn open_card_session(card_id: &str, machine_id: &str, until: i64) {
     DATABASE.lock_and_exec(
         "UPDATE cards SET last_machine_id=?1, last_session=?2, session_until=?3 WHERE card_id=?4",

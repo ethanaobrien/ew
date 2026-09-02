@@ -9,39 +9,77 @@ use rand::RngExt;
 use sha2::{Digest, Sha256};
 use base64::{Engine as _, engine::general_purpose};
 
+// A transfer code is never sixteen digits: that shape is a NESiCA card id
+// (router/arcade.rs, ArcadeCardReader.CardIdLength), which get_acc_transfer
+// also accepts, so the two spaces are kept disjoint by construction rather than
+// by the odds (10/36 to the sixteenth) of a draw landing on all digits.
 fn generate_token() -> String {
     let charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     let mut rng = rand::rng();
-    let random_string: String = (0..16)
-        .map(|_| {
-            let idx = rng.random_range(0..charset.len());
-            charset.chars().nth(idx).unwrap()
-        })
-        .collect();
-    random_string
+    loop {
+        let random_string: String = (0..16)
+            .map(|_| {
+                let idx = rng.random_range(0..charset.len());
+                charset.chars().nth(idx).unwrap()
+            })
+            .collect();
+        if !random_string.chars().all(|c| c.is_ascii_digit()) {
+            return random_string;
+        }
+    }
 }
 
+// The account behind a transfer code, or - when no code matches and the arcade
+// module is on - behind a linked NESiCA card presented as the code. The card is
+// a transfer code the player cannot forget: it is the id on the card, so the
+// phone's take-over screen fills the ID field by tapping it (NesicaTakeOverTap)
+// and the rest of the flow, on every route that reaches this function (the
+// desktop /api/user/gglverifymigrationcode, the GREE emulation's
+// /migration/code/verify, a cabinet's /api/arcade/bind), is untouched. The
+// password is still required: the card is readable by any NFC phone within a
+// few centimetres, so on its own it proves possession, not the account.
 pub fn get_acc_transfer(token: &str, password: &str) -> JsonValue {
     let database = userdata::get_userdata_database();
-    let data = database.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token));
-    if data.is_err() {
-        return object!{success: false};
-    }
-    if verify_password(password, &data.unwrap()) {
-        let uid: i64 = database.lock_and_select_type("SELECT user_id FROM migration WHERE token=?1", params!(token)).unwrap();
-        let login_token = userdata::get_login_token(uid);
-        if login_token == String::new() {
+    let uid: i64 = if let Ok(hash) = database.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token)) {
+        if !verify_password(password, &hash) {
             return object!{success: false};
         }
-        return object!{success: true, login_token: login_token, user_id: uid};
+        database.lock_and_select_type("SELECT user_id FROM migration WHERE token=?1", params!(token)).unwrap()
+    } else {
+        let Some(uid) = linked_card_user(token) else {
+            return object!{success: false};
+        };
+        let Ok(hash) = database.lock_and_select("SELECT password FROM migration WHERE user_id=?1", params!(uid)) else {
+            return object!{success: false};
+        };
+        if !verify_password(password, &hash) {
+            return object!{success: false};
+        }
+        uid
+    };
+    let login_token = userdata::get_login_token(uid);
+    if login_token == String::new() {
+        return object!{success: false};
     }
-    object!{success: false}
+    object!{success: true, login_token: login_token, user_id: uid}
 }
 
-// Used by gree
+// The account a NESiCA card names, when the arcade module is on and the id has
+// the shape the module accepts. Off, the cards table is never opened.
+fn linked_card_user(card: &str) -> Option<i64> {
+    if crate::router::arcade::disabled() {
+        return None;
+    }
+    let card = crate::router::arcade::valid_card_id(card)?;
+    crate::database::arcade::card_user(&card)
+}
+
+// Used by gree, to tell "wrong password" (7004) from "no such code" (7002). A
+// linked card is a code here for the same reason it is one in get_acc_transfer.
 pub fn transfer_code_exists(token: &str) -> bool {
     let database = userdata::get_userdata_database();
     database.lock_and_select("SELECT password FROM migration WHERE token=?1", params!(token)).is_ok()
+        || linked_card_user(token).is_some()
 }
 
 pub fn save_acc_transfer(uid: i64, password: &str) -> String {

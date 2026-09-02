@@ -226,6 +226,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/revokePermission" => webui::revoke_permission(req, body),
             "/api/webui/removeArcadeMachine" => webui::remove_arcade_machine(req, body),
             "/api/webui/bindArcadeCard" => webui::bind_arcade_card(req, body),
+            "/api/webui/unbindArcadeCard" => webui::unbind_arcade_card(req, body),
             _ => api_req(req, body).await
         }
     } else {
@@ -246,6 +247,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/custom3dmvLimits" => webui::custom_3dmv_limits(req),
             "/api/webui/myScopes" => webui::my_scopes(req),
             "/api/webui/listArcadeMachines" => webui::list_arcade_machines(req),
+            "/api/webui/listArcadeCards" => webui::list_arcade_cards(req),
             _ => api_req(req, body).await
         }
     }

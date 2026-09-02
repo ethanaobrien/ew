@@ -7,7 +7,11 @@
 // user id but re-drawing everything a player could have left on it - its login
 // token included - so the machine plays a clean account and the server never
 // accumulates dead users. With a card, the card names the account and the play
-// is real progress on it.
+// is real progress on it. A card names an account only because a player linked
+// it - from the game's take-over screen, the webui account page, or a cabinet's
+// Test Mode with a transfer code - never because it was tapped: a cabinet has no
+// keyboard, so an unknown card is answered `unlinked` and the cabinet tells the
+// player where to link it and sells the credit as a guest play instead.
 //
 // Credits replace LP: a live flagged `arcade` runs through live_end_ex with
 // consume_lp = false - the seam /multi_live/end already uses - and its use_lp
@@ -27,7 +31,7 @@
 use jzon::{object, JsonValue};
 use actix_web::{web, Responder};
 
-use crate::router::{databases, global, live, multi_live, userdata, Api, Body};
+use crate::router::{databases, global, live, multi_live, userdata, Api, Body, Session};
 use crate::database::arcade as database;
 
 // The name a cabinet falls back to when its operator sent nothing usable
@@ -48,6 +52,12 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
             .route("/register", web::post().to(register))
             .route("/session", web::post().to(session))
             .route("/bind", web::post().to(bind))
+            // The phone's own card management (Docs/arcade-nesica-nfc-design.md §5): the
+            // player is signed in, so the game session is the proof of whose account it is -
+            // the webui account page's rule, on the game's wire.
+            .route("/card/list", web::post().to(card_list))
+            .route("/card/link", web::post().to(card_link))
+            .route("/card/unlink", web::post().to(card_unlink))
     );
 }
 
@@ -83,7 +93,13 @@ fn flag(value: &JsonValue) -> bool {
 // A card id is an identifier, never text: it is refused rather than sanitised,
 // because a mangled id would silently name a different card's account.
 fn card_id(body: &JsonValue) -> Option<String> {
-    let card_id = body["card_id"].as_str().unwrap_or("").trim().to_string();
+    valid_card_id(body["card_id"].as_str().unwrap_or(""))
+}
+
+// The same rule on a bare string, for the one caller outside this module that
+// meets a card id where a transfer code is expected (userdata migration).
+pub fn valid_card_id(card_id: &str) -> Option<String> {
+    let card_id = card_id.trim().to_string();
     if card_id.is_empty() {
         return None;
     }
@@ -98,66 +114,6 @@ fn card_id(body: &JsonValue) -> Option<String> {
 // /api/arcade/session is the one moment the server is told a credit was spent.
 fn open_card_session(card: &str, machine_id: &str) {
     database::open_card_session(card, machine_id, global::timestamp() as i64 + session_ttl());
-}
-
-// An account made for a card nobody has named yet takes the card's last four
-// digits, the way a cabinet prints them on a receipt. The on-cabinet name entry
-// overwrites it.
-fn card_account_name(card_id: &str) -> String {
-    let start = card_id.len().saturating_sub(4);
-    card_id[start..].to_string()
-}
-
-// The account this card was issued seconds ago, and which nothing has happened
-// to since - the only account /api/arcade/session will ever rename.
-//
-// The cabinet's name entry is a second /session for the same card: the first one
-// created the account and answered is_new, the player typed a name, and this is
-// the same call again carrying it. By then the card is KNOWN, so the rename has
-// to be told apart from an ordinary card session, and it has to be told apart
-// hard: a rename that reached a real account would let anyone holding a card id
-// retitle a stranger's save. Every clause below has to hold.
-//
-// Deliberately not a `renamed` column: the account itself carries the proof.
-fn issued_by_this_credit(card: &str, user_id: i64, now: i64, ttl: i64) -> bool {
-    // The credit that created it is still running, at this card. live_card_session
-    // is the window /api/arcade/session opened and nothing else ever opens
-    // (database/arcade.rs:240), so this is "the same credit, still going". `ttl`
-    // is session_ttl() in production and the test's own number in the test - the
-    // shape purge_machines_before and retire_user_at already use here.
-    let Some((open_card, opened)) = database::live_card_session(user_id, now) else {
-        return false;
-    };
-    if open_card != card || now - opened > ttl {
-        return false;
-    }
-    // A cabinet's own machine or guest identity is never a card's account
-    if database::machine_of_account(user_id).is_some() {
-        return false;
-    }
-    // A phone has owned it - the same test bind_card's cleanup trusts
-    if userdata::has_transfer_password(user_id) {
-        return false;
-    }
-    let user = userdata::get_acc_from_uid(user_id);
-    if user["error"].as_bool().unwrap_or(false) {
-        return false;
-    }
-    // It still carries the placeholder /session gave it, and nothing has been
-    // played on it. Either alone would be enough to make a rename harmless; both
-    // together make it provable.
-    if user["user"]["name"].as_str().unwrap_or("") != card_account_name(card) {
-        return false;
-    }
-    user["live_list"].is_empty() && user["live_mission_list"].is_empty()
-}
-
-// The one write a rename is. /api/user does exactly this for a phone player
-// (user.rs:138-140); there is no other name in an account.
-fn rename_account(user_id: i64, login_token: &str, name: &str) {
-    let mut user = userdata::get_acc_from_uid(user_id);
-    user["user"]["name"] = name.into();
-    userdata::save_acc(login_token, user);
 }
 
 // -- endpoints --------------------------------------------------------------
@@ -205,14 +161,29 @@ async fn register(Body(body): Body) -> impl Responder {
     }))
 }
 
+// The account a card names, if it names one that still exists. None is the
+// `unlinked` answer: a card nobody has linked, or one whose account was deleted
+// (through the webui, or with the cabinet that owned it) - that mapping is
+// dropped on the spot so the card is simply unlinked from then on, rather than
+// pointing at nothing forever.
+fn resolve_card(card: &str) -> Option<(i64, String)> {
+    let user_id = database::card_user(card)?;
+    let uuid = userdata::get_login_token(user_id);
+    if uuid.is_empty() {
+        println!("arcade: card mapping pointed at missing account {} - unlinking the card", user_id);
+        database::remove_card(card);
+        return None;
+    }
+    Some((user_id, uuid))
+}
+
 // One credit. Answers the account the player is about to become: the cabinet's
 // guest (reset in place) or, with a card, the account that card names.
 //
-// `name` is the cabinet's on-screen name entry, and it is read in exactly two
-// places: the account a brand new card is issued, and a rename of that same
-// account while the credit that created it is still running (see
-// issued_by_this_credit). A guest credit ignores it - a guest is named after its
-// cabinet - and so does an ordinary card session.
+// A card the server cannot resolve is answered `unlinked: true` with no
+// identity at all. Nothing is created for it: an account is made on a phone and
+// a card is linked to it from there (bind_card_to), so the cabinet shows the
+// player where to do that and asks again without the card, as a guest credit.
 async fn session(Body(body): Body) -> impl Responder {
     if disabled() {
         return Api(None);
@@ -225,17 +196,16 @@ async fn session(Body(body): Body) -> impl Responder {
     database::touch_machine(&machine_id);
     let machine_name = machine["name"].as_str().unwrap_or(DEFAULT_MACHINE_NAME).to_string();
 
-    // A guest credit is a session with no card_id at all (every credit in v1) or
-    // an empty one. Anything else is a card being presented, and a card id that
-    // does not parse is refused rather than quietly played as a guest on
-    // somebody's credit.
+    // A guest credit is a session with no card_id at all or an empty one.
+    // Anything else is a card being presented, and a card id that does not
+    // parse is refused rather than quietly played as a guest on somebody's
+    // credit.
     let presented = !body["card_id"].is_null() && !body["card_id"].as_str().unwrap_or("").trim().is_empty();
     let card = card_id(&body);
     if presented && card.is_none() {
         println!("arcade: machine {} presented an unusable card id", machine_id);
         return Api(None);
     }
-    let typed_name = body["name"].as_str().unwrap_or("").trim().to_string();
 
     let Some(card) = card else {
         // The cabinet's own guest, rewritten from scratch. Same user id, so the
@@ -253,62 +223,32 @@ async fn session(Body(body): Body) -> impl Responder {
             "user_id": guest_user_id,
             "uuid": uuid,
             "name": machine_name,
-            "is_new": true
+            "unlinked": false
         }));
     };
 
     // A known card plays its own account, with every clear it has ever earned
-    if let Some(user_id) = database::card_user(&card) {
-        let uuid = userdata::get_login_token(user_id);
-        if !uuid.is_empty() {
-            // The cabinet's name entry, coming back for the account this credit
-            // just made. Checked BEFORE the window is re-opened, because the
-            // proof is the window the previous call opened.
-            if !typed_name.is_empty() && issued_by_this_credit(&card, user_id, global::timestamp() as i64, session_ttl()) {
-                let named = userdata::starter::clean_name(&typed_name, &card_account_name(&card));
-                rename_account(user_id, &uuid, &named);
-                println!("arcade: machine {} named its new card's account {} \"{}\"", machine_id, user_id, named);
-            }
-            open_card_session(&card, &machine_id);
-            let name = userdata::get_name_and_rank(user_id)["user_name"].as_str().unwrap_or("").to_string();
-            return Api(Some(object!{
-                "user_id": user_id,
-                "uuid": uuid,
-                "name": name,
-                "is_new": false
-            }));
-        }
-        // The mapping outlived its account (deleted through the webui, or aged
-        // out with a machine). The card is not broken: it gets a new account.
-        println!("arcade: card mapping pointed at missing account {} - reissuing", user_id);
-    }
-
-    // A card nobody has seen before. It gets an account named after its own last
-    // four digits unless the cabinet already has a name for it - which it only
-    // does when something other than the entrance's own two-step asked for one.
-    let name = userdata::starter::clean_name(&typed_name, &card_account_name(&card));
-    let Some((user_id, uuid)) = userdata::starter::create(&name) else {
-        return Api(None);
+    let Some((user_id, uuid)) = resolve_card(&card) else {
+        println!("arcade: machine {} presented a card that is linked to no account", machine_id);
+        return Api(Some(object!{ "unlinked": true }));
     };
-    database::set_card(&card, user_id);
     open_card_session(&card, &machine_id);
-    println!("arcade: machine {} issued account {} to a new card", machine_id, user_id);
-
+    let name = userdata::get_name_and_rank(user_id)["user_name"].as_str().unwrap_or("").to_string();
     Api(Some(object!{
         "user_id": user_id,
         "uuid": uuid,
         "name": name,
-        "is_new": true
+        "unlinked": false
     }))
 }
 
 // Point a card at a player account the caller has already identified. This is
 // the rule every entrance shares - the card id is validated, a cabinet's own
-// identities are refused, the mapping is replaced and the throwaway account
-// the card was carrying is cleaned up - and the proof of *whose* account it is
-// belongs to the caller: the cabinet's /api/arcade/bind takes the game's
-// data-transfer code and password (bind_card), the webui account page takes
-// the signed-in session itself, which already proves the account.
+// identities are refused, the mapping is replaced - and the proof of *whose*
+// account it is belongs to the caller: the cabinet's /api/arcade/bind takes the
+// game's data-transfer code and password (bind_card), the webui account page
+// and the game's own take-over screen take the signed-in session itself, which
+// already proves the account.
 pub fn bind_card_to(card: &str, user_id: i64) -> Result<i64, String> {
     if disabled() {
         return Err(String::from("Arcade mode is disabled on this server"));
@@ -327,19 +267,7 @@ pub fn bind_card_to(card: &str, user_id: i64) -> Result<i64, String> {
         return Err(String::from("That account belongs to an arcade cabinet"));
     }
 
-    let previous = database::card_user(&card);
     database::set_card(&card, user_id);
-
-    // A card that was carrying a throwaway account the cabinet made for it takes
-    // that account with it. Anything the player might care about keeps the card
-    // from taking it: see orphan_of_a_rebound_card.
-    if let Some(previous) = previous
-        && previous != user_id
-        && orphan_of_a_rebound_card(previous) {
-        println!("arcade: card {} left empty account {} behind - removing", card, previous);
-        userdata::delete_account(previous);
-    }
-
     println!("arcade: card {} now plays as account {}", card, user_id);
     Ok(user_id)
 }
@@ -379,28 +307,72 @@ async fn bind(Body(body): Body) -> impl Responder {
     }
 }
 
-// An account /api/arcade/session issued to an unknown card that was then never
-// used for anything. Every one of these has to hold for it to be thrown away
-// with the card, because a false positive deletes somebody's save:
-//   * no other card still points at it,
-//   * it is not a cabinet's own machine or guest identity,
-//   * it has never registered a transfer password, so no phone ever owned it,
-//   * and it has no live record at all - nothing was ever played on it.
-fn orphan_of_a_rebound_card(user_id: i64) -> bool {
-    if database::account_has_card(user_id) {
-        return false;
+// -- the phone's own cards --------------------------------------------------
+
+// The signed-in player's cards. `Session` already rejected a bad token, so a
+// uid of 0 cannot happen here; it is refused all the same rather than listing
+// nobody's cards.
+async fn card_list(Session { key, .. }: Session) -> impl Responder {
+    if disabled() {
+        return Api(None);
     }
-    if database::machine_of_account(user_id).is_some() {
-        return false;
+    let user_id = userdata::uid_from_login_token(&key);
+    if user_id == 0 {
+        return Api(None);
     }
-    if userdata::has_transfer_password(user_id) {
-        return false;
+    Api(Some(object!{
+        "card_ids": database::cards_of_account(user_id)
+    }))
+}
+
+// Link a card to the signed-in account: the tap on the phone's take-over issue
+// screen (NesicaLinkDialog). bind_card_to is the shared rule - the id is
+// validated, a cabinet identity is refused, and a card another account had
+// linked is re-pointed; `rebound` tells the new owner that is what happened.
+async fn card_link(Session { key, body }: Session) -> impl Responder {
+    if disabled() {
+        return Api(None);
     }
-    let user = userdata::get_acc_from_uid(user_id);
-    if user["error"].as_bool().unwrap_or(false) {
-        return false;
+    let user_id = userdata::uid_from_login_token(&key);
+    if user_id == 0 {
+        return Api(None);
     }
-    user["live_list"].is_empty() && user["live_mission_list"].is_empty()
+    let Some(card) = card_id(&body) else {
+        println!("arcade: account {} tried to link an unusable card id", user_id);
+        return Api(None);
+    };
+    let previous = database::card_user(&card);
+    match bind_card_to(&card, user_id) {
+        Ok(_) => Api(Some(object!{
+            "card_id": card,
+            "rebound": previous.is_some_and(|p| p != user_id)
+        })),
+        Err(reason) => {
+            println!("arcade: link refused for account {} - {}", user_id, reason);
+            Api(None)
+        }
+    }
+}
+
+// Unlink one of the signed-in account's own cards. The one revocation a card
+// has: a lost card stops naming the account the moment its owner says so.
+async fn card_unlink(Session { key, body }: Session) -> impl Responder {
+    if disabled() {
+        return Api(None);
+    }
+    let user_id = userdata::uid_from_login_token(&key);
+    if user_id == 0 {
+        return Api(None);
+    }
+    let Some(card) = card_id(&body) else {
+        return Api(None);
+    };
+    if !database::remove_card_of(&card, user_id) {
+        println!("arcade: account {} tried to unlink a card that is not its own", user_id);
+        return Api(None);
+    }
+    println!("arcade: account {} unlinked card {}", user_id, card);
+    Api(Some(object!{ "card_id": card }))
 }
 
 // -- lives ------------------------------------------------------------------
@@ -666,13 +638,6 @@ mod tests {
         assert!(card_id(&object!{ card_id: "x".repeat(MAX_CARD_ID_LEN + 1) }).is_none());
     }
 
-    // The account a fresh card gets is named after the card
-    #[test]
-    fn a_new_card_is_named_after_its_last_four_digits() {
-        assert_eq!(card_account_name("0123456789012345"), "2345");
-        assert_eq!(card_account_name("12"), "12");
-    }
-
     // The rank stored in the ledger is the one the result screen shows, read off
     // the live's own masterdata thresholds (live.csv 1100101: C 20000, B 100000,
     // A 250000, S 350000)
@@ -689,53 +654,107 @@ mod tests {
         assert_eq!(score_rank(10_000, 9_999_999), 0);
     }
 
-    // The card-rebind cleanup only ever takes an account that is provably a
-    // throwaway: a real player's account survives losing its card
+    // A card resolves to the account it names, and to nothing at all once that
+    // account is gone - and the dead mapping does not survive the answer
     #[test]
-    fn only_an_untouched_throwaway_follows_its_card() {
+    fn a_card_resolves_to_its_account_and_a_dead_mapping_is_dropped() {
         let _lock = crate::runtime::lock_test_data_path();
+        use crate::database::arcade as db;
 
-        // Never played, no card, no password, not a cabinet: a throwaway
-        let (orphan, _) = userdata::starter::create("2345").unwrap();
-        assert!(orphan_of_a_rebound_card(orphan));
+        // Nobody linked it: unlinked, and nothing was created for it
+        assert!(resolve_card("7020392000000001").is_none());
+        assert!(db::card_user("7020392000000001").is_none());
 
-        // Somebody played on it
-        let (played, played_token) = userdata::starter::create("2346").unwrap();
-        let mut user = userdata::get_acc_from_uid(played);
-        user["live_list"].push(object!{ master_live_id: 1100101, level: 4, clear_count: 1, high_score: 1, max_combo: 1 }).unwrap();
-        userdata::save_acc(&played_token, user);
-        assert!(!orphan_of_a_rebound_card(played));
+        // Linked: the account and its token
+        let (player, token) = userdata::starter::create("Linked").unwrap();
+        db::set_card("7020392000000002", player);
+        assert_eq!(resolve_card("7020392000000002"), Some((player, token)));
 
-        // Somebody can take it over from a phone
-        let (phone, _) = userdata::starter::create("2347").unwrap();
-        userdata::user::migration::save_acc_transfer(phone, "hunter2");
-        assert!(!orphan_of_a_rebound_card(phone));
-
-        // Another card still points at it
-        let (shared, _) = userdata::starter::create("2348").unwrap();
-        crate::database::arcade::set_card("9999888877776666", shared);
-        assert!(!orphan_of_a_rebound_card(shared));
-
-        // It is a cabinet's own identity
-        let (machine_account, _) = userdata::starter::create("Cabinet").unwrap();
-        let (guest_account, _) = userdata::starter::create(GUEST_NAME).unwrap();
-        let machine_id = crate::database::arcade::generate_machine_id();
-        crate::database::arcade::insert_machine(&machine_id, "Cabinet", machine_account, guest_account);
-        assert!(!orphan_of_a_rebound_card(machine_account));
-        assert!(!orphan_of_a_rebound_card(guest_account));
-
-        // An account that no longer exists is not deleted twice
-        userdata::delete_account(orphan);
-        assert!(!orphan_of_a_rebound_card(orphan));
-
-        crate::database::arcade::delete_machine(&machine_id);
+        // The account was deleted: unlinked from now on, mapping gone
+        userdata::delete_account(player);
+        assert!(resolve_card("7020392000000002").is_none());
+        assert!(db::card_user("7020392000000002").is_none(), "a mapping to a deleted account survived");
     }
 
-    // bind_card_to is the rule under both entrances - the cabinet's transfer
-    // proof and the webui's session - so whatever named the account, a cabinet's
-    // own identities are refused, and a provable throwaway goes with its card
+    // A player's cards are theirs to list and unlink, and nobody else's
     #[test]
-    fn bind_card_to_refuses_cabinet_identities_and_takes_the_throwaway_with_the_card() {
+    fn an_account_lists_and_unlinks_only_its_own_cards() {
+        let _lock = crate::runtime::lock_test_data_path();
+        use crate::database::arcade as db;
+
+        let (mine, _) = userdata::starter::create("Mine").unwrap();
+        let (theirs, _) = userdata::starter::create("Theirs").unwrap();
+        assert!(db::cards_of_account(mine).is_empty());
+
+        db::set_card("7020392000000011", mine);
+        db::set_card("7020392000000012", mine);
+        db::set_card("7020392000000013", theirs);
+        assert_eq!(db::cards_of_account(mine), vec!["7020392000000011".to_string(), "7020392000000012".to_string()]);
+        assert_eq!(db::cards_of_account(theirs), vec!["7020392000000013".to_string()]);
+
+        // Somebody else's card is refused and stays where it was
+        assert!(!db::remove_card_of("7020392000000013", mine));
+        assert_eq!(db::card_user("7020392000000013"), Some(theirs));
+        // A card nobody linked is not "unlinked" either
+        assert!(!db::remove_card_of("7020392000000014", mine));
+
+        assert!(db::remove_card_of("7020392000000011", mine));
+        assert!(db::card_user("7020392000000011").is_none());
+        assert_eq!(db::cards_of_account(mine), vec!["7020392000000012".to_string()]);
+
+        db::remove_card("7020392000000012");
+        db::remove_card("7020392000000013");
+        userdata::delete_account(mine);
+        userdata::delete_account(theirs);
+    }
+
+    // A linked card stands in for the transfer code, and the password still
+    // stands in front of the account
+    #[test]
+    fn a_linked_card_is_a_transfer_code_with_the_password_still_required() {
+        let _lock = crate::runtime::lock_test_data_path();
+        use crate::database::arcade as db;
+        use userdata::user::migration::{get_acc_transfer, transfer_code_exists};
+
+        let (player, token) = userdata::starter::create("Card Transfer").unwrap();
+        let card = "7020392000000021";
+
+        // Not linked: not a code
+        assert!(!get_acc_transfer(card, "hunter2")["success"].as_bool().unwrap());
+        assert!(!transfer_code_exists(card));
+
+        // Linked, but the account never registered a transfer password: still no
+        db::set_card(card, player);
+        assert!(!get_acc_transfer(card, "hunter2")["success"].as_bool().unwrap());
+        assert!(!get_acc_transfer(card, "")["success"].as_bool().unwrap());
+        assert!(transfer_code_exists(card), "a linked card should read as an existing code");
+
+        // With the password the card is the code...
+        userdata::user::migration::save_acc_transfer(player, "hunter2");
+        let by_card = get_acc_transfer(card, "hunter2");
+        assert!(by_card["success"].as_bool().unwrap());
+        assert_eq!(by_card["user_id"].as_i64(), Some(player));
+        assert_eq!(by_card["login_token"].as_str(), Some(token.as_str()));
+        // ...the wrong password is refused...
+        assert!(!get_acc_transfer(card, "wrong")["success"].as_bool().unwrap());
+        // ...and the real code still works exactly as before
+        let code = userdata::user::migration::get_acc_token(player);
+        assert!(get_acc_transfer(&code, "hunter2")["success"].as_bool().unwrap());
+        assert!(!code.chars().all(|c| c.is_ascii_digit()), "a transfer code was drawn in the card id space");
+
+        // Unlinked again: the card is nobody's code
+        db::remove_card(card);
+        assert!(!get_acc_transfer(card, "hunter2")["success"].as_bool().unwrap());
+
+        userdata::delete_account(player);
+    }
+
+    // bind_card_to is the rule under every entrance - the cabinet's transfer
+    // proof, the webui's session, the game's own take-over screen - so whatever
+    // named the account, a cabinet's own identities are refused and a card that
+    // already names an account is re-pointed, never refused
+    #[test]
+    fn bind_card_to_refuses_cabinet_identities_and_repoints_a_linked_card() {
         let _lock = crate::runtime::lock_test_data_path();
         use crate::database::arcade as db;
 
@@ -755,25 +774,18 @@ mod tests {
         assert!(bind_card_to(card, guest_account).is_err());
         assert!(db::card_user(card).is_none());
 
-        // A throwaway the card was carrying leaves with it...
-        let (orphan, _) = userdata::starter::create("2424").unwrap();
-        db::set_card(card, orphan);
+        // A card another player linked is re-pointed, and that player's account
+        // is untouched - the card was the only thing that changed hands
+        let (previous, _) = userdata::starter::create("Previous").unwrap();
+        db::set_card(card, previous);
         assert_eq!(bind_card_to(card, player), Ok(player));
         assert_eq!(db::card_user(card), Some(player));
-        assert!(userdata::get_acc_from_uid(orphan)["error"].as_bool().unwrap_or(false), "the throwaway survived");
-
-        // ...but an account somebody played on stays
-        let (played, played_token) = userdata::starter::create("2425").unwrap();
-        let mut user = userdata::get_acc_from_uid(played);
-        user["live_list"].push(object!{ master_live_id: 1100101, level: 4, clear_count: 1, high_score: 1, max_combo: 1 }).unwrap();
-        userdata::save_acc(&played_token, user);
-        let other = "2525252525252525";
-        db::set_card(other, played);
-        assert_eq!(bind_card_to(other, player), Ok(player));
-        assert_eq!(db::card_user(other), Some(player));
-        assert!(!userdata::get_acc_from_uid(played)["error"].as_bool().unwrap_or(false), "a played-on account followed its card");
+        assert!(!userdata::get_acc_from_uid(previous)["error"].as_bool().unwrap_or(false), "re-pointing a card touched the previous account");
 
         db::delete_machine(&machine_id);
+        for id in [player, previous, machine_account, guest_account] {
+            userdata::delete_account(id);
+        }
     }
 
     // A cabinet's song that ended with an empty life gauge is reported at
@@ -903,85 +915,5 @@ mod tests {
         assert_eq!(userdata::uid_from_login_token(&player_token), player);
 
         db::delete_machine(&live_id);
-    }
-
-    // A card the server has never seen gets an account named after its own last
-    // four digits, and the name the player then types at the cabinet lands on
-    // that account - and on nothing else. The rename is a second /session for
-    // the same card, so every other account has to be immune to it.
-    #[test]
-    fn a_new_cards_account_takes_the_name_the_player_types() {
-        let _lock = crate::runtime::lock_test_data_path();
-        use crate::database::arcade as db;
-
-        const TTL: i64 = 30 * 60;
-        let now = global::timestamp() as i64;
-        let card = "6060606060602345";
-        let machine_id = db::generate_machine_id();
-
-        // /api/arcade/session, first call: an unknown card, so the account is
-        // created under the card's last four digits and the credit's window opens
-        let name = card_account_name(card);
-        assert_eq!(name, "2345");
-        let (user_id, token) = userdata::starter::create(&name).unwrap();
-        db::set_card(card, user_id);
-        db::open_card_session(card, &machine_id, now + TTL);
-
-        // ...and the same call again, carrying the name the player typed
-        assert!(issued_by_this_credit(card, user_id, now, TTL));
-        rename_account(user_id, &token, "Ethan");
-        assert_eq!(userdata::get_name_and_rank(user_id)["user_name"].as_str(), Some("Ethan"));
-
-        // Once named it is somebody's account: a second name entry on the same
-        // card cannot touch it
-        assert!(!issued_by_this_credit(card, user_id, now, TTL), "a named account was still renameable");
-
-        // Neither can one whose credit has ended - the window is the proof
-        let later_card = "6060606060601111";
-        let (later, _) = userdata::starter::create(&card_account_name(later_card)).unwrap();
-        db::set_card(later_card, later);
-        db::open_card_session(later_card, &machine_id, now + TTL);
-        db::backdate_card_session_for_test(later_card, now - TTL - 1, now + TTL);
-        assert!(!issued_by_this_credit(later_card, later, now, TTL), "an old credit could still rename");
-        db::backdate_card_session_for_test(later_card, now, now - 1);
-        assert!(!issued_by_this_credit(later_card, later, now, TTL), "a closed window could still rename");
-
-        // Nor a card presented at one cabinet renaming through another card's row
-        db::open_card_session(later_card, &machine_id, now + TTL);
-        assert!(!issued_by_this_credit(card, later, now, TTL), "a different card's id could rename");
-
-        // A phone account behind a card is never renameable, however fresh its
-        // window is: it has a transfer password, and its name is its own
-        let phone_card = "6060606060602222";
-        let (phone, _) = userdata::starter::create(&card_account_name(phone_card)).unwrap();
-        userdata::user::migration::save_acc_transfer(phone, "hunter2");
-        db::set_card(phone_card, phone);
-        db::open_card_session(phone_card, &machine_id, now + TTL);
-        assert!(!issued_by_this_credit(phone_card, phone, now, TTL), "a phone account was renameable");
-
-        // And neither is an account that has already played something
-        let played_card = "6060606060603333";
-        let (played, played_token) = userdata::starter::create(&card_account_name(played_card)).unwrap();
-        db::set_card(played_card, played);
-        db::open_card_session(played_card, &machine_id, now + TTL);
-        assert!(issued_by_this_credit(played_card, played, now, TTL));
-        let mut user = userdata::get_acc_from_uid(played);
-        user["live_list"].push(object!{ master_live_id: 1100101, level: 4, clear_count: 1, high_score: 1, max_combo: 1 }).unwrap();
-        userdata::save_acc(&played_token, user);
-        assert!(!issued_by_this_credit(played_card, played, now, TTL), "a played account was renameable");
-
-        // Finally: a cabinet's own identity, which a card may not name at all
-        let (machine_account, _) = userdata::starter::create("Cabinet Name").unwrap();
-        let (guest_account, _) = userdata::starter::create(GUEST_NAME).unwrap();
-        db::insert_machine(&machine_id, "Cabinet Name", machine_account, guest_account);
-        let cabinet_card = "6060606060604444";
-        db::set_card(cabinet_card, guest_account);
-        db::open_card_session(cabinet_card, &machine_id, now + TTL);
-        assert!(!issued_by_this_credit(cabinet_card, guest_account, now, TTL), "a cabinet identity was renameable");
-
-        db::delete_machine(&machine_id);
-        for id in [user_id, later, phone, played, machine_account, guest_account] {
-            userdata::delete_account(id);
-        }
     }
 }
