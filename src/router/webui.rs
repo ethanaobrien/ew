@@ -610,20 +610,18 @@ pub fn remove_arcade_machine(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn bind_arcade_card(req: HttpRequest, body: String) -> HttpResponse {
-    if crate::router::arcade::disabled() {
-        return HttpResponse::NotFound().finish();
-    }
+pub fn link_nesica_card(req: HttpRequest, body: String) -> HttpResponse {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
-    match crate::router::arcade::bind_card_to(body["card_id"].as_str().unwrap_or(""), uid) {
-        Ok(user_id) => {
+    match crate::router::userdata::user::migration::link_card(body["card_id"].as_str().unwrap_or(""), uid) {
+        Ok((card_id, rebound)) => {
             let resp = object!{
                 result: "OK",
                 data: {
-                    user_id: user_id
+                    card_id: card_id,
+                    rebound: rebound
                 }
             };
             HttpResponse::Ok()
@@ -634,18 +632,14 @@ pub fn bind_arcade_card(req: HttpRequest, body: String) -> HttpResponse {
     }
 }
 
-// The signed-in account's linked cards, for the account page's list.
-pub fn list_arcade_cards(req: HttpRequest) -> HttpResponse {
-    if crate::router::arcade::disabled() {
-        return HttpResponse::NotFound().finish();
-    }
+pub fn list_nesica_cards(req: HttpRequest) -> HttpResponse {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
     let resp = object!{
         result: "OK",
         data: {
-            card_ids: crate::database::arcade::cards_of_account(uid)
+            card_ids: crate::router::userdata::user::migration::cards_of_account(uid)
         }
     };
     HttpResponse::Ok()
@@ -653,21 +647,15 @@ pub fn list_arcade_cards(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-// Unlink one of the signed-in account's own cards - the revocation a lost card
-// needs, and the only way a card stops naming an account short of somebody
-// else linking it.
-pub fn unbind_arcade_card(req: HttpRequest, body: String) -> HttpResponse {
-    if crate::router::arcade::disabled() {
-        return HttpResponse::NotFound().finish();
-    }
+pub fn unlink_nesica_card(req: HttpRequest, body: String) -> HttpResponse {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
-    let Some(card) = crate::router::arcade::valid_card_id(body["card_id"].as_str().unwrap_or("")) else {
+    let Some(card) = crate::router::userdata::user::migration::valid_card_id(body["card_id"].as_str().unwrap_or("")) else {
         return error("That is not a usable card id");
     };
-    if !crate::database::arcade::remove_card_of(&card, uid) {
+    if !crate::router::userdata::user::migration::remove_card_of(&card, uid) {
         return error("That card is not linked to this account");
     }
     let resp = object!{

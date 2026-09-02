@@ -17,6 +17,9 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
             .route("/migration", web::post().to(migration))
             .route("/gglrequestmigrationcode", web::post().to(request_migration_code))
             .route("/gglverifymigrationcode", web::post().to(verify_migration_code))
+            .route("/migration/card/list", web::post().to(migration_card_list))
+            .route("/migration/card/link", web::post().to(migration_card_link))
+            .route("/migration/card/unlink", web::post().to(migration_card_unlink))
             .route("/getregisteredplatformlist", web::post().to(getregisteredplatformlist))
             .route("/sif/migrate", web::post().to(sif_migrate))
             .route("/ss/migrate", web::post().to(sifas_migrate))
@@ -240,6 +243,46 @@ async fn request_migration_code(Body(body): Body) -> impl Responder {
         "twxuid": user["login_token"].to_string()
     }))
 }
+async fn migration_card_list(Session { key, .. }: Session) -> impl Responder {
+    let user_id = userdata::uid_from_login_token(&key);
+    if user_id == 0 {
+        return Api(None);
+    }
+    Api(Some(object!{
+        "card_ids": userdata::user::migration::cards_of_account(user_id)
+    }))
+}
+
+async fn migration_card_link(Session { key, body }: Session) -> impl Responder {
+    let user_id = userdata::uid_from_login_token(&key);
+    if user_id == 0 {
+        return Api(None);
+    }
+    match userdata::user::migration::link_card(body["card_id"].as_str().unwrap_or(""), user_id) {
+        Ok((card_id, rebound)) => Api(Some(object!{
+            "card_id": card_id,
+            "rebound": rebound
+        })),
+        Err(_) => Api(None)
+    }
+}
+
+async fn migration_card_unlink(Session { key, body }: Session) -> impl Responder {
+    let user_id = userdata::uid_from_login_token(&key);
+    if user_id == 0 {
+        return Api(None);
+    }
+    let Some(card_id) = userdata::user::migration::valid_card_id(body["card_id"].as_str().unwrap_or("")) else {
+        return Api(None);
+    };
+    if !userdata::user::migration::remove_card_of(&card_id, user_id) {
+        return Api(None);
+    }
+    Api(Some(object!{
+        "card_id": card_id
+    }))
+}
+
 async fn migration(Body(body): Body) -> impl Responder {
 
     let user = userdata::get_name_and_rank(body["user_id"].to_string().parse::<i64>().unwrap());

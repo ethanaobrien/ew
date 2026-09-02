@@ -15,20 +15,18 @@ lazy_static! {
 // rewritten from scratch at every credit. Neither is ever handed out twice and
 // neither accumulates, so the arcade never leaves dead users behind.
 //
-// `cards` maps a physical card id to the account it plays as. `last_machine_id`
-// / `last_session` are the "which cabinet is this card sitting at" record: a
-// card account is not owned by any one machine, so /live/end attributes its play
-// to the machine that most recently ran a session for that card. Keeping it as
-// two columns on the row the session already writes is the whole design - no
-// second table, no row to expire, and the attribution can never outlive the
-// mapping it belongs to.
-//
-// `session_until` is the same row's other half and the one that costs money: the
-// moment the credit that /api/arcade/session took stops buying LP-free lives.
-// Before it, a card account plays as a cabinet does; after it, the same account
-// is an ordinary phone account again. It is a stamp rather than a flag so that a
-// cabinet that loses power mid-credit expires on its own with nothing to clean
-// up, and so an operator can size the window with --arcade-session-ttl.
+// Which account a card names lives in userdata.db (userdata::user::migration,
+// the `cards` table): linking a card is a plain account feature and works with
+// this module off. What lives here is only the cabinet side of a card:
+// `card_sessions` is the "which cabinet is this card sitting at" record -
+// `last_machine_id` / `last_session` attribute a card account's play to the
+// machine that most recently ran a session for it - and `session_until` is the
+// one that costs money: the moment the credit that /api/arcade/session took
+// stops buying LP-free lives. Before it, a card account plays as a cabinet does;
+// after it, the same account is an ordinary phone account again. It is a stamp
+// rather than a flag so that a cabinet that loses power mid-credit expires on
+// its own with nothing to clean up, and so an operator can size the window with
+// --arcade-session-ttl. Re-linking a card clears its row (card_relinked).
 //
 // `plays` is the bookkeeping ledger: one row per arcade song, cleared or not.
 // `cleared` is 0 for a song whose life gauge emptied: the client plays it out and
@@ -47,10 +45,8 @@ CREATE TABLE IF NOT EXISTS machines (
     created          BIGINT NOT NULL,
     last_seen        BIGINT NOT NULL
 );
-CREATE TABLE IF NOT EXISTS cards (
+CREATE TABLE IF NOT EXISTS card_sessions (
     card_id          TEXT NOT NULL PRIMARY KEY,
-    user_id          BIGINT NOT NULL,
-    created          BIGINT NOT NULL,
     last_machine_id  TEXT NOT NULL DEFAULT '',
     last_session     BIGINT NOT NULL DEFAULT 0,
     session_until    BIGINT NOT NULL DEFAULT 0
@@ -68,32 +64,35 @@ CREATE TABLE IF NOT EXISTS plays (
 );
 CREATE INDEX IF NOT EXISTS plays_machine ON plays (machine_id);
     ").unwrap();
-    // Upgrade databases written before the card session record existed. Existing
-    // mappings simply have no cabinet attached until their next session.
-    if conn.prepare("SELECT last_machine_id FROM cards LIMIT 1;").is_err() {
-        println!("Upgrading arcade card table");
-        conn.execute("ALTER TABLE cards ADD COLUMN last_machine_id TEXT NOT NULL DEFAULT '';", []).unwrap();
-        conn.execute("ALTER TABLE cards ADD COLUMN last_session BIGINT NOT NULL DEFAULT 0;", []).unwrap();
-    }
-    // Upgrade databases written before the LP-free window existed. 0 is "this
-    // card is not at a cabinet", so every existing mapping starts closed and
-    // opens at its next session - the safe direction.
-    if conn.prepare("SELECT session_until FROM cards LIMIT 1;").is_err() {
-        println!("Upgrading arcade card table (session window)");
-        conn.execute("ALTER TABLE cards ADD COLUMN session_until BIGINT NOT NULL DEFAULT 0;", []).unwrap();
-    }
-    // Upgrade databases written before failed songs were recorded at all. Every
-    // row already in the ledger got there through /live/end, which is a clear.
-    if conn.prepare("SELECT cleared FROM plays LIMIT 1;").is_err() {
-        println!("Upgrading arcade play table (cleared)");
-        conn.execute("ALTER TABLE plays ADD COLUMN cleared INTEGER NOT NULL DEFAULT 1;", []).unwrap();
+    // Databases from before the card mapping moved to userdata.db carry a
+    // `cards` table here. Its mappings move over once, its windows become
+    // card_sessions rows, and the table goes.
+    if conn.prepare("SELECT user_id FROM cards LIMIT 1;").is_ok() {
+        println!("Moving arcade card mappings to userdata");
+        let has_sessions = conn.prepare("SELECT session_until FROM cards LIMIT 1;").is_ok();
+        let query = if has_sessions {
+            "SELECT card_id, user_id, created, last_machine_id, last_session, session_until FROM cards"
+        } else {
+            "SELECT card_id, user_id, created, '', 0, 0 FROM cards"
+        };
+        let mut stmt = conn.prepare(query).unwrap();
+        let rows: Vec<(String, i64, i64, String, i64, i64)> = stmt.query_map([], |row| Ok((
+            row.get(0)?, row.get(1)?, row.get(2)?, row.get(3)?, row.get(4)?, row.get(5)?
+        ))).unwrap().flatten().collect();
+        drop(stmt);
+        for (card_id, user_id, created, last_machine_id, last_session, session_until) in rows {
+            crate::router::userdata::user::migration::import_card(&card_id, user_id, created);
+            if !last_machine_id.is_empty() || session_until != 0 {
+                conn.execute(
+                    "INSERT OR REPLACE INTO card_sessions (card_id, last_machine_id, last_session, session_until) VALUES (?1, ?2, ?3, ?4)",
+                    params!(card_id, last_machine_id, last_session, session_until)
+                ).unwrap();
+            }
+        }
+        conn.execute("DROP TABLE cards;", []).unwrap();
     }
 }
 
-// 16 hex characters, the shape the client stores in ArcadeSaveData.Machine and
-// presents on every later call. It is the only thing that authenticates a
-// cabinet, so it is drawn at full width rather than derived from anything
-// guessable, and re-drawn on the (never observed) collision
 pub fn generate_machine_id() -> String {
     const CHARSET: &[u8] = b"0123456789abcdef";
     let mut rng = rand::rng();
@@ -154,7 +153,7 @@ pub fn machine_of_account(user_id: i64) -> Option<JsonValue> {
 
 pub fn delete_machine(machine_id: &str) {
     DATABASE.lock_and_exec("DELETE FROM plays WHERE machine_id=?1", params!(machine_id));
-    DATABASE.lock_and_exec("UPDATE cards SET last_machine_id='', last_session=0, session_until=0 WHERE last_machine_id=?1", params!(machine_id));
+    DATABASE.lock_and_exec("DELETE FROM card_sessions WHERE last_machine_id=?1", params!(machine_id));
     DATABASE.lock_and_exec("DELETE FROM machines WHERE machine_id=?1", params!(machine_id));
 }
 
@@ -218,70 +217,43 @@ pub fn machines_last_seen_before(cutoff: i64) -> JsonValue {
     rv
 }
 
-pub fn card_user(card_id: &str) -> Option<i64> {
-    DATABASE.lock_and_select_type("SELECT user_id FROM cards WHERE card_id=?1", params!(card_id)).ok()
-}
-
-// Point a card at an account. `created` survives a re-bind: the card is the same
-// physical object, only the account behind it changed. The cabinet record is
-// cleared, because the previous holder's sessions say nothing about this one -
-// and so is the LP-free window, which was bought for the previous account
-pub fn set_card(card_id: &str, user_id: i64) {
-    DATABASE.lock_and_exec(
-        "INSERT INTO cards (card_id, user_id, created, last_machine_id, last_session, session_until) VALUES (?1, ?2, ?3, '', 0, 0)
-         ON CONFLICT(card_id) DO UPDATE SET user_id=?2, last_machine_id='', last_session=0, session_until=0",
-        params!(card_id, user_id, global::timestamp() as i64)
-    );
-}
-
 // The cabinet this card is playing at right now and how long the credit it just
 // paid buys LP-free lives for. Written by /api/arcade/session, and only there:
 // the session is the one moment the server knows a credit was taken
-// Every card that names this account, oldest first. The account page and the
-// game's own link dialog list them; a player usually has one.
-pub fn cards_of_account(user_id: i64) -> Vec<String> {
-    let Ok(conn) = rusqlite::Connection::open(DATABASE.get_path()) else { return Vec::new(); };
-    let Ok(mut stmt) = conn.prepare("SELECT card_id FROM cards WHERE user_id=?1 ORDER BY created ASC") else { return Vec::new(); };
-    let Ok(rows) = stmt.query_map(params!(user_id), |row| row.get::<usize, String>(0)) else { return Vec::new(); };
-    rows.flatten().collect()
-}
-
-// Unlink a card from the account that owns it. False when the card is not this
-// account's - a player can only ever unlink their own, and the answer says so
-// rather than silently succeeding on somebody else's row.
-pub fn remove_card_of(card_id: &str, user_id: i64) -> bool {
-    match card_user(card_id) {
-        Some(owner) if owner == user_id => {
-            remove_card(card_id);
-            true
-        }
-        _ => false
-    }
-}
-
-// Forget a card: the mapping row goes, the account it named is not touched.
-// Used when the account behind a card no longer exists (router/arcade.rs
-// resolve_card) and when a player unlinks a card of their own.
-pub fn remove_card(card_id: &str) {
-    DATABASE.lock_and_exec("DELETE FROM cards WHERE card_id=?1", params!(card_id));
-}
-
 pub fn open_card_session(card_id: &str, machine_id: &str, until: i64) {
     DATABASE.lock_and_exec(
-        "UPDATE cards SET last_machine_id=?1, last_session=?2, session_until=?3 WHERE card_id=?4",
-        params!(machine_id, global::timestamp() as i64, until, card_id)
+        "INSERT INTO card_sessions (card_id, last_machine_id, last_session, session_until) VALUES (?1, ?2, ?3, ?4)
+         ON CONFLICT(card_id) DO UPDATE SET last_machine_id=?2, last_session=?3, session_until=?4",
+        params!(card_id, machine_id, global::timestamp() as i64, until)
     );
 }
 
-// The card of this account whose cabinet session is still open at `now`, as
-// (card id, when the session started). None when no card of the account is at a
-// cabinet - which is every phone account, and every card between credits.
-pub fn live_card_session(user_id: i64, now: i64) -> Option<(String, i64)> {
+// A card that changed hands takes nothing of the previous holder's credit with it
+pub fn clear_card_session(card_id: &str) {
+    DATABASE.lock_and_exec("DELETE FROM card_sessions WHERE card_id=?1", params!(card_id));
+}
+
+fn placeholders(count: usize) -> String {
+    (1..=count).map(|i| format!("?{}", i)).collect::<Vec<_>>().join(", ")
+}
+
+// Of these cards (an account's, userdata::user::migration::cards_of_account),
+// the one whose cabinet session is still open at `now`, as (card id, when the
+// session started). None when none of them is at a cabinet - which is every
+// phone account, and every card between credits.
+pub fn live_card_session(cards: &[String], now: i64) -> Option<(String, i64)> {
+    if cards.is_empty() {
+        return None;
+    }
     let conn = rusqlite::Connection::open(DATABASE.get_path()).ok()?;
-    let mut stmt = conn.prepare(
-        "SELECT card_id, last_session FROM cards WHERE user_id=?1 AND session_until>?2 ORDER BY session_until DESC LIMIT 1"
-    ).ok()?;
-    stmt.query_row(params!(user_id, now), |row| Ok((row.get::<usize, String>(0)?, row.get::<usize, i64>(1)?))).ok()
+    let sql = format!(
+        "SELECT card_id, last_session FROM card_sessions WHERE card_id IN ({}) AND session_until>?{} ORDER BY session_until DESC LIMIT 1",
+        placeholders(cards.len()), cards.len() + 1
+    );
+    let mut stmt = conn.prepare(&sql).ok()?;
+    let mut args: Vec<&dyn rusqlite::ToSql> = cards.iter().map(|c| c as &dyn rusqlite::ToSql).collect();
+    args.push(&now);
+    stmt.query_row(args.as_slice(), |row| Ok((row.get::<usize, String>(0)?, row.get::<usize, i64>(1)?))).ok()
 }
 
 // A live starting inside the window pushes its end back, so a credit whose songs
@@ -290,7 +262,7 @@ pub fn live_card_session(user_id: i64, now: i64) -> Option<(String, i64)> {
 // ceiling would turn one credit into an endless supply of LP-free lives
 pub fn extend_card_session(card_id: &str, until: i64) {
     DATABASE.lock_and_exec(
-        "UPDATE cards SET session_until=?1 WHERE card_id=?2 AND session_until<?1",
+        "UPDATE card_sessions SET session_until=?1 WHERE card_id=?2 AND session_until<?1",
         params!(until, card_id)
     );
 }
@@ -300,26 +272,29 @@ pub fn extend_card_session(card_id: &str, until: i64) {
 #[cfg(test)]
 pub fn backdate_card_session_for_test(card_id: &str, last_session: i64, session_until: i64) {
     DATABASE.lock_and_exec(
-        "UPDATE cards SET last_session=?1, session_until=?2 WHERE card_id=?3",
+        "UPDATE card_sessions SET last_session=?1, session_until=?2 WHERE card_id=?3",
         params!(last_session, session_until, card_id)
     );
 }
 
-// The machine that most recently ran a session for this account through any of
-// its cards. Empty when the account has no card, or has never been at a cabinet
-pub fn last_machine_of_card_account(user_id: i64) -> Option<String> {
-    let machine_id: String = DATABASE.lock_and_select_type(
-        "SELECT last_machine_id FROM cards WHERE user_id=?1 AND last_machine_id<>'' ORDER BY last_session DESC LIMIT 1",
-        params!(user_id)
-    ).ok()?;
+// The machine that most recently ran a session for any of these cards. None
+// when none of them has ever been at a cabinet
+pub fn last_machine_of_cards(cards: &[String]) -> Option<String> {
+    if cards.is_empty() {
+        return None;
+    }
+    let conn = rusqlite::Connection::open(DATABASE.get_path()).ok()?;
+    let sql = format!(
+        "SELECT last_machine_id FROM card_sessions WHERE card_id IN ({}) AND last_machine_id<>'' ORDER BY last_session DESC LIMIT 1",
+        placeholders(cards.len())
+    );
+    let mut stmt = conn.prepare(&sql).ok()?;
+    let args: Vec<&dyn rusqlite::ToSql> = cards.iter().map(|c| c as &dyn rusqlite::ToSql).collect();
+    let machine_id: String = stmt.query_row(args.as_slice(), |row| row.get(0)).ok()?;
     if machine_id.is_empty() {
         return None;
     }
     Some(machine_id)
-}
-
-pub fn account_has_card(user_id: i64) -> bool {
-    DATABASE.lock_and_select("SELECT card_id FROM cards WHERE user_id=?1", params!(user_id)).is_ok()
 }
 
 pub fn insert_play(machine_id: &str, user_id: i64, live_id: i64, level: i64, score: i64, rank: i64, cleared: bool) {
@@ -405,35 +380,29 @@ mod tests {
         assert!(get_machine(&id).is_none());
     }
 
-    // A card names an account; a re-bind repoints it and drops the previous
-    // holder's cabinet record; plays are attributed to the cabinet the card last
-    // sat at and die with the machine
+    // A card's cabinet record follows the card: it is attributed to the cabinet
+    // the card last sat at, a re-link clears it, and it dies with the machine
     #[test]
-    fn a_card_names_an_account_and_its_last_cabinet() {
+    fn a_cards_cabinet_record_follows_the_card() {
         let _lock = crate::runtime::lock_test_data_path();
 
         let machine = generate_machine_id();
         insert_machine(&machine, "Cabinet 2", 333_333_333_333_333, 444_444_444_444_444);
-        let card = "0123456789012345";
+        let cards = vec!["0123456789012345".to_string()];
+        let card = cards[0].as_str();
 
-        assert!(card_user(card).is_none());
-        set_card(card, 555_555_555_555_555);
-        assert_eq!(card_user(card), Some(555_555_555_555_555));
-        assert!(account_has_card(555_555_555_555_555));
         // Never at a cabinet yet
-        assert!(last_machine_of_card_account(555_555_555_555_555).is_none());
+        assert!(last_machine_of_cards(&cards).is_none());
+        assert!(live_card_session(&[], 0).is_none());
 
         let now = global::timestamp() as i64;
         open_card_session(card, &machine, now + 60);
-        assert_eq!(last_machine_of_card_account(555_555_555_555_555).as_deref(), Some(machine.as_str()));
+        assert_eq!(last_machine_of_cards(&cards).as_deref(), Some(machine.as_str()));
 
-        // A re-bind keeps the card, moves the account and forgets the cabinet -
-        // and the window the previous account's credit paid for
-        set_card(card, 666_666_666_666_666);
-        assert_eq!(card_user(card), Some(666_666_666_666_666));
-        assert!(!account_has_card(555_555_555_555_555));
-        assert!(last_machine_of_card_account(666_666_666_666_666).is_none());
-        assert!(live_card_session(666_666_666_666_666, now).is_none(), "a re-bind carried the previous account's credit over");
+        // A re-link forgets the cabinet and the window the previous account's credit paid for
+        clear_card_session(card);
+        assert!(last_machine_of_cards(&cards).is_none());
+        assert!(live_card_session(&cards, now).is_none(), "a re-link carried the previous account's credit over");
 
         assert_eq!(play_count(&machine), 0);
         insert_play(&machine, 666_666_666_666_666, 1100101, 4, 654_321, 3, true);
@@ -450,53 +419,48 @@ mod tests {
         assert_eq!(ledger[0]["score"].as_i64(), Some(123_456));
         assert_eq!(ledger[1]["cleared"].as_bool(), Some(true));
 
-        // Removing the cabinet takes its ledger with it and unlinks the card
+        // Removing the cabinet takes its ledger and its card records with it
         open_card_session(card, &machine, now + 60);
         delete_machine(&machine);
         assert_eq!(play_count(&machine), 0);
-        assert!(last_machine_of_card_account(666_666_666_666_666).is_none());
-        assert!(live_card_session(666_666_666_666_666, now).is_none(), "a retired cabinet left a credit open");
-        assert_eq!(card_user(card), Some(666_666_666_666_666));
+        assert!(last_machine_of_cards(&cards).is_none());
+        assert!(live_card_session(&cards, now).is_none(), "a retired cabinet left a credit open");
     }
 
     // The credit a card paid for is a window on its own row: open until it is
     // not, pushed forward but never backward, and never shared with another card
-    // of another account
     #[test]
     fn a_credit_opens_a_window_that_closes_on_its_own() {
         let _lock = crate::runtime::lock_test_data_path();
 
         let machine = generate_machine_id();
         insert_machine(&machine, "Cabinet 3", 777_777_777_777_777, 888_888_888_888_888);
-        let card = "1212121212121212";
-        let user = 121_212_121_212_121;
+        let cards = vec!["1212121212121212".to_string()];
+        let card = cards[0].as_str();
         let now = global::timestamp() as i64;
 
-        // A mapping with no session behind it is not a cabinet session
-        set_card(card, user);
-        assert!(live_card_session(user, now).is_none());
+        // A card with no session behind it is not a cabinet session
+        assert!(live_card_session(&cards, now).is_none());
 
         open_card_session(card, &machine, now + 600);
-        let (open_card, opened) = live_card_session(user, now).expect("the credit did not open a window");
+        let (open_card, opened) = live_card_session(&cards, now).expect("the credit did not open a window");
         assert_eq!(open_card, card);
         assert!(opened <= now && opened >= now - 5, "the session start was not stamped: {} vs {}", opened, now);
 
         // The window closes by itself, with nothing to sweep
-        assert!(live_card_session(user, now + 599).is_some());
-        assert!(live_card_session(user, now + 600).is_none(), "the window outlived its own expiry");
-        assert!(live_card_session(user, now + 601).is_none());
+        assert!(live_card_session(&cards, now + 599).is_some());
+        assert!(live_card_session(&cards, now + 600).is_none(), "the window outlived its own expiry");
+        assert!(live_card_session(&cards, now + 601).is_none());
 
         // A live inside it pushes it forward, and only forward
         extend_card_session(card, now + 1200);
-        assert!(live_card_session(user, now + 900).is_some());
+        assert!(live_card_session(&cards, now + 900).is_some());
         extend_card_session(card, now + 300);
-        assert!(live_card_session(user, now + 900).is_some(), "an extension moved the window backwards");
+        assert!(live_card_session(&cards, now + 900).is_some(), "an extension moved the window backwards");
 
-        // Another account's card is untouched by any of it
-        let other_card = "3434343434343434";
-        let other_user = 343_434_343_434_343;
-        set_card(other_card, other_user);
-        assert!(live_card_session(other_user, now).is_none());
+        // Another card is untouched by any of it
+        let other = vec!["3434343434343434".to_string()];
+        assert!(live_card_session(&other, now).is_none());
 
         delete_machine(&machine);
     }
