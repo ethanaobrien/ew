@@ -195,9 +195,11 @@ pub async fn announcement(Login(key): Login) -> impl Responder {
     }))
 }
 
-async fn get_migration_code(Body(body): Body) -> impl Responder {
-
-    let Some(user_id) = body["user_id"].as_i64() else { return Api(None); };
+async fn get_migration_code(Session { key, .. }: Session) -> impl Responder {
+    let user_id = userdata::uid_from_login_token(&key);
+    if user_id == 0 {
+        return Api(None);
+    }
     let code = userdata::user::migration::get_acc_token(user_id);
 
     Api(Some(object!{
