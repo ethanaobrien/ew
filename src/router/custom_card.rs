@@ -386,6 +386,79 @@ lazy_static! {
         }
         rv
     };
+
+    // NERF_CUSTOM_CARDS: per-rarity (hp, smile, cool, pure) ceilings set ~200
+    // below the median official card of that rarity (official medians: R ~2160,
+    // SR ~4010, UR ~4366 -> caps 2000 / 3800 / 4200), so a nerfed custom card
+    // stays under a typical official one. Skill magnitudes nerf to 4/5 of the
+    // official ranges
+    static ref NERF_STAT_CAPS: HashMap<i64, (i64, i64, i64, i64)> = {
+        let mut rv: HashMap<i64, (i64, i64, i64, i64)> = HashMap::new();
+        for (&rarity, (hp, _, _, _)) in &*STAT_CAPS {
+            let cap = match rarity {
+                1 => 2000,
+                2 => 3800,
+                _ => 4200,
+            };
+            rv.insert(rarity, (*hp, cap, cap, cap));
+        }
+        rv
+    };
+}
+
+// The nerf band. Read from the runtime flag rather than get_args(): the
+// host-config path (set_nerf_custom_cards, mirrored by overlay_args) is the
+// one the lib mode and the tests reach, and get_args() chokes on the test
+// harness's own CLI arguments (the same reason set_time is avoided in tests)
+pub fn nerf_active() -> bool {
+    crate::runtime::get_nerf_custom_cards()
+}
+
+// Skill magnitudes nerf to 4/5 of the official range
+fn nerf_scale(value: i64) -> i64 {
+    value * 4 / 5
+}
+
+// A stored skill array element above the cap moves down to the cap; below it
+// is untouched
+fn nerf_clamp_element(value: &mut JsonValue, cap: i64) {
+    if cap > 0 && value.as_i64().unwrap_or(0) > cap {
+        *value = cap.into();
+    }
+}
+
+// NERF_CUSTOM_CARDS clamps a card's stored stats and skill magnitudes to the
+// nerf band WITHOUT touching the db row - the db keeps the owner's values,
+// every response carries the clamped ones. No-op below the caps, so an
+// ordinary card passes through unchanged
+fn nerf_clamp_card(card: &mut JsonValue) {
+    let rarity = card["rarity"].as_i64().unwrap_or(0);
+    if let Some((hp, smile, cool, pure)) = NERF_STAT_CAPS.get(&rarity) {
+        for (key, cap) in [("hp", *hp), ("smile", *smile), ("cool", *cool), ("pure", *pure)] {
+            nerf_clamp_element(&mut card[key], cap);
+        }
+    }
+    if card["skill"].is_null() {
+        return;
+    }
+    let effect_type = card["skill"]["effect_type"].as_i64().unwrap_or(0);
+    let trigger = card["skill"]["trigger"].as_i64().unwrap_or(0);
+    let (_, value_max, _) = *SKILL_VALUE_RANGES.get(&effect_type).unwrap_or(&(0, 0, "official"));
+    let (_, trigger_max) = *SKILL_TRIGGER_RANGES.get(&trigger).unwrap_or(&(0, 0));
+    let ((_, prob_max), (_, ms_max)) = *SKILL_SCALAR_RANGES;
+    for (key, cap) in [
+        ("trigger_value", nerf_scale(trigger_max)),
+        ("probability", nerf_scale(prob_max)),
+        ("effective_milli_secs", nerf_scale(ms_max)),
+        ("effective_values", nerf_scale(value_max))
+    ] {
+        if !card["skill"][key].is_array() {
+            continue;
+        }
+        for value in card["skill"][key].members_mut() {
+            nerf_clamp_element(value, cap);
+        }
+    }
 }
 
 // Game endpoints (/api scope, standard envelope)
@@ -525,10 +598,15 @@ pub fn strip_unsupported(user: &mut JsonValue) {
 // The concrete upload bounds, served to the webui so the form can enforce
 // them client-side (sliders/radios) and reject out-of-range values instantly
 pub fn upload_limits() -> JsonValue {
+    let nerfed = nerf_active();
     let mut stat_caps = object!{};
     let mut skill_levels = object!{};
     for rarity in CARD_RARITY_MIN..=CARD_RARITY_MAX {
-        let caps = STAT_CAPS.get(&rarity).copied().unwrap_or((0, 0, 0, 0));
+        let caps = if nerfed {
+            NERF_STAT_CAPS.get(&rarity).copied().unwrap_or((0, 0, 0, 0))
+        } else {
+            STAT_CAPS.get(&rarity).copied().unwrap_or((0, 0, 0, 0))
+        };
         stat_caps[rarity.to_string()] = object!{
             "hp": caps.0,
             "smile": caps.1,
@@ -553,11 +631,12 @@ pub fn upload_limits() -> JsonValue {
     }
     // The skill magnitude envelopes, so the form's number inputs carry real
     // min/max and reject out-of-range (and e-notation) before submitting
+    let scale = |v: i64| if nerfed { nerf_scale(v) } else { v };
     let mut effect_value_ranges = object!{};
     for (effect, (min, max, source)) in SKILL_VALUE_RANGES.iter() {
         effect_value_ranges[effect.to_string()] = object!{
             "min": *min,
-            "max": *max,
+            "max": scale(*max),
             "source": *source
         };
     }
@@ -565,10 +644,12 @@ pub fn upload_limits() -> JsonValue {
     for (trigger, (min, max)) in SKILL_TRIGGER_RANGES.iter() {
         trigger_value_ranges[trigger.to_string()] = object!{
             "min": *min,
-            "max": *max
+            "max": scale(*max)
         };
     }
     let ((prob_min, prob_max), (ms_min, ms_max)) = *SKILL_SCALAR_RANGES;
+    let prob_max = scale(prob_max);
+    let ms_max = scale(ms_max);
     // The voiceline moments, so the form renders exactly the kinds this build
     // accepts instead of carrying its own copy of the list
     let mut voice_kinds = array![];
@@ -626,7 +707,12 @@ async fn list(Login(key): Login) -> impl Responder {
     }
     let user = userdata::get_acc(&key);
     let uid = user["user"]["id"].as_i64().unwrap();
-    let cards = database::get_cards_for_user(uid, &owned_runtime_ids(&user));
+    let mut cards = database::get_cards_for_user(uid, &owned_runtime_ids(&user));
+    if nerf_active() {
+        for card in cards.members_mut() {
+            nerf_clamp_card(card);
+        }
+    }
     let characters = database::get_characters_for_cards(uid, &cards);
     Api(Some(object!{
         "revision": database::get_revision(),
@@ -1121,13 +1207,21 @@ fn build_card(master_card_id: i64, master_character_id: i64, fields: &Fields, st
 
     // Note the official HP scale before assuming a bug report: hp is a tiny
     // per-rarity constant in SIF2 (every official R card has 2, SR 3, UR 4)
-    let caps = STAT_CAPS.get(&rarity).copied().unwrap_or((0, 0, 0, 0));
+    // NERF_CUSTOM_CARDS drops the ceiling from the official rarity max to the
+    // nerf band (~200 below the official median) for this upload
+    let caps = if nerf_active() {
+        NERF_STAT_CAPS.get(&rarity).copied().unwrap_or((0, 0, 0, 0))
+    } else {
+        STAT_CAPS.get(&rarity).copied().unwrap_or((0, 0, 0, 0))
+    };
+    let nerfed = nerf_active();
     let stats = [("hp", caps.0), ("smile", caps.1), ("cool", caps.2), ("pure", caps.3)];
     let mut values = Vec::new();
     for (key, cap) in stats {
         let value = number_of(fields, key, stored, key);
         if !(1..=cap).contains(&value) {
-            return Err(format!("{} must be between 1 and {} for a {} card (the official {} range)", key, cap, rarity_name, rarity_name));
+            let range = if nerfed { "nerfed" } else { "official" };
+            return Err(format!("{} must be between 1 and {} for a {} card (the {} {} range)", key, cap, rarity_name, range, rarity_name));
         }
         values.push(value);
     }
@@ -1177,17 +1271,22 @@ fn build_card(master_card_id: i64, master_character_id: i64, fields: &Fields, st
     // effective_milli_secs may be 1 long). MAGNITUDES are clamped to the
     // ranges the shipped skill rows actually use - a 40-second buff and a
     // 1e8 score-up both made it through before these bounds existed
+    // NERF_CUSTOM_CARDS drops the magnitude ceilings to 4/5 of the official
+    // range; the floor stays the official one so a nerfed card can never be
+    // weaker than the weakest official row of that effect
+    let nerfed = nerf_active();
     let (trigger_min, trigger_max) = *SKILL_TRIGGER_RANGES.get(&trigger).unwrap_or(&(1, 1));
     let (value_min, value_max, value_source) = *SKILL_VALUE_RANGES.get(&effect_type).unwrap_or(&(1, 1, "official"));
     let ((prob_min, prob_max), (ms_min, ms_max)) = *SKILL_SCALAR_RANGES;
+    let range_word = if nerfed { "nerfed" } else { "official" };
     let bounds = [
-        ("skill_trigger_value", "trigger_value", trigger_min, trigger_max,
-         format!("for trigger {} (the official range)", trigger)),
-        ("skill_probability", "probability", prob_min, prob_max,
-         format!("({}%-{}%, the official range)", prob_min / 1000, prob_max / 1000)),
-        ("skill_effective_milli_secs", "effective_milli_secs", ms_min, ms_max,
-         String::from("milliseconds (the official range)")),
-        ("skill_effective_values", "effective_values", value_min, value_max,
+        ("skill_trigger_value", "trigger_value", trigger_min, if nerfed { nerf_scale(trigger_max) } else { trigger_max },
+         format!("for trigger {} (the {} range)", trigger, range_word)),
+        ("skill_probability", "probability", prob_min, if nerfed { nerf_scale(prob_max) } else { prob_max },
+         format!("({}%-{}%, the {} range)", prob_min / 1000, (if nerfed { nerf_scale(prob_max) } else { prob_max }) / 1000, range_word)),
+        ("skill_effective_milli_secs", "effective_milli_secs", ms_min, if nerfed { nerf_scale(ms_max) } else { ms_max },
+         format!("milliseconds (the {} range)", range_word)),
+        ("skill_effective_values", "effective_values", value_min, if nerfed { nerf_scale(value_max) } else { value_max },
          format!("for effect_type {} ({}) (the {} range)", effect_type, EFFECT_NAMES[effect_type as usize], value_source))
     ];
     let mut arrays: HashMap<&str, Vec<i64>> = HashMap::new();
@@ -1389,7 +1488,13 @@ pub fn update_card(uid: i64, master_card_id: i64, fields: &Fields) -> Result<(),
     if !can_manage(uid, owner) {
         return Err(String::from("You do not have permission to edit this card"));
     }
-    let stored = database::get_card(master_card_id).ok_or(String::from("Card not found"))?;
+    let mut stored = database::get_card(master_card_id).ok_or(String::from("Card not found"))?;
+    // An edit's "unchanged" fallbacks read from the stored blob, so the
+    // stored reference itself is brought into the nerf band first - an
+    // over-cap value the form leaves untouched stays over cap in the dry-run
+    if nerf_active() {
+        nerf_clamp_card(&mut stored);
+    }
     let master_character_id = stored["master_character_id"].as_i64().unwrap_or(0);
 
     // Field validation first (cheap), art processing second - fail fast
@@ -1726,9 +1831,15 @@ async fn mine(req: HttpRequest) -> HttpResponse {
     let Some(uid) = get_session_uid(&req) else {
         return webui::error("Not logged in");
     };
+    let mut cards = database::get_cards_by_owner(uid);
+    if nerf_active() {
+        for card in cards.members_mut() {
+            nerf_clamp_card(card);
+        }
+    }
     send_json(object!{
         result: "OK",
-        cards: database::get_cards_by_owner(uid),
+        cards: cards,
         characters: database::get_characters_by_owner(uid)
     })
 }
@@ -1744,6 +1855,9 @@ async fn browse(_req: HttpRequest) -> HttpResponse {
     for card in cards.members_mut() {
         card["uploader"] = userdata::get_name_and_rank(card["owner_id"].as_i64().unwrap_or(0))["user_name"].clone();
         card.remove("owner_id");
+        if nerf_active() {
+            nerf_clamp_card(card);
+        }
     }
     let characters = database::get_characters_for_cards(0, &cards);
     send_json(object!{
@@ -2484,6 +2598,64 @@ pub mod tests {
         // Only the deliberate successes above wrote rows
         assert_eq!(database::card_count_for_owner(4004), 4);
         wipe(4004);
+    }
+
+    // NERF_CUSTOM_CARDS: an over-cap upload is rejected, an over-cap value the
+    // owner already stored is clamped in every served view (db row untouched),
+    // and the skill ceiling drops to 4/5 of the official range
+    #[test]
+    fn nerf_band_caps_new_and_existing_cards() {
+        let _lock = crate::runtime::lock_test_data_path();
+        wipe(5005);
+        crate::runtime::set_nerf_custom_cards(false);
+
+        // Un-nerfed: the official rarity ceiling (4110 for R) is reachable
+        let fields = base_fields();
+        let id = with_permissions(5005, &[permissions::CARD_UPLOAD], || create_card(5005, &fields).unwrap());
+        let mut over = base_fields();
+        field(&mut over, "smile", "4110");
+        with_permissions(5005, &[permissions::CARD_UPLOAD], || update_card(5005, id, &over).unwrap());
+        assert_eq!(database::get_card(id).unwrap()["smile"].as_i64(), Some(4110));
+
+        // Nerfed: a new 4110 upload is refused at the nerf band (2000 for R)...
+        crate::runtime::set_nerf_custom_cards(true);
+        let mut high = base_fields();
+        field(&mut high, "smile", "4110");
+        let err = with_permissions(5005, &[permissions::CARD_UPLOAD], || create_card(5005, &high)).unwrap_err();
+        assert!(err.contains("smile must be between 1 and 2000 for a R card") && err.contains("nerfed"), "{}", err);
+        // Boundary: 2000 accepted, 2001 refused. The fixture's trigger values
+        // (25/24/24) sit in the official 13-30 but above the nerfed 13-24, so
+        // a nerfed-boundary upload carries a trigger value legal in both bands
+        let mut at_cap = base_fields();
+        field(&mut at_cap, "smile", "2000");
+        field(&mut at_cap, "skill_trigger_value", "20/20/20");
+        let at_cap_err = with_permissions(5005, &[permissions::CARD_UPLOAD], || create_card(5005, &at_cap));
+        assert!(at_cap_err.is_ok(), "2000 should be accepted: {:?}", at_cap_err.err());
+        let mut over_cap = base_fields();
+        field(&mut over_cap, "smile", "2001");
+        let over_cap_err = with_permissions(5005, &[permissions::CARD_UPLOAD], || create_card(5005, &over_cap)).unwrap_err();
+        assert!(over_cap_err.contains("must be between 1 and 2000"), "{}", over_cap_err);
+
+        // ...and the ALREADY-stored 4110 is clamped to the cap in the served view
+        let mut view = database::get_card(id).unwrap();
+        nerf_clamp_card(&mut view);
+        assert_eq!(view["smile"].as_i64(), Some(2000));
+        // while the db keeps the owner's stored value
+        assert_eq!(database::get_card(id).unwrap()["smile"].as_i64(), Some(4110));
+
+        // Skill magnitudes: the ceiling is 4/5 of the official max (439 -> 351)
+        crate::runtime::set_nerf_custom_cards(false);
+        let mut strong = base_fields();
+        field(&mut strong, "skill_effective_values", "439/439/439");
+        field(&mut strong, "skill_trigger_value", "20/20/20");
+        with_permissions(5005, &[permissions::CARD_UPLOAD], || update_card(5005, id, &strong).unwrap());
+        crate::runtime::set_nerf_custom_cards(true);
+        let skill_err = with_permissions(5005, &[permissions::CARD_UPLOAD], || update_card(5005, id, &strong)).unwrap_err();
+        // 439 * 4/5 = 351: the official 91-439 range is capped at 351
+        assert!(skill_err.contains("91-351"), "{}", skill_err);
+        crate::runtime::set_nerf_custom_cards(false);
+
+        wipe(5005);
     }
 
     #[test]

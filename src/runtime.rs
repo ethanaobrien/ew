@@ -27,6 +27,7 @@ pub struct HostConfig {
     pub enable_custom_cards: bool,
     pub enable_custom_3dmv: bool,
     pub enable_arcade: bool,
+    pub nerf_custom_cards: bool,
 }
 
 // Lets an embedding app (or the tests) enable the opt-in custom songs feature
@@ -45,6 +46,16 @@ pub fn set_enable_custom_3dmv(enabled: bool) {
 
 pub fn set_enable_arcade(enabled: bool) {
     HOST_CONFIG.write().unwrap().enable_arcade = enabled;
+}
+
+// The custom-card nerf band. Meaningful only with enable_custom_cards; kept
+// separate so an embedding app can flip them independently
+pub fn set_nerf_custom_cards(enabled: bool) {
+    HOST_CONFIG.write().unwrap().nerf_custom_cards = enabled;
+}
+
+pub fn get_nerf_custom_cards() -> bool {
+    HOST_CONFIG.read().unwrap().nerf_custom_cards
 }
 
 // The --owner uids: the permission system's bootstrap grantors. Process-level
@@ -185,6 +196,9 @@ pub fn overlay_args(args: &mut crate::options::Args) {
     }
     if cfg.enable_arcade {
         args.enable_arcade = true;
+    }
+    if cfg.nerf_custom_cards {
+        args.nerf_custom_cards = true;
     }
 }
 

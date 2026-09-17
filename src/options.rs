@@ -44,6 +44,9 @@ pub struct Args {
     #[arg(long, default_value_t = false, help = "Enable the custom cards feature (upload/manage runtime cards and characters). Disabled by default; every custom-cards endpoint and webui element is hidden unless this is set")]
     pub enable_custom_cards: bool,
 
+    #[arg(long, default_value_t = false, help = "Nerf custom cards: cap base stats below the official per-rarity maxima (median band) and skill values at 80% of the official range. Applies at upload time and to cards already uploaded, which are clamped in every response")]
+    pub nerf_custom_cards: bool,
+
     #[arg(long, default_value_t = false, help = "Enable the custom 3D MV feature (upload/manage MMD model+motion MVs for custom songs). Disabled by default; every custom-3dmv endpoint and webui element is hidden unless this is set")]
     pub enable_custom_3dmv: bool,
 
