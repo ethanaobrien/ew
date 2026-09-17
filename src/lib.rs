@@ -29,6 +29,8 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
 
     runtime::update_owners(&args.owner);
 
+    runtime::set_nerf_custom_cards(args.nerf_custom_cards);
+
     if args.purge {
         println!("Purging accounts...");
         // Cabinets first, so the accounts they take with them are gone before
