@@ -1,4 +1,5 @@
 mod static_handlers;
+mod maintenance;
 mod options;
 mod router;
 mod encryption;
@@ -19,8 +20,9 @@ mod ios;
 use actix_web::{rt, App, HttpServer, web, dev::Service};
 //use actix_cors::Cors;
 use std::time::Duration;
-pub use options::get_args;
+pub use options::{get_args, Commands};
 use runtime::get_data_path;
+pub use maintenance::run as run_maintenance;
 
 #[actix_web::main]
 pub async fn run_server(in_thread: bool) -> std::io::Result<()> {

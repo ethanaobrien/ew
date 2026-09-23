@@ -1,9 +1,12 @@
-use clap::Parser;
+use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 pub struct Args {
-    #[arg(short, long, default_value_t = 8080, help = "Port to listen on")]
+    #[command(subcommand)]
+    pub command: Option<Commands>,
+
+    #[arg(short, long, global = true, default_value_t = 8080, help = "Port to listen on")]
     pub port: u16,
 
     #[arg(long, default_value = "./", help = "Path to store database files")]
@@ -102,8 +105,38 @@ pub struct Args {
     pub masterdata: String
 }
 
+#[derive(Subcommand, Debug)]
+pub enum Commands {
+    /// Start a maintenance-only server until stopped
+    Maintenance {
+        /// The message shown to the client
+        message: String,
+    },
+}
+
 pub fn get_args() -> Args {
     let mut args = Args::parse();
     crate::runtime::overlay_args(&mut args);
     args
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn maintenance_command_and_port() {
+        for argv in [
+            vec!["ew", "--port", "6017", "maintenance", "Updating songs"],
+            vec!["ew", "maintenance", "Updating songs", "--port", "6017"],
+        ] {
+            let args = Args::try_parse_from(argv).unwrap();
+            assert_eq!(args.port, 6017);
+            assert!(matches!(args.command, Some(Commands::Maintenance { message }) if message == "Updating songs"));
+        }
+        assert!(Args::try_parse_from(["ew", "maintenance"]).is_err());
+        let normal = Args::try_parse_from(["ew"]).unwrap();
+        assert!(normal.command.is_none());
+        assert_eq!(normal.port, 8080);
+    }
 }

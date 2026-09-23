@@ -2,6 +2,9 @@
 #[cfg(not(feature = "library"))]
 fn main() -> std::io::Result<()> {
     let args = ew::get_args();
+    if let Some(ew::Commands::Maintenance { message }) = args.command {
+        return ew::run_maintenance(args.port, message);
+    }
     ew::runtime::update_data_path(&args.path);
     ew::runtime::update_masterdata_path(&args.masterdata);
     ew::run_server(false)
