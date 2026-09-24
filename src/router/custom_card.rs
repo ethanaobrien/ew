@@ -416,7 +416,7 @@ pub fn nerf_active() -> bool {
 
 // Skill magnitudes nerf to 4/5 of the official range
 fn nerf_scale(value: i64) -> i64 {
-    value * 4 / 5
+    if value > 0 { (value * 4 / 5).max(1) } else { value * 4 / 5 }
 }
 
 // A stored skill array element above the cap moves down to the cap; below it
@@ -2311,6 +2311,8 @@ pub mod tests {
         assert!(ms_min >= 500 && ms_max < 40_000, "40s buffs must be out of range");
         let (_, value_max, _) = SKILL_VALUE_RANGES[&4];
         assert!(value_max < 100_000_000, "1e8 score-ups must be out of range");
+        let (repeat_min, repeat_max, _) = SKILL_VALUE_RANGES[&11];
+        assert_eq!((repeat_min, nerf_scale(repeat_max)), (1, 1));
     }
 
     // A full create: derived ids, pinned columns, art md5s and the catalog
