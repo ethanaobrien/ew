@@ -17,6 +17,50 @@ mod tests {
     use super::*;
 
     #[actix_web::test]
+    async fn bond_title_claim_notifies_client_and_persists() {
+        let _test = crate::runtime::lock_test_data_path();
+        let (uid, key) = userdata::starter::create("Bond title test").unwrap();
+        let request = || actix_web::test::TestRequest::default()
+            .insert_header(("aoharu-user-id", uid.to_string())).to_http_request();
+        let initial_titles = userdata::get_acc(&key)["master_title_ids"].clone();
+        userdata::save_acc_missions(&key, array![object! {
+            master_mission_id: 1158015, status: 2, progress: 1500, expire_date_time: 0
+        }]);
+
+        let response = receive(request(), Session {
+            key: key.clone(), body: object! {master_mission_ids: [1158015, 1158015]}
+        }).await.0.unwrap();
+        assert_eq!(response["reward_list"].len(), 1);
+        assert_eq!(response["reward_list"][0]["type"], 8);
+        assert_eq!(response["reward_list"][0]["value"], 3000015);
+        assert_eq!(response["updated_value_list"]["master_title_ids"], array![3000015]);
+        assert!(response["updated_value_list"]["item_list"].is_null());
+        let saved = userdata::get_acc(&key);
+        assert!(saved["master_title_ids"].contains(3000015));
+        for title in initial_titles.members() {
+            assert!(saved["master_title_ids"].contains(title.as_i64().unwrap()));
+        }
+
+        let replay = receive(request(), Session {
+            key: key.clone(), body: object! {master_mission_ids: [1158015]}
+        }).await.0.unwrap();
+        assert!(replay["reward_list"].is_empty());
+        assert!(replay["updated_value_list"]["master_title_ids"].is_null());
+        assert_eq!(userdata::get_acc(&key), saved);
+
+        let mut missions = userdata::get_acc_missions(&key);
+        items::update_mission_status(1158054, 0, true, false, 13500, &mut missions);
+        userdata::save_acc_missions(&key, missions);
+        let next = receive(request(), Session {
+            key: key.clone(), body: object! {master_mission_ids: [1158054]}
+        }).await.0.unwrap();
+        assert_eq!(next["updated_value_list"]["master_title_ids"], array![3000054]);
+        let saved = userdata::get_acc(&key);
+        assert!(saved["master_title_ids"].contains(3000015));
+        assert!(saved["master_title_ids"].contains(3000054));
+    }
+
+    #[actix_web::test]
     async fn beginner_claims_persist_rewards_and_reject_repeats() {
         let _test = crate::runtime::lock_test_data_path();
         let (uid, key) = userdata::starter::create("Beginner test").unwrap();
@@ -118,6 +162,7 @@ async fn receive(req: HttpRequest, Session { key, body }: Session) -> Api {
     let mut touched_gem = false;
     let mut touched_coin = false;
     let mut touched_items = array![];
+    let mut touched_titles = std::collections::BTreeSet::new();
     let before = missions.clone();
     let mut requested: Vec<_> = body["master_mission_ids"].members().filter_map(|id| id.as_i64()).collect();
     let mut seen = std::collections::HashSet::new();
@@ -153,6 +198,7 @@ async fn receive(req: HttpRequest, Session { key, body }: Session) -> Api {
             match reward_type {
                 1 => touched_gem = true,
                 4 => touched_coin = true,
+                8 => { touched_titles.insert(master["value"].as_i64().unwrap()); }
                 _ => { touched_items.push(master["value"].clone()).unwrap(); }
             }
         }
@@ -217,6 +263,7 @@ async fn receive(req: HttpRequest, Session { key, body }: Session) -> Api {
         match reward_type {
             1 => touched_gem = true,
             4 => touched_coin = true,
+            8 => { touched_titles.insert(master["value"].as_i64().unwrap()); }
             _ => { touched_items.push(master["value"].clone()).unwrap(); }
         }
     }
@@ -225,6 +272,9 @@ async fn receive(req: HttpRequest, Session { key, body }: Session) -> Api {
     userdata::save_acc_missions(&key, missions);
 
     let mut updated_value_list = object!{};
+    if !touched_titles.is_empty() {
+        updated_value_list["master_title_ids"] = touched_titles.into_iter().collect::<Vec<_>>().into();
+    }
     if touched_gem {
         updated_value_list["gem"] = user["gem"].clone();
     }
