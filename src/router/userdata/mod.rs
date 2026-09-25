@@ -337,6 +337,12 @@ pub fn get_acc(auth_key: &str) -> JsonValue {
     let mut user = get_data(auth_key, "userdata");
     cleanup_account(&mut user);
     let mut changed = remove_deleted_custom_songs(&mut user);
+    // Repair the old /user writer's ["MMDD"] shape without losing the chosen birthday.
+    if user["user"]["birthday"].is_array() {
+        let birthday = user["user"]["birthday"][0].as_str().unwrap_or("").to_owned();
+        user["user"]["birthday"] = if super::user::valid_birthday(&birthday) { birthday } else { String::new() }.into();
+        changed = true;
+    }
     if remove_deleted_custom_cards(&mut user) {
         changed = true;
     }

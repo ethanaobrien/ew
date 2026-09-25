@@ -834,6 +834,7 @@ pub fn live_end_ex(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool
     let deck_slot = get_end_live_deck_id(&key, &body).unwrap_or(body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()));
     let characters = get_live_character_list(lp_used, deck_slot, &mut user, &mut user_missions, &mut cleared_missions, &mut chats);
     for id in super::beginner_mission::refresh(&user, &mut user_missions).members() { cleared_missions.push(id.clone()).unwrap(); }
+    super::story::refresh(&user, &mut user_missions);
 
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_home(&key, user2.clone());

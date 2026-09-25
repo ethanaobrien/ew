@@ -198,6 +198,7 @@ fn init_star_event(event: &mut JsonValue) {
 
 async fn event(Session { key, body }: Session) -> impl Responder {
     let master_event_id = body["master_event_id"].as_u32().unwrap();
+    super::story::visit_event(&key, master_event_id);
     let mut event = get_event_data(&key, master_event_id);
 
     let is_star_event = STAR_EVENT_IDS.contains(&master_event_id);

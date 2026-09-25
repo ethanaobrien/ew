@@ -88,12 +88,14 @@ lazy_static! {
 }
 
 async fn home(Login(key): Login) -> impl Responder {
+    let account = userdata::get_acc(&key);
+    super::chat::refresh_birthday(&key, &account);
     let mut user = userdata::get_acc_home(&key);
     
     check_gifts(&mut user);
     
     let mut user_missions = userdata::get_acc_missions(&key);
-    let mut clear = super::beginner_mission::refresh_account(&userdata::get_acc(&key), &mut user_missions);
+    let mut clear = super::beginner_mission::refresh_account(&account, &mut user_missions);
     for id in items::completed_daily_mission(1253003, &mut user_missions).members() {
         clear.push(id.clone()).unwrap();
     }

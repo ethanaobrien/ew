@@ -114,6 +114,7 @@ async fn mission(Login(key): Login) -> impl Responder {
 
     let mut missions = userdata::get_acc_missions(&key);
     items::refresh_dailies(&mut missions, global::timestamp());
+    super::story::refresh(&user, &mut missions);
     super::beginner_mission::refresh_account(&user, &mut missions);
     userdata::save_acc_missions(&key, missions.clone());
 

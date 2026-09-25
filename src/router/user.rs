@@ -173,7 +173,11 @@ async fn user_post(Session { key, body }: Session) -> impl Responder {
         user["user"]["master_title_ids"][0] = body["master_title_ids"][0].clone();
     }
     if !body["birthday"].is_null() {
-        user["user"]["birthday"][0] = body["birthday"].clone();
+        let Some(birthday) = body["birthday"].as_str() else { return Api(None); };
+        if !valid_birthday(birthday) { return Api(None); }
+        let previous = user["user"]["birthday"].as_str().unwrap_or("");
+        if valid_birthday(previous) && previous != birthday { return Api(None); }
+        user["user"]["birthday"] = birthday.into();
     }
     
     userdata::save_acc(&key, user.clone());
@@ -182,6 +186,40 @@ async fn user_post(Session { key, body }: Session) -> impl Responder {
         "user": user["user"].clone(),
         "clear_mission_ids": []
     }))
+}
+
+pub(super) fn valid_birthday(value: &str) -> bool {
+    if value.len() != 4 || !value.bytes().all(|b| b.is_ascii_digit()) { return false; }
+    let month: usize = value[..2].parse().unwrap();
+    let day: u8 = value[2..].parse().unwrap();
+    let days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    (1..=12).contains(&month) && day > 0 && day <= days[month - 1]
+}
+
+#[cfg(test)]
+mod birthday_tests {
+    use super::*;
+
+    #[actix_web::test]
+    async fn birthday_update_round_trips_as_mmdd() {
+        let _test = crate::runtime::lock_test_data_path();
+        let (_, key) = userdata::starter::create("Birthday test").unwrap();
+        // jp/logs.txt:157322-157353 stores this as a string, not an array.
+        user_post(Session {key: key.clone(), body: object! {birthday: "0331"}}).await;
+        assert_eq!(userdata::get_acc(&key)["user"]["birthday"], "0331");
+        user_post(Session {key: key.clone(), body: object! {birthday: "0230"}}).await;
+        assert_eq!(userdata::get_acc(&key)["user"]["birthday"], "0331");
+        user_post(Session {key: key.clone(), body: object! {birthday: "0401"}}).await;
+        assert_eq!(userdata::get_acc(&key)["user"]["birthday"], "0331");
+        let mut legacy = userdata::get_acc(&key);
+        legacy["user"]["birthday"] = array!["0331"];
+        userdata::save_acc(&key, legacy);
+        assert_eq!(userdata::get_acc(&key)["user"]["birthday"], "0331");
+        assert!(valid_birthday("0229"));
+        for invalid in ["", "0001", "1301", "0100", "0431", "abcd", "２０２４"] {
+            assert!(!valid_birthday(invalid));
+        }
+    }
 }
 
 pub async fn announcement(Login(key): Login) -> impl Responder {
