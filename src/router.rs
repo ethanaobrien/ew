@@ -24,6 +24,7 @@ pub mod card;
 pub mod shop;
 pub mod custom_song;
 pub mod custom_card;
+pub mod custom_group;
 pub mod custom_3dmv;
 pub mod rich_text;
 pub mod webui;
@@ -301,6 +302,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
     );
     cfg.configure(custom_song::web_routes);
     cfg.configure(custom_card::web_routes);
+    cfg.configure(custom_group::web_routes);
     cfg.configure(custom_3dmv::web_routes);
     cfg.configure(web::routes);
 }

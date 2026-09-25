@@ -18,6 +18,7 @@ use std::sync::Mutex;
 
 use crate::router::{global, rich_text, userdata, webui, Login, Api};
 use crate::database::custom_song as database;
+use crate::database::custom_group;
 use crate::runtime::get_data_path;
 use crate::lock_onto_mutex;
 
@@ -38,6 +39,18 @@ use crate::lock_onto_mutex;
 
 // Shock.BAND_CATEGORY enum names
 const BAND_CATEGORIES: &[&str] = &["NONE", "MUSE", "AQOURS", "NIJIGAKU", "LIELLA", "HASUNOSORA", "OTHER", "YOHANE"];
+
+fn selected_group_id(value: &str, band_category: &mut String) -> Result<i64, String> {
+    if value.is_empty() || value == "0" {
+        return Ok(database::band_group_id(band_category));
+    }
+    let id = value.parse::<i64>().map_err(|_| String::from("Invalid group ID"))?;
+    if !custom_group::exists(id) {
+        return Err(String::from("Custom group does not exist"));
+    }
+    *band_category = String::from("OTHER");
+    Ok(id)
+}
 
 // NORMAL, HARD, EXPERT, MASTER
 const LEVEL_COUNT: i64 = 4;
@@ -129,13 +142,20 @@ pub fn client_supports_custom_songs(req: &HttpRequest) -> bool {
 
 // The catalog is filtered per requesting user: private songs only show for
 // their owner, shared songs for the owner plus their shared-user list
-async fn list(Login(key): Login) -> impl Responder {
+async fn list(req: HttpRequest, Login(key): Login) -> impl Responder {
     if disabled() {
         // As if the endpoint doesn't exist - the client treats this as feature-off
         return Api(None);
     }
     let uid = userdata::get_acc(&key)["user"]["id"].as_i64().unwrap();
     let mut songs = database::get_songs_for_user(uid);
+    if global::client_protocol_version(&req) < crate::router::custom_group::PROTOCOL_VERSION {
+        for song in songs.members_mut() {
+            if song["master_group_id"].as_i64().unwrap_or(0) >= custom_group::FIRST_ID {
+                song["master_group_id"] = database::band_group_id("OTHER").into();
+            }
+        }
+    }
     for song in songs.members_mut() {
         // Additive field: the client turns it into the song's detail-info credit line (the
         // staff-credits text the live loading screen and the music library show). Old clients
@@ -149,6 +169,7 @@ async fn list(Login(key): Login) -> impl Responder {
     }
     Api(Some(object!{
         "revision": database::get_revision(),
+        "groups": custom_group::list(),
         "songs": songs
     }))
 }
@@ -649,6 +670,7 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
     if !BAND_CATEGORIES.contains(&band_category.as_str()) {
         return Err(format!("Unknown band category '{}'", band_category));
     }
+    let master_group_id = selected_group_id(&field_str(fields, "master_group_id"), &mut band_category)?;
 
     validate_song_text(
         &name,
@@ -746,6 +768,7 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         "artist_en": field_str(fields, "artist_en"),
         "attribute": attribute,
         "band_category": band_category.clone(),
+        "master_group_id": master_group_id,
         "bpm": field_f64(fields, "bpm"),
         "preview_start_sec": field_f64(fields, "preview_start_sec"),
         "preview_length_sec": field_f64(fields, "preview_length_sec"),
@@ -761,7 +784,7 @@ fn create_song(uid: i64, fields: &HashMap<String, Vec<u8>>) -> Result<i64, Strin
         "artist": artist,
         "artist_en": field_str(fields, "artist_en"),
         "band_category": band_category.clone(),
-        "master_group_id": database::band_group_id(&band_category),
+        "master_group_id": master_group_id,
         "attribute": attribute,
         "bpm": field_f64(fields, "bpm").unwrap_or(DEFAULT_BPM) as f32,
         "start_wait": 2.0,
@@ -876,6 +899,13 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
     if !BAND_CATEGORIES.contains(&band_category.as_str()) {
         return Err(format!("Unknown band category '{}'", band_category));
     }
+    let group_text = if fields.contains_key("master_group_id") {
+        field_str(fields, "master_group_id")
+    } else {
+        old_manifest["master_group_id"].as_i64().filter(|id| *id >= custom_group::FIRST_ID)
+            .map(|id| id.to_string()).unwrap_or_default()
+    };
+    let master_group_id = selected_group_id(&group_text, &mut band_category)?;
 
     // The RESULTING text, so an edit that leaves a field alone is checked against what stays
     validate_song_text(
@@ -1023,6 +1053,7 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
         "artist_en": text("artist_en"),
         "attribute": attribute,
         "band_category": band_category.clone(),
+        "master_group_id": master_group_id,
         "bpm": number("bpm"),
         "preview_start_sec": preview_start_sec,
         "preview_length_sec": preview_length_sec,
@@ -1047,7 +1078,7 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
         "artist": artist,
         "artist_en": text("artist_en"),
         "band_category": band_category.clone(),
-        "master_group_id": database::band_group_id(&band_category),
+        "master_group_id": master_group_id,
         "attribute": attribute,
         "bpm": number("bpm").unwrap_or(DEFAULT_BPM) as f32,
         "start_wait": 2.0,
@@ -2125,6 +2156,19 @@ mod tests {
         for song in database::get_songs_for_user(1234).members() {
             assert_ne!(song["master_group_id"], 0);
         }
+    }
+
+    #[test]
+    fn custom_group_forces_other_band_and_rejects_unknown_ids() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let unique = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_nanos();
+        let id = custom_group::create(&format!("Test {}", unique), "Test Band").unwrap();
+        assert!(custom_group::exists(id));
+        let mut band = String::from("MUSE");
+        assert_eq!(selected_group_id(&id.to_string(), &mut band), Ok(id));
+        assert_eq!(band, "OTHER");
+        assert!(selected_group_id("999999999", &mut band).is_err());
+        assert_eq!(selected_group_id("", &mut band), Ok(9999));
     }
 
     // The whole feature is off unless --enable-custom-songs: endpoints 404 / go

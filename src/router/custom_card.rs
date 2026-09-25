@@ -13,6 +13,7 @@ use crate::router::{databases, global, rich_text, userdata, webui, Login, Api};
 use crate::router::databases::csv::{table, Region};
 use crate::router::custom_song::audio;
 use crate::database::custom_card as database;
+use crate::database::custom_group;
 use crate::database::permissions;
 use crate::runtime::get_data_path;
 use crate::lock_onto_mutex;
@@ -700,7 +701,7 @@ pub fn owned_runtime_ids(user: &JsonValue) -> Vec<i64> {
 // The catalog is filtered per requesting user: everyone gets the published
 // cards, the owner additionally gets their drafts, and a game account that
 // already owns a card keeps resolving it even if it was since unpublished
-async fn list(Login(key): Login) -> impl Responder {
+async fn list(req: HttpRequest, Login(key): Login) -> impl Responder {
     if disabled() {
         // As if the endpoint doesn't exist - the client treats this as feature-off
         return Api(None);
@@ -713,9 +714,17 @@ async fn list(Login(key): Login) -> impl Responder {
             nerf_clamp_card(card);
         }
     }
-    let characters = database::get_characters_for_cards(uid, &cards);
+    let mut characters = database::get_characters_for_cards(uid, &cards);
+    if global::client_protocol_version(&req) < crate::router::custom_group::PROTOCOL_VERSION {
+        for character in characters.members_mut() {
+            if character["master_group_id"].as_i64().unwrap_or(0) >= custom_group::FIRST_ID {
+                character["master_group_id"] = CHARACTER_GROUP_ID.into();
+            }
+        }
+    }
     Api(Some(object!{
         "revision": database::get_revision(),
+        "groups": custom_group::list(),
         "characters": characters,
         "cards": cards
     }))
@@ -1352,6 +1361,13 @@ fn valid_color(color: &str) -> bool {
 // Every column the uploader never supplies is forced to the value all 172
 // imported characters carry. Numbers, not enum names
 fn build_character(master_character_id: i64, fields: &Fields, stored: &JsonValue) -> Result<JsonValue, String> {
+    let group_text = text_of(fields, "character_master_group_id", stored, "master_group_id");
+    let group_id = if group_text.is_empty() { CHARACTER_GROUP_ID } else {
+        group_text.parse::<i64>().map_err(|_| String::from("Invalid group ID"))?
+    };
+    if group_id != CHARACTER_GROUP_ID && !custom_group::exists(group_id) {
+        return Err(String::from("Custom group does not exist"));
+    }
     for (key, label) in [
         ("character_name", "Character name"),
         ("character_name_en", "Character English name"),
@@ -1398,7 +1414,7 @@ fn build_character(master_character_id: i64, fields: &Fields, stored: &JsonValue
         "category": CHARACTER_CATEGORY_OTHER,
         "school_grade": CHARACTER_SCHOOL_GRADE,
         "chara_category": CHARACTER_CHARA_CATEGORY,
-        "master_group_id": CHARACTER_GROUP_ID,
+        "master_group_id": group_id,
         "sprite_name": "",
         "display_order": master_character_id,
         "height": text("height"),

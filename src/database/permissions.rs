@@ -15,6 +15,7 @@ pub const CARD: &str = "card";
 pub const CARD_UPLOAD: &str = "card.upload";
 pub const CARD_PUBLISH: &str = "card.publish";
 pub const CARD_EDIT: &str = "card.edit";
+pub const GROUP_MANAGE: &str = "group.manage";
 
 pub const PERMISSION: &str = "permission";
 pub const PERMISSION_GRANT: &str = "permission.grant";
@@ -31,6 +32,7 @@ pub const MV_EDIT: &str = "3dmv.edit";
 pub const SCOPES: &[&str] = &[
     ALL,
     CARD, CARD_UPLOAD, CARD_PUBLISH, CARD_EDIT,
+    GROUP_MANAGE,
     PERMISSION, PERMISSION_GRANT, PERMISSION_REVOKE,
     ANNOUNCEMENT, ANNOUNCEMENT_MANAGE,
     MV, MV_EDIT

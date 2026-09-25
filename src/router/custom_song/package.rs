@@ -98,6 +98,9 @@ pub fn expand(package: &[u8], fields: &mut HashMap<String, Vec<u8>>) -> Result<(
             fields.insert(key.to_string(), manifest[key].to_string().into_bytes());
         }
     }
+    // Group IDs are server-local. The package records the original ID for
+    // reference, but only the destination upload form may choose its group;
+    // copying the ID could silently select a different band's row there.
     for data in manifest["levels"].members() {
         let Some(level) = data["level"].as_i64() else { continue; };
         if !data["level_number"].is_null() {

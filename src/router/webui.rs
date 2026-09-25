@@ -483,6 +483,7 @@ pub fn my_scopes(req: HttpRequest) -> HttpResponse {
             scopes: permissions::get_user_permissions(uid),
             can_upload_cards: permissions::has(uid, permissions::CARD_UPLOAD),
             can_publish_cards: permissions::has(uid, permissions::CARD_PUBLISH),
+            can_manage_groups: permissions::has(uid, permissions::GROUP_MANAGE),
             can_edit_any_cards: permissions::has(uid, permissions::CARD_EDIT),
             can_edit_any_3dmv: permissions::has(uid, permissions::MV_EDIT),
             can_manage_permissions: permissions::has(uid, permissions::PERMISSION_GRANT)
