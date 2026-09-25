@@ -134,6 +134,11 @@ async fn reinforce(Session { key, body }: Session) -> impl Responder {
     let mut clear_mission_ids = array![];
     
     let card = do_reinforce(&mut user, &body, "exp", 1, false, &mut array![], &mut array![], &mut clear_mission_ids);
+    let mut missions = userdata::get_acc_missions(&key);
+    for id in super::beginner_mission::refresh(&user, &mut missions).members() {
+        clear_mission_ids.push(id.clone()).unwrap();
+    }
+    userdata::save_acc_missions(&key, missions);
 
     userdata::save_acc(&key, user.clone());
 
@@ -150,6 +155,11 @@ async fn skill_reinforce(Session { key, body }: Session) -> impl Responder {
     let mut clear_mission_ids = array![];
     
     let card = do_reinforce(&mut user, &body, "skill_exp", 10, false, &mut array![], &mut array![], &mut clear_mission_ids);
+    let mut missions = userdata::get_acc_missions(&key);
+    for id in super::beginner_mission::refresh(&user, &mut missions).members() {
+        clear_mission_ids.push(id.clone()).unwrap();
+    }
+    userdata::save_acc_missions(&key, missions);
 
     userdata::save_acc(&key, user.clone());
 
@@ -168,6 +178,7 @@ async fn evolve(Session { key, body }: Session) -> impl Responder {
     let mut clear_mission_ids = array![];
     
     let card = do_reinforce(&mut user, &body, "", 0, true, &mut missions, &mut chats, &mut clear_mission_ids);
+    for id in super::beginner_mission::refresh(&user, &mut missions).members() { clear_mission_ids.push(id.clone()).unwrap(); }
     
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_chats(&key, chats);

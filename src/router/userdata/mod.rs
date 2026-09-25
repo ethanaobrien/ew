@@ -357,7 +357,9 @@ pub fn get_acc_home(auth_key: &str) -> JsonValue {
     user
 }
 pub fn get_acc_missions(auth_key: &str) -> JsonValue {
-    get_data(auth_key, "missions")
+    let mut missions = get_data(auth_key, "missions");
+    super::beginner_mission::ensure(&mut missions);
+    missions
 }
 pub fn get_acc_loginbonus(auth_key: &str) -> JsonValue {
     get_data(auth_key, "loginbonus")

@@ -404,6 +404,7 @@ async fn end(req: HttpRequest, Session { key, body }: Session) -> impl Responder
     // live_end scales exp / gold / bond / mission rewards off.
     let mut end_body = body.clone();
     end_body["use_lp"] = lp_used.into();
+    end_body["live_boost"] = live_boost.into();
     if end_body["deck_slot"].is_null() {
         if let Some(slot) = started.and_then(|s| s["deck_slot"].as_i32()) {
             end_body["deck_slot"] = slot.into();

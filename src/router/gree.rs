@@ -324,6 +324,11 @@ async fn migration_password_register(req: HttpRequest, body: String) -> impl Res
     let pass = decrypt_transfer_password(&body["migration_password"].to_string());
     
     userdata::user::migration::save_acc_transfer(user["user"]["id"].as_i64().unwrap(), &pass);
+    if !pass.is_empty() {
+        let mut missions = userdata::get_acc_missions(&uid);
+        super::beginner_mission::advance(25, None, 1, &mut missions);
+        userdata::save_acc_missions(&uid, missions);
+    }
     
     let resp = object!{
         result: "OK"

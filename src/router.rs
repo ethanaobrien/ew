@@ -7,6 +7,7 @@ pub mod user;
 pub mod purchase;
 pub mod tutorial;
 pub mod mission;
+pub mod beginner_mission;
 pub mod home;
 pub mod lottery;
 pub mod friend;

@@ -727,6 +727,17 @@ pub fn live_end_ex(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool
     
     //1273009, 1273010, 1273011, 1273012
     let mut cleared_missions = items::advance_variable_mission(1105001, 1105017, 1, &mut user_missions);
+    for id in super::beginner_mission::advance(5, None, 1, &mut user_missions).members() {
+        cleared_missions.push(id.clone()).unwrap();
+    }
+    if !skipped {
+        let started = get_started_live(key, body).unwrap_or(JsonValue::Null);
+        if started["is_omakase"] == 1 {
+            for id in super::beginner_mission::advance(62, None, 1, &mut user_missions).members() { cleared_missions.push(id.clone()).unwrap(); }
+        }
+        let boost = started["live_boost"].as_i64().or(body["live_boost"].as_i64()).unwrap_or(0);
+        for id in super::beginner_mission::advance(6, Some(boost), 1, &mut user_missions).members() { cleared_missions.push(id.clone()).unwrap(); }
+    }
     if body["master_live_id"].to_string().len() > 1 {
         let id = body["master_live_id"].to_string().split("").collect::<Vec<_>>()[2].parse::<i64>().unwrap_or(0);
         if (1..=4).contains(&id) {
@@ -822,6 +833,7 @@ pub fn live_end_ex(req: &HttpRequest, key: &str, body: &JsonValue, skipped: bool
 
     let deck_slot = get_end_live_deck_id(&key, &body).unwrap_or(body["deck_slot"].as_i32().unwrap_or(user["user"]["main_deck_slot"].as_i32().unwrap()));
     let characters = get_live_character_list(lp_used, deck_slot, &mut user, &mut user_missions, &mut cleared_missions, &mut chats);
+    for id in super::beginner_mission::refresh(&user, &mut user_missions).members() { cleared_missions.push(id.clone()).unwrap(); }
 
     userdata::save_acc(&key, user.clone());
     userdata::save_acc_home(&key, user2.clone());

@@ -23,6 +23,10 @@ async fn preset(Session { key, body }: Session) -> impl Responder {
     }
     userdata::save_acc_home(&key, user);
 
+    let mut missions = userdata::get_acc_missions(&key);
+    super::beginner_mission::advance(61, None, 1, &mut missions);
+    userdata::save_acc_missions(&key, missions);
+
     Api(Some(array![]))
 }
 
@@ -89,12 +93,13 @@ async fn home(Login(key): Login) -> impl Responder {
     check_gifts(&mut user);
     
     let mut user_missions = userdata::get_acc_missions(&key);
-    let clear = items::completed_daily_mission(1253003, &mut user_missions);
+    let mut clear = super::beginner_mission::refresh_account(&userdata::get_acc(&key), &mut user_missions);
+    for id in items::completed_daily_mission(1253003, &mut user_missions).members() {
+        clear.push(id.clone()).unwrap();
+    }
     userdata::save_acc_home(&key, user.clone());
     user["clear_mission_ids"] = clear;
-    if !user["clear_mission_ids"].is_empty() {
-        userdata::save_acc_missions(&key, user_missions.clone());
-    }
+    userdata::save_acc_missions(&key, user_missions.clone());
     
     let daily_missions = array![1224003, 1253003, 1273009, 1273010, 1273011, 1273012];
     
@@ -128,8 +133,9 @@ async fn home(Login(key): Login) -> impl Responder {
     let new_announcement = crate::database::announcements::latest_published_at() > seen_at;
     user["home"]["new_announcement_flag"] = (new_announcement as i32).into();
 
-    //todo
-    user["home"]["beginner_mission_complete"] = 1.into();
+    let (ready, complete) = super::beginner_mission::home_status(&user_missions);
+    user["home"]["clear_beginner_mission_count"] = ready.into();
+    user["home"]["beginner_mission_complete"] = (complete as i32).into();
 
     Api(Some(user))
 }

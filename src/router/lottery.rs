@@ -390,6 +390,9 @@ async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl 
     }
 
     add_draw_count(&mut user, lottery_id, price_number);
+    for id in super::beginner_mission::advance(63, Some(lottery_id), price["count"].as_i64().unwrap_or(0), &mut missions).members() {
+        cleared_missions.push(id.clone()).unwrap();
+    }
     let mut new_count = get_draw_count(&user, lottery_id, price_number);
     if is_stepup(lottery_id) && price_number == 1 {
         new_count += 1;

@@ -48,14 +48,17 @@ async fn deck(Session { key, body }: Session) -> impl Responder {
         }
     }
     userdata::save_acc(&key, user.clone());
-    
+    let mut missions = userdata::get_acc_missions(&key);
+    let cleared = super::beginner_mission::refresh(&user, &mut missions);
+    userdata::save_acc_missions(&key, missions);
+
     Api(Some(object!{
         "deck": {
             "slot": body["slot"].clone(),
             "leader_role": 0,
             "main_card_ids": body["main_card_ids"].clone()
         },
-        "clear_mission_ids": []
+        "clear_mission_ids": cleared
     }))
 }
 
@@ -212,6 +215,11 @@ async fn register_password(Session { key, body }: Session) -> impl Responder {
     let user = userdata::get_acc(&key);
     
     userdata::user::migration::save_acc_transfer(user["user"]["id"].as_i64().unwrap(), &body["pass"].to_string());
+    if !body["pass"].as_str().unwrap_or("").is_empty() {
+        let mut missions = userdata::get_acc_missions(&key);
+        super::beginner_mission::advance(25, None, 1, &mut missions);
+        userdata::save_acc_missions(&key, missions);
+    }
     
     Api(Some(array![]))
 }

@@ -545,8 +545,8 @@ pub fn completed_daily_mission(id: i64, missions: &mut JsonValue) -> JsonValue {
     let mut rv = array![];
     if id == 1253003 {
         rv = advance_variable_mission(1153001, 1153019, 1, missions);
-        if update_mission_status(1653001, 0, true, false, 1, missions).is_some() {
-            rv.push(1653001).unwrap();
+        for id in super::beginner_mission::advance(53, None, 1, missions).members() {
+            rv.push(id.clone()).unwrap();
         }
     }
     for mission in missions.members_mut() {
