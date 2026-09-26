@@ -9,9 +9,9 @@ use std::collections::HashMap;
 // note_bomb_3 5, note_bomb_5 6, note_bomb_9 7, note_slide 11, note_slide_event 12,
 // note_slide_hold 13, with isHold(e) = e == 3 and isSlide(e) = e >= 11.
 //
-// SIF2 side: `type` only distinguishes an ordinary note (1) from a star/bomb note (3).
-// LiveTimeController.ToMarkerType accepts 1..3 and maps anything else to None; type 2 exists in
-// the enum but appears in ZERO of the 2146 shipped charts, so nothing emits it here.
+// SIF2 side: type 1 is a tap, 2 is a flick, and 3 is a skill/star note.
+// LiveTimeController.ToMarkerType accepts 1..3; stock charts happen not to
+// use type 2, but imported Bandori charts do.
 //
 // A SLIDE is structural, not a type. MarkerData derives it from the parent/child chain:
 //   IsSliderMarker      chained and the child is on a DIFFERENT line  -> a slide segment
@@ -33,16 +33,19 @@ use std::collections::HashMap;
 //   varies the blast width per effect; SIF2 has one bomb with one damage value, so the
 //   four collapse into type 3 and only the radius is lost. Previously only bomb_1 mapped
 //   here and the three wider ones arrived as ordinary taps.
-// - effect 11/12/13 (slide) -> CHAINED across lanes, all type 1. Slides sharing a notes_level
-//   form one run: sorted by time and linked parent -> child, so each link crosses lanes and
-//   the client sees a slider. A run ends on effect 13 (slide hold), whose synthesized
+// - effect 11/12/13/14 (slide) -> CHAINED across lanes, normally type 1. Slides sharing a notes_level
+//   form one run: sorted by time and linked parent -> child. Cross-lane links
+//   are sliders; same-lane links are hold segments. A run ends on effect 13 (slide hold), whose synthesized
 //   same-line tail then makes it IsSliderLongMarker — the slide settling into a hold the
 //   player releases. Verified against a real upload: every notes_level shared by more than
 //   one note held exactly the slide-effect notes, each a monotonic sweep like
 //   pos 9->8->7->6 with effects 11,11,11,13.
-//   A lone slide with no chain partner stays a plain tap: a slider needs a cross-lane child.
-// - effect 0 (random) and anything else unknown -> plain type 1. Every effect the game
-//   actually defines is covered above, so this is only a floor for hand-authored charts.
+//   A lone slide with no chain partner stays a plain note. Same-lane links
+//   become hold segments; effect 14 keeps the final point as a flick.
+// - effects 8/14 are custom-song extensions for a flick and a slide-end flick (type 2).
+//   Effect 9 is a skill note (type 3); effect 10 is a hold with a flick tail.
+//   The stock SIF1 vocabulary does not use 8/9/10/14.
+// - effect 0 (random) and anything else unknown -> plain type 1.
 // - notes_attribute is dropped (SIF2 has no per-note attribute). notes_level is consumed as
 //   the chain id above and not emitted.
 // - ids are sequential from 1 in time order. num is the spawn group: the dummy
@@ -153,7 +156,7 @@ struct WorkNote {
 // LiveModel.NoteEffect.isHold, widened to note_slide_hold: both carry a duration in
 // effect_value (notes.lua isTimeOver adds effect_value for note_hold and note_slide_hold alike).
 fn is_hold(effect: i64) -> bool {
-    effect == 3 || effect == 13
+    effect == 3 || effect == 10 || effect == 13
 }
 
 // LiveModel.NoteEffect.isSlide
@@ -231,7 +234,10 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
         work.push(WorkNote {
             time: timing,
             line: position - 1,
-            kind: if is_bomb(effect) { 3 } else { 1 },
+            // Effects 8/14 are the custom-song interchange's flick and
+            // slide-end flick; 9 carries a Bandori skill note.
+            kind: if effect == 8 || effect == 14 { 2 }
+                else if effect == 9 || is_bomb(effect) { 3 } else { 1 },
             parent: None,
             child: None
         });
@@ -249,7 +255,7 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
             work.push(WorkNote {
                 time: timing + effect_value,
                 line: position - 1,
-                kind: 1,
+                kind: if effect == 10 { 2 } else { 1 },
                 parent: Some(head),
                 child: None
             });
@@ -257,8 +263,8 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
         }
     }
 
-    // Link each slide chain in time order. Consecutive members sit on different lines, which is
-    // exactly what makes SIF2 treat the run as a slider rather than a hold. A member that already
+    // Link each slide chain in time order. A cross-lane link becomes a slider
+    // and a same-lane link becomes a hold segment. A member that already
     // has a child is a slide-hold, i.e. the end of the run, so the chain stops there — its tail
     // stays its child and the cross-lane parent link makes it IsSliderLongMarker.
     for (_, members) in chains.iter() {
@@ -272,10 +278,6 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
             let (a, b) = (pair[0], pair[1]);
             if work[a].child.is_some() || work[b].parent.is_some() {
                 break;
-            }
-            if work[a].line == work[b].line {
-                // Same lane would read as a hold, not a slide; skip the link rather than lie
-                continue;
             }
             work[a].child = Some(b);
             work[b].parent = Some(a);
@@ -867,11 +869,30 @@ mod tests {
 
     #[test]
     fn undefined_effects_fall_back_to_taps() {
-        // Not part of NoteEffect; a hand-authored chart must still transcode to something valid
-        for effect in [0, 8, 9, 10] {
+        for effect in [0, 15] {
             let (chart, _) = transcode(&jzon::array![sif_note(1.0, 5, effect, 0.0)]).unwrap();
             assert_eq!(chart["notes"][1]["type"], 1, "effect {}", effect);
         }
+    }
+
+    #[test]
+    fn bandori_flick_skill_and_slide_flick() {
+        for (effect, kind) in [(8, 2), (9, 3), (14, 2)] {
+            let (chart, _) = transcode(&jzon::array![sif_note(1.0, 5, effect, 0.0)]).unwrap();
+            assert_eq!(chart["notes"][1]["type"], kind, "effect {}", effect);
+        }
+        let (chart, combo) = transcode(&jzon::array![
+            sif_slide(1.0, 7, 11, 0.0, 2),
+            sif_slide(1.3, 5, 14, 0.0, 2)
+        ]).unwrap();
+        assert_eq!(combo, 2);
+        assert_eq!(chart["notes"][2]["type"], 2);
+        assert_eq!(chart["notes"][1]["child_id"], chart["notes"][2]["id"].clone());
+
+        let (hold, combo) = transcode(&jzon::array![sif_note(1.0, 5, 10, 0.5)]).unwrap();
+        assert_eq!(combo, 1);
+        assert_eq!(hold["notes"][1]["type"], 1);
+        assert_eq!(hold["notes"][2]["type"], 2);
     }
 
     // Lifted verbatim from a chart uploaded to the live server (custom song 10008, "Edelied",
