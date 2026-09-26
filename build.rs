@@ -1,7 +1,7 @@
 fn main() {
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=src");
-    println!("cargo:rerun-if-changed=webui/index.html");
+    println!("cargo:rerun-if-changed=webui");
 
     let target = std::env::var("TARGET").unwrap();
     if target == "aarch64-linux-android" {
