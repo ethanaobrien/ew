@@ -23,11 +23,31 @@ pub struct HostConfig {
     pub port: u16,
     pub jp_android_asset_hash: String,
     pub en_android_asset_hash: String,
+    pub asset_version: String,
+    pub en_asset_version: String,
+    pub jp_ios_asset_hash: String,
+    pub en_ios_asset_hash: String,
+    pub windows_asset_hash: String,
     pub enable_custom_songs: bool,
     pub enable_custom_cards: bool,
     pub enable_custom_3dmv: bool,
     pub enable_arcade: bool,
     pub nerf_custom_cards: bool,
+    pub owner: Vec<i64>,
+    pub hidden: bool,
+    pub force_updates: bool,
+    pub disable_imports: bool,
+    pub disable_exports: bool,
+    pub linux_asset_hash: String,
+    pub macos_asset_hash: String,
+    pub global_android: String,
+    pub japan_android: String,
+    pub global_ios: String,
+    pub japan_ios: String,
+    pub arcade_machine_ttl: u64,
+    pub arcade_session_ttl: u64,
+    pub image_asset_path: String,
+    pub masterdata: String,
 }
 
 // Lets an embedding app (or the tests) enable the opt-in custom songs feature
@@ -162,6 +182,38 @@ pub fn apply_config_json(json: &str) {
     cfg.port = parsed["port"].as_u64().unwrap_or(0) as u16;
     cfg.jp_android_asset_hash = s("jpAndroidAssetHash");
     cfg.en_android_asset_hash = s("enAndroidAssetHash");
+    cfg.asset_version = s("assetVersion");
+    cfg.en_asset_version = s("enAssetVersion");
+    cfg.jp_ios_asset_hash = s("jpIosAssetHash");
+    cfg.en_ios_asset_hash = s("enIosAssetHash");
+    cfg.windows_asset_hash = s("windowsAssetHash");
+    cfg.linux_asset_hash = s("linuxAssetHash");
+    cfg.macos_asset_hash = s("macosAssetHash");
+    cfg.global_android = s("globalAndroid");
+    cfg.japan_android = s("japanAndroid");
+    cfg.global_ios = s("globalIos");
+    cfg.japan_ios = s("japanIos");
+    cfg.arcade_machine_ttl = parsed["arcadeMachineTtl"].as_u64().unwrap_or(90);
+    cfg.arcade_session_ttl = parsed["arcadeSessionTtl"].as_u64().unwrap_or(30);
+    cfg.image_asset_path = s("imageAssetPath");
+    cfg.masterdata = s("masterdata");
+    cfg.owner = parsed["ownerUids"].members().filter_map(|v| v.as_i64()).collect();
+    cfg.hidden = parsed["hidden"].as_bool().unwrap_or(false);
+    cfg.force_updates = parsed["forceUpdates"].as_bool().unwrap_or(false);
+    cfg.disable_imports = parsed["disableImports"].as_bool().unwrap_or(false);
+    cfg.disable_exports = parsed["disableExports"].as_bool().unwrap_or(false);
+    cfg.enable_custom_songs = parsed["enableCustomSongs"].as_bool().unwrap_or(false);
+    cfg.enable_custom_cards = parsed["enableCustomCards"].as_bool().unwrap_or(false);
+    cfg.nerf_custom_cards = parsed["nerfCustomCards"].as_bool().unwrap_or(false);
+    cfg.enable_custom_3dmv = parsed["enableCustom3dmv"].as_bool().unwrap_or(false);
+    cfg.enable_arcade = parsed["enableArcade"].as_bool().unwrap_or(false);
+    let owners = cfg.owner.clone();
+    let masterdata = cfg.masterdata.clone();
+    let nerf_custom_cards = cfg.nerf_custom_cards;
+    drop(cfg);
+    update_owners(&owners);
+    update_masterdata_path(&masterdata);
+    set_nerf_custom_cards(nerf_custom_cards);
 }
 
 pub fn overlay_args(args: &mut crate::options::Args) {
@@ -183,6 +235,30 @@ pub fn overlay_args(args: &mut crate::options::Args) {
     }
     overlay_str!(jp_android_asset_hash);
     overlay_str!(en_android_asset_hash);
+    overlay_str!(asset_version);
+    overlay_str!(en_asset_version);
+    overlay_str!(jp_ios_asset_hash);
+    overlay_str!(en_ios_asset_hash);
+    overlay_str!(windows_asset_hash);
+    overlay_str!(linux_asset_hash);
+    overlay_str!(macos_asset_hash);
+    overlay_str!(global_android);
+    overlay_str!(japan_android);
+    overlay_str!(global_ios);
+    overlay_str!(japan_ios);
+    overlay_str!(image_asset_path);
+    overlay_str!(masterdata);
+    if cfg.arcade_machine_ttl != 0 {
+        args.arcade_machine_ttl = cfg.arcade_machine_ttl;
+    }
+    if cfg.arcade_session_ttl != 0 {
+        args.arcade_session_ttl = cfg.arcade_session_ttl;
+    }
+    args.owner = cfg.owner.clone();
+    args.hidden = cfg.hidden;
+    args.force_updates = cfg.force_updates;
+    args.disable_imports = cfg.disable_imports;
+    args.disable_exports = cfg.disable_exports;
     // Overlay only ever enables the features; a command-line --enable-custom-*
     // flag is never overridden back to off
     if cfg.enable_custom_songs {
@@ -225,4 +301,33 @@ pub fn lock_test_data_path() -> std::sync::MutexGuard<'static, ()> {
     set_enable_custom_3dmv(true);
     set_enable_arcade(true);
     guard
+}
+
+#[cfg(test)]
+#[test]
+fn android_host_config_updates_owner_and_feature_options() {
+    use clap::Parser;
+    let _guard = lock_test_data_path();
+    apply_config_json(r#"{"ownerUids":[42,84],"hidden":true,"forceUpdates":true,"disableImports":true,"disableExports":true,"enableCustomSongs":true,"enableCustomCards":true,"nerfCustomCards":true,"enableCustom3dmv":true,"enableArcade":true,"linuxAssetHash":"linux-hash","macosAssetHash":"mac-hash","globalAndroid":"https://example.com/gl.apk","arcadeMachineTtl":45,"arcadeSessionTtl":15}"#);
+    let mut args = crate::options::Args::parse_from(["ew"]);
+    overlay_args(&mut args);
+    assert_eq!(get_owners(), vec![42, 84]);
+    assert_eq!(args.owner, vec![42, 84]);
+    assert!(args.hidden && args.force_updates && args.disable_imports && args.disable_exports);
+    assert!(args.enable_custom_songs && args.enable_custom_cards && args.nerf_custom_cards);
+    assert!(get_nerf_custom_cards());
+    assert!(args.enable_custom_3dmv && args.enable_arcade);
+    assert_eq!(args.linux_asset_hash, "linux-hash");
+    assert_eq!(args.macos_asset_hash, "mac-hash");
+    assert_eq!(args.global_android, "https://example.com/gl.apk");
+    assert_eq!(args.arcade_machine_ttl, 45);
+    assert_eq!(args.arcade_session_ttl, 15);
+
+    apply_config_json(r#"{"ownerUids":[],"enableCustomSongs":false}"#);
+    let mut reset = crate::options::Args::parse_from(["ew"]);
+    overlay_args(&mut reset);
+    assert!(get_owners().is_empty());
+    assert!(!reset.enable_custom_songs);
+    assert!(!reset.hidden);
+    assert!(!get_nerf_custom_cards());
 }

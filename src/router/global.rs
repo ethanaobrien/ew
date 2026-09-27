@@ -68,6 +68,13 @@ static ASSET_VERSIONS: &[AssetVersion] = &[
 ];
 
 impl AssetVersion {
+    fn accepts_override(&self) -> bool {
+        // The retired GL clients can still use a custom version/hash, but they are not
+        // current releases. Keep override eligibility separate from update policy.
+        self.latest || (self.region == "GL"
+            && self.version == "5260ff15dff8ba0c00ad91400f515f55")
+    }
+
     fn stock_hash(&self) -> String {
         if self.latest && self.platform == "Android" && get_easter_mode() {
             if let Some((_, easter)) = EASTER_HASHES.iter().find(|(r, _)| *r == self.region) {
@@ -79,7 +86,11 @@ impl AssetVersion {
 
     fn override_pair(&self) -> Option<(String, String)> {
         let args = crate::get_args();
-        let ov = args.asset_version.as_str();
+        let ov = if self.region == "GL" {
+            args.en_asset_version.as_str()
+        } else {
+            args.asset_version.as_str()
+        };
         let oh = match (self.region, self.platform) {
             ("JP", "Windows") => args.windows_asset_hash.as_str(),
             ("JP", "Linux")   => args.linux_asset_hash.as_str(),
@@ -111,7 +122,7 @@ fn valid_hashes(asset_version: &str, platform: &str) -> Vec<String> {
                 out.push(entry.stock_hash());
             }
         }
-        if entry.latest {
+        if entry.accepts_override() {
             if let Some((ov, oh)) = entry.override_pair() {
                 if ov == asset_version {
                     out.push(oh);
@@ -128,7 +139,7 @@ fn preferred_hash(asset_version: &str, platform: &str) -> Option<String> {
         if entry.platform != platform {
             continue;
         }
-        if entry.latest {
+        if entry.accepts_override() {
             if let Some((ov, oh)) = entry.override_pair() {
                 if ov == asset_version {
                     return Some(oh);
@@ -168,7 +179,7 @@ pub fn get_player_region(asset_version: &str) -> Option<String> {
         if entry.version == asset_version {
             return Some(entry.region.to_string());
         }
-        if entry.latest {
+        if entry.accepts_override() {
             if let Some((ov, _)) = entry.override_pair() {
                 if ov == asset_version {
                     return Some(entry.region.to_string());
@@ -500,6 +511,22 @@ pub(crate) fn get_cards(arr: JsonValue, user: &JsonValue) -> JsonValue {
 #[cfg(test)]
 mod platform_tests {
     use super::*;
+
+    #[test]
+    fn host_version_overrides_keep_jp_and_global_distinct() {
+        crate::runtime::apply_config_json(
+            r#"{"assetVersion":"jp-test-version","enAssetVersion":"gl-test-version","jpAndroidAssetHash":"jp-test-hash","enAndroidAssetHash":"gl-test-hash"}"#,
+        );
+
+        assert_eq!(get_player_region("jp-test-version").as_deref(), Some("JP"));
+        assert_eq!(get_player_region("gl-test-version").as_deref(), Some("GL"));
+        assert_eq!(preferred_hash("jp-test-version", "Android").as_deref(), Some("jp-test-hash"));
+        assert_eq!(preferred_hash("gl-test-version", "Android").as_deref(), Some("gl-test-hash"));
+        assert!(valid_hashes("gl-test-version", "Android").contains(&"gl-test-hash".to_string()));
+        assert!(!ASSET_VERSIONS.iter().any(|entry| entry.region == "GL" && entry.latest));
+
+        crate::runtime::apply_config_json("{}");
+    }
 
     #[test]
     fn standalone_player_platforms_are_known() {
