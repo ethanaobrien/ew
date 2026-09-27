@@ -2,8 +2,6 @@
 // in-process symphonia + vorbis machinery
 pub mod audio;
 mod chart;
-// Idempotent startup repairs for stored custom charts and catalog metadata.
-pub mod migrate;
 mod package;
 
 use jzon::{array, object, JsonValue};
@@ -1469,167 +1467,11 @@ mod tests {
     fn field(fields: &mut HashMap<String, Vec<u8>>, key: &str, value: &str) {
         fields.insert(String::from(key), value.as_bytes().to_vec());
     }
-
-    // A SIF1 chart whose transcode contains 3+ simultaneous notes: 4 parallel holds into a
-    // full 9-lane wall (the shape of the field-reported chart that exposed the old encoding)
-    // 4 parallel holds then a 9-wide wall. Timed to fit inside the 2s test track: uploads are
-    // rejected when a chart outlives its audio (validate_chart_fits_audio)
-    fn wall_chart() -> Vec<u8> {
-        let mut beatmap = jzon::array![];
-        for position in [2, 4, 6, 8] {
-            beatmap.push(jzon::object!{
-                "timing_sec": 0.5, "notes_attribute": 1, "notes_level": 1,
-                "effect": 3, "effect_value": 0.5, "position": position
-            }).unwrap();
-        }
-        for position in 1..=9 {
-            beatmap.push(jzon::object!{
-                "timing_sec": 1.5, "notes_attribute": 1, "notes_level": 1,
-                "effect": 1, "effect_value": 0.0, "position": position
-            }).unwrap();
-        }
-        jzon::stringify(beatmap).into_bytes()
-    }
-
-    // The startup migration: a chart stored with the PRE-pairing encoding (whole equal-time
-    // clusters sharing one num) is regrouped in place, its catalog md5/size follow the new
-    // bytes, the revision bumps exactly once, correctly-encoded songs stay byte-identical,
-    // and a second run is a complete no-op
-    #[test]
-    fn startup_migration_regroups_pre_fix_charts() {
-        let _lock = crate::runtime::lock_test_data_path();
-
-        let mut fields = HashMap::new();
-        field(&mut fields, "name", "Migration Target");
-        field(&mut fields, "artist", "Wall Artist");
-        field(&mut fields, "attribute", "1");
-        field(&mut fields, "level_number_4", "15");
-        fields.insert(String::from("jacket"), test_png());
-        fields.insert(String::from("audio"), test_ogg_tone(550.0));
-        fields.insert(String::from("chart_4"), wall_chart());
-        let target = create_song(3333, &fields).unwrap();
-
-        let mut fields = HashMap::new();
-        field(&mut fields, "name", "Migration Control");
-        field(&mut fields, "artist", "Control Artist");
-        field(&mut fields, "attribute", "2");
-        field(&mut fields, "level_number_1", "5");
-        fields.insert(String::from("jacket"), test_png());
-        fields.insert(String::from("audio"), test_ogg_tone(770.0));
-        fields.insert(String::from("chart_1"), test_chart());
-        let control = create_song(4444, &fields).unwrap();
-
-        // The upload stored the CURRENT encoding; capture it, then doctor the store back to
-        // the pre-pairing form exactly as an old server would have written it: squashed
-        // chart bytes on disk and the catalog md5/size matching those bytes
-        let path = song_path(target, "chart_4.json");
-        let fixed_bytes = fs::read(&path).unwrap();
-        let mut squashed = jzon::parse(&String::from_utf8_lossy(&fixed_bytes)).unwrap();
-        chart::squash_to_pre_fix(&mut squashed);
-        let squashed_bytes = jzon::stringify(squashed).into_bytes();
-        assert_ne!(squashed_bytes, fixed_bytes);
-        fs::write(&path, &squashed_bytes).unwrap();
-        let mut song = database::get_song(target).unwrap();
-        let (md5, size) = asset_meta(&squashed_bytes);
-        for entry in song["levels"].members_mut() {
-            if entry["level"] == 4 {
-                entry["md5"] = md5.clone().into();
-                entry["size"] = size.into();
-            }
-        }
-        database::update_song(target, &song);
-
-        let control_bytes = fs::read(song_path(control, "chart_1.json")).unwrap();
-        let control_song = database::get_song(control).unwrap();
-        let revision = database::get_revision();
-
-        migrate::run();
-
-        // The target chart is byte-identical to what the current transcoder stores, and the
-        // catalog follows the new bytes
-        let migrated = fs::read(&path).unwrap();
-        assert_eq!(migrated, fixed_bytes);
-        let song = database::get_song(target).unwrap();
-        let level = song["levels"].members().find(|l| l["level"] == 4).unwrap();
-        let (md5, size) = asset_meta(&fixed_bytes);
-        assert_eq!(level["md5"].to_string(), md5);
-        assert_eq!(level["size"].as_usize().unwrap(), size);
-        // full_combo never depended on grouping and must not move
-        assert_eq!(level["full_combo"], 9 + 4);
-
-        // Exactly one revision bump, and the control song is untouched
-        assert_eq!(database::get_revision(), revision + 1);
-        assert_eq!(fs::read(song_path(control, "chart_1.json")).unwrap(), control_bytes);
-        assert_eq!(jzon::stringify(database::get_song(control).unwrap()), jzon::stringify(control_song));
-
-        // Idempotent: a second boot changes nothing and bumps nothing
-        migrate::run();
-        assert_eq!(fs::read(&path).unwrap(), fixed_bytes);
-        assert_eq!(database::get_revision(), revision + 1);
-    }
-
-    #[test]
-    fn startup_migration_recounts_same_lane_checkpoints() {
-        let _lock = crate::runtime::lock_test_data_path();
-        let mut beatmap = array![];
-        for i in 0..13 {
-            beatmap.push(object!{
-                "timing_sec": 0.5 + i as f64 * 0.05, "position": 5,
-                "notes_level": 500, "effect": if i == 12 { 14 } else { 11 },
-                "effect_value": 0.0
-            }).unwrap();
-        }
-        let mut fields = HashMap::new();
-        field(&mut fields, "name", "Repeated Checkpoint Count");
-        field(&mut fields, "artist", "Count Test");
-        field(&mut fields, "attribute", "1");
-        field(&mut fields, "level_number_4", "10");
-        fields.insert(String::from("jacket"), test_png());
-        fields.insert(String::from("audio"), test_ogg_tone(615.0));
-        fields.insert(String::from("chart_4"), jzon::stringify(beatmap).into_bytes());
-        let id = create_song(3333, &fields).unwrap();
-        let path = song_path(id, "chart_4.json");
-        let corrected_bytes = fs::read(&path).unwrap();
-        let corrected_song = database::get_song(id).unwrap();
-        assert_eq!(corrected_song["levels"][0]["full_combo"], 12);
-
-        let mut chart = jzon::parse(&String::from_utf8_lossy(&corrected_bytes)).unwrap();
-        chart["max_combo_count"] = 1.into();
-        let old_bytes = jzon::stringify(chart).into_bytes();
-        fs::write(&path, &old_bytes).unwrap();
-        let mut song = corrected_song.clone();
-        let (md5, size) = asset_meta(&old_bytes);
-        song["levels"][0]["full_combo"] = 1.into();
-        song["levels"][0]["md5"] = md5.into();
-        song["levels"][0]["size"] = size.into();
-        song["mission_combo"] = mission_combo(1);
-        database::update_song(id, &song);
-        let revision = database::get_revision();
-
-        migrate::run();
-        assert_eq!(fs::read(&path).unwrap(), corrected_bytes);
-        assert_eq!(database::get_song(id).unwrap(), corrected_song);
-        assert_eq!(database::get_revision(), revision + 1);
-        migrate::run();
-        assert_eq!(fs::read(&path).unwrap(), corrected_bytes);
-        assert_eq!(database::get_revision(), revision + 1);
-
-        // A stale catalog alone must also recover, without rewriting the chart.
-        song = corrected_song.clone();
-        song["levels"][0]["full_combo"] = 1.into();
-        database::update_song(id, &song);
-        migrate::run();
-        assert_eq!(fs::read(&path).unwrap(), corrected_bytes);
-        assert_eq!(database::get_song(id).unwrap(), corrected_song);
-        assert_eq!(database::get_revision(), revision + 2);
-        migrate::run();
-        assert_eq!(database::get_revision(), revision + 2);
-    }
+    // The live PLAY cue must never be a loop cue: the client reports a looping playback as
 
     // The live PLAY cue must never be a loop cue: the client reports a looping playback as
     // forever-playing, and the live's end trigger waits on playback-end, so a looping play cue
-    // means the live never ends. New uploads emit is_loop:false, the preview cue keeps looping,
-    // and the startup migration un-loops catalogs written before the distinction existed.
+    // means the live never ends. New uploads emit is_loop:false; the preview cue keeps looping.
     #[test]
     fn play_cue_never_loops() {
         let _lock = crate::runtime::lock_test_data_path();
@@ -1651,28 +1493,6 @@ mod tests {
         assert_eq!(song["sound"]["play"]["loop_end_sec"], 0.0);
         assert_eq!(song["sound"]["select"]["is_loop"], true);
         assert!(song["sound"]["select"]["loop_end_sec"].as_f64().unwrap() > 0.0);
-
-        // Doctor the catalog back to the pre-fix shape an old server would have written,
-        // then boot: the migration un-loops the play cue and bumps the revision once
-        let mut old = song.clone();
-        old["sound"]["play"]["is_loop"] = true.into();
-        old["sound"]["play"]["loop_end_sec"] = old["sound"]["play"]["duration_sec"].clone();
-        database::update_song(music_id, &old);
-        let revision = database::get_revision();
-
-        migrate::run();
-
-        let song = database::get_song(music_id).unwrap();
-        assert_eq!(song["sound"]["play"]["is_loop"], false);
-        assert_eq!(song["sound"]["play"]["loop_end_sec"], 0.0);
-        assert_eq!(song["sound"]["select"]["is_loop"], true);
-        // The ogg bytes never moved, so the audio md5 must not change (no re-download)
-        assert_eq!(song["sound"]["play"]["md5"], old["sound"]["play"]["md5"]);
-        assert_eq!(database::get_revision(), revision + 1);
-
-        // Idempotent
-        migrate::run();
-        assert_eq!(database::get_revision(), revision + 1);
     }
 
     // Song text is rendered by TMP with rich text on and no escaping, so a tag in a name or an
@@ -1816,55 +1636,6 @@ mod tests {
         update_song(music_id, &fields).unwrap();
     }
 
-    // The startup migration also corrects the two fabricated masterdata values in stored
-    // catalogs: score-rank thresholds (official constants, not per-song) and combo missions
-    // (20/40/60/80% of the hardest full combo, not 25/50/75/100%)
-    #[test]
-    fn startup_migration_fixes_fabricated_scores_and_missions() {
-        let _lock = crate::runtime::lock_test_data_path();
-
-        let mut fields = HashMap::new();
-        field(&mut fields, "name", "Old Values");
-        field(&mut fields, "artist", "Old Artist");
-        field(&mut fields, "attribute", "3");
-        field(&mut fields, "level_number_1", "5");
-        fields.insert(String::from("jacket"), test_png());
-        fields.insert(String::from("audio"), test_ogg_tone(1100.0));
-        fields.insert(String::from("chart_1"), wall_chart());
-        let music_id = create_song(7777, &fields).unwrap();
-
-        let mut song = database::get_song(music_id).unwrap();
-        let hardest = song["levels"].members().last().unwrap()["full_combo"].as_i64().unwrap();
-        // Doctor the catalog back to the pre-fix formulas
-        let base = hardest as f64 * 200.0 * (1.0 + 5.0 / 10.0);
-        song["score"] = object!{
-            "c": (base * 0.5) as u32, "b": (base * 0.75) as u32, "a": base as u32, "s": (base * 1.3) as u32
-        };
-        song["multi_score"] = object!{
-            "c": (base * 0.6) as u32, "b": (base * 0.9) as u32, "a": (base * 1.2) as u32, "s": (base * 1.56) as u32
-        };
-        song["mission_combo"] = jzon::array![hardest / 4, hardest / 2, hardest * 3 / 4, hardest];
-        database::update_song(music_id, &song);
-        let revision = database::get_revision();
-
-        migrate::run();
-
-        let song = database::get_song(music_id).unwrap();
-        let (score, multi_score) = default_scores();
-        assert_eq!(song["score"], score);
-        assert_eq!(song["multi_score"], multi_score);
-        assert_eq!(song["score"]["s"], 350000);
-        assert_eq!(song["multi_score"]["s"], 1225000);
-        // 20/40/60/80%, and never the full combo itself
-        assert_eq!(song["mission_combo"], mission_combo(hardest));
-        assert_eq!(song["mission_combo"][3].as_i64().unwrap(), (hardest as f64 * 0.8 + 0.5) as i64);
-        assert!(song["mission_combo"][3].as_i64().unwrap() < hardest);
-        assert_eq!(database::get_revision(), revision + 1);
-
-        // Idempotent
-        migrate::run();
-        assert_eq!(database::get_revision(), revision + 1);
-    }
 
     // Export a song, import the package as another user, and the served song
     // must be identical apart from the assigned music_id - INCLUDING the audio
