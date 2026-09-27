@@ -32,7 +32,7 @@ services:
       #EN_ANDROID_ASSET_HASH: ""
       #EN_IOS_ASSET_HASH: ""
       #WINDOWS_ASSET_HASH: "" # Windows asset hash (JP only; GL Windows is unused)
-      #FORCE_UPDATES: false # Force outdated clients to update
+      #FORCE_UPDATES: "true" # Force outdated clients to update
 
       # Everything below is for the "Help" page
       #ANDROID_GLOBAL: "link.to/patched/android/global.apk"

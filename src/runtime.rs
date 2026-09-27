@@ -254,11 +254,15 @@ pub fn overlay_args(args: &mut crate::options::Args) {
     if cfg.arcade_session_ttl != 0 {
         args.arcade_session_ttl = cfg.arcade_session_ttl;
     }
-    args.owner = cfg.owner.clone();
-    args.hidden = cfg.hidden;
-    args.force_updates = cfg.force_updates;
-    args.disable_imports = cfg.disable_imports;
-    args.disable_exports = cfg.disable_exports;
+    // An embedding app may supply these options, but its default values must
+    // not erase flags passed by the standalone server (including Docker).
+    if !cfg.owner.is_empty() {
+        args.owner = cfg.owner.clone();
+    }
+    args.hidden |= cfg.hidden;
+    args.force_updates |= cfg.force_updates;
+    args.disable_imports |= cfg.disable_imports;
+    args.disable_exports |= cfg.disable_exports;
     // Overlay only ever enables the features; a command-line --enable-custom-*
     // flag is never overridden back to off
     if cfg.enable_custom_songs {
@@ -330,4 +334,12 @@ fn android_host_config_updates_owner_and_feature_options() {
     assert!(!reset.enable_custom_songs);
     assert!(!reset.hidden);
     assert!(!get_nerf_custom_cards());
+
+    let mut cli = crate::options::Args::parse_from([
+        "ew", "--force-updates", "--hidden", "--disable-imports",
+        "--disable-exports", "--owner", "123",
+    ]);
+    overlay_args(&mut cli);
+    assert!(cli.force_updates && cli.hidden && cli.disable_imports && cli.disable_exports);
+    assert_eq!(cli.owner, vec![123]);
 }
