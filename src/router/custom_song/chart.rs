@@ -18,8 +18,8 @@ use std::collections::HashMap;
 //   IsSliderLongMarker  chained, child SAME line, parent different    -> a slide ending in a hold
 //   IsDistanceMarker    has both a parent and a child                 -> a middle segment
 // So a hold is a chain that stays in its lane and a slide is a chain that moves across lanes;
-// both are type 1. This is also how the client counts combo (NoteData.CalcMaxCombo: a note whose
-// child shares its line does not count, its tail does).
+// both are type 1. Combo follows LiveStatusSystem.PushInputResult, not the editor-only
+// NoteData.CalcMaxCombo helper, which undercounts repeated same-lane checkpoints.
 //
 // Mapping rules:
 // - line = position - 1 (both are right-to-left)
@@ -65,8 +65,8 @@ use std::collections::HashMap;
 //   ForceGroupId against the other chunk's GroupId and links the lane-closest pair).
 // - notes[0] is ALWAYS the dummy header (id 0, num 100, type 0) - the client
 //   deserializes it verbatim.
-// - max_combo_count = all real notes EXCEPT hold heads whose tail is on the same
-//   line (the game counts a same-lane hold as one combo for the chain)
+// - max_combo_count excludes a same-lane hold's root and a cross-lane slide settling
+//   into a hold. Further same-lane checkpoints do count (see max_combo_count below).
 
 // Two notes are SIMULTANEOUS (one spawn cluster) when their times agree to within this.
 // Uploaded timings are decimal literals, so notes an author meant to be simultaneous parse to
@@ -141,6 +141,42 @@ pub fn first_note_time(chart: &JsonValue) -> Option<f64> {
             Some(first) => first.min(time),
             None => time
         }))
+}
+
+// LiveStatusSystem.PushInputResult skips combo for a non-slider long root or
+// IsSliderLongMarker. LiveInputResultControl maps those results to their child.
+// All other points count, including repeated checkpoints in a stationary slide.
+// Validate the links before repairing stored data; never guess a broken chart's count.
+pub fn max_combo_count(chart: &JsonValue) -> Option<i64> {
+    let notes = &chart["notes"];
+    if !notes.is_array() || notes.len() < 2 || notes[0]["id"] != 0 {
+        return None;
+    }
+    let mut by_id = HashMap::new();
+    for note in notes.members().skip(1) {
+        let id = note["id"].as_i64()?;
+        let line = note["line"].as_i64()?;
+        if id <= 0 || !(0..9).contains(&line) || by_id.insert(id, note).is_some() {
+            return None;
+        }
+    }
+    let mut count = 0;
+    for note in notes.members().skip(1) {
+        let id = note["id"].as_i64()?;
+        let parent_id = note["parent_id"].as_i64()?;
+        let child_id = note["child_id"].as_i64()?;
+        let parent = if parent_id == 0 { None } else { Some(*by_id.get(&parent_id)?) };
+        let child = if child_id == 0 { None } else { Some(*by_id.get(&child_id)?) };
+        if parent_id == id || child_id == id
+            || parent.is_some_and(|p| p["child_id"] != id)
+            || child.is_some_and(|c| c["parent_id"] != id) {
+            return None;
+        }
+        let hold_start = child.is_some_and(|c| c["line"] == note["line"])
+            && parent.is_none_or(|p| p["line"] != note["line"]);
+        if !hold_start { count += 1; }
+    }
+    Some(count)
 }
 
 struct WorkNote {
@@ -324,16 +360,8 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
         "parent_id": 0, "child_id": 0, "child_num": 0, "child_line": 0,
         "force_sync_group_id": 0
     }];
-    let mut max_combo_count = 0;
     for index in order.iter() {
         let note = &work[*index];
-
-        // NoteData.CalcMaxCombo: a note whose child is on the SAME line (a hold) does not count,
-        // its tail does. A cross-lane child (a slide segment) counts normally.
-        match note.child {
-            Some(child) if work[child].line == note.line => {},
-            _ => max_combo_count += 1
-        }
 
         notes.push(object!{
             "id": ids[*index],
@@ -349,12 +377,15 @@ pub fn transcode(beatmap: &JsonValue) -> Result<(JsonValue, i64), String> {
         }).unwrap();
     }
 
-    Ok((object!{
+    let mut chart = object!{
         "max_lane": 9,
         "sound_name": "",
-        "max_combo_count": max_combo_count,
+        "max_combo_count": 0,
         "notes": notes
-    }, max_combo_count))
+    };
+    let combo = max_combo_count(&chart).ok_or("Invalid transcoded note links")?;
+    chart["max_combo_count"] = combo.into();
+    Ok((chart, combo))
 }
 
 // Regroups a STORED transcoded chart whose spawn groups predate the pairing rule above: the
@@ -830,6 +861,56 @@ mod tests {
         assert_eq!(chart["notes"][4]["time"].as_f64().unwrap(), 1.9);
         // The same-lane hold head does not count; its tail does
         assert_eq!(combo, 3);
+    }
+
+    #[test]
+    fn repeated_same_lane_checkpoints_count_like_the_client() {
+        for final_effect in [11, 14] {
+            let mut beatmap = jzon::array![];
+            for i in 0..13 {
+                beatmap.push(sif_slide(1.0 + i as f64 * 0.1, 5,
+                    if i == 12 { final_effect } else { 11 }, 0.0, 500)).unwrap();
+            }
+            let (chart, combo) = transcode(&beatmap).unwrap();
+            // The head shares the first checkpoint's result; all twelve
+            // non-root points still have their own runtime judgment.
+            assert_eq!(combo, 12);
+            assert_eq!(chart["max_combo_count"], 12);
+            assert_eq!(chart["notes"].len(), 14);
+        }
+    }
+
+    #[test]
+    fn combo_count_preserves_hold_and_cross_lane_rules() {
+        for (positions, expected) in [
+            (vec![5, 5], 1),
+            (vec![5, 5, 5], 2),
+            (vec![5, 5, 6], 2),
+            (vec![4, 5, 5], 2),
+            (vec![4, 5, 5, 5], 3),
+            (vec![4, 5, 6], 3),
+        ] {
+            let mut beatmap = jzon::array![];
+            for (i, position) in positions.iter().enumerate() {
+                beatmap.push(sif_slide(1.0 + i as f64 * 0.1, *position, 11, 0.0, 500)).unwrap();
+            }
+            let (_, combo) = transcode(&beatmap).unwrap();
+            assert_eq!(combo, expected, "chain {:?}", positions);
+        }
+    }
+
+    #[test]
+    fn combo_repair_rejects_invalid_links() {
+        let (chart, _) = transcode(&jzon::array![sif_note(1.0, 5, 3, 1.0)]).unwrap();
+        for (field, value) in [("id", 2), ("parent_id", 999), ("child_id", 999), ("child_id", 1)] {
+            let mut broken = chart.clone();
+            broken["notes"][1][field] = value.into();
+            assert_eq!(max_combo_count(&broken), None, "invalid {}={}", field, value);
+        }
+        let mut broken = chart;
+        broken["notes"][2]["parent_id"] = 0.into();
+        assert_eq!(max_combo_count(&broken), None);
+        assert_eq!(max_combo_count(&object!{}), None);
     }
 
     #[test]

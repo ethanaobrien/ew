@@ -2,8 +2,7 @@
 // in-process symphonia + vorbis machinery
 pub mod audio;
 mod chart;
-// One-time startup regroup of charts stored before the spawn-group pairing rule; called from
-// run_server, no-op when the feature is disabled or every chart is already correctly grouped
+// Idempotent startup repairs for stored custom charts and catalog metadata.
 pub mod migrate;
 mod package;
 
@@ -1567,6 +1566,64 @@ mod tests {
         migrate::run();
         assert_eq!(fs::read(&path).unwrap(), fixed_bytes);
         assert_eq!(database::get_revision(), revision + 1);
+    }
+
+    #[test]
+    fn startup_migration_recounts_same_lane_checkpoints() {
+        let _lock = crate::runtime::lock_test_data_path();
+        let mut beatmap = array![];
+        for i in 0..13 {
+            beatmap.push(object!{
+                "timing_sec": 0.5 + i as f64 * 0.05, "position": 5,
+                "notes_level": 500, "effect": if i == 12 { 14 } else { 11 },
+                "effect_value": 0.0
+            }).unwrap();
+        }
+        let mut fields = HashMap::new();
+        field(&mut fields, "name", "Repeated Checkpoint Count");
+        field(&mut fields, "artist", "Count Test");
+        field(&mut fields, "attribute", "1");
+        field(&mut fields, "level_number_4", "10");
+        fields.insert(String::from("jacket"), test_png());
+        fields.insert(String::from("audio"), test_ogg_tone(615.0));
+        fields.insert(String::from("chart_4"), jzon::stringify(beatmap).into_bytes());
+        let id = create_song(3333, &fields).unwrap();
+        let path = song_path(id, "chart_4.json");
+        let corrected_bytes = fs::read(&path).unwrap();
+        let corrected_song = database::get_song(id).unwrap();
+        assert_eq!(corrected_song["levels"][0]["full_combo"], 12);
+
+        let mut chart = jzon::parse(&String::from_utf8_lossy(&corrected_bytes)).unwrap();
+        chart["max_combo_count"] = 1.into();
+        let old_bytes = jzon::stringify(chart).into_bytes();
+        fs::write(&path, &old_bytes).unwrap();
+        let mut song = corrected_song.clone();
+        let (md5, size) = asset_meta(&old_bytes);
+        song["levels"][0]["full_combo"] = 1.into();
+        song["levels"][0]["md5"] = md5.into();
+        song["levels"][0]["size"] = size.into();
+        song["mission_combo"] = mission_combo(1);
+        database::update_song(id, &song);
+        let revision = database::get_revision();
+
+        migrate::run();
+        assert_eq!(fs::read(&path).unwrap(), corrected_bytes);
+        assert_eq!(database::get_song(id).unwrap(), corrected_song);
+        assert_eq!(database::get_revision(), revision + 1);
+        migrate::run();
+        assert_eq!(fs::read(&path).unwrap(), corrected_bytes);
+        assert_eq!(database::get_revision(), revision + 1);
+
+        // A stale catalog alone must also recover, without rewriting the chart.
+        song = corrected_song.clone();
+        song["levels"][0]["full_combo"] = 1.into();
+        database::update_song(id, &song);
+        migrate::run();
+        assert_eq!(fs::read(&path).unwrap(), corrected_bytes);
+        assert_eq!(database::get_song(id).unwrap(), corrected_song);
+        assert_eq!(database::get_revision(), revision + 2);
+        migrate::run();
+        assert_eq!(database::get_revision(), revision + 2);
     }
 
     // The live PLAY cue must never be a loop cue: the client reports a looping playback as

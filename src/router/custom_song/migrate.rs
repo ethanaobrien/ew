@@ -13,7 +13,8 @@ use crate::runtime::get_data_path;
 //
 // The same pass also corrects the stored catalog values that were fabricated rather than
 // derived from official masterdata (see below): the looping PLAY cue, the per-song score-rank
-// thresholds and the combo-mission targets.
+// thresholds and the combo-mission targets. Combo totals are recalculated using
+// the client's runtime rule, including repeated same-lane slide checkpoints.
 //
 // For each song directory with a catalog row, every chart with an over-shared num is
 // regrouped (chart::regroup), rewritten to disk, and its level's md5/size in the catalog
@@ -68,17 +69,6 @@ pub fn run() {
             changed = true;
             println!("Custom song {}: score rank thresholds reset to the official values", music_id);
         }
-        // Same "hardest difficulty" rule as upload/edit: the last level entry, which both write
-        // in ascending level order
-        if let Some(hardest) = song["levels"].members().last().and_then(|l| l["full_combo"].as_i64()) {
-            let missions = super::mission_combo(hardest);
-            if song["mission_combo"] != missions {
-                song["mission_combo"] = missions;
-                changed = true;
-                println!("Custom song {}: combo missions rescaled to the official 20/40/60/80%", music_id);
-            }
-        }
-
         for level in 1..=LEVEL_COUNT {
             let path = song_path(music_id, &format!("chart_{}.json", level));
             let Ok(bytes) = fs::read(&path) else { continue; };
@@ -86,26 +76,47 @@ pub fn run() {
                 println!("Custom song {} chart {}: not valid JSON, migration skipped", music_id, level);
                 continue;
             };
-            if !chart::regroup(&mut chart_data) {
+            let Some(full_combo) = chart::max_combo_count(&chart_data) else {
+                println!("Custom song {} chart {}: invalid note links, migration skipped", music_id, level);
                 continue;
-            }
-            let new_bytes = jzon::stringify(chart_data);
-            if let Err(e) = fs::write(&path, &new_bytes) {
-                println!("Custom song {} chart {}: rewrite failed ({}), migration skipped", music_id, level, e);
-                continue;
-            }
+            };
+            let regrouped = chart::regroup(&mut chart_data);
+            let recounted = chart_data["max_combo_count"] != full_combo;
+            let (md5, size) = if regrouped || recounted {
+                chart_data["max_combo_count"] = full_combo.into();
+                let new_bytes = jzon::stringify(chart_data);
+                if let Err(e) = fs::write(&path, &new_bytes) {
+                    println!("Custom song {} chart {}: rewrite failed ({}), migration skipped", music_id, level, e);
+                    continue;
+                }
+                changed = true;
+                charts_changed += 1;
+                println!("Custom song {} chart {}: repaired grouping={}, combo={}", music_id, level, regrouped, recounted);
+                asset_meta(new_bytes.as_bytes())
+            } else {
+                asset_meta(&bytes)
+            };
             // The catalog md5/size must follow the served bytes or the client's
             // download-and-verify loop would never accept the asset
-            let (md5, size) = asset_meta(new_bytes.as_bytes());
             for entry in song["levels"].members_mut() {
                 if entry["level"] == level {
+                    changed |= entry["full_combo"] != full_combo
+                        || entry["md5"] != md5 || entry["size"] != size;
+                    entry["full_combo"] = full_combo.into();
                     entry["md5"] = md5.clone().into();
                     entry["size"] = size.into();
                 }
             }
-            changed = true;
-            charts_changed += 1;
-            println!("Custom song {}: regrouped chart level {} (pre-pairing spawn groups)", music_id, level);
+        }
+
+        // Recompute after chart repair, using the hardest difficulty as upload/edit do.
+        if let Some(hardest) = song["levels"].members().last().and_then(|l| l["full_combo"].as_i64()) {
+            let missions = super::mission_combo(hardest);
+            if song["mission_combo"] != missions {
+                song["mission_combo"] = missions;
+                changed = true;
+                println!("Custom song {}: combo missions rescaled to the official 20/40/60/80%", music_id);
+            }
         }
 
         if changed {
@@ -116,6 +127,6 @@ pub fn run() {
 
     if songs_changed > 0 {
         database::bump_revision();
-        println!("Custom song spawn-group migration: rewrote {} chart(s) in {} song(s), catalog revision bumped", charts_changed, songs_changed);
+        println!("Custom song migration: rewrote {} chart(s) in {} song(s), catalog revision bumped", charts_changed, songs_changed);
     }
 }
