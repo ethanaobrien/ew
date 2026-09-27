@@ -422,17 +422,6 @@ pub fn update_mission_status(master_mission_id: i64, expire: u64, completed: boo
     None
 }
 
-pub fn update_mission_status_multi(master_mission_id: JsonValue, expire: u64, completed: bool, claimed: bool, advance: i64, missions: &mut JsonValue) -> JsonValue {
-    let mut rv = array![];
-    for mission in master_mission_id.members() {
-        let val = update_mission_status(mission.as_i64().unwrap(), expire, completed, claimed, advance, missions);
-        if let Some(val2) = val {
-            rv.push(val2).unwrap();
-        }
-    }
-    rv
-}
-
 pub fn get_mission_status(id: i64, missions: &JsonValue) -> JsonValue {
     for mission in missions.members() {
         if mission["master_mission_id"].as_i64().unwrap() == id {

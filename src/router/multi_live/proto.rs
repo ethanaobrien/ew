@@ -104,6 +104,7 @@ impl Value {
         }
     }
 
+    #[allow(dead_code)]
     pub fn as_str(&self) -> Option<&str> {
         match self {
             Value::Str(v) => Some(v),
@@ -148,6 +149,7 @@ impl Map {
         self.get(key).and_then(Value::as_int)
     }
 
+    #[allow(dead_code)]
     pub fn get_str(&self, key: &str) -> Option<&str> {
         self.get(key).and_then(Value::as_str)
     }
