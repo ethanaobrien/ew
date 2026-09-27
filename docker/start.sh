@@ -18,6 +18,7 @@ args=(
 [ "${NERF_CUSTOM_CARDS:-}" = "true" ]  && args+=(--nerf-custom-cards)
 [ "${ENABLE_CUSTOM_3DMV:-}" = "true" ] && args+=(--enable-custom-3dmv)
 [ "${ENABLE_ARCADE:-}" = "true" ]    && args+=(--enable-arcade)
+[ "${FORCE_UPDATES:-}" = "true" ]    && args+=(--force-updates)
 
 add_opt() {
   local value="$1" flag="$2"

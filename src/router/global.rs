@@ -100,13 +100,16 @@ impl AssetVersion {
 }
 
 fn valid_hashes(asset_version: &str, platform: &str) -> Vec<String> {
+    let args = crate::get_args();
     let mut out = Vec::new();
     for entry in ASSET_VERSIONS {
         if entry.platform != platform {
             continue;
         }
         if entry.version == asset_version && !entry.hash.is_empty() {
-            out.push(entry.stock_hash());
+            if entry.latest || !args.force_updates {
+                out.push(entry.stock_hash());
+            }
         }
         if entry.latest {
             if let Some((ov, oh)) = entry.override_pair() {

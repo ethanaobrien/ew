@@ -89,6 +89,9 @@ pub struct Args {
     #[arg(long, default_value = "", help = "Asset version for overridden asset hashes.")]
     pub asset_version: String,
 
+    #[arg(long, default_value_t = false, help = "Force an application update for asset versions not marked as latest")]
+    pub force_updates: bool,
+
     #[arg(long, default_value = "", help = "Asset hash for windows client.")]
     pub windows_asset_hash: String,
 
