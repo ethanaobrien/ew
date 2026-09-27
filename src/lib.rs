@@ -35,12 +35,8 @@ pub async fn run_server(in_thread: bool) -> std::io::Result<()> {
 
     if args.purge {
         println!("Purging accounts...");
-        // Cabinets first, so the accounts they take with them are gone before
-        // purge_accounts runs its VACUUM over the same database
         let machines = crate::router::arcade::purge_machines();
-        if machines > 0 {
-            println!("Purged {} arcade machine(s)", machines);
-        }
+        println!("Purged {} arcade machines", machines);
         let ct = crate::router::userdata::purge_accounts();
         println!("Purged {} accounts", ct);
     }
