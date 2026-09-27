@@ -413,6 +413,10 @@ pub fn send(mut data: JsonValue, uid: i64, req: &HttpRequest) -> HttpResponse {
     //println!("{}", jzon::stringify(data.clone()));
     data["server_time"] = set_time(data["server_time"].as_u64().unwrap_or(0), uid, true).into();
 
+    if data["data"].is_object() {
+        super::mission::filter_response(&mut data["data"], req.headers());
+    }
+
     if !data["data"]["item_list"].is_empty() || !data["data"]["updated_value_list"]["item_list"].is_empty() {
         items::check_for_region(&mut data, req.headers());
     }

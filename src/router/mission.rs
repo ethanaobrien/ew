@@ -3,6 +3,29 @@ use actix_web::{web, HttpRequest, Responder};
 
 use crate::router::{global, userdata, items, databases, Login, Session, Api};
 
+pub fn filter_response(data: &mut JsonValue, headers: &actix_web::http::header::HeaderMap) {
+    if items::get_region(headers) { return; }
+    lazy_static::lazy_static! {
+        static ref GLOBAL_IDS: std::collections::HashSet<i64> =
+            databases::csv::table(databases::csv::Region::En, "mission")
+                .members().filter_map(|row| row["id"].as_i64()).collect();
+    }
+    // Only project the response. Shared JP/global accounts keep their progress.
+    for field in ["mission_list", "clear_mission_ids"] {
+        if !data[field].is_array() { continue; }
+        for i in (0..data[field].len()).rev() {
+            let id = if field == "mission_list" { data[field][i]["master_mission_id"].as_i64() }
+                else { data[field][i].as_i64() };
+            if !id.is_some_and(|id| GLOBAL_IDS.contains(&id)) {
+                data[field].array_remove(i);
+            }
+        }
+    }
+    if data["updated_value_list"].is_object() {
+        filter_response(&mut data["updated_value_list"], headers);
+    }
+}
+
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/mission")
@@ -15,6 +38,73 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[actix_web::test]
+    async fn mission_endpoint_filters_global_wire_response_not_saved_account() {
+        let _test = crate::runtime::lock_test_data_path();
+        let (uid, key) = userdata::starter::create("Regional missions test").unwrap();
+        let mut user = userdata::get_acc(&key);
+        user["tutorial_step"] = 999.into();
+        userdata::save_acc(&key, user);
+        for version in ["5260ff15dff8ba0c00ad91400f515f55", "4c921d2443335e574a82e04ec9ea243c"] {
+            let request = actix_web::test::TestRequest::default()
+                .insert_header(("aoharu-user-id", uid.to_string()))
+                .insert_header(("aoharu-asset-version", version)).to_http_request();
+            let response = mission(Login(key.clone())).await.respond_to(&request);
+            let body = actix_web::body::to_bytes(response.into_body()).await.ok().unwrap();
+            let plain = crate::encryption::decrypt_packet(std::str::from_utf8(&body).unwrap()).unwrap();
+            let response = jzon::parse(&plain).unwrap();
+            assert_eq!(response["code"], 0);
+            let missions = &response["data"]["mission_list"];
+            assert!(missions.members().any(|m| m["master_mission_id"] == 1073001));
+            assert_eq!(missions.members().any(|m| m["master_mission_id"] == 1073037),
+                items::get_region(request.headers()));
+            assert!(userdata::get_acc_missions(&key).members()
+                .any(|m| m["master_mission_id"] == 1073037));
+        }
+    }
+
+    #[test]
+    fn global_missions_match_client_masterdata_without_losing_saved_progress() {
+        let request = actix_web::test::TestRequest::default()
+            .insert_header(("aoharu-asset-version", "5260ff15dff8ba0c00ad91400f515f55"))
+            .to_http_request();
+        assert!(!items::get_region(request.headers()));
+        let mut saved = array![];
+        super::super::story::refresh(&object! {live_list: []}, &mut saved);
+        let original = saved.clone();
+        let ids = databases::csv::table(databases::csv::Region::En, "mission");
+        let known: std::collections::HashSet<_> = ids.members()
+            .filter_map(|r| r["id"].as_i64()).collect();
+        let absent: Vec<_> = saved.members().filter_map(|m| {
+            let id = m["master_mission_id"].as_i64().unwrap();
+            (!known.contains(&id)).then_some(id)
+        }).collect();
+        assert_eq!(absent.len(), 30);
+        assert!(absent.iter().all(|id| (1073037..=1073066).contains(id)));
+        let expected: JsonValue = saved.members().filter(|m|
+            known.contains(&m["master_mission_id"].as_i64().unwrap()))
+            .cloned().collect::<Vec<_>>().into();
+        let mut response = object! {mission_list: saved.clone(),
+            clear_mission_ids: [1073037, 1073001, 1073066],
+            updated_value_list: {mission_list: saved.clone(), clear_mission_ids: [1073001, 1073037]},
+            reward_list: [{type: 1, amount: 100}]};
+        filter_response(&mut response, request.headers());
+        assert_eq!(response["mission_list"], expected);
+        assert_eq!(response["updated_value_list"]["mission_list"], expected);
+        assert_eq!(response["clear_mission_ids"], array![1073001]);
+        assert_eq!(response["updated_value_list"]["clear_mission_ids"], array![1073001]);
+        assert_eq!(response["reward_list"], array![object! {type: 1, amount: 100}]);
+        assert_eq!(saved, original);
+        let mut unrelated = object! {item_list: [], value: 42};
+        let before = unrelated.clone();
+        filter_response(&mut unrelated, request.headers());
+        assert_eq!(unrelated, before);
+        let mut jp = object! {mission_list: saved};
+        let before = jp.clone();
+        filter_response(&mut jp, actix_web::test::TestRequest::default().to_http_request().headers());
+        assert_eq!(jp, before);
+    }
 
     #[actix_web::test]
     async fn bond_title_claim_notifies_client_and_persists() {

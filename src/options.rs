@@ -118,7 +118,10 @@ pub enum Commands {
 }
 
 pub fn get_args() -> Args {
+    #[cfg(not(test))]
     let mut args = Args::parse();
+    #[cfg(test)]
+    let mut args = Args::parse_from(["ew"]);
     crate::runtime::overlay_args(&mut args);
     args
 }
