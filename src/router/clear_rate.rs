@@ -1,5 +1,5 @@
 use jzon::{array, object, JsonValue};
-use actix_web::{http::header::ContentType, HttpRequest, HttpResponse, Responder};
+use actix_web::{http::header::ContentType, HttpRequest, HttpResponse, Responder, web};
 use rusqlite::params;
 use std::sync::Mutex;
 use lazy_static::lazy_static;
@@ -8,6 +8,10 @@ use crate::sql::SQLite;
 use crate::router::{databases, global, userdata, Session, Api};
 use crate::include_file;
 use crate::router::tools::guest;
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.route("/live_clear_rate.html", web::get().to(clearrate_html));
+}
 
 trait SqlClearRate {
     fn get_live_data(&self, id: i64) -> Result<Live, rusqlite::Error>;
@@ -451,13 +455,17 @@ async fn get_clearrate_html() -> String {
     cache["cache"].to_string()
 }
 
-pub async fn clearrate_html(_req: HttpRequest) -> HttpResponse {
+async fn clearrate_html(_req: HttpRequest) -> impl Responder {
     let html = get_clearrate_html().await;
 
     HttpResponse::Ok()
         .content_type(ContentType::html())
         .body(html)
 }
+
+
+
+
 
 #[cfg(test)]
 mod tests {

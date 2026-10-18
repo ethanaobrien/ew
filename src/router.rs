@@ -198,45 +198,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             return webui::main(req);
         }
     }
-    if req.method() == "POST" {
-        match req.path() {
-            "/api/webui/login" => webui::login(req, body),
-            "/api/webui/startLoginbonus" => webui::start_loginbonus(req, body),
-            "/api/webui/import" => webui::import(req, body),
-            "/api/webui/set_time" => webui::set_time(req, body),
-            "/api/webui/cheat" => webui::cheat(req, body),
-            "/api/webui/grantPermission" => webui::grant_permission(req, body),
-            "/api/webui/revokePermission" => webui::revoke_permission(req, body),
-            "/api/webui/removeArcadeMachine" => webui::remove_arcade_machine(req, body),
-            "/api/webui/linkNesicaCard" => webui::link_nesica_card(req, body),
-            "/api/webui/unlinkNesicaCard" => webui::unlink_nesica_card(req, body),
-            "/api/webui/revokeSession" => webui::revoke_session(req, body),
-            "/api/webui/logoutEverywhere" => webui::logout_everywhere(req, body),
-            _ => api_req(req, body).await
-        }
-    } else {
-        match req.path() {
-            "/api/webui/userInfo" => webui::user(req),
-            "/live_clear_rate.html" => clear_rate::clearrate_html(req).await,
-            "/webui/logout" => webui::logout(req),
-            "/api/webui/export" => webui::export(req),
-            "/api/webui/serverInfo" => webui::server_info(req),
-            "/api/webui/listCards" => webui::get_card_info(req),
-            "/api/webui/listMusic" => webui::get_music_info(req),
-            "/api/webui/listLoginBonus" => webui::list_login_bonus(req),
-            "/api/webui/listItems" => webui::list_items(req),
-            "/api/webui/listPermissions" => webui::list_permissions(req),
-            "/api/webui/listCharacters" => webui::list_characters(req),
-            "/api/webui/listSkillCenters" => webui::list_skill_centers(req),
-            "/api/webui/customCardLimits" => webui::custom_card_limits(req),
-            "/api/webui/custom3dmvLimits" => webui::custom_3dmv_limits(req),
-            "/api/webui/myScopes" => webui::my_scopes(req),
-            "/api/webui/listArcadeMachines" => webui::list_arcade_machines(req),
-            "/api/webui/listNesicaCards" => webui::list_nesica_cards(req),
-            "/api/webui/listSessions" => webui::list_sessions(req),
-            _ => api_req(req, body).await
-        }
-    }
+    api_req(req, body).await
 }
 
 pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
@@ -279,6 +241,7 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
                     .configure(story::routes)
                     .configure(tutorial::routes)
                     .configure(user::routes)
+                    .configure(webui::api_routes)
             )
     );
     cfg.service(
@@ -290,4 +253,6 @@ pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.configure(custom_group::web_routes);
     cfg.configure(custom_3dmv::web_routes);
     cfg.configure(web::routes);
+    cfg.configure(clear_rate::routes);
+    cfg.configure(webui::routes);
 }

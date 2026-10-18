@@ -2,7 +2,9 @@ use actix_web::{
     HttpResponse,
     HttpRequest,
     http::header::HeaderValue,
-    http::header::ContentType
+    http::header::ContentType,
+    web,
+    Responder
 };
 use jzon::{array, JsonValue, object};
 use lazy_static::lazy_static;
@@ -13,6 +15,42 @@ use crate::include_file;
 use crate::database::permissions;
 use crate::router::{userdata, items};
 use crate::router::databases::csv::Region;
+
+pub fn api_routes(cfg: &mut web::ServiceConfig) {
+    cfg.route("/login", web::post().to(login));
+    cfg.route("/startLoginbonus", web::post().to(start_loginbonus));
+    cfg.route("/import", web::post().to(import));
+    cfg.route("/set_time", web::post().to(set_time));
+    cfg.route("/cheat", web::post().to(cheat));
+    cfg.route("/grantPermission", web::post().to(grant_permission));
+    cfg.route("/revokePermission", web::post().to(revoke_permission));
+    cfg.route("/removeArcadeMachine", web::post().to(remove_arcade_machine));
+    cfg.route("/linkNesicaCard", web::post().to(link_nesica_card));
+    cfg.route("/unlinkNesicaCard", web::post().to(unlink_nesica_card));
+    cfg.route("/revokeSession", web::post().to(revoke_session));
+    cfg.route("/logoutEverywhere", web::post().to(logout_everywhere));
+
+    cfg.route("/userInfo", web::get().to(user));
+    cfg.route("/export", web::get().to(export));
+    cfg.route("/serverInfo", web::get().to(server_info));
+    cfg.route("/listCards", web::get().to(get_card_info));
+    cfg.route("/listMusic", web::get().to(get_music_info));
+    cfg.route("/listLoginBonus", web::get().to(list_login_bonus));
+    cfg.route("/listItems", web::get().to(list_items));
+    cfg.route("/listPermissions", web::get().to(list_permissions));
+    cfg.route("/listCharacters", web::get().to(list_characters));
+    cfg.route("/listSkillCenters", web::get().to(list_skill_centers));
+    cfg.route("/customCardLimits", web::get().to(custom_card_limits));
+    cfg.route("/custom3dmvLimits", web::get().to(custom_3dmv_limits));
+    cfg.route("/myScopes", web::get().to(my_scopes));
+    cfg.route("/webui/listArcadeMachines", web::get().to(list_arcade_machines));
+    cfg.route("/webui/listNesicaCards", web::get().to(list_nesica_cards));
+    cfg.route("/webui/listSessions", web::get().to(list_sessions));
+}
+
+pub fn routes(cfg: &mut web::ServiceConfig) {
+    cfg.route("/webui/logout", web::get().to(logout));
+}
 
 fn get_config() -> JsonValue {
     let args = crate::get_args();
@@ -63,7 +101,7 @@ fn browser_label(req: &HttpRequest) -> String {
     }
 }
 
-pub fn login(req: HttpRequest, body: String) -> HttpResponse {
+async fn login(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
     let token = userdata::webui_login(body["uid"].as_i64().unwrap(), &body["password"].to_string(), &browser_label(&req));
     
@@ -80,7 +118,7 @@ pub fn login(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
+async fn import(_req: HttpRequest, body: String) -> impl Responder {
     if !get_config()["import"].as_bool().unwrap() {
         return error("Importing accounts is disabled on this server.");
     }
@@ -103,7 +141,7 @@ pub fn import(_req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn user(req: HttpRequest) -> HttpResponse {
+async fn user(req: HttpRequest) -> impl Responder {
     let token = get_login_token(&req);
     if token.is_none() {
         return error("Not logged in");
@@ -125,7 +163,7 @@ pub fn user(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
+async fn start_loginbonus(req: HttpRequest, body: String) -> impl Responder {
     let token = get_login_token(&req);
     if token.is_none() {
         return error("Not logged in");
@@ -138,7 +176,7 @@ pub fn start_loginbonus(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
+async fn set_time(req: HttpRequest, body: String) -> impl Responder {
     let token = get_login_token(&req);
     if token.is_none() {
         return error("Not logged in");
@@ -151,7 +189,7 @@ pub fn set_time(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn logout(req: HttpRequest) -> HttpResponse {
+async fn logout(req: HttpRequest) -> impl Responder {
     let token = get_login_token(&req);
     if token.is_some() {
         userdata::webui_logout(&token.unwrap());
@@ -219,7 +257,7 @@ pub fn main(req: HttpRequest) -> HttpResponse {
         .body("")
 }
 
-pub fn export(req: HttpRequest) -> HttpResponse {
+async fn export(req: HttpRequest) -> impl Responder {
     if !get_config()["export"].as_bool().unwrap() {
         return error("Exporting accounts is disabled on this server.");
     }
@@ -236,7 +274,7 @@ pub fn export(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn server_info(_req: HttpRequest) -> HttpResponse {
+async fn server_info(_req: HttpRequest) -> impl Responder {
     let args = crate::get_args();
 
     let resp = object!{
@@ -272,7 +310,7 @@ fn get_query_str(req: &HttpRequest, key: &str, def: &str) -> String {
         .unwrap_or(def).to_string()
 }
 
-pub fn get_card_info(req: HttpRequest) -> HttpResponse {
+async fn get_card_info(req: HttpRequest) -> impl Responder {
     let page = get_query_str(&req, "page", "1").parse::<usize>().unwrap_or(1) - 1;
     let max = get_query_str(&req, "max", "10").parse::<usize>().unwrap_or(10);
     let all = get_query_str(&req, "all", "false");
@@ -330,7 +368,7 @@ pub fn get_card_info(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn get_music_info(req: HttpRequest) -> HttpResponse {
+async fn get_music_info(req: HttpRequest) -> impl Responder {
     let page = get_query_str(&req, "page", "1").parse::<usize>().unwrap_or(1) - 1;
     let max = get_query_str(&req, "max", "10").parse::<usize>().unwrap_or(10);
     let lang = get_query_str(&req, "lang", "JP");
@@ -372,13 +410,13 @@ lazy_static! {
     static ref LOGIN_BONUS: JsonValue = jzon::parse(&include_file!("src/router/webui/login_bonus.json")).unwrap();
 }
 
-pub fn list_login_bonus(_req: HttpRequest) -> HttpResponse {
+async fn list_login_bonus(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::json())
         .body(jzon::stringify(LOGIN_BONUS.clone()))
 }
 
-pub fn list_items(_req: HttpRequest) -> HttpResponse {
+async fn list_items(_req: HttpRequest) -> impl Responder {
     HttpResponse::Ok()
         .content_type(ContentType::json())
         .body(jzon::stringify(ITEM.clone()))
@@ -419,7 +457,7 @@ lazy_static! {
     };
 }
 
-pub fn list_characters(req: HttpRequest) -> HttpResponse {
+async fn list_characters(req: HttpRequest) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -443,7 +481,7 @@ pub fn list_characters(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn list_skill_centers(req: HttpRequest) -> HttpResponse {
+async fn list_skill_centers(req: HttpRequest) -> impl Responder {
     if session_uid(&req).is_none() {
         return error("Not logged in");
     }
@@ -456,7 +494,7 @@ pub fn list_skill_centers(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn custom_card_limits(req: HttpRequest) -> HttpResponse {
+async fn custom_card_limits(req: HttpRequest) -> impl Responder {
     if session_uid(&req).is_none() {
         return error("Not logged in");
     }
@@ -469,7 +507,7 @@ pub fn custom_card_limits(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn custom_3dmv_limits(req: HttpRequest) -> HttpResponse {
+async fn custom_3dmv_limits(req: HttpRequest) -> impl Responder {
     if crate::router::custom_3dmv::disabled() {
         return HttpResponse::NotFound().finish();
     }
@@ -485,7 +523,7 @@ pub fn custom_3dmv_limits(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn my_scopes(req: HttpRequest) -> HttpResponse {
+async fn my_scopes(req: HttpRequest) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -513,7 +551,7 @@ pub fn my_scopes(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn list_permissions(req: HttpRequest) -> HttpResponse {
+async fn list_permissions(req: HttpRequest) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -542,7 +580,7 @@ pub fn list_permissions(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn grant_permission(req: HttpRequest, body: String) -> HttpResponse {
+async fn grant_permission(req: HttpRequest, body: String) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -563,7 +601,7 @@ pub fn grant_permission(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn revoke_permission(req: HttpRequest, body: String) -> HttpResponse {
+async fn revoke_permission(req: HttpRequest, body: String) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -581,7 +619,7 @@ pub fn revoke_permission(req: HttpRequest, body: String) -> HttpResponse {
 
 // The operator's cabinet list. Owner scope only: a machine row names the two
 // accounts a cabinet owns, and removing one deletes them.
-pub fn list_arcade_machines(req: HttpRequest) -> HttpResponse {
+async fn list_arcade_machines(req: HttpRequest) -> impl Responder {
     if crate::router::arcade::disabled() {
         return HttpResponse::NotFound().finish();
     }
@@ -602,7 +640,7 @@ pub fn list_arcade_machines(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn remove_arcade_machine(req: HttpRequest, body: String) -> HttpResponse {
+async fn remove_arcade_machine(req: HttpRequest, body: String) -> impl Responder {
     if crate::router::arcade::disabled() {
         return HttpResponse::NotFound().finish();
     }
@@ -624,7 +662,7 @@ pub fn remove_arcade_machine(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn link_nesica_card(req: HttpRequest, body: String) -> HttpResponse {
+async fn link_nesica_card(req: HttpRequest, body: String) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -646,7 +684,7 @@ pub fn link_nesica_card(req: HttpRequest, body: String) -> HttpResponse {
     }
 }
 
-pub fn list_nesica_cards(req: HttpRequest) -> HttpResponse {
+async fn list_nesica_cards(req: HttpRequest) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -661,7 +699,7 @@ pub fn list_nesica_cards(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn unlink_nesica_card(req: HttpRequest, body: String) -> HttpResponse {
+async fn unlink_nesica_card(req: HttpRequest, body: String) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -683,7 +721,7 @@ pub fn unlink_nesica_card(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn list_sessions(req: HttpRequest) -> HttpResponse {
+async fn list_sessions(req: HttpRequest) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -698,7 +736,7 @@ pub fn list_sessions(req: HttpRequest) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn revoke_session(req: HttpRequest, body: String) -> HttpResponse {
+async fn revoke_session(req: HttpRequest, body: String) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -714,7 +752,7 @@ pub fn revoke_session(req: HttpRequest, body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn logout_everywhere(req: HttpRequest, _body: String) -> HttpResponse {
+async fn logout_everywhere(req: HttpRequest, _body: String) -> impl Responder {
     let Some(uid) = session_uid(&req) else {
         return error("Not logged in");
     };
@@ -729,7 +767,7 @@ pub fn logout_everywhere(req: HttpRequest, _body: String) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn cheat(req: HttpRequest, _body: String) -> HttpResponse {
+async fn cheat(req: HttpRequest, _body: String) -> impl Responder {
     let token = get_login_token(&req);
     if token.is_none() {
         return error("Not logged in");
