@@ -1,5 +1,6 @@
 pub mod user;
 pub mod starter;
+pub mod sessions;
 
 use rusqlite::params;
 use lazy_static::lazy_static;
@@ -81,14 +82,9 @@ CREATE TABLE IF NOT EXISTS server_data (
     user_id          BIGINT NOT NULL PRIMARY KEY,
     server_data      TEXT NOT NULL
 );
-CREATE TABLE IF NOT EXISTS webui (
-    user_id      BIGINT NOT NULL PRIMARY KEY,
-    token        TEXT NOT NULL,
-    last_login   BIGINT NOT NULL
-);
 INSERT OR IGNORE INTO exchange (user_id, exchange) SELECT user_id, '[]' FROM userdata;
     ").unwrap();
-
+    sessions::setup_sql(conn).unwrap();
 
     let is_updated = conn.prepare("SELECT protocol_version FROM userdata LIMIT 1;").is_ok();
     if !is_updated {
@@ -103,6 +99,10 @@ fn acc_exists(uid: i64) -> bool {
 fn get_key(auth_key: &str) -> i64 {
     let uid = get_uid(auth_key);
     let key = if uid == 0 {
+        // Signed out devices get refused, not a fresh account
+        if !matches!(sessions::lookup(auth_key), sessions::Lookup::Unknown) {
+            return 0;
+        }
         generate_uid()
     } else {
         uid
@@ -187,16 +187,18 @@ fn create_acc(uid: i64, login: &str) {
     add_user_to_database(uid, new_user, JsonValue::Null, JsonValue::Null, JsonValue::Null);
     
     DATABASE.lock_and_exec("DELETE FROM tokens WHERE token=?1", params!(login));
-    DATABASE.lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, login));
+    DATABASE.lock_and_exec("INSERT INTO tokens (user_id, token) VALUES (?1, ?2)", params!(uid, global::create_token()));
+    sessions::add(login, uid, "game", "");
 }
 
 fn get_uid(token: &str) -> i64 {
-    let data = DATABASE.lock_and_select("SELECT user_id FROM tokens WHERE token = ?1;", params!(token));
-    if data.is_err() {
-        return 0;
+    if let Ok(uid) = DATABASE.lock_and_select_type::<i64>("SELECT user_id FROM tokens WHERE token = ?1;", params!(token)) {
+        return uid;
     }
-    let data = data.unwrap();
-    data.parse::<i64>().unwrap_or(0)
+    match sessions::lookup(token) {
+        sessions::Lookup::Active(uid, kind) if kind != "webui" => uid,
+        _ => 0
+    }
 }
 
 pub fn uid_from_login_token(token: &str) -> i64 {
@@ -577,15 +579,7 @@ pub fn get_random_uids(count: i32) -> JsonValue {
     DATABASE.lock_and_select_all(&format!("SELECT user_id FROM userdata WHERE friend_request_disabled=?1 ORDER BY RANDOM() LIMIT {}", count), params!(0)).unwrap()
 }
 
-fn create_webui_token() -> String {
-    let token = global::create_token();
-    if DATABASE.lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).is_ok() {
-        return create_webui_token();
-    }
-    token
-}
-
-pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
+pub fn webui_login(uid: i64, password: &str, platform: &str) -> Result<String, String> {
     let pass = DATABASE.lock_and_select("SELECT password FROM migration WHERE user_id=?1", params!(uid)).unwrap_or_default();
     if !user::migration::verify_password(password, &pass) {
         if acc_exists(uid) && pass.is_empty() {
@@ -594,12 +588,7 @@ pub fn webui_login(uid: i64, password: &str) -> Result<String, String> {
         return Err(String::from("User/password don't match"));
     }
     
-    let new_token = create_webui_token();
-    
-    DATABASE.lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(uid));
-    // This could overflow given enough time... though rusqlite doesnt currently support ToSql on a u64...... maybe someday
-    DATABASE.lock_and_exec("INSERT INTO webui (user_id, token, last_login) VALUES (?1, ?2, ?3)", params!(uid, new_token, global::timestamp() as i64));
-    Ok(new_token)
+    Ok(sessions::mint(uid, "webui", platform))
 }
 
 pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
@@ -623,21 +612,7 @@ pub fn webui_import_user(user: JsonValue) -> Result<JsonValue, String> {
 }
 
 pub fn webui_login_token(token: &str) -> Option<String> {
-    let uid = DATABASE.lock_and_select("SELECT user_id FROM webui WHERE token=?1", params!(token)).unwrap_or_default();
-    if uid == String::new() || token.is_empty() {
-        return None;
-    }
-    let uid = uid.parse::<i64>().unwrap_or(0);
-    if uid == 0 {
-        return None;
-    }
-    let last_login = DATABASE.lock_and_select("SELECT last_login FROM webui WHERE user_id=?1", params!(uid)).unwrap_or_default().parse::<i64>().unwrap_or(0);
-    let limit = 24 * 60 * 60; //1 day
-    //Expired token
-    if (global::timestamp() as i64) > last_login + limit {
-        DATABASE.lock_and_exec("DELETE FROM webui WHERE user_id=?1", params!(uid));
-        return None;
-    }
+    let uid = sessions::webui_user(token)?;
     let login_token = DATABASE.lock_and_select("SELECT token FROM tokens WHERE user_id=?1", params!(uid)).unwrap_or_default();
     if login_token == String::new() {
         return None;
@@ -705,7 +680,7 @@ pub fn set_server_time(time: i64, token: &str) -> JsonValue {
 }
 
 pub fn webui_logout(token: &str) {
-    DATABASE.lock_and_exec("DELETE FROM webui WHERE token=?1", params!(token));
+    sessions::remove(token);
 }
 
 pub fn export_user(token: &str) -> Option<JsonValue> {
@@ -721,7 +696,7 @@ pub fn export_user(token: &str) -> Option<JsonValue> {
 
 pub const ACCOUNT_TABLES: &[&str] = &[
     "userdata", "userhome", "missions", "loginbonus", "sifcards", "friends",
-    "chats", "exchange", "event", "eventloginbonus", "server_data", "webui",
+    "chats", "exchange", "event", "eventloginbonus", "server_data", "sessions",
     "tokens", "migration"
 ];
 

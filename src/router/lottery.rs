@@ -2,7 +2,7 @@ use jzon::{array, object, JsonValue};
 use actix_web::{web, HttpRequest, Responder};
 use rand::RngExt;
 
-use crate::router::{global, userdata, items, databases, custom_card, Body, Login, Session, Api};
+use crate::router::{global, userdata, items, databases, custom_card, Body, Login, Session, Api, errors::ResultCode};
 use crate::database::custom_card as custom_card_db;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
@@ -287,18 +287,18 @@ async fn lottery_post(req: HttpRequest, Session { key, body }: Session) -> impl 
 
     // Custom lotteries live in the 6M band (below TUTORIAL_MIN_LOTTERY_ID; 1-5M/7M/8M official)
     if (6_000_000..7_000_000).contains(&lottery_id) && !crate::router::card::client_supports_custom_cards(&req) {
-        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+        return global::api_error(&req, ResultCode::ErrorGameVersionUpdated);
     }
     // The runtime custom-card banner additionally needs the catalog protocol
     let is_custom_banner = lottery_id == custom_card::CUSTOM_LOTTERY_ID;
     if is_custom_banner && (custom_card::disabled() || !custom_card::client_supports(&req)) {
-        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+        return global::api_error(&req, ResultCode::ErrorGameVersionUpdated);
     }
 
     let (price, cardstogive, lottery_type, exchange_id) = if is_custom_banner {
         let price = custom_banner_price(price_number);
         if price.is_null() {
-            return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+            return global::api_error(&req, ResultCode::ErrorGameVersionUpdated);
         }
         let drawn = custom_banner_cards(price["count"].as_usize().unwrap());
         if drawn.is_empty() {

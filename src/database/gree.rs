@@ -40,6 +40,16 @@ pub fn update_cert(uid: i64, cert: &str) {
     DATABASE.lock_and_exec("UPDATE users SET cert=?1 WHERE user_id=?2", params!(cert, uid));
 }
 
+pub fn register_device(uid: i64, uuid: &str, cert: &str) {
+    if let Ok(previous) = DATABASE.lock_and_select("SELECT uuid FROM users WHERE user_id=?1", params!(uid)) && previous != uuid {
+        userdata::sessions::revoke_token(&previous);
+    }
+    DATABASE.lock_and_exec(
+        "INSERT INTO users (cert, uuid, user_id) VALUES (?1, ?2, ?3) ON CONFLICT(user_id) DO UPDATE SET cert=?1, uuid=?2",
+        params!(cert, uuid, uid)
+    );
+}
+
 pub fn create_acc(cert: &str) -> String {
     let uuid = global::create_token();
     let user = userdata::get_acc(&uuid);

@@ -12,6 +12,7 @@ use crate::encryption;
 use crate::router::{items, userdata};
 use crate::database::gree;
 use crate::runtime::get_easter_mode;
+use crate::router::errors::ResultCode;
 
 struct AssetVersion {
     region:   &'static str,
@@ -158,12 +159,6 @@ static EASTER_HASHES: &[(&str, &str)] = &[
     ("GL", "da7ae831381c3f29337caa9891db7e6a"),
 ];
 
-pub const RESULT_GAME_VERSION_UPDATED: i32 = 12;
-
-pub const RESULT_RESOURCE_UPDATED: i32 = 13;
-
-pub const RESULT_SESSION: i32 = 14;
-
 pub const PROTOCOL_HEADER: &str = "X-Protocol-Version";
 
 pub fn client_protocol_version(req: &HttpRequest) -> u32 {
@@ -191,8 +186,12 @@ pub fn get_player_region(asset_version: &str) -> Option<String> {
 }
 
 pub fn parse_platform(header: &str) -> &str {
+    try_parse_platform(header).unwrap_or_else(|| panic!("Unknown platform: {header}"))
+}
+
+pub fn try_parse_platform(header: &str) -> Option<&'static str> {
     let platform = header.split_whitespace().next().unwrap_or("").to_lowercase();
-    match platform.as_str() {
+    Some(match platform.as_str() {
         "android" => "Android",
         "ios"     => "iOS",
         "iphoneplayer" => "iOS",
@@ -206,8 +205,8 @@ pub fn parse_platform(header: &str) -> &str {
         "windowseditor" => "Editor",
         "osxeditor" => "Editor",
         "linuxeditor" => "Editor",
-        _         => panic!("Unknown platform: {header}"),
-    }
+        _         => return None,
+    })
 }
 
 pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
@@ -218,7 +217,7 @@ pub fn get_asset_hash(asset_version: &str, platform: &str) -> Option<String> {
     rv
 }
 
-pub fn check_asset_headers(headers: &HeaderMap, check_hash: bool) -> Option<i32> {
+pub fn check_asset_headers(headers: &HeaderMap, check_hash: bool) -> Option<ResultCode> {
     let blank_header = HeaderValue::from_static("");
     let asset_version = headers.get("aoharu-asset-version").unwrap_or(&blank_header).to_str().unwrap_or("");
     if asset_version.is_empty() {
@@ -235,7 +234,7 @@ pub fn check_asset_headers(headers: &HeaderMap, check_hash: bool) -> Option<i32>
 
     let valid = valid_hashes(asset_version, platform);
     if valid.is_empty() {
-        return Some(RESULT_GAME_VERSION_UPDATED);
+        return Some(ResultCode::ErrorGameVersionUpdated);
     }
     if !check_hash {
         return None;
@@ -245,7 +244,7 @@ pub fn check_asset_headers(headers: &HeaderMap, check_hash: bool) -> Option<i32>
     if asset_hash.is_empty() || valid.iter().any(|h| h == asset_hash) {
         None
     } else {
-        Some(RESULT_RESOURCE_UPDATED)
+        Some(ResultCode::ErrorResourceUpdated)
     }
 }
 
@@ -274,12 +273,17 @@ pub fn get_login(headers: &HeaderMap, body: &str) -> String {
     
     let login = headers.get("a6573cbe").unwrap_or(&blank_header).to_str().unwrap_or("");
     let decoded = general_purpose::STANDARD.decode(login).unwrap_or_default();
-    match get_uuid(String::from_utf8_lossy(&decoded).as_ref()) {
+    let token = match get_uuid(String::from_utf8_lossy(&decoded).as_ref()) {
         Some(token) => {
             token
         },
         None => gree::get_uuid(headers, body),
-    }
+    };
+    let platform = headers.get("aoharu-platform")
+        .and_then(|header| header.to_str().ok())
+        .and_then(try_parse_platform)
+        .unwrap_or("");
+    userdata::sessions::resolve(&token, platform).unwrap_or_default()
 }
 
 pub fn timestamp() -> u64 {
@@ -457,10 +461,10 @@ pub fn api(req: &HttpRequest, data: Option<JsonValue>) -> HttpResponse {
     send(rv, uid, req)
 }
 
-pub fn api_error(req: &HttpRequest, code: i32) -> HttpResponse {
+pub fn api_error(req: &HttpRequest, code: ResultCode) -> HttpResponse {
     let uid = get_uid(req.headers());
     send(object!{
-        "code": code,
+        "code": code as i32,
         "server_time": timestamp(),
         "message": ""
     }, uid, req)

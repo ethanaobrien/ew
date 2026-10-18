@@ -225,11 +225,12 @@ async fn migration_verify(req: HttpRequest, body: String) -> impl Responder {
         }
     } else {
         let data_user = userdata::get_acc(&user["login_token"].to_string());
+        let device = userdata::sessions::mint(user["user_id"].as_i64().unwrap(), "game", "");
         object!{
             result: "OK",
-            src_uuid: user["login_token"].clone(),
+            src_uuid: device.clone(),
             src_x_uid: user["user_id"].to_string(),
-            migration_token: user["login_token"].clone(),
+            migration_token: device,
             balance_charge_gem: data_user["gem"]["charge"].to_string(),
             balance_free_gem: data_user["gem"]["free"].to_string(),
             balance_total_gem: data_user["gem"]["total"].to_string()
@@ -242,13 +243,21 @@ async fn migration_verify(req: HttpRequest, body: String) -> impl Responder {
 async fn migration(req: HttpRequest, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
 
-    let user = userdata::get_acc(&body["src_uuid"].to_string());
+    let src_uuid = body["src_uuid"].to_string();
+    let user_id = userdata::uid_from_login_token(&src_uuid);
+    if user_id == 0 {
+        return send(req, object!{
+            result: "NG",
+            code: 7002,
+            message: "Migration code does not exist"
+        });
+    }
     //clear old token
     if !body["dst_uuid"].is_null() {
         let user2 = userdata::get_acc(&body["dst_uuid"].to_string());
         update_cert(user2["user"]["id"].as_i64().unwrap(), "none");
     }
-    update_cert(user["user"]["id"].as_i64().unwrap(), &body["token"].to_string());
+    register_device(user_id, &src_uuid, &body["token"].to_string());
 
     let resp = object!{
         result: "OK"

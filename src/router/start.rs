@@ -1,7 +1,7 @@
 use jzon::{JsonValue, object};
 use actix_web::{web, HttpRequest, Responder};
 
-use crate::router::{userdata, global, Body, Session};
+use crate::router::{userdata, global, Body, Session, errors::ResultCode};
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/start", web::post().to(start));
@@ -29,13 +29,13 @@ async fn asset_hash(req: HttpRequest, Body(body): Body) -> impl Responder {
         Some(hash) => global::api(&req, Some(object!{
             "asset_hash": hash
         })),
-        None => global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED),
+        None => global::api_error(&req, ResultCode::ErrorGameVersionUpdated),
     }
 }
 
 async fn start(req: HttpRequest, Session { key, body }: Session) -> impl Responder {
     let Some(asset_hash) = get_asset_hash(&req, &body) else {
-        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+        return global::api_error(&req, ResultCode::ErrorGameVersionUpdated);
     };
 
     let mut user = userdata::get_acc(&key);
@@ -48,14 +48,14 @@ async fn start(req: HttpRequest, Session { key, body }: Session) -> impl Respond
     userdata::save_protocol_version(&key, global::client_protocol_version(&req));
 
     if !crate::router::card::client_supports_custom_cards(&req) && crate::router::card::account_supports_custom_cards(&key) {
-        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED); // todo - maybe compatibility layer?
+        return global::api_error(&req, ResultCode::ErrorGameVersionUpdated); // todo - maybe compatibility layer?
     }
 
     // An account holding a runtime custom card (protocol 3) can't run on a
     // client that only understands the baked band - card_list would carry ids
     // it can't resolve
     if !crate::router::custom_card::client_supports(&req) && crate::router::custom_card::account_supports(&key) {
-        return global::api_error(&req, global::RESULT_GAME_VERSION_UPDATED);
+        return global::api_error(&req, ResultCode::ErrorGameVersionUpdated);
     }
 
     global::api(&req, Some(object!{

@@ -2304,7 +2304,7 @@ mod tests {
     fn webui_session(auth_token: &str) -> (i64, String) {
         let uid = userdata::get_acc(auth_token)["user"]["id"].as_i64().unwrap();
         userdata::user::migration::save_acc_transfer(uid, "hunter2");
-        (uid, userdata::webui_login(uid, "hunter2").unwrap())
+        (uid, userdata::webui_login(uid, "hunter2", "").unwrap())
     }
 
     // A jacket whose processed bytes are unique to this seed. The md5 index is

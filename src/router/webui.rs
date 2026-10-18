@@ -50,9 +50,22 @@ pub fn error(msg: &str) -> HttpResponse {
         .body(jzon::stringify(resp))
 }
 
-pub fn login(_req: HttpRequest, body: String) -> HttpResponse {
+// Just enough to tell sessions apart in the list
+fn browser_label(req: &HttpRequest) -> String {
+    let ua = req.headers().get("User-Agent").and_then(|h| h.to_str().ok()).unwrap_or("");
+    let first_match = |names: &[(&str, &'static str)]| names.iter().find(|(needle, _)| ua.contains(needle)).map(|(_, name)| *name);
+    let os = first_match(&[("Android", "Android"), ("iPhone", "iPhone"), ("iPad", "iPad"), ("Windows", "Windows"), ("Mac OS", "macOS"), ("CrOS", "ChromeOS"), ("Linux", "Linux")]);
+    let browser = first_match(&[("Firefox/", "Firefox"), ("Edg/", "Edge"), ("OPR/", "Opera"), ("Chrome/", "Chrome"), ("Safari/", "Safari")]);
+    match (browser, os) {
+        (Some(browser), Some(os)) => format!("{} on {}", browser, os),
+        (Some(name), None) | (None, Some(name)) => name.to_string(),
+        (None, None) => String::from("Browser")
+    }
+}
+
+pub fn login(req: HttpRequest, body: String) -> HttpResponse {
     let body = jzon::parse(&body).unwrap();
-    let token = userdata::webui_login(body["uid"].as_i64().unwrap(), &body["password"].to_string());
+    let token = userdata::webui_login(body["uid"].as_i64().unwrap(), &body["password"].to_string(), &browser_label(&req));
     
     if token.is_err() {
         return error(&token.unwrap_err());
@@ -664,6 +677,52 @@ pub fn unlink_nesica_card(req: HttpRequest, body: String) -> HttpResponse {
         data: {
             card_id: card
         }
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+pub fn list_sessions(req: HttpRequest) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    let resp = object!{
+        result: "OK",
+        data: {
+            sessions: userdata::sessions::list(uid, &get_login_token(&req).unwrap_or_default())
+        }
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+pub fn revoke_session(req: HttpRequest, body: String) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    let body = jzon::parse(&body).unwrap_or(object!{});
+    if !userdata::sessions::revoke(uid, body["id"].as_i64().unwrap_or(0)) {
+        return error("That session is not signed in");
+    }
+    let resp = object!{
+        result: "OK"
+    };
+    HttpResponse::Ok()
+        .insert_header(ContentType::json())
+        .body(jzon::stringify(resp))
+}
+
+pub fn logout_everywhere(req: HttpRequest, _body: String) -> HttpResponse {
+    let Some(uid) = session_uid(&req) else {
+        return error("Not logged in");
+    };
+    if !userdata::sessions::revoke_all(uid, &get_login_token(&req).unwrap_or_default()) {
+        return error("Could not sign the other sessions out, try again");
+    }
+    let resp = object!{
+        result: "OK"
     };
     HttpResponse::Ok()
         .insert_header(ContentType::json())

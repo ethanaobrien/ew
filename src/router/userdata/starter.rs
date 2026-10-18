@@ -177,11 +177,11 @@ fn side_rows(chats: &JsonValue, home: &JsonValue, missions: &JsonValue) -> Vec<(
 
 // The rows delete_account (mod.rs:791) removes that write_starter_rows does not
 // write back: everything an account owns that is a credential rather than
-// progress. `tokens` is not here because the starter write issues a fresh one in
-// the same transaction, and `userdata` and its ten side tables are not here
+// progress. `tokens` and `sessions` are not here because the starter write issues
+// a fresh token and revokes every device in the same transaction, and `userdata` and its ten side tables are not here
 // because they are rewritten. Anything added to delete_account's list belongs in
 // one of those three places or the guest reset starts leaking again.
-const CARRIED_CREDENTIAL_TABLES: &[&str] = &["migration", "webui"];
+const CARRIED_CREDENTIAL_TABLES: &[&str] = &["migration"];
 
 // Writes the whole account inside one transaction: the eleven data rows back to
 // the starter state, every carried-over credential gone, and a login token
@@ -215,6 +215,7 @@ fn write_starter_rows(uid: i64, name: &str) -> Result<String, rusqlite::Error> {
         for table in CARRIED_CREDENTIAL_TABLES {
             conn.execute(&format!("DELETE FROM {} WHERE user_id=?1", table), params!(uid))?;
         }
+        super::sessions::revoke_all_in(conn, uid, "")?;
         // The account's one login token, re-drawn. The DELETE by token is
         // create_acc's own collision guard (mod.rs:238); the DELETE by user id is
         // what makes the INSERT a rotation rather than a primary-key conflict.
@@ -403,7 +404,7 @@ mod tests {
         // in with them, and a gree device certificate.
         let code = userdata::user::migration::save_acc_transfer(uid, "hunter2");
         assert!(userdata::has_transfer_password(uid));
-        let webui_token = userdata::webui_login(uid, "hunter2").expect("the webui login was refused");
+        let webui_token = userdata::webui_login(uid, "hunter2", "").expect("the webui login was refused");
         assert_eq!(userdata::webui_login_token(&webui_token).as_deref(), Some(token.as_str()));
         crate::database::gree::update_cert(uid, "a device certificate");
         assert!(crate::database::gree::get_user_cert(&token).is_some());
@@ -415,7 +416,7 @@ mod tests {
         assert!(!userdata::has_transfer_password(uid), "the transfer password survived the reset");
         assert!(!userdata::user::migration::get_acc_transfer(&code, "hunter2")["success"].as_bool().unwrap_or(false),
             "the previous player's transfer code still takes the account over");
-        assert!(userdata::webui_login(uid, "hunter2").is_err(), "the previous player can still log the webui in");
+        assert!(userdata::webui_login(uid, "hunter2", "").is_err(), "the previous player can still log the webui in");
 
         // The webui session they left open is gone too
         assert!(userdata::webui_login_token(&webui_token).is_none(), "the previous player's webui session survived the reset");
@@ -440,7 +441,7 @@ mod tests {
             "eventloginbonus", "sifcards", "friends", "event", "exchange", "server_data"];
         for table in userdata::ACCOUNT_TABLES {
             assert!(
-                rewritten.contains(table) || CARRIED_CREDENTIAL_TABLES.contains(table) || *table == "tokens",
+                rewritten.contains(table) || CARRIED_CREDENTIAL_TABLES.contains(table) || *table == "tokens" || *table == "sessions",
                 "delete_account clears {} and the guest reset does nothing about it",
                 table
             );

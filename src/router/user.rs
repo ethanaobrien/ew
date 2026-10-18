@@ -274,7 +274,7 @@ async fn verify_migration_code(Body(body): Body) -> impl Responder {
 
     Api(Some(object!{
         "user_id": user["user_id"].clone(),
-        "uuid": user["login_token"].to_string(),
+        "uuid": userdata::sessions::mint(user["user_id"].as_i64().unwrap(), "game", ""),
         "charge": data_user["gem"]["charge"].clone(),
         "free": data_user["gem"]["free"].clone()
     }))
@@ -288,7 +288,7 @@ async fn request_migration_code(Body(body): Body) -> impl Responder {
     }
 
     Api(Some(object!{
-        "twxuid": user["login_token"].to_string()
+        "twxuid": userdata::sessions::mint(user["user_id"].as_i64().unwrap(), "game", "")
     }))
 }
 async fn migration_card_list(Session { key, .. }: Session) -> impl Responder {

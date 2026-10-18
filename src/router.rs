@@ -35,6 +35,7 @@ pub mod items;
 pub mod databases;
 pub mod location;
 pub mod event_ranking;
+pub mod errors;
 mod tools;
 
 use actix_web::{
@@ -50,31 +51,11 @@ use futures_util::future::LocalBoxFuture;
 use futures_util::FutureExt;
 use jzon::{JsonValue, object};
 use crate::encryption;
+use errors::{ErrorResponse, ResultCode};
 
 pub struct Body(pub JsonValue);
 
 pub struct Login(pub String);
-
-struct SessionError(HttpRequest);
-
-impl std::fmt::Debug for SessionError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "invalid session for uid {}", global::get_uid(self.0.headers()))
-    }
-}
-
-impl std::fmt::Display for SessionError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
-
-impl actix_web::ResponseError for SessionError {
-    fn error_response(&self) -> HttpResponse {
-        println!("Rejecting request from uid {}: bad session", global::get_uid(self.0.headers()));
-        global::api_error(&self.0, global::RESULT_SESSION)
-    }
-}
 
 pub struct Session {
     pub key: String,
@@ -124,7 +105,7 @@ impl FromRequest for Login {
         async move {
             let key = global::get_login(&headers, &encryption::decrypt_packet(&fut.await?).unwrap());
             if key.is_empty() {
-                return Err(SessionError(req).into());
+                return Err(ErrorResponse(req, ResultCode::ErrorSession).into());
             }
             Ok(Login(key))
         }.boxed_local()
@@ -143,7 +124,7 @@ impl FromRequest for Session {
             let body = encryption::decrypt_packet(&fut.await?).unwrap();
             let key = global::get_login(&headers, &body);
             if key.is_empty() {
-                return Err(SessionError(req).into());
+                return Err(ErrorResponse(req, ResultCode::ErrorSession).into());
             }
             Ok(Session { key, body: jzon::parse(&body).unwrap() })
         }.boxed_local()
@@ -229,6 +210,8 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/removeArcadeMachine" => webui::remove_arcade_machine(req, body),
             "/api/webui/linkNesicaCard" => webui::link_nesica_card(req, body),
             "/api/webui/unlinkNesicaCard" => webui::unlink_nesica_card(req, body),
+            "/api/webui/revokeSession" => webui::revoke_session(req, body),
+            "/api/webui/logoutEverywhere" => webui::logout_everywhere(req, body),
             _ => api_req(req, body).await
         }
     } else {
@@ -250,6 +233,7 @@ pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
             "/api/webui/myScopes" => webui::my_scopes(req),
             "/api/webui/listArcadeMachines" => webui::list_arcade_machines(req),
             "/api/webui/listNesicaCards" => webui::list_nesica_cards(req),
+            "/api/webui/listSessions" => webui::list_sessions(req),
             _ => api_req(req, body).await
         }
     }
