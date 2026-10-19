@@ -17,6 +17,7 @@ use crate::database::custom_group;
 use crate::database::permissions;
 use crate::runtime::get_data_path;
 use crate::lock_onto_mutex;
+use crate::router::errors::{ResultCode, WebErrorResponse};
 
 // Runtime-uploaded cards and characters. Unlike the SIF1 import (id prefixes
 // 10000-14999, baked into client masterdata at build time) these rows do not
@@ -1693,159 +1694,159 @@ pub fn purge_owner(uid: i64) {
     drop(lock);
 }
 
-async fn create(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn create(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
     // seconds of CPU: it belongs on the blocking pool, not on the actix worker
     // that also has to keep serving the game API
     match web::block(move || create_card(uid, &fields)).await {
-        Ok(Ok(master_card_id)) => send_json(object!{
+        Ok(Ok(master_card_id)) => Ok(send_json(object!{
             result: "OK",
             master_card_id: master_card_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The upload could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The upload could not be processed".into()))
     }
 }
 
-async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn update(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     let master_card_id = field_str(&fields, "master_card_id").parse::<i64>().unwrap_or(0);
     // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
     // seconds of CPU: it belongs on the blocking pool, not on the actix worker
     // that also has to keep serving the game API
     match web::block(move || update_card(uid, master_card_id, &fields)).await {
-        Ok(Ok(())) => send_json(object!{
+        Ok(Ok(())) => Ok(send_json(object!{
             result: "OK",
             master_card_id: master_card_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The edit could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The edit could not be processed".into()))
     }
 }
 
-async fn publish(req: HttpRequest, body: String) -> HttpResponse {
+async fn publish(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
     let master_card_id = body["master_card_id"].as_i64().unwrap_or(0);
     match set_card_flags(uid, master_card_id, body["published"].as_bool(), body["obtainable"].as_bool()) {
-        Ok(()) => send_json(object!{
+        Ok(()) => Ok(send_json(object!{
             result: "OK"
-        }),
-        Err(e) => webui::error(&e)
+        })),
+        Err(e) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     }
 }
 
-async fn delete(req: HttpRequest, body: String) -> HttpResponse {
+async fn delete(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
     match delete_card(uid, body["master_card_id"].as_i64().unwrap_or(0)) {
-        Ok(()) => send_json(object!{
+        Ok(()) => Ok(send_json(object!{
             result: "OK"
-        }),
-        Err(e) => webui::error(&e)
+        })),
+        Err(e) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     }
 }
 
-async fn character_create(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn character_create(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
     // seconds of CPU: it belongs on the blocking pool, not on the actix worker
     // that also has to keep serving the game API
     match web::block(move || create_character(uid, &fields)).await {
-        Ok(Ok(master_character_id)) => send_json(object!{
+        Ok(Ok(master_character_id)) => Ok(send_json(object!{
             result: "OK",
             master_character_id: master_character_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The upload could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The upload could not be processed".into()))
     }
 }
 
-async fn character_update(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn character_update(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     let master_character_id = field_str(&fields, "master_character_id").parse::<i64>().unwrap_or(0);
     // Deriving 14 Lanczos3 PNGs up to 2048x1260 (and transcoding voicelines) is
     // seconds of CPU: it belongs on the blocking pool, not on the actix worker
     // that also has to keep serving the game API
     match web::block(move || update_character(uid, master_character_id, &fields)).await {
-        Ok(Ok(())) => send_json(object!{
+        Ok(Ok(())) => Ok(send_json(object!{
             result: "OK",
             master_character_id: master_character_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The edit could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The edit could not be processed".into()))
     }
 }
 
-async fn character_delete(req: HttpRequest, body: String) -> HttpResponse {
+async fn character_delete(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
     match delete_character(uid, body["master_character_id"].as_i64().unwrap_or(0)) {
-        Ok(()) => send_json(object!{
+        Ok(()) => Ok(send_json(object!{
             result: "OK"
-        }),
-        Err(e) => webui::error(&e)
+        })),
+        Err(e) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     }
 }
 
-async fn mine(req: HttpRequest) -> HttpResponse {
+async fn mine(req: HttpRequest) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let mut cards = database::get_cards_by_owner(uid);
     if nerf_active() {
@@ -1853,11 +1854,11 @@ async fn mine(req: HttpRequest) -> HttpResponse {
             nerf_clamp_card(card);
         }
     }
-    send_json(object!{
+    Ok(send_json(object!{
         result: "OK",
         cards: cards,
         characters: database::get_characters_by_owner(uid)
-    })
+    }))
 }
 
 // The public card browser: the published catalog with uploader names, plus

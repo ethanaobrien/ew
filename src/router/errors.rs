@@ -1,5 +1,6 @@
-use actix_web::{HttpRequest, HttpResponse};
+use actix_web::{HttpRequest, HttpResponse, http::header::ContentType};
 use crate::router::global;
+use jzon::object;
 
 #[allow(dead_code)]
 #[derive(Clone, Copy)]
@@ -121,5 +122,34 @@ impl actix_web::ResponseError for ErrorResponse {
     fn error_response(&self) -> HttpResponse {
         println!("Rejecting request from uid {}: {}", global::get_uid(self.0.headers()), self.1);
         global::api_error(&self.0, self.1)
+    }
+}
+
+pub struct WebErrorResponse(pub ResultCode, pub String);
+
+impl std::fmt::Debug for WebErrorResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Web request: {} {}", self.0, self.1)
+    }
+}
+
+impl std::fmt::Display for WebErrorResponse {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
+}
+
+impl actix_web::ResponseError for WebErrorResponse {
+    fn error_response(&self) -> HttpResponse {
+        println!("Rejecting web request: {}", self.0);
+        
+        let resp = object!{
+            result: "ERR",
+            result_code: self.0.to_string(),
+            message: self.1.as_str()
+        };
+        HttpResponse::Ok() // hmm
+            .insert_header(ContentType::json())
+            .body(jzon::stringify(resp))
     }
 }

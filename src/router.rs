@@ -49,7 +49,7 @@ use actix_web::{
 };
 use futures_util::future::LocalBoxFuture;
 use futures_util::FutureExt;
-use jzon::{JsonValue, object};
+use jzon::JsonValue;
 use crate::encryption;
 use errors::{ErrorResponse, ResultCode};
 
@@ -131,19 +131,13 @@ impl FromRequest for Session {
     }
 }
 
-// Requests without client headers (a browser) get the webui
-async fn webui_fallback(req: ServiceRequest, next: Next<impl MessageBody + 'static>) -> Result<ServiceResponse<BoxBody>, actix_web::Error> {
-    let is_from_game = req.headers().get("aoharu-asset-version").is_some() || req.path().starts_with("/api/webui");
-    if !is_from_game {
-        let req = req.into_parts().0;
-        let resp = if crate::get_args().hidden {
-            not_found(&req)
-        } else {
-            webui::main(req.clone())
-        };
-        return Ok(ServiceResponse::new(req, resp));
+// Default fallback handler
+pub async fn request(req: HttpRequest) -> HttpResponse {
+    let args = crate::get_args();
+    if req.path().starts_with("/api") || args.hidden {
+        return global::api_error(&req, ResultCode::ErrorNotFound);
     }
-    Ok(next.call(req).await?.map_into_boxed_body())
+    webui::main(req)
 }
 
 async fn asset_gate(req: ServiceRequest, next: Next<impl MessageBody + 'static>) -> Result<ServiceResponse<BoxBody>, actix_web::Error> {
@@ -156,58 +150,12 @@ async fn asset_gate(req: ServiceRequest, next: Next<impl MessageBody + 'static>)
     Ok(next.call(req).await?.map_into_boxed_body())
 }
 
-fn unhandled(req: &HttpRequest, body: String) -> Option<JsonValue> {
-    if body != String::new() {
-        println!("{}", encryption::decrypt_packet(&body).unwrap_or(body));
-    }
-    println!("Unhandled request: {}", req.path());
-    None
-}
-
-fn not_found(req: &HttpRequest) -> HttpResponse {
-    let rv = object!{
-        "code": 4,
-        "server_time": global::timestamp(),
-        "message": ""
-    };
-    global::send(rv, 0, req)
-}
-
-// Fallback
-async fn api_req(req: HttpRequest, body: String) -> HttpResponse {
-    let args = crate::get_args();
-    if args.hidden && (req.path().starts_with("/api/webui/") || !(req.path().starts_with("/api") || req.path().starts_with("/v1.0"))) {
-        return not_found(&req);
-    } else if !req.path().starts_with("/api") && !req.path().starts_with("/v1.0") {
-        return webui::main(req);
-    }
-    let resp = unhandled(&req, body);
-    global::api(&req, resp)
-}
-
-pub async fn request(req: HttpRequest, body: String) -> HttpResponse {
-    let args = crate::get_args();
-    let headers = req.headers();
-    if args.hidden && (req.path().starts_with("/api/webui/") || req.path().starts_with("/live_clear_rate.html")) {
-        return not_found(&req);
-    }
-    if headers.get("aoharu-asset-version").is_none() && req.path().starts_with("/api") && !req.path().starts_with("/api/webui") {
-        if args.hidden {
-            return not_found(&req);
-        } else {
-            return webui::main(req);
-        }
-    }
-    api_req(req, body).await
-}
-
 pub fn configure(cfg: &mut actix_web::web::ServiceConfig) {
     cfg.configure(crate::static_handlers::routes);
     cfg.service(
         actix_web::web::scope("/api")
             .service(
                 actix_web::web::scope("")
-                    .wrap(from_fn(webui_fallback))
                     .wrap(from_fn(asset_gate))
                     // Split between user (claiming) and home (listing)
                     .service(

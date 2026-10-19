@@ -8,6 +8,7 @@ use std::collections::{HashMap, HashSet};
 use crate::router::{global, userdata, webui};
 use crate::database::{announcements, permissions};
 use crate::database::announcements::Banner;
+use crate::router::errors::{ResultCode, WebErrorResponse};
 
 static ASSETS: Dir<'_> = include_dir!("web_assets/announcement/");
 
@@ -349,23 +350,21 @@ fn manager_uid(req: &HttpRequest) -> Option<i64> {
     userdata::get_acc(&login_token)["user"]["id"].as_i64()
 }
 
-fn require_manager(req: &HttpRequest) -> Result<i64, HttpResponse> {
-    if disabled() {
-        return Err(HttpResponse::NotFound().finish());
-    }
+fn require_manager(req: &HttpRequest) -> Result<i64, WebErrorResponse> {
     let Some(uid) = manager_uid(req) else {
-        return Err(webui::error("Not logged in"));
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     if !permissions::has(uid, permissions::ANNOUNCEMENT_MANAGE) {
-        return Err(webui::error("You do not have permission to manage announcements"));
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "You do not have permission to manage announcements".into()));
     }
     Ok(uid)
 }
 
-async fn admin_list(req: HttpRequest) -> HttpResponse {
-    if let Err(resp) = require_manager(&req) {
-        return resp;
+async fn admin_list(req: HttpRequest) -> Result<HttpResponse, WebErrorResponse> {
+    if disabled() {
+        return Ok(HttpResponse::NotFound().finish());
     }
+    require_manager(&req)?;
     let mut categories = array![];
     for (id, key, label) in CATEGORY_LABELS {
         categories.push(object!{ id: *id, key: *key, label: *label }).unwrap();
@@ -374,29 +373,24 @@ async fn admin_list(req: HttpRequest) -> HttpResponse {
     for kind in announcements::TYPES {
         types.push(*kind).unwrap();
     }
-    send_json(object!{
+    Ok(send_json(object!{
         result: "OK",
         data: {
             announcements: announcements::get_all(),
             categories: categories,
             types: types
         }
-    })
+    }))
 }
 
-async fn create(req: HttpRequest, payload: Multipart) -> HttpResponse {
-    let uid = match require_manager(&req) {
-        Ok(uid) => uid,
-        Err(resp) => return resp
-    };
-    let fields = match read_multipart(payload).await {
-        Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
-    };
-    match save_new(uid, &fields) {
-        Ok(id) => send_json(object!{ result: "OK", id: id }),
-        Err(e) => webui::error(&e)
+async fn create(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
+    if disabled() {
+        return Ok(HttpResponse::NotFound().finish());
     }
+    let uid = require_manager(&req)?;
+    let fields = read_multipart(payload).await.map_err(|e| WebErrorResponse(ResultCode::ErrorUnauthorized, e))?;
+    let id = save_new(uid, &fields).map_err(|e| WebErrorResponse(ResultCode::ErrorUnauthorized, e))?;
+    Ok(send_json(object!{ result: "OK", id: id }))
 }
 
 fn published_at_of(raw: &str) -> i64 {
@@ -428,18 +422,14 @@ fn save_new(uid: i64, fields: &Fields) -> Result<i64, String> {
     Ok(announcements::create(category, &kind, &title, &body, banner, field_flag(fields, "updated"), !field_flag(fields, "hidden"), published_at_of(&field_str(fields, "published_at")), uid))
 }
 
-async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
-    if let Err(resp) = require_manager(&req) {
-        return resp;
+async fn update(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
+    if disabled() {
+        return Ok(HttpResponse::NotFound().finish());
     }
-    let fields = match read_multipart(payload).await {
-        Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
-    };
-    match save_update(&fields) {
-        Ok(id) => send_json(object!{ result: "OK", id: id }),
-        Err(e) => webui::error(&e)
-    }
+    require_manager(&req)?;
+    let fields = read_multipart(payload).await.map_err(|e| WebErrorResponse(ResultCode::ErrorUnauthorized, e))?;
+    let id = save_update(&fields).map_err(|e| WebErrorResponse(ResultCode::ErrorUnauthorized, e))?;
+    Ok(send_json(object!{ result: "OK", id: id }))
 }
 
 fn save_update(fields: &Fields) -> Result<i64, String> {
@@ -476,17 +466,18 @@ fn save_update(fields: &Fields) -> Result<i64, String> {
     Ok(id)
 }
 
-async fn delete(req: HttpRequest, body: String) -> HttpResponse {
-    if let Err(resp) = require_manager(&req) {
-        return resp;
+async fn delete(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
+    if disabled() {
+        return Ok(HttpResponse::NotFound().finish());
     }
+    require_manager(&req)?;
     let body = jzon::parse(&body).unwrap_or(object!{});
     let id = body["id"].as_i64().unwrap_or(0);
     if announcements::get(id).is_none() {
-        return webui::error("That announcement no longer exists");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "That announcement no longer exists".into()));
     }
     announcements::delete(id);
-    send_json(object!{ result: "OK" })
+    Ok(send_json(object!{ result: "OK" }))
 }
 
 #[cfg(test)]

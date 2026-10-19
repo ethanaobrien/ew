@@ -17,6 +17,7 @@ use crate::database::custom_3dmv as database;
 use crate::database::permissions;
 use crate::runtime::get_data_path;
 use crate::lock_onto_mutex;
+use crate::router::errors::{ResultCode, WebErrorResponse};
 
 // Runtime-uploaded 3D MVs (MMD PMX models + VMD motions) attached to custom
 // songs. The client fetches the catalog from /api/custom_3dmv/list at login
@@ -770,16 +771,16 @@ pub fn upload_limits() -> JsonValue {
     }
 }
 
-async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn upload(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let mut fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     // Zip inflation, the PMX/VMD structure walks, hashing and writing up to 256MB:
     // all of it on the blocking pool rather than on the actix worker that also has
@@ -798,83 +799,83 @@ async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
         create_mv(uid, &fields)
     }).await;
     match result {
-        Ok(Ok(mv_id)) => send_json(object!{
+        Ok(Ok(mv_id)) => Ok(send_json(object!{
             result: "OK",
             mv_id: mv_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The upload could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The upload could not be processed".into()))
     }
 }
 
-async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn update(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     let mv_id = field_str(&fields, "mv_id").parse::<i64>().unwrap_or(0);
     match web::block(move || update_mv(uid, mv_id, &fields)).await {
-        Ok(Ok(())) => send_json(object!{
+        Ok(Ok(())) => Ok(send_json(object!{
             result: "OK",
             mv_id: mv_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The edit could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The edit could not be processed".into()))
     }
 }
 
-async fn publish(req: HttpRequest, body: String) -> HttpResponse {
+async fn publish(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
     let Some(published) = body["published"].as_bool() else {
-        return webui::error("published must be true or false");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "published must be true or false".into()));
     };
     match set_mv_flags(uid, body["mv_id"].as_i64().unwrap_or(0), published) {
-        Ok(()) => send_json(object!{
+        Ok(()) => Ok(send_json(object!{
             result: "OK"
-        }),
-        Err(e) => webui::error(&e)
+        })),
+        Err(e) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     }
 }
 
-async fn delete(req: HttpRequest, body: String) -> HttpResponse {
+async fn delete(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
     match delete_mv(uid, body["mv_id"].as_i64().unwrap_or(0)) {
-        Ok(()) => send_json(object!{
+        Ok(()) => Ok(send_json(object!{
             result: "OK"
-        }),
-        Err(e) => webui::error(&e)
+        })),
+        Err(e) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     }
 }
 
-async fn mine(req: HttpRequest) -> HttpResponse {
+async fn mine(req: HttpRequest) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
-    send_json(object!{
+    Ok(send_json(object!{
         result: "OK",
         mvs: database::get_mvs_by_owner(uid)
-    })
+    }))
 }
 
 // The public MV browser: the published catalog closed over the songs the
@@ -898,34 +899,34 @@ async fn browse(req: HttpRequest) -> HttpResponse {
 
 // Download an MV as an export package, re-uploadable on any ew server. The
 // viewer must be able to see it: their own, or published
-async fn download(req: HttpRequest) -> HttpResponse {
+async fn download(req: HttpRequest) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let mv_id = req.match_info().get("mv_id").unwrap_or("").parse::<i64>().unwrap_or(0);
     let Some(owner) = database::get_mv_owner(mv_id) else {
-        return webui::error("MV not found");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "MV not found".into()));
     };
     let viewer = get_session_uid(&req);
     if viewer != Some(owner) && !database::is_published(mv_id) {
-        return webui::error("MV not found");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "MV not found".into()));
     }
     // Every catalog (list, browse, mine) additionally closes over the songs the
     // viewer can see, so a published MV attached to someone else's PRIVATE song is
     // invisible everywhere - it must not be downloadable by walking mv_ids either
     let music_id = database::get_mv_music_id(mv_id).unwrap_or(0);
     if viewer != Some(owner) && !allowed_music_ids(viewer.unwrap_or(0)).contains(&music_id) {
-        return webui::error("MV not found");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "MV not found".into()));
     }
     match package::build(mv_id) {
         Ok(bytes) => {
-            HttpResponse::Ok()
+            Ok(HttpResponse::Ok()
                 .insert_header(("content-type", "application/zip"))
                 .insert_header(("content-disposition", format!("attachment; filename=\"custom_3dmv_{}.zip\"", mv_id)))
                 .insert_header(("content-length", bytes.len()))
-                .body(bytes)
+                .body(bytes))
         },
-        Err(e) => webui::error(&e)
+        Err(e) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     }
 }
 
@@ -1334,7 +1335,8 @@ pub mod tests {
     fn not_logged_in_is_rejected() {
         let _lock = crate::runtime::lock_test_data_path();
         actix_web::rt::System::new().block_on(async {
-            let body_of = |resp: HttpResponse| async {
+            let body_of = |resp: Result<HttpResponse, WebErrorResponse>| async {
+                let resp = resp.unwrap_or_else(|e| actix_web::ResponseError::error_response(&e));
                 let bytes = actix_web::body::to_bytes(resp.into_body()).await.unwrap();
                 String::from_utf8_lossy(&bytes).to_string()
             };
@@ -1724,7 +1726,7 @@ pub mod tests {
         let call = |mv_id: i64| -> String {
             let req = actix_web::test::TestRequest::default().param("mv_id", mv_id.to_string()).to_http_request();
             actix_web::rt::System::new().block_on(async {
-                let resp = download(req).await;
+                let resp = download(req).await.unwrap_or_else(|e| actix_web::ResponseError::error_response(&e));
                 let bytes = actix_web::body::to_bytes(resp.into_body()).await.unwrap();
                 String::from_utf8_lossy(&bytes).to_string()
             })

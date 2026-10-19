@@ -4,19 +4,28 @@ use actix_web::{
     http::header::HeaderValue,
     http::header::ContentType,
     web,
-    Responder
+    FromRequest,
+    Responder,
+    dev::Payload
 };
 use jzon::{array, JsonValue, object};
 use lazy_static::lazy_static;
 use include_dir::{include_dir, Dir};
 use std::fs;
+use futures_util::FutureExt;
+use futures_util::future::LocalBoxFuture;
 
 use crate::include_file;
 use crate::database::permissions;
 use crate::router::{userdata, items};
 use crate::router::databases::csv::Region;
+use crate::router::errors::{ResultCode, WebErrorResponse};
 
 pub fn api_routes(cfg: &mut web::ServiceConfig) {
+    let args = crate::get_args();
+    if args.hidden {
+        return;
+    }
     cfg.route("/login", web::post().to(login));
     cfg.route("/startLoginbonus", web::post().to(start_loginbonus));
     cfg.route("/import", web::post().to(import));
@@ -49,6 +58,10 @@ pub fn api_routes(cfg: &mut web::ServiceConfig) {
 }
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
+    let args = crate::get_args();
+    if args.hidden {
+        return;
+    }
     cfg.route("/webui/logout", web::get().to(logout));
 }
 
@@ -58,6 +71,13 @@ fn get_config() -> JsonValue {
         import: !args.disable_imports,
         export: !args.disable_exports
     }
+}
+
+struct Session {
+    pub token: String,
+    pub user: JsonValue,
+    pub userdata_token: String,
+    pub user_id: i64
 }
 
 pub fn get_login_token(req: &HttpRequest) -> Option<String> {
@@ -72,20 +92,32 @@ pub fn get_login_token(req: &HttpRequest) -> Option<String> {
     None
 }
 
-fn session_uid(req: &HttpRequest) -> Option<i64> {
-    let token = get_login_token(req)?;
-    let login_token = userdata::webui_login_token(&token)?;
-    userdata::get_acc(&login_token)["user"]["id"].as_i64()
-}
+impl FromRequest for Session {
+    type Error = actix_web::Error;
+    type Future = LocalBoxFuture<'static, Result<Self, Self::Error>>;
 
-pub fn error(msg: &str) -> HttpResponse {
-    let resp = object!{
-        result: "ERR",
-        message: msg
-    };
-    HttpResponse::Ok()
-        .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+    fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
+        let result = if let Some(token) = get_login_token(req) {
+            let user = userdata::webui_get_user(&token);
+
+            match user {
+                Some(user) => {
+                    let login_token = userdata::webui_login_token(&token);
+                    match login_token {
+                        Some(login_token) => {
+                            let userdata = userdata::get_acc(&login_token);
+                            Ok(Session { token, user, userdata_token: login_token, user_id: userdata["user"]["id"].as_i64().unwrap() })
+                        },
+                        None => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Expired login".into()).into())
+                    }
+                },
+                None => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Expired login".into()).into()),
+            }
+        } else {
+            Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()).into())
+        };
+        std::future::ready(result).boxed_local()
+    }
 }
 
 // Just enough to tell sessions apart in the list
@@ -101,33 +133,33 @@ fn browser_label(req: &HttpRequest) -> String {
     }
 }
 
-async fn login(req: HttpRequest, body: String) -> impl Responder {
+async fn login(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     let body = jzon::parse(&body).unwrap();
     let token = userdata::webui_login(body["uid"].as_i64().unwrap(), &body["password"].to_string(), &browser_label(&req));
     
     if token.is_err() {
-        return error(&token.unwrap_err());
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, token.unwrap_err()));
     }
     
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
         .insert_header(("Set-Cookie", format!("ew_token={}; SameSite=Strict; Path=/; HttpOnly", token.unwrap())))
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn import(_req: HttpRequest, body: String) -> impl Responder {
+async fn import(_req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if !get_config()["import"].as_bool().unwrap() {
-        return error("Importing accounts is disabled on this server.");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Importing accounts is disabled on this server.".into()));
     }
     let body = jzon::parse(&body).unwrap();
     
     let result = userdata::webui_import_user(body);
     
     if result.is_err() {
-        return error(&result.unwrap_err());
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, result.unwrap_err()));
     }
     let result = result.unwrap();
     
@@ -136,21 +168,13 @@ async fn import(_req: HttpRequest, body: String) -> impl Responder {
         uid: result["uid"].clone(),
         migration_token: result["migration_token"].clone()
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn user(req: HttpRequest) -> impl Responder {
-    let token = get_login_token(&req);
-    if token.is_none() {
-        return error("Not logged in");
-    }
-    let data = userdata::webui_get_user(&token.unwrap());
-    if data.is_none() {
-        return error("Expired login");
-    }
-    let mut data = data.unwrap();
+async fn user(Session { user, user_id: _, token: _, userdata_token: _ }: Session) -> impl Responder {
+    let mut data = user;
     
     data["userdata"]["user"]["rank"] = items::get_user_rank_data(data["userdata"]["user"]["exp"].as_i64().unwrap())["rank"].clone();
     
@@ -163,37 +187,26 @@ async fn user(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn start_loginbonus(req: HttpRequest, body: String) -> impl Responder {
-    let token = get_login_token(&req);
-    if token.is_none() {
-        return error("Not logged in");
-    }
+async fn start_loginbonus(Session { token, user_id: _, user: _, userdata_token: _ }: Session, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
-    let resp = userdata::webui_start_loginbonus(body["bonus_id"].as_i64().unwrap(), &token.unwrap());
+    let resp = userdata::webui_start_loginbonus(body["bonus_id"].as_i64().unwrap(), &token);
     
     HttpResponse::Ok()
         .insert_header(ContentType::json())
         .body(jzon::stringify(resp))
 }
 
-async fn set_time(req: HttpRequest, body: String) -> impl Responder {
-    let token = get_login_token(&req);
-    if token.is_none() {
-        return error("Not logged in");
-    }
+async fn set_time(Session { token, user_id: _, user: _, userdata_token: _ }: Session, body: String) -> impl Responder {
     let body = jzon::parse(&body).unwrap();
-    let resp = userdata::set_server_time(body["timestamp"].as_i64().unwrap(), &token.unwrap());
+    let resp = userdata::set_server_time(body["timestamp"].as_i64().unwrap(), &token);
     
     HttpResponse::Ok()
         .insert_header(ContentType::json())
         .body(jzon::stringify(resp))
 }
 
-async fn logout(req: HttpRequest) -> impl Responder {
-    let token = get_login_token(&req);
-    if token.is_some() {
-        userdata::webui_logout(&token.unwrap());
-    }
+async fn logout(Session { token, user_id: _, user: _, userdata_token: _ }: Session) -> impl Responder {
+    userdata::webui_logout(&token);
     let resp = object!{
         result: "OK"
     };
@@ -257,21 +270,17 @@ pub fn main(req: HttpRequest) -> HttpResponse {
         .body("")
 }
 
-async fn export(req: HttpRequest) -> impl Responder {
+async fn export(Session { token, user_id: _, user: _, userdata_token: _ }: Session) -> Result<HttpResponse, WebErrorResponse> {
     if !get_config()["export"].as_bool().unwrap() {
-        return error("Exporting accounts is disabled on this server.");
-    }
-    let token = get_login_token(&req);
-    if token.is_none() {
-        return error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Exporting accounts is disabled on this server.".into()));
     }
     let resp = object!{
         result: "OK",
-        data: userdata::export_user(&token.unwrap()).unwrap()
+        data: userdata::export_user(&token).unwrap()
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
 async fn server_info(_req: HttpRequest) -> impl Responder {
@@ -457,13 +466,10 @@ lazy_static! {
     };
 }
 
-async fn list_characters(req: HttpRequest) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn list_characters(Session { user_id, token: _, user: _, userdata_token: _ }: Session) -> impl Responder {
     let mut characters = CHARACTER_CHOICES.clone();
     if !crate::router::custom_card::disabled() {
-        for character in crate::database::custom_card::get_selectable_characters(uid).members() {
+        for character in crate::database::custom_card::get_selectable_characters(user_id).members() {
             characters.push(object!{
                 id: character["master_character_id"].clone(),
                 name: character["name"].clone(),
@@ -481,10 +487,7 @@ async fn list_characters(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn list_skill_centers(req: HttpRequest) -> impl Responder {
-    if session_uid(&req).is_none() {
-        return error("Not logged in");
-    }
+async fn list_skill_centers(Session { user_id: _, token: _, user: _, userdata_token: _ }: Session) -> impl Responder {
     let resp = object!{
         result: "OK",
         skill_centers: SKILL_CENTER_CHOICES.clone()
@@ -494,10 +497,7 @@ async fn list_skill_centers(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn custom_card_limits(req: HttpRequest) -> impl Responder {
-    if session_uid(&req).is_none() {
-        return error("Not logged in");
-    }
+async fn custom_card_limits(Session { user_id: _, token: _, user: _, userdata_token: _ }: Session) -> impl Responder {
     let resp = object!{
         result: "OK",
         data: crate::router::custom_card::upload_limits()
@@ -507,12 +507,9 @@ async fn custom_card_limits(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn custom_3dmv_limits(req: HttpRequest) -> impl Responder {
+async fn custom_3dmv_limits(Session { user_id: _, token: _, user: _, userdata_token: _ }: Session) -> impl Responder {
     if crate::router::custom_3dmv::disabled() {
         return HttpResponse::NotFound().finish();
-    }
-    if session_uid(&req).is_none() {
-        return error("Not logged in");
     }
     let resp = object!{
         result: "OK",
@@ -523,10 +520,8 @@ async fn custom_3dmv_limits(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn my_scopes(req: HttpRequest) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn my_scopes(Session { user_id, token: _, user: _, userdata_token: _ }: Session) -> impl Responder {
+    let uid = user_id;
     let resp = object!{
         result: "OK",
         data: {
@@ -551,14 +546,12 @@ async fn my_scopes(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn list_permissions(req: HttpRequest) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn list_permissions(Session { user_id, token: _, user: _, userdata_token: _ }: Session) -> Result<HttpResponse, WebErrorResponse> {
+    let uid = user_id;
     let can_grant = permissions::has(uid, permissions::PERMISSION_GRANT);
     let can_revoke = permissions::has(uid, permissions::PERMISSION_REVOKE);
     if !can_grant && !can_revoke {
-        return error("You do not have permission to manage scopes");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "You do not have permission to manage scopes".into()));
     }
     let mut available = array![];
     for scope in permissions::SCOPES {
@@ -575,59 +568,50 @@ async fn list_permissions(req: HttpRequest) -> impl Responder {
             grants: permissions::grants()
         }
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn grant_permission(req: HttpRequest, body: String) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn grant_permission(Session { user_id, token: _, user: _, userdata_token: _ }: Session, body: String) -> Result<HttpResponse, WebErrorResponse> {
     let body = jzon::parse(&body).unwrap_or(object!{});
     let target = body["uid"].as_i64().unwrap_or(0);
     let scope = body["scope"].to_string();
     if userdata::get_login_token(target) == String::new() {
-        return error(&format!("User {} does not exist", target));
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, format!("User {} does not exist", target)));
     }
-    if let Err(e) = permissions::grant(target, &scope, uid) {
-        return error(&e);
+    if let Err(e) = permissions::grant(target, &scope, user_id) {
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e));
     }
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn revoke_permission(req: HttpRequest, body: String) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn revoke_permission(Session { user_id, token: _, user: _, userdata_token: _ }: Session, body: String) -> Result<HttpResponse, WebErrorResponse> {
     let body = jzon::parse(&body).unwrap_or(object!{});
-    if let Err(e) = permissions::revoke(body["uid"].as_i64().unwrap_or(0), &body["scope"].to_string(), uid) {
-        return error(&e);
+    if let Err(e) = permissions::revoke(body["uid"].as_i64().unwrap_or(0), &body["scope"].to_string(), user_id) {
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e));
     }
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
 // The operator's cabinet list. Owner scope only: a machine row names the two
 // accounts a cabinet owns, and removing one deletes them.
-async fn list_arcade_machines(req: HttpRequest) -> impl Responder {
+async fn list_arcade_machines(Session { user_id, token: _, user: _, userdata_token: _ }: Session) -> Result<HttpResponse, WebErrorResponse> {
     if crate::router::arcade::disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
-    if !permissions::has(uid, permissions::ALL) {
-        return error("You do not have permission to manage arcade machines");
+    if !permissions::has(user_id, permissions::ALL) {
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "You do not have permission to manage arcade machines".into()));
     }
     let resp = object!{
         result: "OK",
@@ -635,39 +619,33 @@ async fn list_arcade_machines(req: HttpRequest) -> impl Responder {
             machines: crate::router::arcade::webui_machines()
         }
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn remove_arcade_machine(req: HttpRequest, body: String) -> impl Responder {
+async fn remove_arcade_machine(Session { user_id, token: _, user: _, userdata_token: _ }: Session, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if crate::router::arcade::disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
-    if !permissions::has(uid, permissions::ALL) {
-        return error("You do not have permission to manage arcade machines");
+    if !permissions::has(user_id, permissions::ALL) {
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "You do not have permission to manage arcade machines".into()));
     }
     let body = jzon::parse(&body).unwrap_or(object!{});
     if let Err(e) = crate::router::arcade::webui_remove_machine(body["machine_id"].as_str().unwrap_or("")) {
-        return error(&e);
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e));
     }
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn link_nesica_card(req: HttpRequest, body: String) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn link_nesica_card(Session { user_id, token: _, user: _, userdata_token: _ }: Session, body: String) -> Result<HttpResponse, WebErrorResponse> {
     let body = jzon::parse(&body).unwrap_or(object!{});
-    match crate::router::userdata::user::migration::link_card(body["card_id"].as_str().unwrap_or(""), uid) {
+    match crate::router::userdata::user::migration::link_card(body["card_id"].as_str().unwrap_or(""), user_id) {
         Ok((card_id, rebound)) => {
             let resp = object!{
                 result: "OK",
@@ -676,22 +654,19 @@ async fn link_nesica_card(req: HttpRequest, body: String) -> impl Responder {
                     rebound: rebound
                 }
             };
-            HttpResponse::Ok()
+            Ok(HttpResponse::Ok()
                 .insert_header(ContentType::json())
-                .body(jzon::stringify(resp))
+                .body(jzon::stringify(resp)))
         },
-        Err(reason) => error(&reason)
+        Err(reason) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, reason))
     }
 }
 
-async fn list_nesica_cards(req: HttpRequest) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn list_nesica_cards(Session { user_id, token: _, user: _, userdata_token: _ }: Session) -> impl Responder {
     let resp = object!{
         result: "OK",
         data: {
-            card_ids: crate::router::userdata::user::migration::cards_of_account(uid)
+            card_ids: crate::router::userdata::user::migration::cards_of_account(user_id)
         }
     };
     HttpResponse::Ok()
@@ -699,16 +674,13 @@ async fn list_nesica_cards(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn unlink_nesica_card(req: HttpRequest, body: String) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn unlink_nesica_card(Session { user_id, token: _, user: _, userdata_token: _ }: Session, body: String) -> Result<HttpResponse, WebErrorResponse> {
     let body = jzon::parse(&body).unwrap_or(object!{});
     let Some(card) = crate::router::userdata::user::migration::valid_card_id(body["card_id"].as_str().unwrap_or("")) else {
-        return error("That is not a usable card id");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "That is not a usable card id".into()));
     };
-    if !crate::router::userdata::user::migration::remove_card_of(&card, uid) {
-        return error("That card is not linked to this account");
+    if !crate::router::userdata::user::migration::remove_card_of(&card, user_id) {
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "That card is not linked to this account".into()));
     }
     let resp = object!{
         result: "OK",
@@ -716,19 +688,16 @@ async fn unlink_nesica_card(req: HttpRequest, body: String) -> impl Responder {
             card_id: card
         }
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn list_sessions(req: HttpRequest) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn list_sessions(Session { user_id, token, user: _, userdata_token: _ }: Session) -> impl Responder {
     let resp = object!{
         result: "OK",
         data: {
-            sessions: userdata::sessions::list(uid, &get_login_token(&req).unwrap_or_default())
+            sessions: userdata::sessions::list(user_id, &token)
         }
     };
     HttpResponse::Ok()
@@ -736,48 +705,33 @@ async fn list_sessions(req: HttpRequest) -> impl Responder {
         .body(jzon::stringify(resp))
 }
 
-async fn revoke_session(req: HttpRequest, body: String) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
+async fn revoke_session(Session { user_id, token: _, user: _, userdata_token: _ }: Session, body: String) -> Result<HttpResponse, WebErrorResponse> {
     let body = jzon::parse(&body).unwrap_or(object!{});
-    if !userdata::sessions::revoke(uid, body["id"].as_i64().unwrap_or(0)) {
-        return error("That session is not signed in");
+    if !userdata::sessions::revoke(user_id, body["id"].as_i64().unwrap_or(0)) {
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "That session is not signed in".into()));
     }
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn logout_everywhere(req: HttpRequest, _body: String) -> impl Responder {
-    let Some(uid) = session_uid(&req) else {
-        return error("Not logged in");
-    };
-    if !userdata::sessions::revoke_all(uid, &get_login_token(&req).unwrap_or_default()) {
-        return error("Could not sign the other sessions out, try again");
+async fn logout_everywhere(Session { user_id, token, user: _, userdata_token: _ }: Session, _body: String) -> Result<HttpResponse, WebErrorResponse> {
+    if !userdata::sessions::revoke_all(user_id, &token) {
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Could not sign the other sessions out, try again".into()));
     }
     let resp = object!{
         result: "OK"
     };
-    HttpResponse::Ok()
+    Ok(HttpResponse::Ok()
         .insert_header(ContentType::json())
-        .body(jzon::stringify(resp))
+        .body(jzon::stringify(resp)))
 }
 
-async fn cheat(req: HttpRequest, _body: String) -> impl Responder {
-    let token = get_login_token(&req);
-    if token.is_none() {
-        return error("Not logged in");
-    }
-    let key = userdata::webui_login_token(&token.unwrap());
-    if key.is_none() {
-        return error("Not logged in");
-    }
-    let key = key.unwrap();
-    let mut user = userdata::get_acc_home(&key);
+async fn cheat(Session { userdata_token, token: _, user: _, user_id: _ }: Session, _body: String) -> impl Responder {
+    let mut user = userdata::get_acc_home(&userdata_token);
 
     for item in ITEM.entries() {
         let id = item.0.parse::<i32>().unwrap_or(0);
@@ -796,7 +750,7 @@ async fn cheat(req: HttpRequest, _body: String) -> impl Responder {
         items::gift_item_basic(id, limit, reward_type, "You have cheated. Here are \"gifts\".", &mut user);
     }
 
-    userdata::save_acc_home(&key, user);
+    userdata::save_acc_home(&userdata_token, user);
 
     let resp = object!{
         result: "OK"

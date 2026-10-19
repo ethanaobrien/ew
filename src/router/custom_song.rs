@@ -18,6 +18,7 @@ use crate::database::custom_song as database;
 use crate::database::custom_group;
 use crate::runtime::get_data_path;
 use crate::lock_onto_mutex;
+use crate::router::errors::{ResultCode, WebErrorResponse};
 
 // Custom songs are owned by their uploader: only the owner can change or
 // delete them through the webui. Visibility is per song - "public" (default,
@@ -1148,16 +1149,16 @@ fn update_song(music_id: i64, fields: &HashMap<String, Vec<u8>>) -> Result<(), S
     Ok(())
 }
 
-async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn upload(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let mut fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     // Everything from here on is seconds of CPU - zip inflation, a png decode and
     // resize, a whole-track vorbis encode - so it runs on the blocking pool
@@ -1176,58 +1177,58 @@ async fn upload(req: HttpRequest, payload: Multipart) -> HttpResponse {
         create_song(uid, &fields)
     }).await;
     match result {
-        Ok(Ok(music_id)) => send_json(object!{
+        Ok(Ok(music_id)) => Ok(send_json(object!{
             result: "OK",
             music_id: music_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The upload could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The upload could not be processed".into()))
     }
 }
 
 // Owner-only: edit a song in place so charters don't have to delete and
 // re-upload, which would assign a new music_id and wipe player score records
-async fn update(req: HttpRequest, payload: Multipart) -> HttpResponse {
+async fn update(req: HttpRequest, payload: Multipart) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let fields = match read_multipart(payload).await {
         Ok(fields) => fields,
-        Err(e) => return webui::error(&e)
+        Err(e) => return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     };
     let music_id = field_str(&fields, "music_id").parse::<i64>().unwrap_or(0);
     let Some(owner) = database::get_song_owner(music_id) else {
-        return webui::error("Song not found");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Song not found".into()));
     };
     if owner != uid {
-        return webui::error("You can only manage your own songs");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "You can only manage your own songs".into()));
     }
     // Same blocking-pool treatment as upload: an edit can re-encode the audio and
     // re-derive the jackets
     match web::block(move || update_song(music_id, &fields)).await {
-        Ok(Ok(())) => send_json(object!{
+        Ok(Ok(())) => Ok(send_json(object!{
             result: "OK",
             music_id: music_id
-        }),
-        Ok(Err(e)) => webui::error(&e),
-        Err(_) => webui::error("The edit could not be processed")
+        })),
+        Ok(Err(e)) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e)),
+        Err(_) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "The edit could not be processed".into()))
     }
 }
 
-async fn mine(req: HttpRequest) -> HttpResponse {
+async fn mine(req: HttpRequest) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
-    send_json(object!{
+    Ok(send_json(object!{
         result: "OK",
         songs: database::get_songs_by_owner(uid)
-    })
+    }))
 }
 
 // The public song browser. Anonymous viewers see the public catalog; a webui
@@ -1252,53 +1253,53 @@ async fn browse(req: HttpRequest) -> HttpResponse {
 // Download a song as an export package, re-uploadable on any ew server. The
 // viewer must be able to see the song, and downloads must be enabled unless
 // they own it
-async fn download(req: HttpRequest) -> HttpResponse {
+async fn download(req: HttpRequest) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let music_id = req.match_info().get("music_id").unwrap_or("").parse::<i64>().unwrap_or(0);
     if let Err(e) = database::export_allowed(music_id, get_session_uid(&req)) {
-        return webui::error(e);
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e.into()));
     }
     match package::build(music_id) {
         Ok(bytes) => {
-            HttpResponse::Ok()
+            Ok(HttpResponse::Ok()
                 .insert_header(("content-type", "application/zip"))
                 .insert_header(("content-disposition", format!("attachment; filename=\"custom_song_{}.zip\"", music_id)))
                 .insert_header(("content-length", bytes.len()))
-                .body(bytes)
+                .body(bytes))
         },
-        Err(e) => webui::error(&e)
+        Err(e) => Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e))
     }
 }
 
 // Owner-only: change a song's visibility and/or its shared-user list
-async fn visibility(req: HttpRequest, body: String) -> HttpResponse {
+async fn visibility(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
     let music_id = body["music_id"].as_i64().unwrap_or(0);
     let Some(owner) = database::get_song_owner(music_id) else {
-        return webui::error("Song not found");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Song not found".into()));
     };
     if owner != uid {
-        return webui::error("You can only manage your own songs");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "You can only manage your own songs".into()));
     }
     let visibility = body["visibility"].to_string();
     if !database::VISIBILITIES.contains(&visibility.as_str()) {
-        return webui::error(&format!("Unknown visibility '{}'", visibility));
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, format!("Unknown visibility '{}'", visibility)));
     }
     let shared_with = body["shared_with"].clone();
     if let Err(e) = validate_shared_users(&shared_with) {
-        return webui::error(&e);
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, e));
     }
 
     if let Err(e) = database::set_visibility(music_id, &visibility, &shared_with) {
-        return webui::error(&format!("Could not change the visibility: {}", e));
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, format!("Could not change the visibility: {}", e)));
     }
     // The download toggle only affects the webui browser, not the game catalog
     if !body["downloads_disabled"].is_null() {
@@ -1307,25 +1308,25 @@ async fn visibility(req: HttpRequest, body: String) -> HttpResponse {
     database::bump_revision();
     crate::router::clear_rate::invalidate_cache();
 
-    send_json(object!{
+    Ok(send_json(object!{
         result: "OK"
-    })
+    }))
 }
 
-async fn delete(req: HttpRequest, body: String) -> HttpResponse {
+async fn delete(req: HttpRequest, body: String) -> Result<HttpResponse, WebErrorResponse> {
     if disabled() {
-        return HttpResponse::NotFound().finish();
+        return Ok(HttpResponse::NotFound().finish());
     }
     let Some(uid) = get_session_uid(&req) else {
-        return webui::error("Not logged in");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Not logged in".into()));
     };
     let body = jzon::parse(&body).unwrap_or(object!{});
     let music_id = body["music_id"].as_i64().unwrap_or(0);
     let Some(owner) = database::get_song_owner(music_id) else {
-        return webui::error("Song not found");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "Song not found".into()));
     };
     if owner != uid {
-        return webui::error("You can only delete your own songs");
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, "You can only delete your own songs".into()));
     }
     let song = database::get_song(music_id).unwrap_or(object!{});
 
@@ -1335,7 +1336,7 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
     // unlink the file the new song is about to serve
     let lock = lock_onto_mutex!(UPLOAD_LOCK);
     if let Err(e) = database::delete_song(music_id) {
-        return webui::error(&format!("Could not delete the song: {}", e));
+        return Err(WebErrorResponse(ResultCode::ErrorUnauthorized, format!("Could not delete the song: {}", e)));
     }
     database::bump_revision();
     // Global clear-rate stats for the dead live id (per-user score records are
@@ -1355,9 +1356,9 @@ async fn delete(req: HttpRequest, body: String) -> HttpResponse {
     }
     drop(lock);
 
-    send_json(object!{
+    Ok(send_json(object!{
         result: "OK"
-    })
+    }))
 }
 
 
@@ -2739,7 +2740,7 @@ mod tests {
                 let req = TestRequest::default()
                     .insert_header(("Cookie", format!("ew_token={}", cookie)))
                     .to_http_request();
-                let resp = upload(req, payload).await;
+                let resp = upload(req, payload).await.unwrap_or_else(|e| actix_web::ResponseError::error_response(&e));
                 let bytes = actix_web::body::to_bytes(resp.into_body()).await.unwrap();
                 String::from_utf8_lossy(&bytes).to_string()
             })

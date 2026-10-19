@@ -10,6 +10,10 @@ use crate::include_file;
 use crate::router::tools::guest;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
+    let args = crate::get_args();
+    if args.hidden {
+        return;
+    }
     cfg.route("/live_clear_rate.html", web::get().to(clearrate_html));
 }
 
