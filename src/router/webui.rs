@@ -26,35 +26,38 @@ pub fn api_routes(cfg: &mut web::ServiceConfig) {
     if args.hidden {
         return;
     }
-    cfg.route("/login", web::post().to(login));
-    cfg.route("/startLoginbonus", web::post().to(start_loginbonus));
-    cfg.route("/import", web::post().to(import));
-    cfg.route("/set_time", web::post().to(set_time));
-    cfg.route("/cheat", web::post().to(cheat));
-    cfg.route("/grantPermission", web::post().to(grant_permission));
-    cfg.route("/revokePermission", web::post().to(revoke_permission));
-    cfg.route("/removeArcadeMachine", web::post().to(remove_arcade_machine));
-    cfg.route("/linkNesicaCard", web::post().to(link_nesica_card));
-    cfg.route("/unlinkNesicaCard", web::post().to(unlink_nesica_card));
-    cfg.route("/revokeSession", web::post().to(revoke_session));
-    cfg.route("/logoutEverywhere", web::post().to(logout_everywhere));
+    cfg.service(
+        web::scope("/webui")
+            .route("/login", web::post().to(login))
+            .route("/startLoginbonus", web::post().to(start_loginbonus))
+            .route("/import", web::post().to(import))
+            .route("/set_time", web::post().to(set_time))
+            .route("/cheat", web::post().to(cheat))
+            .route("/grantPermission", web::post().to(grant_permission))
+            .route("/revokePermission", web::post().to(revoke_permission))
+            .route("/removeArcadeMachine", web::post().to(remove_arcade_machine))
+            .route("/linkNesicaCard", web::post().to(link_nesica_card))
+            .route("/unlinkNesicaCard", web::post().to(unlink_nesica_card))
+            .route("/revokeSession", web::post().to(revoke_session))
+            .route("/logoutEverywhere", web::post().to(logout_everywhere))
 
-    cfg.route("/userInfo", web::get().to(user));
-    cfg.route("/export", web::get().to(export));
-    cfg.route("/serverInfo", web::get().to(server_info));
-    cfg.route("/listCards", web::get().to(get_card_info));
-    cfg.route("/listMusic", web::get().to(get_music_info));
-    cfg.route("/listLoginBonus", web::get().to(list_login_bonus));
-    cfg.route("/listItems", web::get().to(list_items));
-    cfg.route("/listPermissions", web::get().to(list_permissions));
-    cfg.route("/listCharacters", web::get().to(list_characters));
-    cfg.route("/listSkillCenters", web::get().to(list_skill_centers));
-    cfg.route("/customCardLimits", web::get().to(custom_card_limits));
-    cfg.route("/custom3dmvLimits", web::get().to(custom_3dmv_limits));
-    cfg.route("/myScopes", web::get().to(my_scopes));
-    cfg.route("/webui/listArcadeMachines", web::get().to(list_arcade_machines));
-    cfg.route("/webui/listNesicaCards", web::get().to(list_nesica_cards));
-    cfg.route("/webui/listSessions", web::get().to(list_sessions));
+            .route("/userInfo", web::get().to(user))
+            .route("/export", web::get().to(export))
+            .route("/serverInfo", web::get().to(server_info))
+            .route("/listCards", web::get().to(get_card_info))
+            .route("/listMusic", web::get().to(get_music_info))
+            .route("/listLoginBonus", web::get().to(list_login_bonus))
+            .route("/listItems", web::get().to(list_items))
+            .route("/listPermissions", web::get().to(list_permissions))
+            .route("/listCharacters", web::get().to(list_characters))
+            .route("/listSkillCenters", web::get().to(list_skill_centers))
+            .route("/customCardLimits", web::get().to(custom_card_limits))
+            .route("/custom3dmvLimits", web::get().to(custom_3dmv_limits))
+            .route("/myScopes", web::get().to(my_scopes))
+            .route("/listArcadeMachines", web::get().to(list_arcade_machines))
+            .route("/listNesicaCards", web::get().to(list_nesica_cards))
+            .route("/listSessions", web::get().to(list_sessions)),
+    );
 }
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
