@@ -459,7 +459,7 @@ async fn get_clearrate_html() -> String {
     cache["cache"].to_string()
 }
 
-async fn clearrate_html(_req: HttpRequest) -> impl Responder {
+pub(crate) async fn clearrate_html(_req: HttpRequest) -> impl Responder {
     let html = get_clearrate_html().await;
 
     HttpResponse::Ok()

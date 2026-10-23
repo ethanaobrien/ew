@@ -286,7 +286,7 @@ async fn export(Session { token, user_id: _, user: _, userdata_token: _ }: Sessi
         .body(jzon::stringify(resp)))
 }
 
-async fn server_info(_req: HttpRequest) -> impl Responder {
+pub(crate) async fn server_info(_req: HttpRequest) -> impl Responder {
     let args = crate::get_args();
 
     let resp = object!{

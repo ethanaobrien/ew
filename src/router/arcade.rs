@@ -403,7 +403,6 @@ mod tests {
     #[test]
     fn a_card_resolves_to_its_account_and_a_dead_mapping_is_dropped() {
         let _lock = crate::runtime::lock_test_data_path();
-        use crate::database::arcade as db;
 
         // Nobody linked it: unlinked, and nothing was created for it
         assert!(resolve_card("7020392000000001").is_none());

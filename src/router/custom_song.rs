@@ -2032,9 +2032,10 @@ mod tests {
 
     // The JSON body the webui's /api/webui/serverInfo handler returns
     fn webui_server_info() -> JsonValue {
-        let resp = crate::router::webui::server_info(actix_web::test::TestRequest::default().to_http_request());
+        let req = actix_web::test::TestRequest::default().to_http_request();
         let body = actix_web::rt::System::new().block_on(async {
-            actix_web::body::to_bytes(resp.into_body()).await.unwrap()
+            let resp = crate::router::webui::server_info(req.clone()).await.respond_to(&req);
+            actix_web::body::to_bytes(resp.map_into_boxed_body().into_body()).await.unwrap()
         });
         jzon::parse(&String::from_utf8_lossy(&body)).unwrap()
     }
@@ -2199,8 +2200,9 @@ mod tests {
         clear_rate::invalidate_cache();
 
         let html = actix_web::rt::System::new().block_on(async {
-            let resp = clear_rate::clearrate_html(TestRequest::default().to_http_request()).await;
-            let body = actix_web::body::to_bytes(resp.into_body()).await.unwrap();
+            let req = TestRequest::default().to_http_request();
+            let resp = clear_rate::clearrate_html(req.clone()).await.respond_to(&req);
+            let body = actix_web::body::to_bytes(resp.map_into_boxed_body().into_body()).await.unwrap();
             String::from_utf8_lossy(&body).to_string()
         });
         // The public song's real (escaped) title, JP cell and EN attribute

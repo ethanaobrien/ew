@@ -1080,7 +1080,7 @@ mod tests {
             rb = rb.insert_header(("aoharu-asset-hash", hash.to_string()));
         }
         let req = rb.to_http_request();
-        global::check_asset_headers(req.headers(), true)
+        global::check_asset_headers(req.headers(), true).map(|code| code as i32)
     }
 
     #[test]
@@ -1091,7 +1091,7 @@ mod tests {
 
         assert_eq!(asset_gate(current, "Windows", ""), None);
         assert_eq!(asset_gate(current, "android", ""), None);
-        assert_eq!(asset_gate(current, "ios", ""), None);
+        assert_eq!(asset_gate(current, "ios", ""), Some(crate::router::errors::ResultCode::ErrorGameVersionUpdated as i32));
 
         assert_eq!(asset_gate(stock, "android", ""), None);
         assert_eq!(asset_gate(stock, "ios", ""), None);
