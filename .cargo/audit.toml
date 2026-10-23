@@ -1,0 +1,3 @@
+[advisories]
+# Marvin attack: needs private-key decryption timing. rsa is only used for gree signature verification
+ignore = ["RUSTSEC-2023-0071"]

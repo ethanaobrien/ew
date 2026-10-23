@@ -326,7 +326,7 @@ fn validate_model_zip(label: &str, bytes: &[u8], require_vertices: bool) -> Resu
     let mut found = false;
     for i in 0..archive.len() {
         let mut file = archive.by_index(i).map_err(|e| format!("'{}': {}", label, e))?;
-        let name = file.name().to_string();
+        let name = file.name().map_err(|e| format!("'{}': {}", label, e))?.to_string();
         if !name.to_lowercase().ends_with(".pmx") {
             continue;
         }
