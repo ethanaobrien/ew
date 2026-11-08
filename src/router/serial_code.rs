@@ -184,19 +184,24 @@ async fn serial_code(Session { key, body }: Session) -> impl Responder {
         itemz.push(items::gift_item_basic(15540001, 500, 3, "Okay...............", &mut user)).unwrap();
     } else {
         return Api(Some(object!{
-            "result_code": 3
+            "result_code": 1
         }));
     }
     
     if body["receive_flg"] == 1 {
         userdata::save_acc_home(&key, user.clone());
+        Api(Some(object!{
+            "serial_code_event": {"id":1,"name":"Serial Code Reward","unique_limit_count":0,"min_user_rank":0,"max_user_rank":0,"end_date":null},
+            "reward_list": itemz,
+            "result_code": 0,
+            "gift_list": user["gift_list"].clone(),
+            "excluded_gift_list": []
+        }))
+    } else {
+        Api(Some(object!{
+            "serial_code_event": {"id":1,"name":"Serial Code Reward","unique_limit_count":0,"min_user_rank":0,"max_user_rank":0,"end_date":null},
+            "reward_list": itemz,
+            "result_code": 0
+        }))
     }
-    
-    Api(Some(object!{
-        "serial_code_event": {"id":1,"name":"Serial Code Reward","unique_limit_count":0,"min_user_rank":0,"max_user_rank":0,"end_date":null},
-        "reward_list": itemz,
-        "result_code": 0,
-        "gift_list": user["gift_list"].clone(),
-        "excluded_gift_list": []
-    }))
 }
